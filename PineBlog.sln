@@ -1,0 +1,69 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29102.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 Solution Files", "00 Solution Files", "{78B51317-E566-4217-BA48-A11D1756451D}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		azure-pipelines.yml = azure-pipelines.yml
+		CHANGELOG.md = CHANGELOG.md
+		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
+		CONTRIBUTING.md = CONTRIBUTING.md
+		Directory.Build.props = Directory.Build.props
+		LICENSE = LICENSE
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 Tests", "02 Tests", "{39C10DDD-2F23-4F19-BBB1-CF31D9850002}"
+	ProjectSection(SolutionItems) = preProject
+		tests\test-netcoreapp2_2.ps1 = tests\test-netcoreapp2_2.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Docs", "01 Docs", "{A4785B91-D8E5-4206-9B46-E38169859622}"
+	ProjectSection(SolutionItems) = preProject
+		docs\Opw.PineBlog.Sample.md = docs\Opw.PineBlog.Sample.md
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "10 Samples", "10 Samples", "{5FEBABA0-73A1-464A-8715-19F76F742B22}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "50 PineBlog", "50 PineBlog", "{64F9A954-9830-45BA-B47F-D3589072E347}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opw.PineBlog", "src\Opw.PineBlog\Opw.PineBlog.csproj", "{1C5533E5-3174-4A5E-AE77-1D784E908BFB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opw.PineBlog.Tests", "tests\Opw.PineBlog.Tests\Opw.PineBlog.Tests.csproj", "{FC27D4AB-1C14-4494-B70F-5472BDA2A34B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opw.PineBlog.Sample", "samples\Opw.PineBlog.Sample\Opw.PineBlog.Sample.csproj", "{5FF80F3A-E0D0-4E47-9407-582E8F55617D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C5533E5-3174-4A5E-AE77-1D784E908BFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C5533E5-3174-4A5E-AE77-1D784E908BFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C5533E5-3174-4A5E-AE77-1D784E908BFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C5533E5-3174-4A5E-AE77-1D784E908BFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC27D4AB-1C14-4494-B70F-5472BDA2A34B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC27D4AB-1C14-4494-B70F-5472BDA2A34B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC27D4AB-1C14-4494-B70F-5472BDA2A34B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC27D4AB-1C14-4494-B70F-5472BDA2A34B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FF80F3A-E0D0-4E47-9407-582E8F55617D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FF80F3A-E0D0-4E47-9407-582E8F55617D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FF80F3A-E0D0-4E47-9407-582E8F55617D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FF80F3A-E0D0-4E47-9407-582E8F55617D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1C5533E5-3174-4A5E-AE77-1D784E908BFB} = {64F9A954-9830-45BA-B47F-D3589072E347}
+		{FC27D4AB-1C14-4494-B70F-5472BDA2A34B} = {64F9A954-9830-45BA-B47F-D3589072E347}
+		{5FF80F3A-E0D0-4E47-9407-582E8F55617D} = {5FEBABA0-73A1-464A-8715-19F76F742B22}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DF018025-4A97-49F8-888F-C70856C1862A}
+	EndGlobalSection
+EndGlobal
