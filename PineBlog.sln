@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29102.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 Solution Files", "00 Solution Files", "{78B51317-E566-4217-BA48-A11D1756451D}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		azure-pipelines.yml = azure-pipelines.yml
+		CHANGELOG.md = CHANGELOG.md
+		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
+		CONTRIBUTING.md = CONTRIBUTING.md
+		Directory.Build.props = Directory.Build.props
+		LICENSE = LICENSE
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 Tests", "02 Tests", "{39C10DDD-2F23-4F19-BBB1-CF31D9850002}"
+	ProjectSection(SolutionItems) = preProject
+		tests\test-netcoreapp2_2.ps1 = tests\test-netcoreapp2_2.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Docs", "01 Docs", "{A4785B91-D8E5-4206-9B46-E38169859622}"
+	ProjectSection(SolutionItems) = preProject
+		docs\Opw.PineBlog.Sample.md = docs\Opw.PineBlog.Sample.md
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "10 Samples", "10 Samples", "{5FEBABA0-73A1-464A-8715-19F76F742B22}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "50 PineBlog", "50 PineBlog", "{64F9A954-9830-45BA-B47F-D3589072E347}"
+EndProject
+Global
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DF018025-4A97-49F8-888F-C70856C1862A}
+	EndGlobalSection
+EndGlobal
