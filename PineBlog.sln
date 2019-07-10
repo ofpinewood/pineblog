@@ -56,6 +56,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.Abstractions.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.Tests", "tests\Opw.PineBlog.Tests\Opw.PineBlog.Tests.csproj", "{A0B506C7-D894-47D4-9E45-BF4DE409367E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opw.PineBlog.RazorUI", "src\Opw.PineBlog.RazorUI\Opw.PineBlog.RazorUI.csproj", "{ACD55A54-B7D4-4DBE-B969-7B4BE8D759D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -110,6 +112,10 @@ Global
 		{A0B506C7-D894-47D4-9E45-BF4DE409367E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0B506C7-D894-47D4-9E45-BF4DE409367E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0B506C7-D894-47D4-9E45-BF4DE409367E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACD55A54-B7D4-4DBE-B969-7B4BE8D759D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACD55A54-B7D4-4DBE-B969-7B4BE8D759D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACD55A54-B7D4-4DBE-B969-7B4BE8D759D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACD55A54-B7D4-4DBE-B969-7B4BE8D759D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,6 +133,7 @@ Global
 		{5E838134-5509-44C2-8515-362847C75527} = {D524BD25-46D1-410E-A4AA-338422252720}
 		{F47B0200-E3C4-4517-8C98-062DC246E8F6} = {64F9A954-9830-45BA-B47F-D3589072E347}
 		{A0B506C7-D894-47D4-9E45-BF4DE409367E} = {64F9A954-9830-45BA-B47F-D3589072E347}
+		{ACD55A54-B7D4-4DBE-B969-7B4BE8D759D2} = {64F9A954-9830-45BA-B47F-D3589072E347}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DF018025-4A97-49F8-888F-C70856C1862A}
