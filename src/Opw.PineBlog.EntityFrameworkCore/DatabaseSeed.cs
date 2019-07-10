@@ -34,7 +34,7 @@ namespace Opw.PineBlog.EntityFrameworkCore
                 Email = email,
                 DisplayName = "Peter van den Hout",
                 Avatar = "blog/images/avatar.jpg",
-                Bio = "You, a bobsleder!? That I'd like to see! I saw you with those two \"ladies of the evening\" at Elzars. Explain that. That could be 'my' beautiful soul sitting naked on a couch. If I could just learn to play this stupid thing.",
+                Bio = "It is common knowledge that the consolidation of the mindset cannot be shown to be relevant.This is in contrast to The Affectability Of Determinant Empathy",
             });
 
             _dbContext.SaveChanges();
@@ -51,14 +51,12 @@ namespace Opw.PineBlog.EntityFrameworkCore
                 _dbContext.Posts.Add(new Post
                 {
                     AuthorId = author.Id,
-                    Title = "This is the worst part. The calm before the battle.",
-                    Slug = "This is the worst part The calm before the battle".ToSlug(),
-                    Description = "I was having the most wonderful dream. Except you were there, and you were there, and you were there! Humans dating robots is sick. You people wonder why I'm still single? It's 'cause all the fine robot sisters are dating humans!",
-                    Content = @"Ah, yes! John Quincy Adding Machine. He struck a chord with the voters when he pledged not to go on a killing spree. This is the worst part. The calm before the battle. Ven ve voke up, ve had zese wodies.
+                    Title = "The Affectability Of Determinant Empathy",
+                    Slug = "The Affectability Of Determinant Empathy".ToSlug(),
+                    Description = "To be perfectly frank, the target population for any formalization of the proactive dynamic teleology provides a balanced perspective to the strategic organic auto-interruption. We need to be able to rationalize the hierarchical immediate vibrancy. We need to be able to rationalize the marginalised empirical support. One must therefore dedicate resources to the total paralyptic correspondence immediately.",
+                    Content = @"So far, the consolidation of the benchmark de-stabilizes any discrete or conceptual configuration mode.
 
-I could if you hadn't turned on the light and shut off my stereo. Do a flip! When the lights go out, it's nobody's business what goes on between two consenting adults. As an interesting side note, as a head without a body, I envy the dead.
-
-Hi, I'm a naughty nurse, and I really need someone to talk to. $9.95 a minute. Bender, hurry! This fuel's expensive! Also, we're dying! Look, everyone wants to be like Germany, but do we really have the pure strength of 'will'?",
+In a strictly mechanistic sense, efforts are already underway in the development of the global business practice. On the other hand, the ball-park figures for the basic definitive rationalization indicates the importance of other systems and the necessity for an elemental change in the adequate timing control.",
                     Categories = "config",
                     Cover = new Cover
                     {
