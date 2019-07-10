@@ -34,7 +34,7 @@ namespace Opw.PineBlog.EntityFrameworkCore
                 Email = email,
                 DisplayName = "Peter van den Hout",
                 Avatar = "blog/images/avatar.jpg",
-                Bio = "You, a bobsleder!? That I'd like to see! I saw you with those two "ladies of the evening" at Elzars. Explain that. That could be 'my' beautiful soul sitting naked on a couch. If I could just learn to play this stupid thing.",
+                Bio = "You, a bobsleder!? That I'd like to see! I saw you with those two \"ladies of the evening\" at Elzars. Explain that. That could be 'my' beautiful soul sitting naked on a couch. If I could just learn to play this stupid thing.",
             });
 
             _dbContext.SaveChanges();
