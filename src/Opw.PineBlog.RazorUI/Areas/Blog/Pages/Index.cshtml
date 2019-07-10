@@ -1,0 +1,43 @@
+@page
+@model Opw.PineBlog.Blog.Pages.IndexModel
+@{
+    var pager = Model.Model.Pager;
+    var posts = Model.Model.Posts;
+    var blog = Model.Model.Blog;
+}
+
+<div class="page-cover" style="background-image: url('/@blog.Cover.Url')">
+    <h1 class="page-cover-title">
+        <a href="~/">@blog.Title</a>
+    </h1>
+</div>
+
+<div class="page-content">
+    <div class="container">
+        @foreach (var post in posts)
+        {
+            <partial name="_Post" model="post" />
+        }
+        @if (pager != null && (pager.ShowOlder || pager.ShowNewer))
+        {
+            <ul class="pagination justify-content-center">
+                @if (pager.ShowOlder)
+                {
+                    <li class="item item-prev">
+                        <a class="item-link" href="~/@pager.LinkToOlder">
+                            <i class="item-icon fa fa-angle-left"></i>
+                        </a>
+                    </li>
+                }
+                @if (pager.ShowNewer)
+                {
+                    <li class="item item-next">
+                        <a class="item-link" href="~/@pager.LinkToNewer">
+                            <i class="item-icon fa fa-angle-right"></i>
+                        </a>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+</div>

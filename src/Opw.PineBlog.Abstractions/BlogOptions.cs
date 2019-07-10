@@ -9,5 +9,6 @@ namespace Opw
         public string PostUrlFormat { get; set; }
         public int ItemsPerPage { get; set; }
         public Cover Cover { get; set; }
+        public bool CreateAndSeedDatabases { get; set; }
     }
 }

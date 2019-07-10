@@ -33,7 +33,7 @@ namespace Opw.PineBlog.EntityFrameworkCore
                 UserName = email,
                 Email = email,
                 DisplayName = "Peter van den Hout",
-                Avatar = "blog/images/avatar.jpg",
+                Avatar = "blog/images/avatar.png",
                 Bio = "It is common knowledge that the consolidation of the mindset cannot be shown to be relevant.This is in contrast to The Affectability Of Determinant Empathy",
             });
 
@@ -57,10 +57,40 @@ namespace Opw.PineBlog.EntityFrameworkCore
                     Content = @"So far, the consolidation of the benchmark de-stabilizes any discrete or conceptual configuration mode.
 
 In a strictly mechanistic sense, efforts are already underway in the development of the global business practice. On the other hand, the ball-park figures for the basic definitive rationalization indicates the importance of other systems and the necessity for an elemental change in the adequate timing control.",
-                    Categories = "config",
+                    Categories = "wafflegen",
                     Cover = new Cover
                     {
-                        Url = "blog/images/waterfalls-animated.gif",
+                        Url = "blog/images/pine-woods.jpg",
+                    },
+                    Published = DateTime.UtcNow
+                });
+
+                _dbContext.Posts.Add(new Post
+                {
+                    AuthorId = author.Id,
+                    Title = "The Element Of Sub-Logical Phenomenon",
+                    Slug = "The Element Of Sub-Logical Phenomenon".ToSlug(),
+                    Description = "Without doubt, the assessment of any significant weaknesses in the value added vibrant concept embodies The Element Of Sub-Logical Phenomenon.",
+                    Content = @"Whilst it may be true that a proportion of the skill set makes little difference to the philosophy of commonality and standardization. Everything should be done to expedite the two-phase empirical parameter. Everything should be done to expedite the universe of object, one must not lose sight of the fact that a primary interrelationship between system and/or subsystem technologies uniquely legitimises the significance of what should be termed the non-viable expressive program.",
+                    Categories = "wafflegen",
+                    Cover = new Cover
+                    {
+                        Url = "blog/images/pine-woods.jpg",
+                    },
+                    Published = DateTime.UtcNow
+                });
+
+                _dbContext.Posts.Add(new Post
+                {
+                    AuthorId = author.Id,
+                    Title = "The Disposition Of Non-Referent Discord",
+                    Slug = "The Disposition Of Non-Referent Discord".ToSlug(),
+                    Description = "It can be forcibly emphasized that an anticipation of the effects of any homogeneous partnership capitalises on the strengths of the overall game-plan.",
+                    Content = @"Without a doubt, any significant enhancements in the purchaser - provider may mean a wide diffusion of the mechanism-independent governing support into the temperamental symbolism. One must therefore dedicate resources to the psychic factor immediately.. So, where to from here? Presumably, The core drivers is generally compatible with the doctrine of the integrated item. Everything should be done to expedite the evolution of precise absorption over a given time limit.",
+                    Categories = "wafflegen",
+                    Cover = new Cover
+                    {
+                        Url = "blog/images/pine-woods.jpg",
                     },
                     Published = DateTime.UtcNow
                 });
