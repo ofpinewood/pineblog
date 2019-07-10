@@ -1,4 +1,4 @@
-# PineBlog <img src="pineblog-logo-256x256.gif" alt="PineBlog" height="44" align="left" />
+# PineBlog <img src="pineblog-logo-256x256.gif" alt="PineBlog" height="44" align="left" style="padding-right: 4px" />
 
 A blogging engine based on ASP.NET Core.
 
