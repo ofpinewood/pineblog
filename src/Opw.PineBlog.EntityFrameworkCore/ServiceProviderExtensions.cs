@@ -9,8 +9,8 @@ namespace Opw.PineBlog.EntityFrameworkCore
     {
         public static void InitializeBlogDatabase(this IServiceProvider serviceProvider)
         {
-            var applicationInfoOptions = serviceProvider.GetService<IOptions<ApplicationOptions>>();
-            if (applicationInfoOptions.Value.CreateAndSeedDatabases)
+            var blogOptions = serviceProvider.GetService<IOptions<BlogOptions>>();
+            if (blogOptions.Value.CreateAndSeedDatabases)
             {
                 var dbContext = (BlogEntityDbContext)serviceProvider.GetRequiredService<IBlogEntityDbContext>();
                 new DbMigrator<BlogEntityDbContext>(dbContext).CreateOrMigrate((context) => new DatabaseSeed(context).Run());
