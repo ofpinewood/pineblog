@@ -24,7 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\Opw.PineBlog.RazorUI\Opw.PineBlog.RazorUI.csproj" />
+      <ProjectReference Include="..\..\src\Opw.PineBlog.RazorPages\Opw.PineBlog.RazorPages.csproj" />
     </ItemGroup>
 
 </Project>

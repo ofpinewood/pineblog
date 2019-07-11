@@ -25,7 +25,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\src\Opw.PineBlog.EntityFrameworkCore\Opw.PineBlog.EntityFrameworkCore.csproj" />
-        <ProjectReference Include="..\..\src\Opw.PineBlog\Opw.PineBlog.csproj" />
+        <ProjectReference Include="..\..\src\Opw.PineBlog.Core\Opw.PineBlog.Core.csproj" />
     </ItemGroup>
 
     <ItemGroup>

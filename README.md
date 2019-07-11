@@ -1,6 +1,6 @@
 # PineBlog <img src="pineblog-logo-256x256.gif" alt="PineBlog" height="44" align="left" />
 
-A blogging engine based on ASP.NET Core.
+A blogging engine based on ASP.NET Core MVC Razor Pages and Entity Framework Core.
 
 [![Build Status](https://dev.azure.com/ofpinewood/Of%20Pine%20Wood/_apis/build/status/ofpinewood.pineblog?branchName=master)](https://dev.azure.com/ofpinewood/Of%20Pine%20Wood/_build/latest?definitionId=7&branchName=master)
 [![NuGet Badge](https://img.shields.io/nuget/v/Opw.PineBlog.svg)](https://www.nuget.org/packages/Opw.PineBlog/)

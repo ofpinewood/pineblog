@@ -11,12 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Opw.PineBlog.EntityFrameworkCore\Opw.PineBlog.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\..\src\Opw.PineBlog.RazorUI\Opw.PineBlog.RazorUI.csproj" />
+    <Folder Include="wwwroot\fonts\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\fonts\" />
+    <ProjectReference Include="..\..\ref\Opw.PineBlog\Opw.PineBlog.csproj" />
   </ItemGroup>
 
 </Project>
