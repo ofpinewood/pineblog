@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Opw.PineBlog.Models;
 using Opw.PineBlog.Posts;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Opw.PineBlog.Blog.Pages
@@ -21,9 +22,9 @@ namespace Opw.PineBlog.Blog.Pages
             _mediator = mediator;
         }
 
-        public async Task<IActionResult> OnGetAsync([FromQuery]int page = 0)
+        public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken, [FromQuery]int page = 0)
         {
-            var result = await _mediator.Send(new GetPagedPostListQuery { Page = page });
+            var result = await _mediator.Send(new GetPagedPostListQuery { Page = page }, cancellationToken);
 
             Model = result.Value;
             Title = Model.Blog.Title;

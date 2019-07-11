@@ -49,24 +49,42 @@ steps:
     arguments: '--configuration $(buildConfiguration) --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[Opw.*]*" /p:Exclude="[*.Tests]*%2c[*.*Tests]*"'
 
 # Release: triggered by a version tag
-# - task: DotNetCoreCLI@2
-#   displayName: NuGet Pack Opw.PineBlog
-#   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
-#   inputs:
-#     command: pack
-#     packagesToPack: '**/Opw.PineBlog.csproj'
-#     versioningScheme: byEnvVar
-#     versionEnvVar: 'GitVersion_NuGetVersion'
+- task: DotNetCoreCLI@2
+  displayName: NuGet Pack Opw.PineBlog.RazorPages
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  inputs:
+    command: pack
+    packagesToPack: '**/Opw.PineBlog.RazorPages.csproj'
+    versioningScheme: byEnvVar
+    versionEnvVar: 'GitVersion_NuGetVersion'
 
-# - task: NuGetCommand@2
-#   displayName: NuGet Push
-#   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
-#   inputs:
-#     command: push
-#     nuGetFeedType: external
-#     publishFeedCredentials: NuGet
-#     versioningScheme: byEnvVar
-#     versionEnvVar: 'GitVersion_NuGetVersion'
+- task: DotNetCoreCLI@2
+  displayName: NuGet Pack Opw.PineBlog.EntityFrameworkCore
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  inputs:
+    command: pack
+    packagesToPack: '**/Opw.PineBlog.EntityFrameworkCore.csproj'
+    versioningScheme: byEnvVar
+    versionEnvVar: 'GitVersion_NuGetVersion'
+
+- task: DotNetCoreCLI@2
+  displayName: NuGet Pack Opw.PineBlog
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  inputs:
+    command: pack
+    packagesToPack: '**/Opw.PineBlog.csproj'
+    versioningScheme: byEnvVar
+    versionEnvVar: 'GitVersion_NuGetVersion'
+
+- task: NuGetCommand@2
+  displayName: NuGet Push
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  inputs:
+    command: push
+    nuGetFeedType: external
+    publishFeedCredentials: NuGet
+    versioningScheme: byEnvVar
+    versionEnvVar: 'GitVersion_NuGetVersion'
 
 - task: GithubRelease@0
   displayName: Create GitHub Release

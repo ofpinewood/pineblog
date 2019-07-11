@@ -34,7 +34,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.Sample", "samp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.Abstractions", "src\Opw.PineBlog.Abstractions\Opw.PineBlog.Abstractions.csproj", "{FB7F1F42-A75D-456B-A683-9FC625E95506}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog", "src\Opw.PineBlog\Opw.PineBlog.csproj", "{871343FA-6920-43B6-893F-B3127C04017E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.Core", "src\Opw.PineBlog.Core\Opw.PineBlog.Core.csproj", "{871343FA-6920-43B6-893F-B3127C04017E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.EntityFrameworkCore", "src\Opw.PineBlog.EntityFrameworkCore\Opw.PineBlog.EntityFrameworkCore.csproj", "{6F3FF55D-3189-4895-BA0A-9E0FEBB63339}"
 EndProject
@@ -54,11 +54,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.Tests", "tests\Opw.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.Abstractions.Tests", "tests\Opw.PineBlog.Abstractions.Tests\Opw.PineBlog.Abstractions.Tests.csproj", "{F47B0200-E3C4-4517-8C98-062DC246E8F6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.Tests", "tests\Opw.PineBlog.Tests\Opw.PineBlog.Tests.csproj", "{A0B506C7-D894-47D4-9E45-BF4DE409367E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.RazorPages", "src\Opw.PineBlog.RazorPages\Opw.PineBlog.RazorPages.csproj", "{ACD55A54-B7D4-4DBE-B969-7B4BE8D759D2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.RazorUI", "src\Opw.PineBlog.RazorUI\Opw.PineBlog.RazorUI.csproj", "{ACD55A54-B7D4-4DBE-B969-7B4BE8D759D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.RazorPages.Tests", "tests\Opw.PineBlog.RazorPages.Tests\Opw.PineBlog.RazorPages.Tests.csproj", "{649BCA96-82AC-4B88-A617-3E14F6A29001}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.RazorUI.Tests", "tests\Opw.PineBlog.RazorUI.Tests\Opw.PineBlog.RazorUI.Tests.csproj", "{649BCA96-82AC-4B88-A617-3E14F6A29001}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog", "ref\Opw.PineBlog\Opw.PineBlog.csproj", "{49EA4528-BA74-4FE9-862D-BC1448D50EF8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "20 Reference Packages", "20 Reference Packages", "{FCEC3C6B-0FC0-42CC-AEE8-EBBC570A67A0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.Core.Tests", "tests\Opw.PineBlog.Core.Tests\Opw.PineBlog.Core.Tests.csproj", "{122A1302-2B62-485F-B80F-3E9210B0616F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -110,10 +114,6 @@ Global
 		{F47B0200-E3C4-4517-8C98-062DC246E8F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F47B0200-E3C4-4517-8C98-062DC246E8F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F47B0200-E3C4-4517-8C98-062DC246E8F6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A0B506C7-D894-47D4-9E45-BF4DE409367E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A0B506C7-D894-47D4-9E45-BF4DE409367E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A0B506C7-D894-47D4-9E45-BF4DE409367E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A0B506C7-D894-47D4-9E45-BF4DE409367E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ACD55A54-B7D4-4DBE-B969-7B4BE8D759D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ACD55A54-B7D4-4DBE-B969-7B4BE8D759D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACD55A54-B7D4-4DBE-B969-7B4BE8D759D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -122,6 +122,14 @@ Global
 		{649BCA96-82AC-4B88-A617-3E14F6A29001}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{649BCA96-82AC-4B88-A617-3E14F6A29001}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{649BCA96-82AC-4B88-A617-3E14F6A29001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49EA4528-BA74-4FE9-862D-BC1448D50EF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49EA4528-BA74-4FE9-862D-BC1448D50EF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49EA4528-BA74-4FE9-862D-BC1448D50EF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49EA4528-BA74-4FE9-862D-BC1448D50EF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{122A1302-2B62-485F-B80F-3E9210B0616F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{122A1302-2B62-485F-B80F-3E9210B0616F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{122A1302-2B62-485F-B80F-3E9210B0616F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{122A1302-2B62-485F-B80F-3E9210B0616F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -138,9 +146,10 @@ Global
 		{A3471BC9-D24D-40CA-9582-2ABA9970D9A8} = {D524BD25-46D1-410E-A4AA-338422252720}
 		{5E838134-5509-44C2-8515-362847C75527} = {D524BD25-46D1-410E-A4AA-338422252720}
 		{F47B0200-E3C4-4517-8C98-062DC246E8F6} = {64F9A954-9830-45BA-B47F-D3589072E347}
-		{A0B506C7-D894-47D4-9E45-BF4DE409367E} = {64F9A954-9830-45BA-B47F-D3589072E347}
 		{ACD55A54-B7D4-4DBE-B969-7B4BE8D759D2} = {64F9A954-9830-45BA-B47F-D3589072E347}
 		{649BCA96-82AC-4B88-A617-3E14F6A29001} = {64F9A954-9830-45BA-B47F-D3589072E347}
+		{49EA4528-BA74-4FE9-862D-BC1448D50EF8} = {FCEC3C6B-0FC0-42CC-AEE8-EBBC570A67A0}
+		{122A1302-2B62-485F-B80F-3E9210B0616F} = {64F9A954-9830-45BA-B47F-D3589072E347}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DF018025-4A97-49F8-888F-C70856C1862A}

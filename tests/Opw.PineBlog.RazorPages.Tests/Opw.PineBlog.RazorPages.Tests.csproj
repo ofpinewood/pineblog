@@ -24,14 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\Opw.PineBlog.EntityFrameworkCore\Opw.PineBlog.EntityFrameworkCore.csproj" />
-        <ProjectReference Include="..\..\src\Opw.PineBlog\Opw.PineBlog.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="appsettings.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
+      <ProjectReference Include="..\..\src\Opw.PineBlog.RazorPages\Opw.PineBlog.RazorPages.csproj" />
     </ItemGroup>
 
 </Project>
