@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Opw.PineBlog;
 using Opw.PineBlog.EntityFrameworkCore;
 
 namespace Opw.PineBlog.Sample

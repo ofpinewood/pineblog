@@ -1,9 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <RootNamespace>Opw.PineBlog</RootNamespace>
+        <Description>PineBlog core package.</Description>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PackageId>Opw.PineBlog.Core</PackageId>
+        <PackageTags>blog core</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,5 +22,20 @@
     <ItemGroup>
         <ProjectReference Include="..\Opw.PineBlog.Abstractions\Opw.PineBlog.Abstractions.csproj" />
     </ItemGroup>
+    
+    <PropertyGroup>
+        <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);GetMyPackageFiles</TargetsForTfmSpecificBuildOutput>
+    </PropertyGroup>
+
+    <Target Name="GetMyPackageFiles">
+        <ItemGroup>
+            <BuildOutputInPackage Include="$(OutputPath)\*.dll">
+                <TargetPath></TargetPath>
+            </BuildOutputInPackage>
+            <BuildOutputInPackage Include="$(OutputPath)\*.xml">
+                <TargetPath></TargetPath>
+            </BuildOutputInPackage>
+        </ItemGroup>
+    </Target>
 
 </Project>

@@ -16,23 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Opw.EntityFrameworkCore\Opw.EntityFrameworkCore.csproj">
-            <PrivateAssets>all</PrivateAssets>
-        </ProjectReference>
-        <ProjectReference Include="..\Opw.PineBlog.Core\Opw.PineBlog.Core.csproj">
-            <PrivateAssets>all</PrivateAssets>
-        </ProjectReference>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Content Include="bin\$(Configuration)\$(TargetFramework)\*.dll">
-            <PackagePath>lib\$(TargetFramework)\</PackagePath>
-            <Pack>true</Pack>
-        </Content>
-        <Content Include="bin\$(Configuration)\$(TargetFramework)\*.xml">
-            <PackagePath>lib\$(TargetFramework)\</PackagePath>
-            <Pack>true</Pack>
-        </Content>
+        <ProjectReference Include="..\Opw.PineBlog.Core\Opw.PineBlog.Core.csproj" />
     </ItemGroup>
 
 </Project>

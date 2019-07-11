@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
@@ -15,19 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Opw.PineBlog.Core\Opw.PineBlog.Core.csproj">
-            <PrivateAssets>all</PrivateAssets>
-        </ProjectReference>
+        <ProjectReference Include="..\Opw.PineBlog.Core\Opw.PineBlog.Core.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-        <Content Include="bin\$(Configuration)\$(TargetFramework)\*.dll">
-            <PackagePath>lib\$(TargetFramework)\</PackagePath>
-            <Pack>true</Pack>
-        </Content>
-        <Content Include="bin\$(Configuration)\$(TargetFramework)\*.xml">
-            <PackagePath>lib\$(TargetFramework)\</PackagePath>
-            <Pack>true</Pack>
-        </Content>
-    </ItemGroup>
+    
 </Project>
