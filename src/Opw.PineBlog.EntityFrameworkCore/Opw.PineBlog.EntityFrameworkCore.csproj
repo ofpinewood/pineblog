@@ -16,7 +16,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Opw.EntityFrameworkCore\Opw.EntityFrameworkCore.csproj" />
         <ProjectReference Include="..\Opw.PineBlog.Core\Opw.PineBlog.Core.csproj" />
     </ItemGroup>
 

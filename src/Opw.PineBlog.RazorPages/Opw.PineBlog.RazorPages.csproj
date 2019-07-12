@@ -17,4 +17,5 @@
     <ItemGroup>
         <ProjectReference Include="..\Opw.PineBlog.Core\Opw.PineBlog.Core.csproj" />
     </ItemGroup>
+    
 </Project>
