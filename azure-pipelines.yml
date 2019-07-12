@@ -50,6 +50,15 @@ steps:
 
 # Release: triggered by a version tag
 - task: DotNetCoreCLI@2
+  displayName: NuGet Pack Opw.PineBlog.Core
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  inputs:
+    command: pack
+    packagesToPack: '**/Opw.PineBlog.Core.csproj'
+    versioningScheme: byEnvVar
+    versionEnvVar: 'GitVersion_NuGetVersion'
+
+- task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.PineBlog.RazorPages
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
   inputs:
