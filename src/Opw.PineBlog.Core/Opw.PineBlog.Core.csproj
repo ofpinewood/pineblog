@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
@@ -7,7 +7,8 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageId>Opw.PineBlog.Core</PackageId>
         <PackageTags>blog core</PackageTags>
-        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <NuspecFile>Opw.PineBlog.Core.nuspec</NuspecFile>
+        <NuspecProperties>version=$(PackageVersion)</NuspecProperties>        
     </PropertyGroup>
 
     <ItemGroup>
@@ -23,20 +24,5 @@
     <ItemGroup Condition="">
         <ProjectReference Include="..\Opw.PineBlog.Abstractions\Opw.PineBlog.Abstractions.csproj" />
     </ItemGroup>
-
-    <PropertyGroup>
-        <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);GetMyPackageFiles</TargetsForTfmSpecificBuildOutput>
-    </PropertyGroup>
-
-    <Target Name="GetMyPackageFiles">
-        <ItemGroup>
-            <BuildOutputInPackage Include="$(OutputPath)\*.dll">
-                <TargetPath></TargetPath>
-            </BuildOutputInPackage>
-            <BuildOutputInPackage Include="$(OutputPath)\*.xml">
-                <TargetPath></TargetPath>
-            </BuildOutputInPackage>
-        </ItemGroup>
-    </Target>
 
 </Project>
