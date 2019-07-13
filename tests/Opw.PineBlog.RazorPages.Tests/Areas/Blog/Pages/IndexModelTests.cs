@@ -3,7 +3,9 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Logging;
 using Moq;
+using Opw.PineBlog.Areas.Blog.Pages;
 using Opw.PineBlog.Models;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,6 +18,8 @@ namespace Opw.PineBlog.Blog.Pages
         [Fact]
         public async Task OnGetAsync_Should_SetPostListModel()
         {
+            var loggerMock = new Mock<ILogger<IndexModel>>();
+
             var mediaterMock = new Mock<IMediator>();
             mediaterMock.Setup(m => m.Send(It.IsAny<IRequest<Result<PostListModel>>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<PostListModel>.Success(new PostListModel {
@@ -25,7 +29,7 @@ namespace Opw.PineBlog.Blog.Pages
             var httpContext = new DefaultHttpContext();
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new IndexModel(mediaterMock.Object)
+            var pageModel = new IndexModel(mediaterMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),

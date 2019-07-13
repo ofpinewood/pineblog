@@ -1,14 +1,14 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 using Opw.PineBlog.Models;
 using Opw.PineBlog.Posts;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Opw.PineBlog.Blog.Pages
+namespace Opw.PineBlog.Areas.Blog.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel : PageModelBase<IndexModel>
     {
         private readonly IMediator _mediator;
 
@@ -17,12 +17,12 @@ namespace Opw.PineBlog.Blog.Pages
         [ViewData]
         public string Title { get; private set; }
 
-        public IndexModel(IMediator mediator)
+        public IndexModel(IMediator mediator, ILogger<IndexModel> logger) : base(logger)
         {
             _mediator = mediator;
         }
 
-        public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken, [FromQuery]int page = 0)
+        public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken, [FromQuery]int page = 1)
         {
             var result = await _mediator.Send(new GetPagedPostListQuery { Page = page }, cancellationToken);
 

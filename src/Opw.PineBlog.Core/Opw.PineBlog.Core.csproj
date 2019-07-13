@@ -8,7 +8,7 @@
         <PackageId>Opw.PineBlog.Core</PackageId>
         <PackageTags>blog core</PackageTags>
         <NuspecFile>Opw.PineBlog.Core.nuspec</NuspecFile>
-        <NuspecProperties>version=$(PackageVersion)</NuspecProperties>        
+        <NuspecProperties>version=$(PackageVersion)</NuspecProperties>
     </PropertyGroup>
 
     <ItemGroup>
@@ -21,7 +21,7 @@
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
     </ItemGroup>
 
-    <ItemGroup Condition="">
+    <ItemGroup>
         <ProjectReference Include="..\Opw.PineBlog.Abstractions\Opw.PineBlog.Abstractions.csproj" />
     </ItemGroup>
 

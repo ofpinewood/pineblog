@@ -29,6 +29,15 @@ namespace Opw.PineBlog.Posts
         }
 
         [Fact]
+        public async Task Handler_Should_ReturnNotFoundException()
+        {
+            var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-invalid" });
+
+            result.IsSuccess.Should().BeFalse();
+            result.Exception.Should().BeOfType<NotFoundException>();
+        }
+
+        [Fact]
         public async Task Handler_Should_ReturnPostModel_WithFirstPost()
         {
             var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-0" });
@@ -42,21 +51,41 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostModel_WithMiddlePost()
         {
-            var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-1" });
+            var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-2" });
 
             result.IsSuccess.Should().BeTrue();
-            result.Value.Post.Title.Should().Be("Post title 1");
+            result.Value.Post.Title.Should().Be("Post title 2");
             result.Value.Previous.Should().NotBeNull();
             result.Value.Next.Should().NotBeNull();
         }
 
         [Fact]
-        public async Task Handler_Should_ReturnPostModel_WithLastPost()
+        public async Task Handler_Should_ReturnPostModel_WithMiddlePost_WithCorrectPreviousPost()
         {
             var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-2" });
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Post.Title.Should().Be("Post title 2");
+            result.Value.Previous.Title.Should().Be("Post title 1");
+        }
+
+        [Fact]
+        public async Task Handler_Should_ReturnPostModel_WithMiddlePost_WithCorrectNextPost()
+        {
+            var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-2" });
+
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Post.Title.Should().Be("Post title 2");
+            result.Value.Next.Title.Should().Be("Post title 3");
+        }
+
+        [Fact]
+        public async Task Handler_Should_ReturnPostModel_WithLastPost()
+        {
+            var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-4" });
+
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Post.Title.Should().Be("Post title 4");
             result.Value.Previous.Should().NotBeNull();
             result.Value.Next.Should().BeNull();
         }
@@ -102,6 +131,8 @@ namespace Opw.PineBlog.Posts
             context.Posts.Add(CreatePost(0, author.Id));
             context.Posts.Add(CreatePost(1, author.Id));
             context.Posts.Add(CreatePost(2, author.Id));
+            context.Posts.Add(CreatePost(3, author.Id));
+            context.Posts.Add(CreatePost(4, author.Id));
             context.SaveChanges();
         }
 
@@ -114,7 +145,7 @@ namespace Opw.PineBlog.Posts
                 Slug = "post-title-" + i,
                 Description = "Description",
                 Content = "Content",
-                Published = DateTime.UtcNow,
+                Published = DateTime.UtcNow.AddDays(-30 + i),
                 Cover = new Cover
                 {
                     Url = "https://ofpinewood.com/cover-url",

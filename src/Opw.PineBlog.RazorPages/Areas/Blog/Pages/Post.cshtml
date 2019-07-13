@@ -1,0 +1,43 @@
+@page
+@model Opw.PineBlog.Areas.Blog.Pages.PostModel
+@{
+    var post = Model.Model.Post;
+    var previous = Model.Model.Previous;
+    var next = Model.Model.Next;
+}
+
+<div class="page-cover" style="background-image: url('/@post.Cover.Url')">
+    <h1 class="page-cover-title">
+        <a href="~/">@post.Title</a>
+    </h1>
+</div>
+
+<div class="page-content">
+    <div class="container">
+        <partial name="_Post" model="@post" />
+
+        @if (previous != null || next != null)
+        {
+            <nav class="pagination row">
+                <div class="item-next col-md-6">
+                    @if (next != null)
+                    {
+                        <label>next</label>
+                        <a href="~/blog/@next.Slug" title="@next.Title">
+                            @next.Title
+                        </a>
+                    }
+                </div>
+                <div class="item-prev col-md-6">
+                    @if (previous != null)
+                    {
+                        <label>previous</label>
+                        <a href="~/blog/@previous.Slug" title="@previous.Title">
+                            @previous.Title
+                        </a>
+                    }
+                </div>
+            </nav>
+        }
+    </div>
+</div>

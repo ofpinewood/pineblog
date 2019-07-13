@@ -19,7 +19,7 @@ namespace Opw.PineBlog.Sample
                 var services = scope.ServiceProvider;
                 try
                 {
-                    services.InitializeBlogDatabase();
+                    services.InitializePineBlogDatabase();
                 }
                 catch (Exception ex)
                 {

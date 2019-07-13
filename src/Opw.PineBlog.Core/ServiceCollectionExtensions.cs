@@ -8,9 +8,18 @@ using Opw.MediatR;
 
 namespace Opw.PineBlog
 {
+    /// <summary>
+    /// Provides extension methods for the Microsoft.Extensions.DependencyInjection.IServiceCollection interface.
+    /// </summary>
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddBlog(this IServiceCollection services, IConfiguration configuration)
+        /// <summary>
+        /// Adds PineBlog core services to the specified services collection.
+        /// </summary>
+        /// <param name="services">The services available in the application.</param>
+        /// <param name="configuration">The application configuration properties.</param>
+        /// <returns>The original services object.</returns>
+        public static IServiceCollection AddPineBlogCore(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<BlogOptions>(configuration.GetSection(nameof(BlogOptions)));
 

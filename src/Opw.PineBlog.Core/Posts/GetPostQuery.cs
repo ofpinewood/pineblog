@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Opw.HttpExceptions;
 using Opw.PineBlog.Models;
 using System.Linq;
 using System.Threading;
@@ -32,6 +33,9 @@ namespace Opw.PineBlog.Posts
                     .Where(p => p.Slug.Equals(request.Slug))
                     .SingleOrDefaultAsync(cancellationToken);
 
+                if (post == null)
+                    return Result<PostModel>.Fail(new NotFoundException($"Could not find post for slug: \"{request.Slug}\""));
+
                 var model = new PostModel
                 {
                     Blog = new BlogModel(_blogOptions.Value),
@@ -47,13 +51,13 @@ namespace Opw.PineBlog.Posts
 
                 model.Next = await _context.Posts
                     .Where(p => p.Published > post.Published)
-                    .OrderByDescending(p => p.Published)
+                    .OrderBy(p => p.Published)
                     .Take(1)
                     .SingleOrDefaultAsync(cancellationToken);
 
                 model.Previous = await _context.Posts
                     .Where(p => p.Published < post.Published)
-                    .OrderBy(p => p.Published)
+                    .OrderByDescending(p => p.Published)
                     .Take(1)
                     .SingleOrDefaultAsync(cancellationToken);
 
