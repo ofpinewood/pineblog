@@ -69,7 +69,7 @@ namespace Opw.PineBlog.Posts
             var result = await Mediator.Send(new GetPagedPostListQuery());
 
             result.IsSuccess.Should().BeTrue();
-            result.Value.Pager.CurrentPage.Should().Be(0);
+            result.Value.Pager.CurrentPage.Should().Be(1);
             result.Value.Pager.ItemsPerPage.Should().Be(3);
         }
 
