@@ -7,6 +7,7 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageId>Opw.PineBlog.RazorPages</PackageId>
         <PackageTags>blog aspnetcore mvc razor razorpages</PackageTags>
+        <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
     </PropertyGroup>
 
     <Target Name="MyPreCompileTarget" BeforeTargets="Build">
@@ -23,6 +24,8 @@
     <ItemGroup>
         <PackageReference Include="Markdig" Version="0.17.1" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="2.2.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -30,9 +33,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="wwwroot/**/css/*" />
-        <EmbeddedResource Include="wwwroot/**/js/*" />
-        <EmbeddedResource Include="wwwroot/**/images/*" />
+        <EmbeddedResource Include="wwwroot\**\css\*" />
+        <EmbeddedResource Include="wwwroot\**\js\*" />
     </ItemGroup>
     
 </Project>
