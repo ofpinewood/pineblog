@@ -16,6 +16,11 @@ namespace Opw.PineBlog
         {
             services.ConfigureOptions(typeof(StaticFilePostConfigureOptions));
 
+            services.AddMvcCore().AddRazorPages(option =>
+            {
+                option.Conventions.AddAreaPageRoute("Blog", "/Post", "blog/{*slug}");
+            });
+
             return services;
         }
     }

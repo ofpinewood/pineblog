@@ -1,0 +1,17 @@
+@page
+@model Opw.PineBlog.Areas.Blog.Pages.PostModel
+@{
+    var post = Model.Model.Post;
+}
+
+<div class="page-cover" style="background-image: url('/@post.Cover.Url')">
+    <h1 class="page-cover-title">
+        <a href="~/">@post.Title</a>
+    </h1>
+</div>
+
+<div class="page-content">
+    <div class="container">
+        <partial name="_Post" model="@post" />
+    </div>
+</div>

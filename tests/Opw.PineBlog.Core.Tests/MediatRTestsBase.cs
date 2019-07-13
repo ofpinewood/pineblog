@@ -20,8 +20,8 @@ namespace Opw.PineBlog
 
             var services = new ServiceCollection();
             services.AddMediatR(typeof(AddPostCommand).Assembly);
-            services.AddBlog(configuration);
-            services.AddBlogEntityFrameworkCore($"Server=inMemory; Database=opw-db-{DateTime.UtcNow.Ticks};");
+            services.AddPineBlogCore(configuration);
+            services.AddPineBlogEntityFrameworkCore($"Server=inMemory; Database=opw-db-{DateTime.UtcNow.Ticks};");
 
             ServiceProvider = services.BuildServiceProvider();
 

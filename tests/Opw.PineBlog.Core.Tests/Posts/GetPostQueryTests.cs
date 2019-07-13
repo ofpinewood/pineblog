@@ -29,6 +29,15 @@ namespace Opw.PineBlog.Posts
         }
 
         [Fact]
+        public async Task Handler_Should_ReturnNotFoundException()
+        {
+            var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-invalid" });
+
+            result.IsSuccess.Should().BeFalse();
+            result.Exception.Should().BeOfType<NotFoundException>();
+        }
+
+        [Fact]
         public async Task Handler_Should_ReturnPostModel_WithFirstPost()
         {
             var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-0" });
