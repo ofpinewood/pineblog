@@ -9,17 +9,15 @@ var gulp = require('gulp'),
     runSequence = require('run-sequence');
 
 var paths = {
-    themeroot: "./wwwroot/themes/default/"
+    themeroot: './wwwroot/themes/default/'
 };
 
-paths.js = paths.themeroot + "*.js";
-paths.minJs = paths.themeroot + "*.min.js";
-paths.css = paths.themeroot + "*.css";
-paths.minCss = paths.themeroot + "*.min.css";
-paths.concatJsDest = paths.themeroot + "theme.min.js";
-paths.concatCssDest = paths.themeroot + "theme.min.css";
-
-//gulp.task('default', ['sass', 'clean', 'min']);
+paths.js = paths.themeroot + '*.js';
+paths.minJs = paths.themeroot + 'js/*.min.js';
+paths.css = paths.themeroot + 'css/*.css';
+paths.minCss = paths.themeroot + 'css/*.min.css';
+paths.concatJsDest = paths.themeroot + 'js/theme.min.js';
+paths.concatCssDest = paths.themeroot + 'css/theme.min.css';
 
 gulp.task('default', function (done) {
     runSequence('sass', 'clean', 'min', function () { done(); });
@@ -28,7 +26,7 @@ gulp.task('default', function (done) {
 gulp.task('sass', function () {
     return gulp.src(paths.themeroot + '/theme.scss')
         .pipe(sass())
-        .pipe(gulp.dest(paths.themeroot));
+        .pipe(gulp.dest(paths.themeroot + '/css'));
 });
 
 gulp.task('clean:js', function (cb) {

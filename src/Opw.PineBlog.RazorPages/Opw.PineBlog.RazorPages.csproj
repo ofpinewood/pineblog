@@ -30,21 +30,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="wwwroot/**/*" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Remove="wwwroot\themes\default\.gitignore" />
-      <Content Remove="wwwroot\themes\default\theme.scss" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Remove="wwwroot\themes\default\prism.js" />
-      <EmbeddedResource Remove="wwwroot\themes\default\prism.scss" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Include=".gitignore" />
+        <EmbeddedResource Include="wwwroot/**/css/*" />
+        <EmbeddedResource Include="wwwroot/**/js/*" />
+        <EmbeddedResource Include="wwwroot/**/images/*" />
     </ItemGroup>
     
 </Project>
