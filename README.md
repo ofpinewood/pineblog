@@ -6,16 +6,18 @@ A blogging engine based on ASP.NET Core MVC Razor Pages and Entity Framework Cor
 [![License: MIT](https://img.shields.io/github/license/ofpinewood/pineblog.svg)](https://github.com/ofpinewood/pineblog/blob/master/LICENSE)
 
 ## Opw.PineBlog metapackage
-The Opw.PineBlog metapackage includes the following packages:
+The Opw.PineBlog metapackage includes the following packages.
 
 ### Opw.PineBlog.EntityFrameworkCore
 The PineBlog data provider that uses Entity Framework Core.
 
-[![NuGet Badge](https://img.shields.io/nuget/v/Opw.PineBlog.EntityFrameworkCore.svg)](https://www.nuget.org/packages/Opw.PineBlog.EntityFrameworkCore/)  
+[![NuGet Badge](https://img.shields.io/nuget/v/Opw.PineBlog.EntityFrameworkCore.svg)](https://www.nuget.org/packages/Opw.PineBlog.EntityFrameworkCore/)
+
 ### Opw.PineBlog.RazorPages
 The PineBlog UI using ASP.NET Core MVC Razor Pages.
 
-[![NuGet Badge](https://img.shields.io/nuget/v/Opw.PineBlog.RazorPages.svg)](https://www.nuget.org/packages/Opw.PineBlog.RazorPages/)  
+[![NuGet Badge](https://img.shields.io/nuget/v/Opw.PineBlog.RazorPages.svg)](https://www.nuget.org/packages/Opw.PineBlog.RazorPages/)
+
 ### Opw.PineBlog.Core
 The PineBlog core package. This package is a dependency for `Opw.PineBlog.RazorPages` and `Opw.PineBlog.EntityFrameworkCore`.
 

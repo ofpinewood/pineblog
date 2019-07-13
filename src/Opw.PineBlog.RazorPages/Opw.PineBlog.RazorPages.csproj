@@ -9,6 +9,17 @@
         <PackageTags>blog aspnetcore mvc razor razorpages</PackageTags>
     </PropertyGroup>
 
+    <Target Name="MyPreCompileTarget" BeforeTargets="Build">
+        <!-- Ensure Node.js is installed -->
+        <Exec Command="node --version" ContinueOnError="true">
+            <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+        </Exec>
+        <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+        <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+        <Exec WorkingDirectory="$(ProjectDir)" Command="npm install" />
+        <Exec WorkingDirectory="$(ProjectDir)" Command="node_modules\.bin\gulp default" />
+    </Target>
+
     <ItemGroup>
         <PackageReference Include="Markdig" Version="0.17.1" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
@@ -16,6 +27,24 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Opw.PineBlog.Core\Opw.PineBlog.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="wwwroot/**/*" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="wwwroot\themes\default\.gitignore" />
+      <Content Remove="wwwroot\themes\default\theme.scss" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="wwwroot\themes\default\prism.js" />
+      <EmbeddedResource Remove="wwwroot\themes\default\prism.scss" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include=".gitignore" />
     </ItemGroup>
     
 </Project>
