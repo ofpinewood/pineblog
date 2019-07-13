@@ -20,7 +20,7 @@ paths.concatJsDest = paths.themeroot + 'js/theme.min.js';
 paths.concatCssDest = paths.themeroot + 'css/theme.min.css';
 
 gulp.task('default', function (done) {
-    runSequence('sass', 'clean', 'min', function () { done(); });
+    runSequence('clean', 'sass', 'sass-admin', 'min', function () { done(); });
 });
 
 gulp.task('sass', function () {
@@ -28,20 +28,31 @@ gulp.task('sass', function () {
         .pipe(sass())
         .pipe(gulp.dest(paths.themeroot + '/css'));
 });
+gulp.task('sass-admin', function () {
+    return gulp.src(paths.themeroot + '/admin.scss')
+        .pipe(sass())
+        .pipe(gulp.dest(paths.themeroot + '/css'));
+});
 
 gulp.task('clean:js', function (cb) {
-    rimraf(paths.concatJsDest, cb);
+    rimraf(paths.themeroot + 'js', cb);
 });
 
 gulp.task('clean:css', function (cb) {
-    rimraf(paths.concatCssDest, cb);
+    rimraf(paths.themeroot + 'css', cb);
 });
 
 gulp.task('clean', ['clean:js', 'clean:css']);
 
 gulp.task('min:js', function () {
-    return gulp.src([paths.js, '!' + paths.minJs], { base: '.' })
+    return gulp.src([paths.js, '!' + paths.themeroot + 'admin.js', '!' + paths.minJs], { base: '.' })
         .pipe(concat(paths.concatJsDest))
+        .pipe(uglify())
+        .pipe(gulp.dest('.'));
+});
+gulp.task('min:js-admin', function () {
+    return gulp.src([paths.themeroot + 'admin.js'], { base: '.' })
+        .pipe(concat(paths.themeroot + 'js/admin.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('.'));
 });
@@ -53,4 +64,4 @@ gulp.task('min:css', function () {
         .pipe(gulp.dest('.'));
 });
 
-gulp.task('min', ['min:js', 'min:css']);
+gulp.task('min', ['min:js', 'min:js-admin', 'min:css']);

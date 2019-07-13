@@ -20,6 +20,8 @@
         <link rel="stylesheet" href="~/themes/default/css/theme.min.css" asp-append-version="true">
     </environment>
 
+    @RenderSection("head", required: false)
+
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
     <link rel="shortcut icon" href="~/favicon.ico">
@@ -46,6 +48,6 @@
         <script src="~/themes/default/js/theme.min.js" asp-append-version="true"></script>
     </environment>
 
-    @RenderSection("Scripts", required: false)
+    @RenderSection("scripts", required: false)
 </body>
 </html>
