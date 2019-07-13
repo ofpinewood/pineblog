@@ -18,7 +18,7 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostListModel_With3Posts()
         {
-            var result = await Mediator.Send(new GetPagedPostListQuery { Page = 0 });
+            var result = await Mediator.Send(new GetPagedPostListQuery { Page = 1 });
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Posts.Should().HaveCount(3);
@@ -27,7 +27,7 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostListModel_With2Posts()
         {
-            var result = await Mediator.Send(new GetPagedPostListQuery { Page = 1 });
+            var result = await Mediator.Send(new GetPagedPostListQuery { Page = 2 });
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Posts.Should().HaveCount(2);

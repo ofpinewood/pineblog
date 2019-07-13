@@ -14,7 +14,7 @@ namespace Opw.PineBlog.Posts
 {
     public class GetPagedPostListQuery : IRequest<Result<PostListModel>>
     {
-        public int Page { get; set; }
+        public int Page { get; set; } = 1;
 
         public class Handler : IRequestHandler<GetPagedPostListQuery, Result<PostListModel>>
         {
@@ -45,7 +45,7 @@ namespace Opw.PineBlog.Posts
 
             public async Task<IEnumerable<Post>> GetPagedListAsync(Expression<Func<Post, bool>> predicate, Pager pager, CancellationToken cancellationToken)
             {
-                var skip = pager.CurrentPage * pager.ItemsPerPage;
+                var skip = (pager.CurrentPage - 1) * pager.ItemsPerPage;
 
                 var count = await _context.Posts
                     .Where(predicate)

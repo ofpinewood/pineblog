@@ -22,7 +22,7 @@ namespace Opw.PineBlog.Areas.Blog.Pages
             _mediator = mediator;
         }
 
-        public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken, [FromQuery]int page = 0)
+        public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken, [FromQuery]int page = 1)
         {
             var result = await _mediator.Send(new GetPagedPostListQuery { Page = page }, cancellationToken);
 

@@ -20,24 +20,24 @@
         }
         @if (pager != null && (pager.ShowOlder || pager.ShowNewer))
         {
-            <ul class="pagination justify-content-center">
-                @if (pager.ShowOlder)
-                {
-                    <li class="item item-prev">
-                        <a class="item-link" href="~/@pager.LinkToOlder">
-                            <i class="item-icon fa fa-angle-left"></i>
+            <nav class="pagination row">
+                <div class="item-next col-md-6">
+                    @if (pager.ShowNewer)
+                    {
+                        <a href="~/@pager.LinkToNewer" title="Newer">
+                            Newer
                         </a>
-                    </li>
-                }
-                @if (pager.ShowNewer)
-                {
-                    <li class="item item-next">
-                        <a class="item-link" href="~/@pager.LinkToNewer">
-                            <i class="item-icon fa fa-angle-right"></i>
+                    }
+                </div>
+                <div class="item-prev col-md-6">
+                    @if (pager.ShowOlder)
+                    {
+                        <a href="~/@pager.LinkToOlder" title="Older">
+                            Older
                         </a>
-                    </li>
-                }
-            </ul>
+                    }
+                </div>
+            </nav>
         }
     </div>
 </div>
