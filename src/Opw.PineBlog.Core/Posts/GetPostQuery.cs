@@ -51,13 +51,13 @@ namespace Opw.PineBlog.Posts
 
                 model.Next = await _context.Posts
                     .Where(p => p.Published > post.Published)
-                    .OrderByDescending(p => p.Published)
+                    .OrderBy(p => p.Published)
                     .Take(1)
                     .SingleOrDefaultAsync(cancellationToken);
 
                 model.Previous = await _context.Posts
                     .Where(p => p.Published < post.Published)
-                    .OrderBy(p => p.Published)
+                    .OrderByDescending(p => p.Published)
                     .Take(1)
                     .SingleOrDefaultAsync(cancellationToken);
 
