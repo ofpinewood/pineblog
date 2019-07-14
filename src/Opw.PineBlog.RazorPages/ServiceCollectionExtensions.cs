@@ -18,6 +18,7 @@ namespace Opw.PineBlog
 
             services.AddMvcCore().AddRazorPages(option =>
             {
+                option.Conventions.AuthorizeAreaFolder("Admin", "/");
                 option.Conventions.AddAreaPageRoute("Blog", "/Post", "blog/{*slug}");
             });
 

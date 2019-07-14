@@ -109,6 +109,12 @@ a {
     text-decoration: underline;
 }
 
+#cookieConsent {
+    margin-bottom: 0;
+    border-radius: 0;
+    border: none;
+}
+
 .page-content {
     padding-top: 1rem;
     padding-bottom: 1rem;
@@ -147,70 +153,48 @@ a {
     z-index: 1000;
     height: 4rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
 
-    .blog-header a {
+    a {
         text-decoration: none;
+        color: #fff;
+
+        &:hover {
+            color: #aaa;
+        }
     }
 
-    .blog-header .container {
+    .container {
         height: 100%;
     }
+}
 
 .blog-logo {
     display: block;
     color: #fff !important;
-}
 
-    .blog-logo img {
+    img {
         max-height: 2rem;
         font-size: 0;
     }
 
-    .blog-logo span {
+    span {
         display: block;
         margin-left: .75rem;
         font-size: 1.25rem;
         font-family: "Merriweather", "Times New Roman", Times, serif;
         font-weight: 700;
     }
+}
 
 .blog-title {
     font-family: "Merriweather", "Times New Roman", Times, serif;
     font-size: 2.625rem;
     margin-bottom: 1rem;
-}
 
-    .blog-title a {
+    a {
         color: #fff;
     }
-
-.blog-social-item {
-    margin-right: 1.25rem;
 }
-
-    .blog-social-item:last-child {
-        margin-right: 0;
-    }
-
-.blog-social-link {
-    color: #fff;
-    display: block;
-}
-
-    .blog-social-link:hover {
-        color: #fff;
-        opacity: .5;
-    }
-
-.blog-social-icon {
-    display: block;
-    font-size: 1.25rem;
-}
-
-    .blog-social-icon.fa-twitter {
-        font-size: 1.25rem;
-    }
 
 .blog-search .form-control {
     border: 0;
@@ -250,42 +234,42 @@ a {
     font-size: .75rem;
     padding: 2rem 0 1.8rem 0;
     background-color: #222;
-}
 
-    .footer h2 {
+    h2 {
         font-size: 1.2rem;
         font-weight: normal;
     }
 
-    .footer img {
+    img {
         border: 1px solid #f7f7f7;
         max-width: 15%;
         float: left;
         margin: 0.25rem 1rem 0 0;
     }
 
-    .footer.copy {
+    a {
+        color: #fff;
+    }
+
+    p {
+    }
+
+    &.copy {
         background-color: #000;
         padding: 1rem 0;
         padding-bottom: 1.5rem;
         font-size: .65rem;
-    }
 
-        .footer.copy .container {
+        .container {
             opacity: .3;
         }
 
-        .footer.copy a {
+        a {
             font-weight: bold;
             text-decoration: none;
         }
-
-    .footer a {
-        color: #fff;
     }
-
-    .footer p {
-    }
+}
 
 .page-cover {
     padding-top: 9.5rem;
