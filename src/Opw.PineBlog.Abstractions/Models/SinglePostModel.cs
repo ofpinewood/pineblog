@@ -1,4 +1,4 @@
-﻿using Opw.PineBlog.Entities;
+using Opw.PineBlog.Entities;
 
 namespace Opw.PineBlog.Models
 {

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
@@ -22,6 +23,7 @@ namespace Opw.PineBlog.Areas.Admin.Pages
         public async Task OnGetAsync_Should_SetPostModel()
         {
             var loggerMock = new Mock<ILogger<PostModel>>();
+            var blogOptionsMock = new Mock<IOptions<BlogOptions>>();
 
             var mediaterMock = new Mock<IMediator>();
             mediaterMock.Setup(m => m.Send(It.IsAny<IRequest<Result<SinglePostModel>>>(), It.IsAny<CancellationToken>()))
@@ -34,14 +36,14 @@ namespace Opw.PineBlog.Areas.Admin.Pages
             var httpContext = new DefaultHttpContext();
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new PostModel(mediaterMock.Object, loggerMock.Object)
+            var pageModel = new PostModel(mediaterMock.Object, blogOptionsMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),
                 Url = new UrlHelper(pageContext.Item2)
             };
 
-            var result = await pageModel.OnGetAsync(Guid.NewGuid(), default);
+            var result = await pageModel.OnGetAsync(default, Guid.NewGuid());
 
             result.Should().BeOfType<PageResult>();
             pageModel.Blog.Should().NotBeNull();
@@ -52,6 +54,7 @@ namespace Opw.PineBlog.Areas.Admin.Pages
         public async Task OnGetAsync_Should_ThrowNotFoundException()
         {
             var loggerMock = new Mock<ILogger<PostModel>>();
+            var blogOptionsMock = new Mock<IOptions<BlogOptions>>();
 
             var mediaterMock = new Mock<IMediator>();
             mediaterMock.Setup(m => m.Send(It.IsAny<IRequest<Result<SinglePostModel>>>(), It.IsAny<CancellationToken>())).Throws<NotFoundException>();
@@ -59,14 +62,14 @@ namespace Opw.PineBlog.Areas.Admin.Pages
             var httpContext = new DefaultHttpContext();
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new PostModel(mediaterMock.Object, loggerMock.Object)
+            var pageModel = new PostModel(mediaterMock.Object, blogOptionsMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),
                 Url = new UrlHelper(pageContext.Item2)
             };
 
-            Func<Task> action = async () => await pageModel.OnGetAsync(Guid.NewGuid(), default);
+            Func<Task> action = async () => await pageModel.OnGetAsync(default, Guid.NewGuid());
 
             action.Should().Throw<NotFoundException>();
         }

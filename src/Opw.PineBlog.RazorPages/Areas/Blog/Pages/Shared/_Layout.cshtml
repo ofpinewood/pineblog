@@ -4,9 +4,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>@ViewData["Title"]</title>
+    @RenderSection("head", required: false)
 </head>
 <body class="pineblog">
     <h1>Add a custom <code>_Layout.cshtml</code> or <code>_AdminLayout.cshtml</code> page to your web project in the folder <code>./Areas/Blog/Pages/Shared/</code></h1>
     @RenderBody()
+
+    @RenderSection("scripts", required: false)
 </body>
 </html>

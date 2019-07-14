@@ -1,8 +1,14 @@
 @{
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
-<partial name="_CookieConsentPartial" />
+@section head {
+    @RenderSection("head", required: false)
+}
+@section scripts {
+    @RenderSection("scripts", required: false)
+}
 
+<partial name="_CookieConsentPartial" />
 <div class="pineblog">
     <partial name="~/Pages/Shared/_Header.cshtml" />
 
