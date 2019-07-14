@@ -1,0 +1,13 @@
+@page
+@model PostModel
+<div class="container pineblog-admin">
+    <div class="row">
+        <div class="col-md">
+            <div class="form-group">
+                <label asp-for="Post.Title"></label>
+                <input asp-for="Post.Title" class="form-control">
+                <span asp-validation-for="Post.Title"></span>
+            </div>
+        </div>
+    </div>
+</div>

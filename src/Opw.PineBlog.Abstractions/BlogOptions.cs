@@ -6,8 +6,8 @@ namespace Opw
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public string PostUrlFormat { get; set; }
         public int ItemsPerPage { get; set; }
+        public string PagingUrlPartFormat { get; set; }
         public Cover Cover { get; set; }
         public bool CreateAndSeedDatabases { get; set; }
     }

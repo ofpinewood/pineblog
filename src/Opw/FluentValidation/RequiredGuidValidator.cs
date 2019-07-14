@@ -1,5 +1,7 @@
+using FluentValidation.Resources;
 using FluentValidation.Validators;
 using Opw.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace Opw.FluentValidation
 {
@@ -11,7 +13,12 @@ namespace Opw.FluentValidation
 
         protected override bool IsValid(PropertyValidatorContext context)
         {
-            return new RequiredGuidAttribute().IsValid(context.PropertyValue);
+            var result = new RequiredGuidAttribute().GetValidationResult(context.PropertyValue, new ValidationContext(context.Instance));
+
+            if (result == null) return true;
+
+            Options.ErrorMessageSource = new StaticStringSource(result.ErrorMessage);
+            return false;
         }
     }
 }

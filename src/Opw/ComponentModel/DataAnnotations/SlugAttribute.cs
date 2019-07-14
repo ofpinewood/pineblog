@@ -3,11 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Opw.ComponentModel.DataAnnotations
 {
+    /// <summary>
+    /// Specifies that a data field value is a valid slug.
+    /// </summary>
     [AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
     public class SlugAttribute : ValidationAttribute
     {
         /// <summary>
-        /// Checks that the value of the required data field is a valid slug.
+        /// Checks that the value of the data field is a valid slug.
         /// </summary>
         /// <param name="value">The data field value to validate.</param>
         /// <param name="validationContext">The context information about the validation operation.</param>

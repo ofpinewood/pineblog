@@ -13,8 +13,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Opw.PineBlog.Areas.Blog.Pages
+namespace Opw.PineBlog.Areas.Admin.Pages
 {
+
     public class PostModelTests : RazorPagesTestsBase
     {
         [Fact]
@@ -23,8 +24,8 @@ namespace Opw.PineBlog.Areas.Blog.Pages
             var loggerMock = new Mock<ILogger<PostModel>>();
 
             var mediaterMock = new Mock<IMediator>();
-            mediaterMock.Setup(m => m.Send(It.IsAny<IRequest<Result<Models.PostModel>>>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Result<Models.PostModel>.Success(new Models.PostModel
+            mediaterMock.Setup(m => m.Send(It.IsAny<IRequest<Result<SinglePostModel>>>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Result<SinglePostModel>.Success(new SinglePostModel
                 {
                     Blog = new BlogModel(new BlogOptions()) { Title = "Blog Title" },
                     Post = new Post()
@@ -40,12 +41,11 @@ namespace Opw.PineBlog.Areas.Blog.Pages
                 Url = new UrlHelper(pageContext.Item2)
             };
 
-            var result = await pageModel.OnGetAsync("slug", default);
+            var result = await pageModel.OnGetAsync(Guid.NewGuid(), default);
 
             result.Should().BeOfType<PageResult>();
             pageModel.Blog.Should().NotBeNull();
             pageModel.Post.Should().NotBeNull();
-            pageModel.Title.Should().NotBeNull();
         }
 
         [Fact]
@@ -54,7 +54,7 @@ namespace Opw.PineBlog.Areas.Blog.Pages
             var loggerMock = new Mock<ILogger<PostModel>>();
 
             var mediaterMock = new Mock<IMediator>();
-            mediaterMock.Setup(m => m.Send(It.IsAny<IRequest<Result<Models.PostModel>>>(), It.IsAny<CancellationToken>())).Throws<NotFoundException>();
+            mediaterMock.Setup(m => m.Send(It.IsAny<IRequest<Result<SinglePostModel>>>(), It.IsAny<CancellationToken>())).Throws<NotFoundException>();
 
             var httpContext = new DefaultHttpContext();
             var pageContext = GetPageContext(httpContext);
@@ -66,7 +66,7 @@ namespace Opw.PineBlog.Areas.Blog.Pages
                 Url = new UrlHelper(pageContext.Item2)
             };
 
-            Func<Task> action = async () => await pageModel.OnGetAsync("slug", default);
+            Func<Task> action = async () => await pageModel.OnGetAsync(Guid.NewGuid(), default);
 
             action.Should().Throw<NotFoundException>();
         }

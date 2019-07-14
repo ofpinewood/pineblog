@@ -22,6 +22,8 @@ namespace Opw.PineBlog
                 option.Conventions.AddAreaPageRoute("Blog", "/Post", "blog/{*slug}");
             });
 
+            services.Configure<BlogOptions>(options => options.PagingUrlPartFormat = "page={0}");
+
             return services;
         }
     }

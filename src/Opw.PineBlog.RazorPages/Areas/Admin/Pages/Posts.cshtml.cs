@@ -5,6 +5,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Opw.PineBlog.Entities;
+using Opw.PineBlog.Models;
+using Opw.PineBlog.Posts;
 
 namespace Opw.PineBlog.Areas.Admin.Pages
 {
@@ -12,7 +14,9 @@ namespace Opw.PineBlog.Areas.Admin.Pages
     {
         private readonly IMediator _mediator;
 
-        public IEnumerable<Post> Model { get; private set; }
+        public BlogModel Blog { get; set; }
+        public Pager Pager { get; private set; }
+        public IEnumerable<Post> Posts { get; set; }
 
         public PostsModel(IMediator mediator, ILogger<PostsModel> logger) : base(logger)
         {
@@ -21,9 +25,11 @@ namespace Opw.PineBlog.Areas.Admin.Pages
 
         public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken, [FromQuery]int page = 1)
         {
-            //var result = await _mediator.Send(new GetPagedPostsQuery { Page = page }, cancellationToken);
+            var result = await _mediator.Send(new GetPagedPostListQuery { Page = page, IncludeUnpublished = true, ItemsPerPage = 25 }, cancellationToken);
 
-            //Model = result.Value;
+            Blog = result.Value.Blog;
+            Pager = result.Value.Pager;
+            Posts = result.Value.Posts;
 
             return Page();
         }

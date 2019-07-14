@@ -9,9 +9,11 @@ using Xunit;
 
 namespace Opw.PineBlog.Posts
 {
-    public class GetPostQueryTests : MediatRTestsBase
+    public class GetPostByIdQueryTests : MediatRTestsBase
     {
-        public GetPostQueryTests()
+        protected Guid PostId { get; set; }
+
+        public GetPostByIdQueryTests()
         {
             SeedDatabase();
         }
@@ -19,10 +21,7 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Validator_Should_ThrowValidationErrorException()
         {
-            Task action() => Mediator.Send(new GetPostQuery
-            {
-                Slug = "this is not a valid slug"
-            });
+            Task action() => Mediator.Send(new GetPostByIdQuery());
 
             await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
         }
@@ -30,69 +29,16 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnNotFoundException()
         {
-            var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-invalid" });
+            var result = await Mediator.Send(new GetPostByIdQuery { Id = Guid.NewGuid() });
 
             result.IsSuccess.Should().BeFalse();
             result.Exception.Should().BeOfType<NotFoundException>();
         }
 
         [Fact]
-        public async Task Handler_Should_ReturnPostModel_WithFirstPost()
-        {
-            var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-0" });
-
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Post.Title.Should().Be("Post title 0");
-            result.Value.Previous.Should().BeNull();
-            result.Value.Next.Should().NotBeNull();
-        }
-
-        [Fact]
-        public async Task Handler_Should_ReturnPostModel_WithMiddlePost()
-        {
-            var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-2" });
-
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Post.Title.Should().Be("Post title 2");
-            result.Value.Previous.Should().NotBeNull();
-            result.Value.Next.Should().NotBeNull();
-        }
-
-        [Fact]
-        public async Task Handler_Should_ReturnPostModel_WithMiddlePost_WithCorrectPreviousPost()
-        {
-            var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-2" });
-
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Post.Title.Should().Be("Post title 2");
-            result.Value.Previous.Title.Should().Be("Post title 1");
-        }
-
-        [Fact]
-        public async Task Handler_Should_ReturnPostModel_WithMiddlePost_WithCorrectNextPost()
-        {
-            var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-2" });
-
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Post.Title.Should().Be("Post title 2");
-            result.Value.Next.Title.Should().Be("Post title 3");
-        }
-
-        [Fact]
-        public async Task Handler_Should_ReturnPostModel_WithLastPost()
-        {
-            var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-4" });
-
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Post.Title.Should().Be("Post title 4");
-            result.Value.Previous.Should().NotBeNull();
-            result.Value.Next.Should().BeNull();
-        }
-
-        [Fact]
         public async Task Handler_Should_ReturnPostModel_WithBlogInfo()
         {
-            var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-0" });
+            var result = await Mediator.Send(new GetPostByIdQuery { Id = PostId });
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Post.Should().NotBeNull();
@@ -102,7 +48,7 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostModel_WithPostCover()
         {
-            var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-0" });
+            var result = await Mediator.Send(new GetPostByIdQuery { Id = PostId });
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Post.Should().NotBeNull();
@@ -112,7 +58,7 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostModel_WithPostAuthor()
         {
-            var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-0" });
+            var result = await Mediator.Send(new GetPostByIdQuery { Id = PostId });
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Post.Should().NotBeNull();
@@ -127,7 +73,12 @@ namespace Opw.PineBlog.Posts
             context.Authors.Add(author);
             context.SaveChanges();
 
-            context.Posts.Add(CreatePost(0, author.Id));
+            var post = CreatePost(0, author.Id);
+            context.Posts.Add(post);
+            context.SaveChanges();
+
+            PostId = post.Id;
+
             context.Posts.Add(CreatePost(1, author.Id));
             context.Posts.Add(CreatePost(2, author.Id));
             context.Posts.Add(CreatePost(3, author.Id));

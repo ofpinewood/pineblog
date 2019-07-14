@@ -1,8 +1,31 @@
 
 namespace Opw.PineBlog.Models
 {
+    /// <summary>
+    /// Pager.
+    /// </summary>
     public class Pager
     {
+        public int CurrentPage { get; set; } = 1;
+        public int ItemsPerPage { get; set; }
+        public int Total { get; set; }
+        public bool NotFound { get; set; }
+
+        public int Newer { get; set; }
+        public bool ShowNewer { get; set; }
+        public string LinkToNewer { get; set; }
+
+        public int Older { get; set; }
+        public bool ShowOlder { get; set; }
+        public string LinkToOlder { get; set; }
+
+        public int LastPage { get; set; } = 1;
+
+        /// <summary>
+        /// Implementation of Pager.
+        /// </summary>
+        /// <param name="currentPage">The current page.</param>
+        /// <param name="itemsPerPage">The number of items per page.</param>
         public Pager(int currentPage, int itemsPerPage = 0)
         {
             CurrentPage = currentPage;
@@ -17,7 +40,12 @@ namespace Opw.PineBlog.Models
             Older = currentPage + 1;
         }
 
-        public void Configure(int total, string postUrlFormat)
+        /// <summary>
+        /// Configure the pager.
+        /// </summary>
+        /// <param name="total">The total number of results.</param>
+        /// <param name="pagingUrlPartFormat">A url part format for the paging querystring params.</param>
+        public void Configure(int total, string pagingUrlPartFormat)
         {
             if (total == 0)
                 return;
@@ -35,24 +63,8 @@ namespace Opw.PineBlog.Models
             LastPage = (total % ItemsPerPage) == 0 ? total / ItemsPerPage : (total / ItemsPerPage) + 1;
             if (LastPage == 0) LastPage = 1;
 
-            if (ShowOlder) LinkToOlder = string.Format(postUrlFormat, Older);
-            if (ShowNewer) LinkToNewer = string.Format(postUrlFormat, Newer);
+            if (ShowOlder) LinkToOlder = string.Format(pagingUrlPartFormat, Older);
+            if (ShowNewer) LinkToNewer = string.Format(pagingUrlPartFormat, Newer);
         }
-
-        public int CurrentPage { get; set; } = 1;
-        public int ItemsPerPage { get; set; }
-        public int Total { get; set; }
-        public bool NotFound { get; set; }
-
-        public int Newer { get; set; }
-        public bool ShowNewer { get; set; }
-        public string LinkToNewer { get; set; }
-
-        public int Older { get; set; }
-        public bool ShowOlder { get; set; }        
-        public string LinkToOlder { get; set; }
-
-        //public string RouteValue { get; set; }
-        public int LastPage { get; set; } = 1;
     }
 }

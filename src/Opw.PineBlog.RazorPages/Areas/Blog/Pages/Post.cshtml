@@ -1,39 +1,34 @@
 @page
 @model PostModel
-@{
-    var post = Model.Model.Post;
-    var previous = Model.Model.Previous;
-    var next = Model.Model.Next;
-}
 
-<div class="page-cover" style="background-image: url('/@post.Cover.Url')">
+<div class="page-cover" style="background-image: url('/@Model.Post.Cover.Url')">
     <h1 class="page-cover-title">
-        <a href="~/">@post.Title</a>
+        <a href="~/">@Model.Post.Title</a>
     </h1>
 </div>
 
 <div class="page-content">
     <div class="container">
-        <partial name="_Post" model="@post" />
+        <partial name="_Post" model="@Model.Post" />
 
-        @if (previous != null || next != null)
+        @if (Model.Previous != null || Model.Next != null)
         {
             <nav class="pagination row justify-content-end">
-                @if (next != null)
+                @if (Model.Next != null)
                 {
                     <div class="item-next col-md-6">
                         <label>next</label>
-                        <a href="~/blog/@next.Slug" title="@next.Title">
-                            @next.Title
+                        <a href="~/blog/@Model.Next.Slug" title="@Model.Next.Title">
+                            @Model.Next.Title
                         </a>
                     </div>
                 }
                 <div class="item-prev col-md-6">
-                    @if (previous != null)
+                    @if (Model.Previous != null)
                     {
                         <label>previous</label>
-                        <a href="~/blog/@previous.Slug" title="@previous.Title">
-                            @previous.Title
+                        <a href="~/blog/@Model.Previous.Slug" title="@Model.Previous.Title">
+                            @Model.Previous.Title
                         </a>
                     }
                 </div>

@@ -45,9 +45,7 @@ namespace Opw.PineBlog.Posts
                 };
 
                 if (model.Post.Cover == null)
-                {
                     model.Post.Cover = model.Blog.Cover;
-                }
 
                 model.Next = await _context.Posts
                     .Where(p => p.Published > post.Published)

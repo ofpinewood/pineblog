@@ -12,14 +12,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Opw.PineBlog.Areas.Blog.Pages
+namespace Opw.PineBlog.Areas.Admin.Pages
 {
-    public class IndexModelTests : RazorPagesTestsBase
+    public class PostsModelTests : RazorPagesTestsBase
     {
         [Fact]
         public async Task OnGetAsync_Should_SetPostListModel()
         {
-            var loggerMock = new Mock<ILogger<IndexModel>>();
+            var loggerMock = new Mock<ILogger<PostsModel>>();
 
             var mediaterMock = new Mock<IMediator>();
             mediaterMock.Setup(m => m.Send(It.IsAny<IRequest<Result<PostListModel>>>(), It.IsAny<CancellationToken>()))
@@ -32,7 +32,7 @@ namespace Opw.PineBlog.Areas.Blog.Pages
             var httpContext = new DefaultHttpContext();
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new IndexModel(mediaterMock.Object, loggerMock.Object)
+            var pageModel = new PostsModel(mediaterMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),
@@ -45,7 +45,6 @@ namespace Opw.PineBlog.Areas.Blog.Pages
             pageModel.Blog.Should().NotBeNull();
             pageModel.Pager.Should().NotBeNull();
             pageModel.Posts.Should().NotBeNull();
-            pageModel.Title.Should().NotBeNull();
         }
     }
 }

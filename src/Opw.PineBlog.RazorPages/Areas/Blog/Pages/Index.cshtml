@@ -1,38 +1,33 @@
 @page
 @model IndexModel
-@{
-    var pager = Model.Model.Pager;
-    var posts = Model.Model.Posts;
-    var blog = Model.Model.Blog;
-}
 
-<div class="page-cover" style="background-image: url('/@blog.Cover.Url')">
+<div class="page-cover" style="background-image: url('/@Model.Blog.Cover.Url')">
     <h1 class="page-cover-title">
-        <a href="~/">@blog.Title</a>
+        <a href="~/">@Model.Blog.Title</a>
     </h1>
 </div>
 
 <div class="page-content">
     <div class="container">
-        @foreach (var post in posts)
+        @foreach (var post in Model.Posts)
         {
             <partial name="_Post" model="post" />
         }
-        @if (pager != null && (pager.ShowOlder || pager.ShowNewer))
+        @if (Model.Pager != null && (Model.Pager.ShowOlder || Model.Pager.ShowNewer))
         {
             <nav class="pagination row">
                 <div class="item-next col-md-6">
-                    @if (pager.ShowNewer)
+                    @if (Model.Pager.ShowNewer)
                     {
-                        <a href="~/@pager.LinkToNewer" title="Newer">
+                        <a href="?@Model.Pager.LinkToNewer" title="Newer">
                             Newer
                         </a>
                     }
                 </div>
                 <div class="item-prev col-md-6">
-                    @if (pager.ShowOlder)
+                    @if (Model.Pager.ShowOlder)
                     {
-                        <a href="~/@pager.LinkToOlder" title="Older">
+                        <a href="?@Model.Pager.LinkToOlder" title="Older">
                             Older
                         </a>
                     }
