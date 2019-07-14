@@ -1,2 +1,2 @@
-wwwroot/**/*.css
-wwwroot/**/*.min.js
+wwwroot/**/css/*
+wwwroot/**/js/*
