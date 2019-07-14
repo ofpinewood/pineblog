@@ -1,2 +1,6 @@
+@import "./reset.scss";
 @import "./prism.scss";
-@import "./blog.scss";
+
+.pineblog {
+    @import "./blog.scss";
+}

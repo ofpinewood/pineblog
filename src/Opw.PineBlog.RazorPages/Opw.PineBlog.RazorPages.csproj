@@ -36,5 +36,14 @@
         <EmbeddedResource Include="wwwroot\**\css\*" />
         <EmbeddedResource Include="wwwroot\**\js\*" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Content Update="Areas\Admin\Pages\Shared\_Footer.cshtml">
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Update="Areas\Admin\Pages\Shared\_Header.cshtml">
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+    </ItemGroup>
     
 </Project>

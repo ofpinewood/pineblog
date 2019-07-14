@@ -1,0 +1,30 @@
+@page
+@model PostsModel
+@{
+    var posts = Model.Model;
+}
+    <div class="container">
+        <h1>Posts</h1>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Published</th>
+                    <th scope="col">Created</th>
+                    <th scope="col">Modified</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var post in posts)
+                {
+                    <tr>
+                        <td>@post.Title</td>
+                        <td>@post.Published</td>
+                        <td>@post.Created</td>
+                        <td>@post.Modified</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>

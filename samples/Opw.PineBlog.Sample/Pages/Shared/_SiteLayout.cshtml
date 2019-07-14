@@ -2,6 +2,11 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 <partial name="_CookieConsentPartial" />
-<partial name="~/Pages/Shared/_Header.cshtml" />
 
-@RenderBody()
+<div class="pineblog">
+    <partial name="~/Pages/Shared/_Header.cshtml" />
+
+    @RenderBody()
+
+    <partial name="_Footer.cshtml" />
+</div>
