@@ -6,6 +6,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Content Remove="Pages\Shared\_AdminLayout.cshtml" />
+      <Content Remove="Pages\Shared\_SiteLayout.cshtml" />
       <Content Remove="wwwroot\images\avatar-female.png" />
       <Content Remove="wwwroot\images\avatar-male.png" />
     </ItemGroup>
@@ -13,6 +15,11 @@
     <ItemGroup>
       <EmbeddedResource Include="wwwroot\images\avatar-female.png" />
       <EmbeddedResource Include="wwwroot\images\avatar-male.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="Pages\Shared\_AdminLayout.cshtml" />
+      <None Include="Pages\Shared\_SiteLayout.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

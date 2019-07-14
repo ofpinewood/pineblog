@@ -24,7 +24,7 @@ namespace Opw.PineBlog.EntityFrameworkCore
             if (_dbContext.Authors.Count() > 0) return;
 
             var userId = Guid.Parse("bdab3e4b-e676-4490-9ed5-f7769b4ef232");
-            var email = "pineblog@ofpinewood.com";
+            var email = "pineblog@example.com";
             if (_dbContext.Authors.Count(a => a.UserId.Equals(userId)) > 0) return;
 
             _dbContext.Authors.Add(new Author
@@ -32,7 +32,7 @@ namespace Opw.PineBlog.EntityFrameworkCore
                 UserId = userId,
                 UserName = email,
                 Email = email,
-                DisplayName = "Peter van den Hout",
+                DisplayName = "John Smith",
                 Avatar = "images/avatar-male.png",
                 Bio = "It is common knowledge that the consolidation of the mindset cannot be shown to be relevant.This is in contrast to The Affectability Of Determinant Empathy",
             });

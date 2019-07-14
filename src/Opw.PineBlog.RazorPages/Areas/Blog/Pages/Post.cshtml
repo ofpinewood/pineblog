@@ -18,16 +18,16 @@
 
         @if (previous != null || next != null)
         {
-            <nav class="pagination row">
-                <div class="item-next col-md-6">
-                    @if (next != null)
-                    {
+            <nav class="pagination row justify-content-end">
+                @if (next != null)
+                {
+                    <div class="item-next col-md-6">
                         <label>next</label>
                         <a href="~/blog/@next.Slug" title="@next.Title">
                             @next.Title
                         </a>
-                    }
-                </div>
+                    </div>
+                }
                 <div class="item-prev col-md-6">
                     @if (previous != null)
                     {
