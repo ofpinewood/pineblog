@@ -1,11 +1,10 @@
-﻿using FluentValidation;
+using FluentValidation;
 using Opw.FluentValidation;
 
 namespace Opw.PineBlog.Posts
 {
-
     /// <summary>
-    /// Validator GetPostByIdQuery request.
+    /// Validator for the GetPostByIdQuery request.
     /// </summary>
     public class GetPostByIdQueryValidator : AbstractValidator<GetPostByIdQuery>
     {

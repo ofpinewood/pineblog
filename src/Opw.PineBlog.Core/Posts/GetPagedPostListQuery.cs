@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Opw.PineBlog.Posts
 {
     /// <summary>
-    /// Query that gets a PostListModel. 
+    /// Query that gets a PostListModel.
     /// </summary>
     public class GetPagedPostListQuery : IRequest<Result<PostListModel>>
     {

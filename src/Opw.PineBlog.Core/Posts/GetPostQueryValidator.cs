@@ -4,7 +4,7 @@ using Opw.FluentValidation;
 namespace Opw.PineBlog.Posts
 {
     /// <summary>
-    /// Validator GetPostQuery request.
+    /// Validator for the GetPostQuery request.
     /// </summary>
     public class GetPostQueryValidator : AbstractValidator<GetPostQuery>
     {
