@@ -21,7 +21,7 @@ namespace Opw.PineBlog.EntityFrameworkCore
 
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
-                entityType.Relational().TableName = $"Blog_{entityType.Relational().TableName}";
+                entityType.Relational().TableName = $"PineBlog_{entityType.Relational().TableName}";
             }
         }
     }
