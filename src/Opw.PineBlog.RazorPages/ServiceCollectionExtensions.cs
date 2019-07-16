@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Opw.PineBlog
@@ -16,11 +17,13 @@ namespace Opw.PineBlog
         {
             services.ConfigureOptions(typeof(StaticFilePostConfigureOptions));
 
-            services.AddMvcCore().AddRazorPages(option =>
-            {
-                option.Conventions.AuthorizeAreaFolder("Admin", "/");
-                option.Conventions.AddAreaPageRoute("Blog", "/Post", "blog/{*slug}");
-            });
+            services.AddMvcCore()
+                .AddRazorPages(option =>
+                {
+                    option.Conventions.AuthorizeAreaFolder("Admin", "/");
+                    option.Conventions.AddAreaPageRoute("Blog", "/Post", "blog/{*slug}");
+                })
+                .AddFluentValidation();
 
             services.Configure<BlogOptions>(options => options.PagingUrlPartFormat = "page={0}");
 
