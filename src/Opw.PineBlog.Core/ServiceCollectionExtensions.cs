@@ -30,7 +30,7 @@ namespace Opw.PineBlog
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddTransient<IValidator<AddPostCommand>, AddPostCommandValidator>();
             services.AddTransient<IValidator<GetPostQuery>, GetPostQueryValidator>();
-            services.AddTransient<IValidator<GetPostByIdQuery>, GetPostByIdQueryValidator>();
+            //services.AddTransient<IValidator<GetPostByIdQuery>, GetPostByIdQueryValidator>();
 
             return services;
         }

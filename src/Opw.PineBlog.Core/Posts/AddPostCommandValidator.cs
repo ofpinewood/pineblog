@@ -13,10 +13,11 @@ namespace Opw.PineBlog.Posts
         /// </summary>
         public AddPostCommandValidator()
         {
-            RuleFor(c => c.AuthorId).IsRequiredGuid();
-            RuleFor(c => c.Title).Length(160).NotEmpty();
-            RuleFor(c => c.Description).Length(450).NotEmpty();
-            RuleFor(c => c.Content).Length(2000).NotEmpty();
+            RuleFor(c => c.UserName).NotEmpty();
+            RuleFor(c => c.Title).MaximumLength(160).NotEmpty();
+            RuleFor(c => c.Description).MaximumLength(450).NotEmpty();
+            RuleFor(c => c.Categories).MaximumLength(2000);
+            RuleFor(c => c.Content).NotEmpty();
             //RuleFor(c => c.CoverUrl).Length(254);
             //RuleFor(c => c.CoverCaption).Length(160);
             //RuleFor(c => c.CoverLink).Length(254);

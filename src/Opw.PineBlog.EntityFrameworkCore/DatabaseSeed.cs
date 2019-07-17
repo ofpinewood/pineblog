@@ -23,13 +23,11 @@ namespace Opw.PineBlog.EntityFrameworkCore
         {
             if (_dbContext.Authors.Count() > 0) return;
 
-            var userId = Guid.Parse("bdab3e4b-e676-4490-9ed5-f7769b4ef232");
             var email = "pineblog@example.com";
-            if (_dbContext.Authors.Count(a => a.UserId.Equals(userId)) > 0) return;
+            if (_dbContext.Authors.Count(a => a.UserName.Equals(email)) > 0) return;
 
             _dbContext.Authors.Add(new Author
             {
-                UserId = userId,
                 UserName = email,
                 Email = email,
                 DisplayName = "John Smith",
@@ -38,8 +36,7 @@ namespace Opw.PineBlog.EntityFrameworkCore
             });
             _dbContext.Authors.Add(new Author
             {
-                UserId = userId,
-                UserName = email,
+                UserName = "mary.smith@example.com",
                 Email = email,
                 DisplayName = "Mary Smith",
                 Avatar = "images/avatar-female.png",

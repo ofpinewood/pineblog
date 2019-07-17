@@ -29,7 +29,6 @@ namespace Opw.PineBlog
         /// <param name="options">The options instance to configured.</param>
         public void PostConfigure(string name, StaticFileOptions options)
         {
-            name = name ?? throw new ArgumentNullException(nameof(name));
             options = options ?? throw new ArgumentNullException(nameof(options));
 
             // Basic initialization in case the options weren't initialized by any other component

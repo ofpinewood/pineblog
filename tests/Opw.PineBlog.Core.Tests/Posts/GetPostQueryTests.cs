@@ -123,7 +123,7 @@ namespace Opw.PineBlog.Posts
         {
             var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
 
-            var author = new Author { UserId = Guid.NewGuid(), DisplayName = "Author 1" };
+            var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
             context.Authors.Add(author);
             context.SaveChanges();
 

@@ -1,6 +1,7 @@
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,9 +13,9 @@ namespace Opw.PineBlog.Posts
     public class AddPostCommand : IRequest<Result<Post>>
     {
         /// <summary>
-        /// The author id.
+        /// The name of the user adding the post.
         /// </summary>
-        public Guid AuthorId { get; set; }
+        public string UserName { get; set; }
 
         /// <summary>
         /// The post title
@@ -64,10 +65,15 @@ namespace Opw.PineBlog.Posts
             /// <param name="cancellationToken">A cancellation token.</param>
             public async Task<Result<Post>> Handle(AddPostCommand request, CancellationToken cancellationToken)
             {
+                var author = await _context.Authors.SingleOrDefaultAsync(a => a.UserName.Equals(request.UserName));
+                if (author == null)
+                    return Result<Post>.Fail(new NotFoundException($"Could not find author for \"{request.UserName}\"."));
+
                 var entity = new Post
                 {
-                    AuthorId = request.AuthorId,
+                    AuthorId = author.Id,
                     Title = request.Title,
+                    Slug = request.Title.ToSlug(),
                     Description = request.Description,
                     Content = request.Content,
                     Categories = request.Categories,

@@ -4,4 +4,10 @@
     .clickable {
         cursor: pointer;
     }
+
+    .invalid-feedback {
+        &.field-validation-error, &.validation-summary-errors {
+            display: block;
+        }
+    }
 }

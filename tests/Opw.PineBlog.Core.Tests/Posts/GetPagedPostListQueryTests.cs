@@ -95,20 +95,20 @@ namespace Opw.PineBlog.Posts
         {
             var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
 
-            var author = new Author { UserId = Guid.NewGuid(), DisplayName = "Author 1" };
+            var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
             context.Authors.Add(author);
             context.SaveChanges();
 
-            context.Posts.Add(CreatePost(0, author.Id, true));
-            context.Posts.Add(CreatePost(1, author.Id, true));
-            context.Posts.Add(CreatePost(2, author.Id, true));
-            context.Posts.Add(CreatePost(3, author.Id, true));
-            context.Posts.Add(CreatePost(4, author.Id, true));
-            context.Posts.Add(CreatePost(5, author.Id, false));
+            context.Posts.Add(CreatePost(0, author.Id, true, false));
+            context.Posts.Add(CreatePost(1, author.Id, true, true));
+            context.Posts.Add(CreatePost(2, author.Id, true, true));
+            context.Posts.Add(CreatePost(3, author.Id, true, true));
+            context.Posts.Add(CreatePost(4, author.Id, true, true));
+            context.Posts.Add(CreatePost(5, author.Id, false, true));
             context.SaveChanges();
         }
 
-        private Post CreatePost(int i, Guid authorId, bool published)
+        private Post CreatePost(int i, Guid authorId, bool published, bool cover)
         {
             var post = new Post
             {
@@ -116,16 +116,19 @@ namespace Opw.PineBlog.Posts
                 Title = "Post title " + i,
                 Slug = "post-title-" + i,
                 Description = "Description",
-                Content = "Content",
-                Cover = new Cover
+                Content = "Content"
+            };
+
+            if (published) post.Published = DateTime.UtcNow;
+            if (cover)
+            {
+                post.Cover = new Cover
                 {
                     Url = "https://ofpinewood.com/cover-url",
                     Caption = "Cover caption",
                     Link = "https://ofpinewood.com/cover-link"
-                }
-            };
-
-            if (published) post.Published = DateTime.UtcNow;
+                };
+            }
 
             return post;
         }

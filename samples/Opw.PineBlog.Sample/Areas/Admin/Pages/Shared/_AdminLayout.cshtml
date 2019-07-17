@@ -16,6 +16,7 @@
     @RenderSection("head", required: false)
 }
 @section scripts {
+    <partial name="_ValidationScriptsPartial" />
     <environment include="Development">
         <script src="~/themes/default/js/admin.min.js" asp-append-version="true"></script>
     </environment>
