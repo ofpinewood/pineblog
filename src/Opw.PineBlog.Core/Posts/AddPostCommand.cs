@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,10 +38,25 @@ namespace Opw.PineBlog.Posts
         /// </summary>
         public string Categories { get; set; }
 
+        /// <summary>
+        /// The date the post was published or NULL for unpublished posts.
+        /// </summary>
+        public DateTime? Published { get; set; }
 
-        //public string CoverUrl { get; set; }
-        //public string CoverCaption { get; set; }
-        //public string CoverLink { get; set; }
+        /// <summary>
+        /// Cover URL.
+        /// </summary>
+        public string CoverUrl { get; set; }
+
+        /// <summary>
+        /// Cover caption text.
+        /// </summary>
+        public string CoverCaption { get; set; }
+
+        /// <summary>
+        /// Cover link.
+        /// </summary>
+        public string CoverLink { get; set; }
 
         /// <summary>
         /// Handler for the AddPostCommand.
@@ -76,14 +92,18 @@ namespace Opw.PineBlog.Posts
                     Slug = request.Title.ToSlug(),
                     Description = request.Description,
                     Content = request.Content,
-                    Categories = request.Categories,
-                    //Cover = new Cover
-                    //{
-                    //    Url= request.CoverUrl,
-                    //    Caption = request.CoverCaption,
-                    //    Link = request.CoverLink
-                    //}
+                    Categories = request.Categories
                 };
+
+                if (!string.IsNullOrWhiteSpace(request.CoverUrl) || !string.IsNullOrWhiteSpace(request.CoverCaption) || !string.IsNullOrWhiteSpace(request.CoverLink))
+                {
+                    entity.Cover = new Cover
+                    {
+                        Url = request.CoverUrl,
+                        Caption = request.CoverCaption,
+                        Link = request.CoverLink
+                    };
+                }
 
                 _context.Posts.Add(entity);
                 await _context.SaveChangesAsync(cancellationToken);

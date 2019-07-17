@@ -1,65 +1,129 @@
 @page
 @model AddPostModel
 @section scripts {
-<script type="text/javascript">
-    $(function () {
-        var simplemde = new SimpleMDE({
-            element: document.getElementById('Post_Content')
+    <script type="text/javascript">
+        $(function () {
+            var simplemde = new SimpleMDE({
+                element: document.getElementById('Post_Content')
+            });
         });
-    });
-</script>
+    </script>
 }
+<form method="post">
+    <div class="post-cover" style="background-image: url('/@Model.Post.CoverUrl')">
+        <div class="container">
+            <div>
+                <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                    <input type="submit" class="btn btn-primary" value="Save" />
 
-<div class="container pineblog-admin">
-    <h1>Create <small>Post</small></h1>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Publish</a>
+                            <a class="dropdown-item" href="#">Delete</a>
+                        </div>
+                    </div>
+                </div>
 
-    <form method="post">
+                <button type="button" class="btn btn-outline-light">View</button>
+                <button type="button" class="btn btn-outline-light">Cancel</button>
+
+                <div class="btn-group float-right" role="group">
+                    <button type="button" class="btn btn-outline-light" title="Cover" data-toggle="modal" data-target="#coverModal">
+                        <i class="fa fa-picture-o" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-light" title="Settings" data-toggle="modal" data-target="#settingsModal">
+                        <i class="fa fa-cog" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                <textarea asp-for="Post.Title" placeholder="Post title.."></textarea>
+                <span asp-validation-for="Post.Title" class="invalid-tooltip"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
         <div class="row">
             <div class="col-md">
                 <div asp-validation-summary="ModelOnly" class="invalid-feedback"></div>
                 <div class="form-group">
-                    <label asp-for="Post.Title"></label>
-                    <input asp-for="Post.Title" class="form-control">
-                    <span asp-validation-for="Post.Title" class="invalid-feedback"></span>
-                </div>
-                @*<div class="form-group">
-                    <label asp-for="Post.Slug"></label>
-                    <input asp-for="Post.Slug" class="form-control">
-                    <span asp-validation-for="Post.Slug"></span>
-                </div>*@
-            <div class="form-group">
-                <label asp-for="Post.Categories"></label>
-                <input asp-for="Post.Categories" class="form-control">
-                <span asp-validation-for="Post.Categories" class="invalid-feedback"></span>
-                <small class="form-text text-muted">Comma separated list of categories.</small>
-            </div>
-                @*<div class="form-group">
-                    <label asp-for="Post.Cover"></label>
-                    <input asp-for="Post.Cover" class="form-control">
-                    <span asp-validation-for="Post.Cover" class="invalid-feedback"></span>
-                </div>*@
-                @*<div class="form-group">
-                    <label asp-for="Post.Author"></label>
-                    <input asp-for="Post.Author" class="form-control">
-                    <span asp-validation-for="Post.Author" class="invalid-feedback"></span>
-                </div>*@
-                <div class="form-group">
-                    <label asp-for="Post.Description"></label>
-                    <textarea asp-for="Post.Description" class="form-control"></textarea>
-                    <span asp-validation-for="Post.Description" class="invalid-feedback"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Post.Content"></label>
                     <textarea asp-for="Post.Content" class="form-control"></textarea>
                     <span asp-validation-for="Post.Content" class="invalid-feedback"></span>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md">
-                <input type="submit" value="Add" class="btn btn-primary">
+    </div>
+
+    <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Post Settings</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label asp-for="Post.Categories"></label>
+                        <input asp-for="Post.Categories" class="form-control">
+                        <span asp-validation-for="Post.Categories" class="invalid-feedback"></span>
+                        <small class="form-text text-muted">Comma separated list of categories.</small>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Post.Description"></label>
+                        <textarea asp-for="Post.Description" class="form-control"></textarea>
+                        <span asp-validation-for="Post.Description" class="invalid-feedback"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Post.Published"></label>
+                        <input asp-for="Post.Published" class="form-control">
+                        <span asp-validation-for="Post.Published" class="invalid-feedback"></span>
+                    </div>
+                </div>
             </div>
         </div>
-    </form>
-    
-</div>
+    </div>
+
+    <div class="modal fade" id="coverModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Post Cover</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Post.CoverUrl"></label>
+                        <input asp-for="Post.CoverUrl" class="form-control">
+                        <span asp-validation-for="Post.CoverUrl" class="invalid-feedback"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Post.CoverCaption"></label>
+                        <input asp-for="Post.CoverCaption" class="form-control">
+                        <span asp-validation-for="Post.CoverCaption" class="invalid-feedback"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Post.CoverLink"></label>
+                        <input asp-for="Post.CoverLink" class="form-control">
+                        <span asp-validation-for="Post.CoverLink" class="invalid-feedback"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

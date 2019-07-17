@@ -1,5 +1,4 @@
 using FluentValidation;
-using Opw.FluentValidation;
 
 namespace Opw.PineBlog.Posts
 {
@@ -15,12 +14,12 @@ namespace Opw.PineBlog.Posts
         {
             RuleFor(c => c.UserName).NotEmpty();
             RuleFor(c => c.Title).MaximumLength(160).NotEmpty();
-            RuleFor(c => c.Description).MaximumLength(450).NotEmpty();
+            RuleFor(c => c.Description).MaximumLength(450);
             RuleFor(c => c.Categories).MaximumLength(2000);
             RuleFor(c => c.Content).NotEmpty();
-            //RuleFor(c => c.CoverUrl).Length(254);
-            //RuleFor(c => c.CoverCaption).Length(160);
-            //RuleFor(c => c.CoverLink).Length(254);
+            RuleFor(c => c.CoverUrl).MaximumLength(254);
+            RuleFor(c => c.CoverCaption).MaximumLength(160);
+            RuleFor(c => c.CoverLink).MaximumLength(254);
         }
     }
 }

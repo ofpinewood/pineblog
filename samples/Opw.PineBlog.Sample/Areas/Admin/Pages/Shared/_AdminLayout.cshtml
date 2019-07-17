@@ -8,11 +8,6 @@
     <environment exclude="Development">
         <link rel="stylesheet" href="~/themes/default/css/admin.min.css" asp-append-version="true">
     </environment>
-    <style>
-        .navbar {
-            margin-bottom: 1rem;
-        }
-    </style>
     @RenderSection("head", required: false)
 }
 @section scripts {
@@ -27,4 +22,6 @@
 }
 
 <partial name="_Header" />
-@RenderBody()
+<div class="pineblog-admin">
+    @RenderBody()
+</div>

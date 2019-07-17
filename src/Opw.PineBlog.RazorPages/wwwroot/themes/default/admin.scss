@@ -5,9 +5,46 @@
         cursor: pointer;
     }
 
+    .invalid-tooltip {
+        &.field-validation-error {
+            display: block;
+        }
+    }
+
     .invalid-feedback {
         &.field-validation-error, &.validation-summary-errors {
             display: block;
+        }
+    }
+
+    .post-cover {
+        position: relative;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        background-color: #555;
+        margin-bottom: 1rem;
+
+        textarea {
+            width: 100%;
+            display: block;
+            font-size: 1.5rem;
+            color: #fff;
+
+            @media screen and (max-width: 991px) {
+                font-size: 1.125rem;
+            }
+
+            border: none;
+            border-radius: 0;
+            transition: none;
+            padding: 0;
+            background: none;
+            outline: none !important;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
         }
     }
 }
