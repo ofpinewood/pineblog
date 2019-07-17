@@ -11,12 +11,13 @@ namespace Opw.PineBlog
         /// Adds PineBlog Razor Pages services to the specified services collection.
         /// </summary>
         /// <param name="services">The services available in the application.</param>
+        /// <param name="mvcCoreBuilder">The Microsoft.Extensions.DependencyInjection.IMvcCoreBuilder.</param>
         /// <returns>The original services object.</returns>
-        public static IServiceCollection AddPineBlogRazorPages(this IServiceCollection services)
+        public static IServiceCollection AddPineBlogRazorPages(this IServiceCollection services, IMvcCoreBuilder mvcCoreBuilder)
         {
             services.ConfigureOptions(typeof(StaticFilePostConfigureOptions));
 
-            services.AddMvcCore().AddRazorPages(option =>
+            mvcCoreBuilder.AddRazorPages(option =>
             {
                 option.Conventions.AuthorizeAreaFolder("Admin", "/");
                 option.Conventions.AddAreaPageRoute("Blog", "/Post", "blog/{*slug}");
