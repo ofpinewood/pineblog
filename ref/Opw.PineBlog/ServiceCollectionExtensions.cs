@@ -20,7 +20,6 @@ namespace Opw.PineBlog
         {
             services.AddPineBlogCore(configuration);
             services.AddPineBlogEntityFrameworkCore(connectionString);
-            services.AddPineBlogRazorPages();
 
             return services;
         }
