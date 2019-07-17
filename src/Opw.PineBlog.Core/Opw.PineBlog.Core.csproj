@@ -25,4 +25,8 @@
         <ProjectReference Include="..\Opw.PineBlog.Abstractions\Opw.PineBlog.Abstractions.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Covers\" />
+    </ItemGroup>
+
 </Project>

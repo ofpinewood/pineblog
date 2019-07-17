@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Opw.PineBlog.Posts;
 using Opw.MediatR;
+using Opw.PineBlog.Files;
 
 namespace Opw.PineBlog
 {
@@ -30,7 +31,7 @@ namespace Opw.PineBlog
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddTransient<IValidator<AddPostCommand>, AddPostCommandValidator>();
             services.AddTransient<IValidator<GetPostQuery>, GetPostQueryValidator>();
-            //services.AddTransient<IValidator<GetPostByIdQuery>, GetPostByIdQueryValidator>();
+            services.AddTransient<IValidator<UploadFileCommand>, UploadFileCommandValidator>();
 
             return services;
         }
