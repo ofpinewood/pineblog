@@ -49,7 +49,7 @@ namespace Opw.PineBlog
         private static void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureOptions(typeof(StaticFilePostConfigureOptions));
-            services.Configure<BlogOptions>(options => options.PagingUrlPartFormat = "page={0}");
+            services.Configure<PineBlogOptions>(options => options.PagingUrlPartFormat = "page={0}");
         }
     }
 }

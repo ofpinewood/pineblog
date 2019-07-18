@@ -24,7 +24,7 @@ namespace Opw.PineBlog.Areas.Admin.Pages
             var mediaterMock = new Mock<IMediator>();
             mediaterMock.Setup(m => m.Send(It.IsAny<IRequest<Result<PostListModel>>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<PostListModel>.Success(new PostListModel {
-                    Blog = new BlogModel(new BlogOptions()) { Title = "Blog Title" },
+                    Blog = new BlogModel(new PineBlogOptions()) { Title = "Blog Title" },
                     Pager = new Pager(0),
                     Posts = new List<Post>()
                 }));

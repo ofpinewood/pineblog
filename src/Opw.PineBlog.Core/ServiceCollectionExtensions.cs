@@ -22,7 +22,8 @@ namespace Opw.PineBlog
         /// <returns>The original services object.</returns>
         public static IServiceCollection AddPineBlogCore(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<BlogOptions>(configuration.GetSection(nameof(BlogOptions)));
+            services.AddOptions();
+            services.Configure<PineBlogOptions>(configuration.GetSection(nameof(PineBlogOptions)));
 
             // TODO: only add MediatR if it has not been added yet
             services.AddMediatR(typeof(AddPostCommand).Assembly);

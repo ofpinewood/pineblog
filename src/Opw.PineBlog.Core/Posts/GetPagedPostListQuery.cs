@@ -37,7 +37,7 @@ namespace Opw.PineBlog.Posts
         /// </summary>
         public class Handler : IRequestHandler<GetPagedPostListQuery, Result<PostListModel>>
         {
-            private readonly IOptions<BlogOptions> _blogOptions;
+            private readonly IOptions<PineBlogOptions> _blogOptions;
             private readonly IBlogEntityDbContext _context;
 
             /// <summary>
@@ -45,7 +45,7 @@ namespace Opw.PineBlog.Posts
             /// </summary>
             /// <param name="context">The blog entity context.</param>
             /// <param name="blogOptions">The blog options.</param>
-            public Handler(IBlogEntityDbContext context, IOptions<BlogOptions> blogOptions)
+            public Handler(IBlogEntityDbContext context, IOptions<PineBlogOptions> blogOptions)
             {
                 _blogOptions = blogOptions;
                 _context = context;

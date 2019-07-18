@@ -15,10 +15,10 @@ namespace Opw.PineBlog.Blog
     {
         public class Handler : IRequestHandler<ConfigureBlogOptionsCommand, Unit>
         {
-            private readonly IOptions<BlogOptions> _blogOptions;
+            private readonly IOptions<PineBlogOptions> _blogOptions;
             private readonly IBlogEntityDbContext _context;
 
-            public Handler(IBlogEntityDbContext context, IOptions<BlogOptions> blogOptions)
+            public Handler(IBlogEntityDbContext context, IOptions<PineBlogOptions> blogOptions)
             {
                 _blogOptions = blogOptions;
                 _context = context;

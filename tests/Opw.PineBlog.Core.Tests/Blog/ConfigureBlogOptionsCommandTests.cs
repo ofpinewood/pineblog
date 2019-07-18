@@ -41,7 +41,7 @@ namespace Opw.PineBlog.Blog
 
             await Mediator.Send(new ConfigureBlogOptionsCommand());
 
-            var options = ServiceProvider.GetRequiredService<IOptions<BlogOptions>>();
+            var options = ServiceProvider.GetRequiredService<IOptions<PineBlogOptions>>();
 
             options.Value.Title.Should().Be("Title from database");
             options.Value.Description.Should().Be("Description from database");

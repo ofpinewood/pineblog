@@ -9,7 +9,7 @@ namespace Opw.PineBlog.Models
         public string Description { get; set; }
         public Cover Cover { get; set; }
 
-        public BlogModel(BlogOptions options)
+        public BlogModel(PineBlogOptions options)
         {
             Title = options.Title;
             Description = options.Description;

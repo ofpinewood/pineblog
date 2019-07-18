@@ -9,7 +9,7 @@ namespace Opw.PineBlog.EntityFrameworkCore
     {
         public static void InitializePineBlogDatabase(this IServiceProvider serviceProvider)
         {
-            var blogOptions = serviceProvider.GetService<IOptions<BlogOptions>>();
+            var blogOptions = serviceProvider.GetService<IOptions<PineBlogOptions>>();
             if (blogOptions.Value.CreateAndSeedDatabases)
             {
                 var dbContext = (BlogEntityDbContext)serviceProvider.GetRequiredService<IBlogEntityDbContext>();

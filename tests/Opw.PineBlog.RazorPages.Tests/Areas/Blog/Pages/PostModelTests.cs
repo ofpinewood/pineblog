@@ -26,7 +26,7 @@ namespace Opw.PineBlog.Areas.Blog.Pages
             mediaterMock.Setup(m => m.Send(It.IsAny<IRequest<Result<Models.PostModel>>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<Models.PostModel>.Success(new Models.PostModel
                 {
-                    Blog = new BlogModel(new BlogOptions()) { Title = "Blog Title" },
+                    Blog = new BlogModel(new PineBlogOptions()) { Title = "Blog Title" },
                     Post = new Post()
                 }));
 
