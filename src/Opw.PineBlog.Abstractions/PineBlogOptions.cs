@@ -15,8 +15,19 @@ namespace Opw
         public bool CreateAndSeedDatabases { get; set; }
 
         /// <summary>
-        /// Connection string.
+        /// Database connection string.
         /// </summary>
+        // TODO: use this connection string
         public string ConnectionString { get; set; }
+
+        /// <summary>
+        /// Azure storage connection string.
+        /// </summary>
+        public string AzureStorageConnectionString { get; set; }
+
+        /// <summary>
+        /// Azure storage blob container name.
+        /// </summary>
+        public string AzureStorageBlobContainerName { get; set; }
     }
 }

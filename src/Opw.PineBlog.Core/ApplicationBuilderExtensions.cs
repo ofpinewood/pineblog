@@ -1,7 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Opw.PineBlog.Blog;
 
 namespace Opw.PineBlog
 {
@@ -9,8 +8,9 @@ namespace Opw.PineBlog
     {
         public static IApplicationBuilder UseBlog(this IApplicationBuilder app)
         {
-            var mediator = app.ApplicationServices.GetRequiredService<IMediator>();
-            mediator.Send(new ConfigureBlogOptionsCommand());
+            // TODO: fix
+            //var mediator = app.ApplicationServices.GetRequiredService<IMediator>();
+            //mediator.Send(new ConfigureBlogOptionsCommand());
 
             return app;
         }

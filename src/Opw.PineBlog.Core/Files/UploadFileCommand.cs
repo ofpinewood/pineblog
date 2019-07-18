@@ -1,9 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,7 +9,7 @@ using System.Threading.Tasks;
 namespace Opw.PineBlog.Files
 {
     /// <summary>
-    /// Command that uploads a cover image.
+    /// Command that uploads a file.
     /// </summary>
     public class UploadFileCommand : IRequest<Result>
     {
@@ -21,10 +19,26 @@ namespace Opw.PineBlog.Files
         public IFormFile File { get; set; }
 
         /// <summary>
+        /// The target file path, excluding the file name.
+        /// </summary>
+        public string TargetPath { get; set; }
+
+        /// <summary>
         /// Handler for the UploadFileCommand.
         /// </summary>
         public class Handler : IRequestHandler<UploadFileCommand, Result>
         {
+            private readonly IMediator _mediator;
+
+            /// <summary>
+            /// Implementation of UploadFileCommand.Handler.
+            /// </summary>
+            /// <param name="mediator"></param>
+            public Handler(IMediator mediator)
+            {
+                _mediator = mediator;
+            }
+
             /// <summary>
             /// Handle the UploadFileCommand request.
             /// </summary>
@@ -36,7 +50,13 @@ namespace Opw.PineBlog.Files
                 var result = await ProcessFormFileAsync(request.File, stream);
                 if (!result.IsSuccess) return result;
 
-                // TODO: Upload the file to azure
+                // TODO: make the upload target configurable (not only azure blob storage)
+                result = await _mediator.Send(new UploadAzureBlobCommand {
+                    FileStream = stream,
+                    FileName = request.File.FileName,
+                    TargetPath = request.TargetPath
+                }, cancellationToken);
+                if (!result.IsSuccess) return result;
 
                 return Result.Success();
             }

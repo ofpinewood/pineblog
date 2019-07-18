@@ -6,6 +6,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Opw.PineBlog.Posts;
 using Opw.MediatR;
 using Opw.PineBlog.Files;
+using Microsoft.Azure.Storage.Blob;
+using Microsoft.Azure.Storage;
+using Microsoft.Extensions.Options;
+using System;
 
 namespace Opw.PineBlog
 {
@@ -33,6 +37,24 @@ namespace Opw.PineBlog
             services.AddTransient<IValidator<AddPostCommand>, AddPostCommandValidator>();
             services.AddTransient<IValidator<GetPostQuery>, GetPostQueryValidator>();
             services.AddTransient<IValidator<UploadFileCommand>, UploadFileCommandValidator>();
+
+            services.AddPineBlogCoreAzureServices();
+
+            return services;
+        }
+
+        private static IServiceCollection AddPineBlogCoreAzureServices(this IServiceCollection services)
+        {
+            services.AddSingleton<CloudBlobClient>((provider) =>
+            {
+                var options = provider.GetRequiredService<IOptions<PineBlogOptions>>();
+
+                CloudStorageAccount storageAccount;
+                if (!CloudStorageAccount.TryParse(options.Value.AzureStorageConnectionString, out storageAccount))
+                    throw new ApplicationException("The PineBlogOptions.AzureStorageConnectionString is invalid.");
+
+                return storageAccount.CreateCloudBlobClient();
+            });
 
             return services;
         }
