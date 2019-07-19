@@ -6,9 +6,6 @@ using Opw.HttpExceptions;
 using System.IO;
 using System.Threading.Tasks;
 using Xunit;
-using Microsoft.Extensions.DependencyInjection;
-using MediatR.Registration;
-using MediatR;
 
 namespace Opw.PineBlog.Files
 {
