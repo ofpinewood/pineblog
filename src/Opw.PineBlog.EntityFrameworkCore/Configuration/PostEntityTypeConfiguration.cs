@@ -10,7 +10,8 @@ namespace Opw.PineBlog.EntityFrameworkCore.Configuration
         {
             builder.HasKey(e => e.Id);
             builder.HasOne(e => e.Author).WithMany(e => e.Posts).HasForeignKey(e => e.AuthorId);
-            
+            builder.HasOne(e => e.Cover).WithMany(e => e.Posts).HasForeignKey(e => e.CoverId);
+
             builder.Property(e => e.Title).HasMaxLength(160).IsRequired();
             builder.Property(e => e.Slug).HasMaxLength(160).IsRequired();
             builder.Property(e => e.Description).HasMaxLength(450).IsRequired();

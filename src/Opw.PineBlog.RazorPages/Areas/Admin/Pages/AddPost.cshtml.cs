@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Opw.PineBlog.Entities;
 using Opw.PineBlog.Posts;
 
 namespace Opw.PineBlog.Areas.Admin.Pages
@@ -13,6 +14,8 @@ namespace Opw.PineBlog.Areas.Admin.Pages
 
         [BindProperty]
         public AddPostCommand Post { get; set; }
+
+        public Cover Cover { get; set; }
 
         public AddPostModel(IMediator mediator, ILogger<AddPostModel> logger) : base(logger)
         {

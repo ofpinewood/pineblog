@@ -44,19 +44,9 @@ namespace Opw.PineBlog.Posts
         public DateTime? Published { get; set; }
 
         /// <summary>
-        /// Cover URL.
+        /// Cover ID.
         /// </summary>
-        public string CoverUrl { get; set; }
-
-        /// <summary>
-        /// Cover caption text.
-        /// </summary>
-        public string CoverCaption { get; set; }
-
-        /// <summary>
-        /// Cover link.
-        /// </summary>
-        public string CoverLink { get; set; }
+        public Guid? CoverId { get; set; }
 
         /// <summary>
         /// Handler for the AddPostCommand.
@@ -92,18 +82,9 @@ namespace Opw.PineBlog.Posts
                     Slug = request.Title.ToSlug(),
                     Description = request.Description,
                     Content = request.Content,
-                    Categories = request.Categories
+                    Categories = request.Categories,
+                    CoverId = request.CoverId
                 };
-
-                if (!string.IsNullOrWhiteSpace(request.CoverUrl) || !string.IsNullOrWhiteSpace(request.CoverCaption) || !string.IsNullOrWhiteSpace(request.CoverLink))
-                {
-                    entity.Cover = new Cover
-                    {
-                        Url = request.CoverUrl,
-                        Caption = request.CoverCaption,
-                        Link = request.CoverLink
-                    };
-                }
 
                 _context.Posts.Add(entity);
                 await _context.SaveChangesAsync(cancellationToken);

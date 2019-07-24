@@ -1,6 +1,11 @@
+@import "./_mixins.scss";
+@import "./_variables.scss";
 @import "./simplemde.scss";
 
 .pineblog-admin {
+    padding-top: 1rem;
+    height: 85%; // TODO: make the thing actually 100% height
+
     .clickable {
         cursor: pointer;
     }
@@ -17,34 +22,69 @@
         }
     }
 
-    .post-cover {
-        position: relative;
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-        background-color: #555;
-        margin-bottom: 1rem;
+    .post-editor {
+        height: 100%;
 
-        textarea {
-            width: 100%;
-            display: block;
-            font-size: 1.5rem;
-            color: #fff;
+        .md-editor {
+            height: 100%;
 
-            @media screen and (max-width: 991px) {
-                font-size: 1.125rem;
+            .editor-toolbar {
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+                border-top: none;
+
+                @include make-container();
+                @include make-container-max-widths();
             }
 
-            border: none;
-            border-radius: 0;
-            transition: none;
-            padding: 0;
-            background: none;
-            outline: none !important;
-            margin-top: 3rem;
-            margin-bottom: 1rem;
+            .editor-statusbar {
+                @include make-container();
+                @include make-container-max-widths();
+            }
+
+            .CodeMirror {
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+                height: 100% !important;
+
+                .CodeMirror-lines {
+                    @include make-container();
+                    @include make-container-max-widths();
+                }
+            }
+        }
+
+        .post-cover {
+            position: relative;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            background-color: #555;
+            margin-top: -1rem;
+
+            textarea {
+                width: 100%;
+                display: block;
+                font-size: 1.5rem;
+                color: #fff;
+
+                @media screen and (max-width: 991px) {
+                    font-size: 1.125rem;
+                }
+
+                border: none;
+                border-radius: 0;
+                transition: none;
+                padding: 0;
+                background: none;
+                outline: none !important;
+                margin-top: 3rem;
+                margin-bottom: 1rem;
+            }
         }
     }
 }

@@ -37,6 +37,11 @@ namespace Opw.PineBlog.Entities
         public DateTime? Published { get; set; }
                 
         public string Slug { get; set; }
+
+        /// <summary>
+        /// Cover ID.
+        /// </summary>
+        public Guid? CoverId { get; set; }
         public virtual Cover Cover { get; set; }
     }
 }

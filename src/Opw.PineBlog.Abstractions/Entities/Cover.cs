@@ -1,5 +1,6 @@
 using Opw.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 
 namespace Opw.PineBlog.Entities
 {
@@ -23,5 +24,7 @@ namespace Opw.PineBlog.Entities
         /// link.
         /// </summary>
         public string Link { get; set; }
+
+        public virtual ICollection<Post> Posts { get; set; }
     }
 }

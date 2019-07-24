@@ -9,8 +9,8 @@
         });
     </script>
 }
-<form method="post">
-    <div class="post-cover" style="background-image: url('/@Model.Post.CoverUrl')">
+<form method="post" class="post-editor d-flex flex-column">
+    <div class="post-cover" style="background-image: url('/@Model.Cover.Url')">
         <div class="container">
             <div>
                 <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
@@ -44,16 +44,10 @@
         </div>
     </div>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md">
-                <div asp-validation-summary="ModelOnly" class="invalid-feedback"></div>
-                <div class="form-group">
-                    <textarea asp-for="Post.Content" class="form-control"></textarea>
-                    <span asp-validation-for="Post.Content" class="invalid-feedback"></span>
-                </div>
-            </div>
-        </div>
+    @*<div asp-validation-summary="ModelOnly"></div>*@
+    <div class="md-editor">
+        <textarea asp-for="Post.Content"></textarea>
+        @*<span asp-validation-for="Post.Content" class="invalid-tooltip"></span>*@
     </div>
 
     <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -87,43 +81,6 @@
         </div>
     </div>
 
-    <div class="modal fade" id="coverModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Post Cover</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
-                        </div>
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-                        </div>
-                    </div>
+    <partial name="_CoverModal" />
 
-                    <div class="form-group">
-                        <label asp-for="Post.CoverUrl"></label>
-                        <input asp-for="Post.CoverUrl" class="form-control">
-                        <span asp-validation-for="Post.CoverUrl" class="invalid-feedback"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Post.CoverCaption"></label>
-                        <input asp-for="Post.CoverCaption" class="form-control">
-                        <span asp-validation-for="Post.CoverCaption" class="invalid-feedback"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Post.CoverLink"></label>
-                        <input asp-for="Post.CoverLink" class="form-control">
-                        <span asp-validation-for="Post.CoverLink" class="invalid-feedback"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </form>

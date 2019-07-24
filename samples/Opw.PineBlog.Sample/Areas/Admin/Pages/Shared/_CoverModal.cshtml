@@ -1,0 +1,59 @@
+<div class="modal fade" id="coverModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Post Cover</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+
+                <h3>
+
+                </h3>
+
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                    </div>
+                </div>
+
+                @*<div class="form-group">
+                    <label asp-for="Post.CoverUrl"></label>
+                    <input asp-for="Post.CoverUrl" class="form-control">
+                    <span asp-validation-for="Post.CoverUrl" class="invalid-feedback"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Post.CoverCaption"></label>
+                    <input asp-for="Post.CoverCaption" class="form-control">
+                    <span asp-validation-for="Post.CoverCaption" class="invalid-feedback"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Post.CoverLink"></label>
+                    <input asp-for="Post.CoverLink" class="form-control">
+                    <span asp-validation-for="Post.CoverLink" class="invalid-feedback"></span>
+                </div>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div class="custom-file">
+    <input type="file" class="custom-file-input" id="customFile">
+    <label class="custom-file-label" for="customFile">Choose file</label>
+</div>
+
+<button class="btn btn-primary" type="button" onclick="return fileManagerController.uploadClick()">Upload</button>
+
+<div style="display:none;">
+    <form method="post" name="frmUpload" id="frmUpload" asp-action="Upload" asp-controller="Assets" enctype="multipart/form-data">
+        <input type="file" name="files" id="files" multiple onchange="fileManagerController.uploadSubmit(); return false;" />
+        <input type="submit" value="Upload Multiple" />
+    </form>
+</div>*@
