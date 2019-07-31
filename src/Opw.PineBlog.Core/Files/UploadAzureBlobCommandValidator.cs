@@ -3,12 +3,12 @@ using FluentValidation;
 namespace Opw.PineBlog.Files
 {
     /// <summary>
-    /// Validator for the AddPostCommand request.
+    /// Validator for the UploadAzureBlobCommand request.
     /// </summary>
     public class UploadAzureBlobCommandValidator : AbstractValidator<UploadAzureBlobCommand>
     {
         /// <summary>
-        /// Implementation of AddPostCommandValidator.
+        /// Implementation of UploadAzureBlobCommandValidator.
         /// </summary>
         public UploadAzureBlobCommandValidator()
         {

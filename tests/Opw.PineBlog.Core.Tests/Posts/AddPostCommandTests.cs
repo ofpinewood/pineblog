@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -21,7 +22,12 @@ namespace Opw.PineBlog.Posts
         {
             Task action() => Mediator.Send(new AddPostCommand());
 
-            await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
+            var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
+            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(AddPostCommand.UserName))).Should().NotBeNull();
+            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(AddPostCommand.Title))).Should().NotBeNull();
+            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(AddPostCommand.Description))).Should().NotBeNull();
+            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(AddPostCommand.Categories))).Should().NotBeNull();
+            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(AddPostCommand.Content))).Should().NotBeNull();
         }
 
         [Fact]

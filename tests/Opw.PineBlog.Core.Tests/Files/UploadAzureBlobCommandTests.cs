@@ -8,6 +8,7 @@ using Moq;
 using Opw.HttpExceptions;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -33,7 +34,9 @@ namespace Opw.PineBlog.Files
         {
             Task action() => Mediator.Send(new UploadAzureBlobCommand());
 
-            await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
+            var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
+            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(UploadAzureBlobCommand.FileName))).Should().NotBeNull();
+            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(UploadAzureBlobCommand.FileStream))).Should().NotBeNull();
         }
 
         [Fact(Skip = "Integration Test; requires Azure Storage Emulator.")]

@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Opw.HttpExceptions;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -35,7 +36,8 @@ namespace Opw.PineBlog.Covers
         {
             Task action() => Mediator.Send(new AddCoverCommand());
 
-            await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
+            var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
+            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(AddCoverCommand.File))).Should().NotBeNull();
         }
 
         [Fact]

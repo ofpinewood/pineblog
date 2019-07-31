@@ -61,6 +61,8 @@ namespace Opw.PineBlog.Covers
             /// <param name="cancellationToken">A cancellation token.</param>
             public async Task<Result<Cover>> Handle(AddCoverCommand request, CancellationToken cancellationToken)
             {
+                // TODO: limit upload to images
+
                 var path = "covers"; //TODO: make configurable
                 var result = await _mediator.Send(new UploadFileCommand
                 {

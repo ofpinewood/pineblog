@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Moq;
 using Opw.HttpExceptions;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -33,7 +34,8 @@ namespace Opw.PineBlog.Files
         {
             Task action() => Mediator.Send(new UploadFileCommand());
 
-            await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
+            var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
+            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(UploadFileCommand.File))).Should().NotBeNull();
         }
 
         [Fact]

@@ -6,6 +6,7 @@ using Opw.HttpExceptions;
 using System;
 using System.Threading.Tasks;
 using Xunit;
+using System.Linq;
 
 namespace Opw.PineBlog.Posts
 {
@@ -24,7 +25,8 @@ namespace Opw.PineBlog.Posts
                 Slug = "this is not a valid slug"
             });
 
-            await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
+            var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
+            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(GetPostQuery.Slug))).Should().NotBeNull();
         }
 
         [Fact]

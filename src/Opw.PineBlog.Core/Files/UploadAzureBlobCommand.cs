@@ -60,6 +60,7 @@ namespace Opw.PineBlog.Files
 
                 try
                 {
+                    // TODO: set correct content type
                     var blobName = $"{request.TargetPath.Trim('/')}/{request.FileName.Trim('/')}";
                     var cloudBlockBlob = cloudBlobContainer.Value.GetBlockBlobReference(blobName);
                     await cloudBlockBlob.UploadFromStreamAsync(request.FileStream);
@@ -75,10 +76,8 @@ namespace Opw.PineBlog.Files
             private async Task<Result<CloudBlobContainer>> GetCloudBlobContainerAsync(CancellationToken cancellationToken)
             {
                 var cloudBlobContainer = _cloudBlobClient.GetContainerReference(_options.Value.AzureStorageBlobContainerName);
-                var created = await cloudBlobContainer.CreateIfNotExistsAsync(cancellationToken);
-                if (!created)
-                    return Result<CloudBlobContainer>.Fail(new FileUploadException($"Blob container does not exist and could not be created ({_options.Value.AzureStorageBlobContainerName})."));
-
+                await cloudBlobContainer.CreateIfNotExistsAsync(cancellationToken);
+                
                 // Set the permissions so the blobs are public.
                 await cloudBlobContainer.SetPermissionsAsync(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob }, cancellationToken);
 

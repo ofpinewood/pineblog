@@ -55,6 +55,8 @@ namespace Opw.PineBlog.Files
                 var result = await ProcessFormFileAsync(request.File, stream);
                 if (!result.IsSuccess) return result;
 
+                stream.Position = 0;
+
                 // TODO: make the upload target configurable (not only azure blob storage)
                 // TODO: check if we are not overwriting files, overwriting should not be possible
                 result = await _mediator.Send(new UploadAzureBlobCommand {
@@ -74,16 +76,16 @@ namespace Opw.PineBlog.Files
 
                 // TODO: add check for accepted file types
                 //if (!string.Equals(formFile.ContentType, "text/plain", StringComparison.OrdinalIgnoreCase))
-                //    errors.Add(formFile.Name, $"The {fieldDisplayName}file ({fileName}) must be a text file.");
+                //    errors.Add(formFile.Name, $"The {fieldDisplayName} file ({fileName}) must be a text file.");
 
                 // Check the file length and don't bother attempting to read it if the file contains no content. This check
                 // doesn't catch files that only have a BOM as their content, so a content length check is made later after 
                 // reading the file's content to catch a file that only contains a BOM.
                 if (formFile.Length == 0)
-                    return Result<string>.Fail(new FileUploadException($"The {formFile.Name}file ({fileName}) is empty."));
+                    return Result<string>.Fail(new FileUploadException($"The {formFile.Name} file ({fileName}) is empty."));
 
                 if (formFile.Length > 1048576)
-                    return Result<string>.Fail(new FileUploadException($"The {formFile.Name}file ({fileName}) exceeds 1 MB."));
+                    return Result<string>.Fail(new FileUploadException($"The {formFile.Name} file ({fileName}) exceeds 1 MB."));
 
                 try
                 {
@@ -91,7 +93,7 @@ namespace Opw.PineBlog.Files
                 }
                 catch (Exception ex)
                 {
-                    return Result<string>.Fail(new FileUploadException($"The {formFile.Name}file ({fileName}) upload failed. Error: {ex.Message}", ex));
+                    return Result<string>.Fail(new FileUploadException($"The {formFile.Name} file ({fileName}) upload failed. Error: {ex.Message}", ex));
                 }
 
                 return Result<string>.Success();
