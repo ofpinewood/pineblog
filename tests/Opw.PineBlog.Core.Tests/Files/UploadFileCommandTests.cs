@@ -39,9 +39,10 @@ namespace Opw.PineBlog.Files
         [Fact]
         public async Task Handler_Should_ReturnTrue()
         {
-            var result = await Mediator.Send(new UploadFileCommand { File = _formFileMock.Object });
+            var result = await Mediator.Send(new UploadFileCommand { File = _formFileMock.Object, TargetPath = "files" });
 
             result.IsSuccess.Should().BeTrue();
+            result.Value.Should().EndWith("files/filename.txt");
         }
 
         [Fact]

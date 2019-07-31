@@ -17,7 +17,7 @@
             @foreach (var cover in Model.Covers)
             {
                 <tr onclick="location.href = 'updatecover?id=@cover.Id'" class="clickable">
-                    <td><div class="cover-image" style="background-image: url('/@cover.Url')"></div></td>
+                    <td class="cover-image"><div style="background-image: url('/@cover.Url')"></div></td>
                     <td>
                         @cover.Caption<br />
                         @cover.Link
@@ -31,7 +31,6 @@
                                 {
                                     <li>@post.Title</li>
                                 }
-                                
                             </ul>
                         }
                     </td>

@@ -29,9 +29,11 @@ namespace Opw.PineBlog
             Services.AddPineBlogCore(configuration);
             Services.AddPineBlogEntityFrameworkCore($"Server=inMemory; Database=opw-db-{DateTime.UtcNow.Ticks};");
 
-            Services.AddTransient<IRequestHandler<UploadAzureBlobCommand, Result>>((provider) => {
-                var mock = new Mock<IRequestHandler<UploadAzureBlobCommand, Result>>();
-                mock.Setup(h => h.Handle(It.IsAny<UploadAzureBlobCommand>(), It.IsAny<CancellationToken>())).ReturnsAsync(Result.Success());
+            Services.AddTransient((_) => {
+                var mock = new Mock<IRequestHandler<UploadAzureBlobCommand, Result<string>>>();
+                mock.Setup(h => h.Handle(It.IsAny<UploadAzureBlobCommand>(), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync((UploadAzureBlobCommand request, CancellationToken __) =>
+                        Result<string>.Success($"http://azureblobstorage/{request.TargetPath}/{request.FileName}"));
                 return mock.Object;
             });
         }

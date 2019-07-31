@@ -4,8 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 

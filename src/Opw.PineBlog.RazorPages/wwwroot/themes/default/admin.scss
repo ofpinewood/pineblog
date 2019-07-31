@@ -90,9 +90,13 @@
     .table .cover-image {
         width: 16rem;
         height: 9rem;
-        position: relative;
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
+
+        div {
+            height: 100%;
+            position: relative;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
     }
 }

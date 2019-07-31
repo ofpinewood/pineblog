@@ -11,7 +11,7 @@ namespace Opw.PineBlog.Files
     /// <summary>
     /// Command that uploads a blob to Azure blob storage.
     /// </summary>
-    public class UploadAzureBlobCommand : IRequest<Result>
+    public class UploadAzureBlobCommand : IRequest<Result<string>>
     {
         /// <summary>
         /// The file stream of the to upload file.
@@ -31,7 +31,7 @@ namespace Opw.PineBlog.Files
         /// <summary>
         /// Handler for the UploadAzureBlobCommand.
         /// </summary>
-        public class Handler : IRequestHandler<UploadAzureBlobCommand, Result>
+        public class Handler : IRequestHandler<UploadAzureBlobCommand, Result<string>>
         {
             private readonly CloudBlobClient _cloudBlobClient;
             private readonly IOptions<PineBlogOptions> _options;
@@ -52,24 +52,24 @@ namespace Opw.PineBlog.Files
             /// </summary>
             /// <param name="request">The UploadAzureBlobCommand request.</param>
             /// <param name="cancellationToken">A cancellation token.</param>
-            public async Task<Result> Handle(UploadAzureBlobCommand request, CancellationToken cancellationToken)
+            public async Task<Result<string>> Handle(UploadAzureBlobCommand request, CancellationToken cancellationToken)
             {
                 var cloudBlobContainer = await GetCloudBlobContainerAsync(cancellationToken);
                 if (!cloudBlobContainer.IsSuccess)
-                    return Result.Fail(cloudBlobContainer.Exception);
+                    return Result<string>.Fail(cloudBlobContainer.Exception);
 
                 try
                 {
                     var blobName = $"{request.TargetPath.Trim('/')}/{request.FileName.Trim('/')}";
                     var cloudBlockBlob = cloudBlobContainer.Value.GetBlockBlobReference(blobName);
                     await cloudBlockBlob.UploadFromStreamAsync(request.FileStream);
+
+                    return Result<string>.Success(cloudBlockBlob.Uri.AbsoluteUri);
                 }
                 catch (Exception ex)
                 {
-                    return Result.Fail(new FileUploadException($"The blob ({request.FileName}) upload failed", ex));
+                    return Result<string>.Fail(new FileUploadException($"The blob ({request.FileName}) upload failed", ex));
                 }
-
-                return Result.Success();
             }
 
             private async Task<Result<CloudBlobContainer>> GetCloudBlobContainerAsync(CancellationToken cancellationToken)

@@ -25,7 +25,7 @@ namespace Opw.PineBlog.Files
             writer.Flush();
             _fileStream.Position = 0;
 
-            Services.AddTransient<IRequestHandler<UploadAzureBlobCommand, Result>, UploadAzureBlobCommand.Handler>();
+            Services.AddTransient<IRequestHandler<UploadAzureBlobCommand, Result<string>>, UploadAzureBlobCommand.Handler>();
         }
 
         [Fact]
@@ -42,6 +42,7 @@ namespace Opw.PineBlog.Files
             var result = await Mediator.Send(new UploadAzureBlobCommand { FileStream = _fileStream, FileName = "filename.txt", TargetPath = "files" });
 
             result.IsSuccess.Should().BeTrue();
+            result.Value.Should().EndWith("files/filename.txt");
         }
     }
 }
