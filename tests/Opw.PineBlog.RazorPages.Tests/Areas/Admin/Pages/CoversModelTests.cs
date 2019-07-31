@@ -14,25 +14,24 @@ using Xunit;
 
 namespace Opw.PineBlog.Areas.Admin.Pages
 {
-    public class PostsModelTests : RazorPagesTestsBase
+    public class CoversModelTests : RazorPagesTestsBase
     {
         [Fact]
-        public async Task OnGetAsync_Should_SetPostListModel()
+        public async Task OnGetAsync_Should_SetCoverListModel()
         {
-            var loggerMock = new Mock<ILogger<PostsModel>>();
+            var loggerMock = new Mock<ILogger<CoversModel>>();
 
             var mediaterMock = new Mock<IMediator>();
-            mediaterMock.Setup(m => m.Send(It.IsAny<IRequest<Result<PostListModel>>>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Result<PostListModel>.Success(new PostListModel {
-                    Blog = new BlogModel(new PineBlogOptions()) { Title = "Blog Title" },
+            mediaterMock.Setup(m => m.Send(It.IsAny<IRequest<Result<CoverListModel>>>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Result<CoverListModel>.Success(new CoverListModel {
                     Pager = new Pager(0),
-                    Posts = new List<Post>()
+                    Covers = new List<Cover>()
                 }));
 
             var httpContext = new DefaultHttpContext();
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new PostsModel(mediaterMock.Object, loggerMock.Object)
+            var pageModel = new CoversModel(mediaterMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),
@@ -43,7 +42,7 @@ namespace Opw.PineBlog.Areas.Admin.Pages
 
             result.Should().BeOfType<PageResult>();
             pageModel.Pager.Should().NotBeNull();
-            pageModel.Posts.Should().NotBeNull();
+            pageModel.Covers.Should().NotBeNull();
         }
     }
 }

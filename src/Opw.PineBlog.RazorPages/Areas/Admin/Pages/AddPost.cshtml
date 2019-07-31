@@ -46,8 +46,8 @@
 
     @*<div asp-validation-summary="ModelOnly"></div>*@
     <div class="md-editor">
-        <textarea asp-for="Post.Content"></textarea>
-        @*<span asp-validation-for="Post.Content" class="invalid-tooltip"></span>*@
+        <span asp-validation-for="Post.Content" class="invalid-tooltip"></span>
+        <textarea asp-for="Post.Content"></textarea>        
     </div>
 
     <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-hidden="true">
