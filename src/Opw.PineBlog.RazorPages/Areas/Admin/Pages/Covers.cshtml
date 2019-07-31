@@ -21,6 +21,19 @@
                     <td>
                         @cover.Caption<br />
                         @cover.Link
+
+                        @if (cover.Posts.Any())
+                        {
+                            <br/>
+                            <strong>Posts:</strong>
+                            <ul>
+                                @foreach (var post in cover.Posts)
+                                {
+                                    <li>@post.Title</li>
+                                }
+                                
+                            </ul>
+                        }
                     </td>
                 </tr>
             }
