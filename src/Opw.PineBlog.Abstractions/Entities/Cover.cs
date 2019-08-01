@@ -25,6 +25,7 @@ namespace Opw.PineBlog.Entities
         /// </summary>
         public string Link { get; set; }
 
-        public virtual ICollection<Post> Posts { get; set; }
+        public Guid PostId { get; set; }
+        public virtual Post Post { get; set; }
     }
 }

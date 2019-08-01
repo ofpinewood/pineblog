@@ -48,7 +48,7 @@ namespace Opw.PineBlog.Covers
             var result = await Mediator.Send(new GetPagedCoverListQuery { Page = 1, ItemsPerPage = 10 });
 
             result.IsSuccess.Should().BeTrue();
-            result.Value.Covers.Last().Posts.Should().HaveCount(2);
+            result.Value.Covers.Last().Post.Should().NotBeNull();
         }
 
         [Fact]
@@ -65,35 +65,19 @@ namespace Opw.PineBlog.Covers
         {
             var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
 
-            context.Covers.Add(CreateCover(0));
-            context.Covers.Add(CreateCover(1));
-            context.Covers.Add(CreateCover(2));
-            context.Covers.Add(CreateCover(3));
-            context.Covers.Add(CreateCover(4));
-            context.SaveChanges();
-
             var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
             context.Authors.Add(author);
             context.SaveChanges();
 
-            var cover = context.Covers.First();
-
-            context.Posts.Add(CreatePost(0, author.Id, cover.Id));
-            context.Posts.Add(CreatePost(1, author.Id, cover.Id));
+            context.Posts.Add(CreatePost(0, author.Id));
+            context.Posts.Add(CreatePost(1, author.Id));
+            context.Posts.Add(CreatePost(2, author.Id));
+            context.Posts.Add(CreatePost(3, author.Id));
+            context.Posts.Add(CreatePost(4, author.Id));
             context.SaveChanges();
         }
 
-        private Cover CreateCover(int i)
-        {
-            return new Cover
-            {
-                Url = "https://ofpinewood.com/cover-url-" + i,
-                Caption = "Cover " + i,
-                Link = "https://ofpinewood.com/cover-link-" + i
-            };
-        }
-
-        private Post CreatePost(int i, Guid authorId, Guid coverId)
+        private Post CreatePost(int i, Guid authorId)
         {
             return new Post
             {
@@ -102,7 +86,12 @@ namespace Opw.PineBlog.Covers
                 Slug = "post-title-" + i,
                 Description = "Description",
                 Content = "Content",
-                CoverId = coverId,
+                Cover = new Cover
+                {
+                    Url = "https://ofpinewood.com/cover-url-" + i,
+                    Caption = "Cover " + i,
+                    Link = "https://ofpinewood.com/cover-link-" + i
+                },
                 Published = DateTime.UtcNow
             };
         }

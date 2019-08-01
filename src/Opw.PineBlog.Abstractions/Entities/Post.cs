@@ -8,6 +8,7 @@ namespace Opw.PineBlog.Entities
         public Guid Id { get; set; }
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
+
         public Guid AuthorId { get; set; }
         public virtual Author Author { get; set; }
 
@@ -39,9 +40,8 @@ namespace Opw.PineBlog.Entities
         public string Slug { get; set; }
 
         /// <summary>
-        /// Cover ID.
+        /// Cover.
         /// </summary>
-        public Guid? CoverId { get; set; }
         public virtual Cover Cover { get; set; }
     }
 }

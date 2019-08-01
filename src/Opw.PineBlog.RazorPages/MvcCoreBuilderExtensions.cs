@@ -9,14 +9,14 @@ namespace Opw.PineBlog
     public static class MvcBuilderExtensions
     {
         /// <summary>
-        /// Adds PineBlog Razor Pages services to the specified services collection.
+        /// Adds PineBlog Razor Pages services to the services collection.
         /// </summary>
         /// <param name="builder">The Microsoft.Extensions.DependencyInjection.IMvcCoreBuilder.</param>
-        /// <returns>The original services object.</returns>
         public static IMvcCoreBuilder AddPineBlogRazorPages(this IMvcCoreBuilder builder)
         {
             ConfigureServices(builder.Services);
 
+            builder.AddApplicationPart(typeof(Controllers.FileController).Assembly);
             builder.AddRazorPages(option =>
             {
                 option.Conventions.AuthorizeAreaFolder("Admin", "/");
@@ -28,14 +28,14 @@ namespace Opw.PineBlog
         }
 
         /// <summary>
-        /// Adds PineBlog Razor Pages services to the specified services collection.
+        /// Adds PineBlog Razor Pages services to the services collection.
         /// </summary>
         /// <param name="builder">The Microsoft.Extensions.DependencyInjection.IMvcBuilder.</param>
-        /// <returns>The original services object.</returns>
         public static IMvcBuilder AddPineBlogRazorPages(this IMvcBuilder builder)
         {
             ConfigureServices(builder.Services);
 
+            builder.AddApplicationPart(typeof(Controllers.FileController).Assembly);
             builder.AddRazorPagesOptions(option =>
             {
                 option.Conventions.AuthorizeAreaFolder("Admin", "/");

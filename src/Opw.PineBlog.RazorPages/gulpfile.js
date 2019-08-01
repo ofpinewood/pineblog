@@ -44,7 +44,7 @@ gulp.task('min:js', function () {
         .pipe(gulp.dest('.'));
 });
 gulp.task('min:js-admin', function () {
-    return gulp.src([paths.themeroot + 'simplemde.js', paths.themeroot + 'admin.js'], { base: '.' })
+    return gulp.src([paths.themeroot + 'simplemde.js', paths.themeroot + 'dataservice.js', paths.themeroot + 'filemanager.js', paths.themeroot + 'admin.js'], { base: '.' })
         .pipe(concat(paths.themeroot + 'js/admin.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('.'));

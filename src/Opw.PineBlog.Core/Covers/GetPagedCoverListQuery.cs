@@ -77,7 +77,7 @@ namespace Opw.PineBlog.Covers
                 pager.Configure(count, _blogOptions.Value.PagingUrlPartFormat);
 
                 var query = _context.Covers
-                    .Include(c => c.Posts)
+                    .Include(c => c.Post)
                     .OrderByDescending(p => p.Created)
                     .Skip(skip)
                     .Take(pager.ItemsPerPage);

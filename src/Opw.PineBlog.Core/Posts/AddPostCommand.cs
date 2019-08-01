@@ -83,7 +83,7 @@ namespace Opw.PineBlog.Posts
                     Description = request.Description,
                     Content = request.Content,
                     Categories = request.Categories,
-                    CoverId = request.CoverId
+                    // TODO: fix CoverId = request.CoverId
                 };
 
                 _context.Posts.Add(entity);

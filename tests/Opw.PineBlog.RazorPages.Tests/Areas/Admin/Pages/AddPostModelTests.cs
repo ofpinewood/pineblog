@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Opw.PineBlog.Entities;
-using Opw.PineBlog.Models;
 using Opw.PineBlog.Posts;
 using System;
 using System.Collections.Generic;
