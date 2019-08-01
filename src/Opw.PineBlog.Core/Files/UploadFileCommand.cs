@@ -19,6 +19,11 @@ namespace Opw.PineBlog.Files
         public IFormFile File { get; set; }
 
         /// <summary>
+        /// Allowed file type.
+        /// </summary>
+        public FileType AllowedFileType { get; set; }
+
+        /// <summary>
         /// The file name.
         /// </summary>
         public string FileName { get; set; }
@@ -55,8 +60,6 @@ namespace Opw.PineBlog.Files
                 var result = await ProcessFormFileAsync(request.File, stream);
                 if (!result.IsSuccess) return result;
 
-                stream.Position = 0;
-
                 // TODO: make the upload target configurable (not only azure blob storage)
                 // TODO: check if we are not overwriting files, overwriting should not be possible
                 result = await _mediator.Send(new UploadAzureBlobCommand {
@@ -70,22 +73,8 @@ namespace Opw.PineBlog.Files
 
             private async Task<Result<string>> ProcessFormFileAsync(IFormFile formFile, Stream targetStream)
             {
-                // Use Path.GetFileName to obtain the file name, which will strip any path information passed as part of the
-                // FileName property. HtmlEncode the result in case it must be returned in an error message.
-                var fileName = WebUtility.HtmlEncode(Path.GetFileName(formFile.FileName));
-
-                // TODO: add check for accepted file types
-                //if (!string.Equals(formFile.ContentType, "text/plain", StringComparison.OrdinalIgnoreCase))
-                //    errors.Add(formFile.Name, $"The {fieldDisplayName} file ({fileName}) must be a text file.");
-
-                // Check the file length and don't bother attempting to read it if the file contains no content. This check
-                // doesn't catch files that only have a BOM as their content, so a content length check is made later after 
-                // reading the file's content to catch a file that only contains a BOM.
-                if (formFile.Length == 0)
-                    return Result<string>.Fail(new FileUploadException($"The {formFile.Name} file ({fileName}) is empty."));
-
-                if (formFile.Length > 1048576)
-                    return Result<string>.Fail(new FileUploadException($"The {formFile.Name} file ({fileName}) exceeds 1 MB."));
+                // Use Path.GetFileName to obtain the file name, which will strip any path information passed as part of the FileName property.
+                var fileName = Path.GetFileName(formFile.FileName);
 
                 try
                 {

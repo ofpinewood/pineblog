@@ -36,12 +36,13 @@ namespace Opw.PineBlog.Files
 
             var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
             ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(UploadFileCommand.File))).Should().NotBeNull();
+            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(UploadFileCommand.AllowedFileType))).Should().NotBeNull();
         }
 
         [Fact]
         public async Task Handler_Should_ReturnTrue()
         {
-            var result = await Mediator.Send(new UploadFileCommand { File = _formFileMock.Object, TargetPath = "files" });
+            var result = await Mediator.Send(new UploadFileCommand { File = _formFileMock.Object, TargetPath = "files", AllowedFileType = FileType.All });
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Should().EndWith("files/filename.txt");
@@ -52,10 +53,10 @@ namespace Opw.PineBlog.Files
         {
             _formFileMock.Setup(f => f.Length).Returns(0);
 
-            var result = await Mediator.Send(new UploadFileCommand { File = _formFileMock.Object });
+            Task action() => Mediator.Send(new UploadFileCommand { File = _formFileMock.Object, AllowedFileType = FileType.All });
 
-            result.Exception.Should().BeOfType<FileUploadException>();
-            result.Exception.Message.Should().Contain("is empty");
+            var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
+            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(UploadFileCommand.File))).Value[0].ErrorMessage.Should().Contain("is empty");
         }
 
         [Fact]
@@ -63,10 +64,19 @@ namespace Opw.PineBlog.Files
         {
             _formFileMock.Setup(f => f.Length).Returns(2048576);
 
-            var result = await Mediator.Send(new UploadFileCommand { File = _formFileMock.Object });
+            Task action() => Mediator.Send(new UploadFileCommand { File = _formFileMock.Object, AllowedFileType = FileType.All });
 
-            result.Exception.Should().BeOfType<FileUploadException>();
-            result.Exception.Message.Should().Contain("exceeds");
+            var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
+            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(UploadFileCommand.File))).Value[0].ErrorMessage.Should().Contain("exceeds");
+        }
+
+        [Fact]
+        public async Task Handler_Should_ReturnError_WithInvalidFileType()
+        {
+            Task action() => Mediator.Send(new UploadFileCommand { File = _formFileMock.Object, AllowedFileType = FileType.Image });
+
+            var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
+            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(UploadFileCommand.File))).Value[0].ErrorMessage.Should().Contain("must be of type");
         }
 
         [Fact]
@@ -74,7 +84,7 @@ namespace Opw.PineBlog.Files
         {
             _formFileMock.Setup(f => f.OpenReadStream()).Returns<Stream>(null);
 
-            var result = await Mediator.Send(new UploadFileCommand { File = _formFileMock.Object });
+            var result = await Mediator.Send(new UploadFileCommand { File = _formFileMock.Object, AllowedFileType = FileType.All });
 
             result.Exception.Should().BeOfType<FileUploadException>();
             result.Exception.Message.Should().Contain("upload failed");

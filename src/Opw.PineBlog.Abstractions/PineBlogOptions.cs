@@ -15,6 +15,11 @@ namespace Opw
         public bool CreateAndSeedDatabases { get; set; }
 
         /// <summary>
+        /// The path for the folder where the cover images are stored.
+        /// </summary>
+        public string CoverImagesPath { get; set; }
+
+        /// <summary>
         /// Database connection string.
         /// </summary>
         // TODO: use this connection string

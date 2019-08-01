@@ -60,11 +60,12 @@ namespace Opw.PineBlog.Files
 
                 try
                 {
-                    // TODO: set correct content type
                     var blobName = $"{request.TargetPath.Trim('/')}/{request.FileName.Trim('/')}";
                     var cloudBlockBlob = cloudBlobContainer.Value.GetBlockBlobReference(blobName);
-                    await cloudBlockBlob.UploadFromStreamAsync(request.FileStream);
+                    cloudBlockBlob.Properties.ContentType = request.FileName.GetMimeType();
 
+                    request.FileStream.Position = 0;
+                    await cloudBlockBlob.UploadFromStreamAsync(request.FileStream);
                     return Result<string>.Success(cloudBlockBlob.Uri.AbsoluteUri);
                 }
                 catch (Exception ex)

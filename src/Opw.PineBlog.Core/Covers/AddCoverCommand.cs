@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
 using Opw.PineBlog.Files;
@@ -42,16 +43,18 @@ namespace Opw.PineBlog.Covers
         {
             private readonly IBlogEntityDbContext _context;
             private readonly IMediator _mediator;
+            private readonly IOptions<PineBlogOptions> _blogOptions;
 
             /// <summary>
             /// Implementation of AddCoverCommand.Handler.
             /// </summary>
             /// <param name="context">The blog entity context.</param>
             /// <param name="mediator">Mediator</param>
-            public Handler(IBlogEntityDbContext context, IMediator mediator)
+            public Handler(IBlogEntityDbContext context, IMediator mediator, IOptions<PineBlogOptions> blogOptions)
             {
                 _context = context;
                 _mediator = mediator;
+                _blogOptions = blogOptions;
             }
 
             /// <summary>
@@ -61,14 +64,12 @@ namespace Opw.PineBlog.Covers
             /// <param name="cancellationToken">A cancellation token.</param>
             public async Task<Result<Cover>> Handle(AddCoverCommand request, CancellationToken cancellationToken)
             {
-                // TODO: limit upload to images
-
-                var path = "covers"; //TODO: make configurable
                 var result = await _mediator.Send(new UploadFileCommand
                 {
                     File = request.File,
                     FileName = request.FileName,
-                    TargetPath = path
+                    AllowedFileType = FileType.Image,
+                    TargetPath = _blogOptions.Value.CoverImagesPath
                 }, cancellationToken);
 
                 if (!result.IsSuccess)
