@@ -59,7 +59,7 @@ namespace Opw.PineBlog.Covers
 
             cover.Should().NotBeNull();
             cover.Id.Should().Be(result.Value.Id);
-            cover.Url.Should().EndWith("covers/image.jpg");
+            cover.Url.Should().Be("%URL%/covers/image.jpg");
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace Opw.PineBlog.Covers
 
             cover.Should().NotBeNull();
             cover.Id.Should().Be(result.Value.Id);
-            cover.Url.Should().EndWith("covers/filename.jpg");
+            cover.Url.Should().Be("%URL%/covers/filename.jpg");
         }
     }
 }

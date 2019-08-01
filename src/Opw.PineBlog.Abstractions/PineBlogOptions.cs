@@ -15,6 +15,12 @@ namespace Opw
         public bool CreateAndSeedDatabases { get; set; }
 
         /// <summary>
+        /// The URL of the CDN where the images and other files are accessible.
+        /// Can also be the web host or a local hostname if no CDN is used.
+        /// </summary>
+        public string CdnUrl { get; set; }
+
+        /// <summary>
         /// The path for the folder where the cover images are stored.
         /// </summary>
         public string CoverImagesPath { get; set; }

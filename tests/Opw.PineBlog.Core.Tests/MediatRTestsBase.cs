@@ -33,7 +33,7 @@ namespace Opw.PineBlog
                 var mock = new Mock<IRequestHandler<UploadAzureBlobCommand, Result<string>>>();
                 mock.Setup(h => h.Handle(It.IsAny<UploadAzureBlobCommand>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync((UploadAzureBlobCommand request, CancellationToken __) =>
-                        Result<string>.Success($"http://azureblobstorage/{request.TargetPath}/{request.FileName}"));
+                        Result<string>.Success($"http://azureblobstorage/pineblog-tests/{request.TargetPath}/{request.FileName}"));
                 return mock.Object;
             });
         }

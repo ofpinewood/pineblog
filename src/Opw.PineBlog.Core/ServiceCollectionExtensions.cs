@@ -39,6 +39,8 @@ namespace Opw.PineBlog
             services.AddTransient<IValidator<UploadFileCommand>, UploadFileCommandValidator>();
             services.AddTransient<IValidator<UploadAzureBlobCommand>, UploadAzureBlobCommandValidator>();
 
+            services.AddTransient<FilePathHelper>();
+
             services.AddPineBlogCoreAzureServices();
 
             return services;

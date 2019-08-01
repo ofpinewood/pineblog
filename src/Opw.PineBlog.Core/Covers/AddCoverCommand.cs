@@ -44,17 +44,21 @@ namespace Opw.PineBlog.Covers
             private readonly IBlogEntityDbContext _context;
             private readonly IMediator _mediator;
             private readonly IOptions<PineBlogOptions> _blogOptions;
+            private readonly FilePathHelper _filePathHelper;
 
             /// <summary>
             /// Implementation of AddCoverCommand.Handler.
             /// </summary>
             /// <param name="context">The blog entity context.</param>
             /// <param name="mediator">Mediator</param>
-            public Handler(IBlogEntityDbContext context, IMediator mediator, IOptions<PineBlogOptions> blogOptions)
+            /// <param name="filePathHelper">File path helper.</param>
+            /// <param name="blogOptions">The blog options.</param>
+            public Handler(IBlogEntityDbContext context, IMediator mediator, FilePathHelper filePathHelper, IOptions<PineBlogOptions> blogOptions)
             {
                 _context = context;
                 _mediator = mediator;
                 _blogOptions = blogOptions;
+                _filePathHelper = filePathHelper;
             }
 
             /// <summary>
@@ -75,9 +79,10 @@ namespace Opw.PineBlog.Covers
                 if (!result.IsSuccess)
                     return Result<Cover>.Fail(result.Exception);
 
+                var url = _filePathHelper.GetPathFormat(result.Value);
                 var entity = new Cover
                 {
-                    Url = result.Value,
+                    Url = url,
                     Caption = request.Caption,
                     Link = request.Link
                 };
