@@ -69,7 +69,7 @@ namespace Opw.PineBlog.Areas.Admin.Pages
 
             var result = await pageModel.OnPostAsync(default);
 
-            result.Should().BeOfType<RedirectToPageResult>();
+            result.Should().BeOfType<RedirectToPageResult>().Which.PageName.Should().Be("UpdatePost");
         }
 
         [Fact]
@@ -102,39 +102,6 @@ namespace Opw.PineBlog.Areas.Admin.Pages
 
             pageModel.Post.Should().NotBeNull();
             pageModel.Post.UserName.Should().Be("user@example.com");
-        }
-
-        [Fact]
-        public async Task OnPostAsync_Should_SetModelStateError_OnValidationError_TitleProperty()
-        {
-            var loggerMock = new Mock<ILogger<AddPostModel>>();
-            var mediaterMock = new Mock<IMediator>();
-            mediaterMock.Setup(m => m.Send(It.IsAny<IRequest<Result<Post>>>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Result<Post>.Fail(new ApplicationException("Error!")));
-
-            var httpContext = new DefaultHttpContext();
-            httpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new Claim[] { new Claim(ClaimTypes.Name, "user@example.com") }));
-            var pageContext = GetPageContext(httpContext);
-
-            var pageModel = new AddPostModel(mediaterMock.Object, loggerMock.Object)
-            {
-                PageContext = pageContext.Item1,
-                TempData = GetTempDataDictionary(httpContext),
-                Url = new UrlHelper(pageContext.Item2),
-                Post = new AddPostCommand
-                {
-                    Categories = "category",
-                    Content = "content",
-                    Description = "description"
-                }
-            };
-
-            pageModel.ModelState.AddModelError("Post.Title", "Error!");
-            var result = await pageModel.OnPostAsync(default);
-
-            result.Should().BeOfType<PageResult>();
-
-            pageModel.ModelState.GetValueOrDefault("Post.Title").Errors.First().ErrorMessage.Should().Be("Error!");
         }
 
         [Fact]

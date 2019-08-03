@@ -23,11 +23,9 @@ namespace Opw.PineBlog.Posts
             Task action() => Mediator.Send(new AddPostCommand());
 
             var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
-            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(AddPostCommand.UserName))).Should().NotBeNull();
-            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(AddPostCommand.Title))).Should().NotBeNull();
-            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(AddPostCommand.Description))).Should().NotBeNull();
-            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(AddPostCommand.Categories))).Should().NotBeNull();
-            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(AddPostCommand.Content))).Should().NotBeNull();
+            ex.Errors.Single(e => e.Key.Equals(nameof(AddPostCommand.UserName))).Should().NotBeNull();
+            ex.Errors.Single(e => e.Key.Equals(nameof(AddPostCommand.Title))).Should().NotBeNull();
+            ex.Errors.Single(e => e.Key.Equals(nameof(AddPostCommand.Content))).Should().NotBeNull();
         }
 
         [Fact]

@@ -35,8 +35,8 @@ namespace Opw.PineBlog.Files
             Task action() => Mediator.Send(new UploadFileCommand());
 
             var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
-            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(UploadFileCommand.File))).Should().NotBeNull();
-            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(UploadFileCommand.AllowedFileType))).Should().NotBeNull();
+            ex.Errors.Single(e => e.Key.Equals(nameof(UploadFileCommand.File))).Should().NotBeNull();
+            ex.Errors.Single(e => e.Key.Equals(nameof(UploadFileCommand.AllowedFileType))).Should().NotBeNull();
         }
 
         [Fact]
@@ -56,7 +56,7 @@ namespace Opw.PineBlog.Files
             Task action() => Mediator.Send(new UploadFileCommand { File = _formFileMock.Object, AllowedFileType = FileType.All });
 
             var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
-            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(UploadFileCommand.File))).Value[0].ErrorMessage.Should().Contain("is empty");
+            ex.Errors.Single(e => e.Key.Equals(nameof(UploadFileCommand.File))).Value[0].ErrorMessage.Should().Contain("is empty");
         }
 
         [Fact]
@@ -67,7 +67,7 @@ namespace Opw.PineBlog.Files
             Task action() => Mediator.Send(new UploadFileCommand { File = _formFileMock.Object, AllowedFileType = FileType.All });
 
             var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
-            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(UploadFileCommand.File))).Value[0].ErrorMessage.Should().Contain("exceeds");
+            ex.Errors.Single(e => e.Key.Equals(nameof(UploadFileCommand.File))).Value[0].ErrorMessage.Should().Contain("exceeds");
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace Opw.PineBlog.Files
             Task action() => Mediator.Send(new UploadFileCommand { File = _formFileMock.Object, AllowedFileType = FileType.Image });
 
             var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
-            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(UploadFileCommand.File))).Value[0].ErrorMessage.Should().Contain("must be of type");
+            ex.Errors.Single(e => e.Key.Equals(nameof(UploadFileCommand.File))).Value[0].ErrorMessage.Should().Contain("must be of type");
         }
 
         [Fact]

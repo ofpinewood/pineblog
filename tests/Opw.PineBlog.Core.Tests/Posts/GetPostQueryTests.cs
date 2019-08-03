@@ -26,7 +26,7 @@ namespace Opw.PineBlog.Posts
             });
 
             var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
-            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(GetPostQuery.Slug))).Should().NotBeNull();
+            ex.Errors.Single(e => e.Key.Equals(nameof(GetPostQuery.Slug))).Should().NotBeNull();
         }
 
         [Fact]

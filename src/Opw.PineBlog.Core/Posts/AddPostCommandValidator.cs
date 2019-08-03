@@ -1,22 +1,16 @@
-using FluentValidation;
 
 namespace Opw.PineBlog.Posts
 {
     /// <summary>
     /// Validator for the AddPostCommand request.
     /// </summary>
-    public class AddPostCommandValidator : AbstractValidator<AddPostCommand>
+    public class AddPostCommandValidator : EditPostCommandValidator
     {
         /// <summary>
         /// Implementation of AddPostCommandValidator.
         /// </summary>
-        public AddPostCommandValidator()
+        public AddPostCommandValidator() : base()
         {
-            RuleFor(c => c.UserName).NotEmpty();
-            RuleFor(c => c.Title).MaximumLength(160).NotEmpty();
-            RuleFor(c => c.Description).MaximumLength(450);
-            RuleFor(c => c.Categories).MaximumLength(2000);
-            RuleFor(c => c.Content).NotEmpty();
         }
     }
 }

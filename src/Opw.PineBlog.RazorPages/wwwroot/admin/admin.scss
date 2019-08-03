@@ -13,6 +13,29 @@
         &.field-validation-error {
             display: block;
         }
+
+        &.validation-summary-errors {
+            border-radius: 0;
+            border: none;
+            margin: 0;
+            padding: 0;
+            top: unset;
+            position: unset;
+            z-index: inherit;
+            display: block;
+
+            ul {
+                padding-top: 1rem;
+                margin-top: unset;
+
+                @include make-container();
+                @include make-container-max-widths();
+
+                li {
+                    list-style: none;
+                }
+            }
+        }
     }
 
     .invalid-feedback {

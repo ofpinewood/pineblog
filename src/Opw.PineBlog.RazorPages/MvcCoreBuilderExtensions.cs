@@ -1,5 +1,8 @@
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
+using Opw.PineBlog.Areas.Admin.Pages;
+using Opw.PineBlog.Posts;
 
 namespace Opw.PineBlog
 {
@@ -22,7 +25,10 @@ namespace Opw.PineBlog
                 option.Conventions.AuthorizeAreaFolder("Admin", "/");
                 option.Conventions.AddAreaPageRoute("Blog", "/Post", "blog/{*slug}");
             });
-            builder.AddFluentValidation();
+            builder.AddFluentValidation(config => {
+                //config.ImplicitlyValidateChildProperties = true;
+                //config.RegisterValidatorsFromAssembly(typeof(AddPostCommandValidator).Assembly);
+            });
 
             return builder;
         }
@@ -41,7 +47,10 @@ namespace Opw.PineBlog
                 option.Conventions.AuthorizeAreaFolder("Admin", "/");
                 option.Conventions.AddAreaPageRoute("Blog", "/Post", "blog/{*slug}");
             });
-            builder.AddFluentValidation();
+            builder.AddFluentValidation(config => {
+                //config.ImplicitlyValidateChildProperties = true;
+                //config.RegisterValidatorsFromAssembly(typeof(AddPostCommandValidator).Assembly);
+            });
 
             return builder;
         }

@@ -35,8 +35,8 @@ namespace Opw.PineBlog.Files
             Task action() => Mediator.Send(new UploadAzureBlobCommand());
 
             var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
-            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(UploadAzureBlobCommand.FileName))).Should().NotBeNull();
-            ex.Errors.SingleOrDefault(e => e.Key.Equals(nameof(UploadAzureBlobCommand.FileStream))).Should().NotBeNull();
+            ex.Errors.Single(e => e.Key.Equals(nameof(UploadAzureBlobCommand.FileName))).Should().NotBeNull();
+            ex.Errors.Single(e => e.Key.Equals(nameof(UploadAzureBlobCommand.FileStream))).Should().NotBeNull();
         }
 
         [Fact(Skip = "Integration Test; requires Azure Storage Emulator.")]

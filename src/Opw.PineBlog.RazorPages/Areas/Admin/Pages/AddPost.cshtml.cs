@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Opw.PineBlog.Entities;
 using Opw.PineBlog.Posts;
 
 namespace Opw.PineBlog.Areas.Admin.Pages
@@ -14,8 +13,6 @@ namespace Opw.PineBlog.Areas.Admin.Pages
 
         [BindProperty]
         public AddPostCommand Post { get; set; }
-
-        public Cover Cover { get; set; }
 
         public AddPostModel(IMediator mediator, ILogger<AddPostModel> logger) : base(logger)
         {
@@ -31,7 +28,7 @@ namespace Opw.PineBlog.Areas.Admin.Pages
 
         public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
         {
-            ModelState.Remove($"{nameof(Post)}.{nameof(Post.UserName)}");
+            ModelState.Remove(nameof(Post.UserName));
             if (!ModelState.IsValid)
                 return Page();
 
@@ -45,7 +42,7 @@ namespace Opw.PineBlog.Areas.Admin.Pages
                 return Page();
             }
 
-            return RedirectToPage("Posts");
+            return RedirectToPage("UpdatePost", new { id = result.Value.Id });
         }
     }
 }

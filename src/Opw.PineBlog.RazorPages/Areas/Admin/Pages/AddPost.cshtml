@@ -2,84 +2,33 @@
 @model AddPostModel
 @section scripts {
     <script type="text/javascript">
+        var _editor = {};
+
         $(function () {
             var simplemde = new SimpleMDE({
-                element: document.getElementById('Post_Content')
+                element: document.getElementById('Content'),
+                toolbar: [
+                    "bold", "italic", "heading", "heading-2", "|",
+                    "quote", "unordered-list", "ordered-list", "|",
+                    "code", "link",
+                    {
+                        name: "insertImage",
+                        action: function customFunction(editor) {
+                            _editor = editor;
+				            fileManager.open(insertImageCallback);
+			            },
+                        className: "fa fa-folder-open",
+                        title: "Insert image"
+                    },
+                    "|",
+                    "preview", "side-by-side", "fullscreen", "|",
+                    "guide"
+                ]
             });
         });
     </script>
 }
 <form method="post" class="post-editor d-flex flex-column">
-    <div class="post-cover" style="background-image: url('/@Model.Cover?.Url')">
-        <div class="container">
-            <div>
-                <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                    <input type="submit" class="btn btn-primary" value="Save" />
-
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Publish</a>
-                            <a class="dropdown-item" href="#">Delete</a>
-                        </div>
-                    </div>
-                </div>
-
-                <button type="button" class="btn btn-outline-light">View</button>
-                <button type="button" class="btn btn-outline-light">Cancel</button>
-
-                <div class="btn-group float-right" role="group">
-                    <button type="button" class="btn btn-outline-light" title="Cover" data-toggle="modal" data-target="#coverModal">
-                        <i class="fa fa-picture-o" aria-hidden="true"></i>
-                    </button>
-                    <button type="button" class="btn btn-outline-light" title="Settings" data-toggle="modal" data-target="#settingsModal">
-                        <i class="fa fa-cog" aria-hidden="true"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="form-group">
-                <textarea asp-for="Post.Title" placeholder="Post title.."></textarea>
-                <span asp-validation-for="Post.Title" class="invalid-tooltip"></span>
-            </div>
-        </div>
-    </div>
-
-    @*<div asp-validation-summary="ModelOnly"></div>*@
-    <div class="md-editor">
-        <span asp-validation-for="Post.Content" class="invalid-tooltip"></span>
-        <textarea asp-for="Post.Content"></textarea>        
-    </div>
-
-    <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Post Settings</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label asp-for="Post.Categories"></label>
-                        <input asp-for="Post.Categories" class="form-control">
-                        <span asp-validation-for="Post.Categories" class="invalid-feedback"></span>
-                        <small class="form-text text-muted">Comma separated list of categories.</small>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Post.Description"></label>
-                        <textarea asp-for="Post.Description" class="form-control"></textarea>
-                        <span asp-validation-for="Post.Description" class="invalid-feedback"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Post.Published"></label>
-                        <input asp-for="Post.Published" class="form-control">
-                        <span asp-validation-for="Post.Published" class="invalid-feedback"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <partial name="_EditPost" model="Model.Post" />
 </form>
 <partial name="_FileManager" />

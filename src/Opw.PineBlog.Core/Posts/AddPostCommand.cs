@@ -11,7 +11,7 @@ namespace Opw.PineBlog.Posts
     /// <summary>
     /// Command that adds a post.
     /// </summary>
-    public class AddPostCommand : IRequest<Result<Post>>
+    public class AddPostCommand : IRequest<Result<Post>>, IEditPostCommand
     {
         /// <summary>
         /// The name of the user adding the post.
@@ -44,9 +44,19 @@ namespace Opw.PineBlog.Posts
         public DateTime? Published { get; set; }
 
         /// <summary>
-        /// Cover ID.
+        /// Cover UURLrl.
         /// </summary>
-        public Guid? CoverId { get; set; }
+        public string CoverUrl { get; set; }
+
+        /// <summary>
+        /// Cover caption.
+        /// </summary>
+        public string CoverCaption { get; set; }
+
+        /// <summary>
+        /// Cover link.
+        /// </summary>
+        public string CoverLink { get; set; }
 
         /// <summary>
         /// Handler for the AddPostCommand.
@@ -82,9 +92,18 @@ namespace Opw.PineBlog.Posts
                     Slug = request.Title.ToSlug(),
                     Description = request.Description,
                     Content = request.Content,
-                    Categories = request.Categories,
-                    // TODO: fix CoverId = request.CoverId
+                    Categories = request.Categories
                 };
+
+                if (!string.IsNullOrEmpty(request.CoverUrl))
+                {
+                    entity.Cover = new Cover
+                    {
+                        Url = request.CoverUrl,
+                        Caption = request.CoverCaption,
+                        Link = request.CoverLink
+                    };
+                }
 
                 _context.Posts.Add(entity);
                 await _context.SaveChangesAsync(cancellationToken);

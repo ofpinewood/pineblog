@@ -34,6 +34,7 @@ namespace Opw.PineBlog
             ServiceRegistrar.AddMediatRClasses(services, new[] { typeof(AddPostCommand).Assembly });
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+            services.AddTransient<IValidator<IEditPostCommand>, EditPostCommandValidator>();
             services.AddTransient<IValidator<AddPostCommand>, AddPostCommandValidator>();
             services.AddTransient<IValidator<GetPostQuery>, GetPostQueryValidator>();
             services.AddTransient<IValidator<UploadFileCommand>, UploadFileCommandValidator>();
