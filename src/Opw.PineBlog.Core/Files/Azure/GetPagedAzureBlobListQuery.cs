@@ -21,7 +21,7 @@ namespace Opw.PineBlog.Files.Azure
         public Pager Pager { get; set; }
 
         /// <summary>
-        /// The directory path.
+        /// The directory path to get the files from.
         /// </summary>
         public string DirectoryPath { get; set; }
 

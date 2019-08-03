@@ -23,6 +23,11 @@ namespace Opw.PineBlog.Files
         public int? ItemsPerPage { get; set; }
 
         /// <summary>
+        /// The directory path to get the files from.
+        /// </summary>
+        public string DirectoryPath { get; set; }
+
+        /// <summary>
         /// Handler for the GetPagedFileListQuery.
         /// </summary>
         public class Handler : IRequestHandler<GetPagedFileListQuery, Result<FileListModel>>

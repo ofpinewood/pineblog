@@ -3,9 +3,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Opw.PineBlog.Models;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -17,6 +15,8 @@ namespace Opw.PineBlog.Files.Azure
         {
             // use the actual UploadAzureBlobCommand for these tests, not the mock
             Services.AddTransient<IRequestHandler<UploadAzureBlobCommand, Result<string>>, UploadAzureBlobCommand.Handler>();
+            // use the actual GetPagedAzureBlobListQuery for these tests, not the mock
+            Services.AddTransient<IRequestHandler<GetPagedAzureBlobListQuery, Result<FileListModel>>, GetPagedAzureBlobListQuery.Handler>();
         }
 
         [Fact(Skip = "Integration Test; requires Azure Storage Emulator.")]
