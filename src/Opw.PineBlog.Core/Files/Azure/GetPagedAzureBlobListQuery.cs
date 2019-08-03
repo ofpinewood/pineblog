@@ -89,7 +89,7 @@ namespace Opw.PineBlog.Files.Azure
                     .Take(pager.ItemsPerPage);
             }
 
-            private async Task<List<IListBlobItem>> ListAsync(CloudBlobDirectory directory, CancellationToken cancellationToken = default(CancellationToken))
+            private async Task<List<IListBlobItem>> ListAsync(CloudBlobDirectory directory, CancellationToken cancellationToken)
             {
                 var blobsInDirectory = new List<IListBlobItem>();
                 BlobContinuationToken blobContinuationToken = null;
