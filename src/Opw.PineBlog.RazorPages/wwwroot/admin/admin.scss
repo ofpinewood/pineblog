@@ -110,6 +110,34 @@
         }
     }
 
+    .fileManager {
+        .file {
+            .file-image {
+                position: relative;
+                height: 9.5rem;
+                overflow: hidden;
+                border: 1px solid #eee;
+                //border-bottom: 0;
+                img {
+                    width: auto;
+                    min-height: 100%;
+                    min-width: 100%;
+                    max-width: 150%;
+                    max-height: none;
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    display: block;
+                    transform: translate(-50%, -50%)
+                }
+            }
+        }
+
+        .file-pagination {
+            width: 100%;
+        }
+    }
+
     .table .cover-image {
         width: 16rem;
         height: 9rem;

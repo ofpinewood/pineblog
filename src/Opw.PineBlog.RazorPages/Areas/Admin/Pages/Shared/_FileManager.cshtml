@@ -1,4 +1,4 @@
-<div class="modal fade" id="fileManagerModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade fileManager" id="fileManagerModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -37,8 +37,8 @@
             <div class="modal-body">
                 <div id="fileManagerList" class="row no-gutters"></div>
             </div>
-            <div class="modal-footer d-flex">
-                @*<div id="file-pagination" class="file-pagination" role="group"></div>*@
+            <div class="modal-footer">
+                <div id="file-pagination" class="file-pagination" role="group"></div>
                 <button class="btn btn-link" type="button" data-dismiss="modal">Cancel</button>
                 <button id="btnSelect" class="btn btn-primary" type="button" onclick="return fileManager.pick('')">Select</button>
             </div>

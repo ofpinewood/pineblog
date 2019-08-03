@@ -1,4 +1,5 @@
 @model Opw.PineBlog.Posts.IEditPostCommand
+<input asp-for="Slug" type="hidden">
 <input asp-for="CoverUrl" type="hidden">
 <div class="post-cover" style="background-image: url('/@Model.CoverUrl')">
     <div class="container">
@@ -19,7 +20,7 @@
             <button type="button" class="btn btn-outline-light">Cancel</button>
 
             <div class="btn-group float-right" role="group">
-                <button type="button" class="btn btn-outline-light" title="Cover" onclick="fileManager.open(updatePostCoverCallback); return false;">
+                <button type="button" class="btn btn-outline-light" title="Cover" onclick="fileManager.open(updatePostCoverCallback, '@Model.Slug', 'image'); return false;">
                     <i class="fa fa-picture-o" aria-hidden="true"></i>
                 </button>
                 <button type="button" class="btn btn-outline-light" title="Settings" data-toggle="modal" data-target="#settingsModal">

@@ -49,7 +49,8 @@ namespace Opw.PineBlog.Controllers
                 {
                     Page = page,
                     FileType = fileType,
-                    DirectoryPath = directoryPath
+                    DirectoryPath = directoryPath,
+                    ItemsPerPage = 9
                 }, cancellationToken);
 
                 if (!result.IsSuccess)

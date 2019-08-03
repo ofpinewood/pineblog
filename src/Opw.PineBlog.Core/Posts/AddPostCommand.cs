@@ -19,9 +19,14 @@ namespace Opw.PineBlog.Posts
         public string UserName { get; set; }
 
         /// <summary>
-        /// The post title
+        /// The post title.
         /// </summary>
         public string Title { get; set; }
+
+        /// <summary>
+        /// The slug for this post, until the post is published a temporary slug will be used.
+        /// </summary>
+        public string Slug { get; set; } = DateTime.UtcNow.Ticks.ToString();
 
         /// <summary>
         /// A short description for the post.
@@ -89,7 +94,7 @@ namespace Opw.PineBlog.Posts
                 {
                     AuthorId = author.Id,
                     Title = request.Title,
-                    Slug = request.Title.ToSlug(),
+                    Slug = request.Slug,
                     Description = request.Description,
                     Content = request.Content,
                     Categories = request.Categories

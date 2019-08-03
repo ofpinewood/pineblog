@@ -67,7 +67,7 @@ namespace Opw.PineBlog.Posts
         }
 
         [Fact]
-        public async Task Handler_Should_SetSlug()
+        public async Task Handler_Should_HaveTemporarySlug()
         {
             var result = await Mediator.Send(new AddPostCommand
             {
@@ -80,7 +80,7 @@ namespace Opw.PineBlog.Posts
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Title.Should().Be("title or slug");
-            result.Value.Slug.Should().Be("title-or-slug");
+            result.Value.Slug.Should().MatchRegex("[0-9]");
         }
 
         private void SeedDatabase()

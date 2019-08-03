@@ -3,6 +3,7 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Moq;
 using Opw.HttpExceptions;
+using Opw.PineBlog.Models;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;

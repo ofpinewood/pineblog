@@ -13,9 +13,14 @@ namespace Opw.PineBlog.Posts
         string UserName { get; set; }
 
         /// <summary>
-        /// The post title
+        /// The post title.
         /// </summary>
         string Title { get; set; }
+
+        /// <summary>
+        /// The slug for this post.
+        /// </summary>
+        string Slug { get; set; }
 
         /// <summary>
         /// A short description for the post.

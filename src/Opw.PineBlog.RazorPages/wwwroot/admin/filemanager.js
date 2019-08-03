@@ -1,10 +1,15 @@
 var fileManager = function (dataService) {
-    var callBack;
+    var _openCallback;
+    var _directoryPath;
+    var _fileType;
 
-    function open(openCallback) {
+    function open(openCallback, directoryPath, fileType) {
+        _openCallback = openCallback;
+        _directoryPath = directoryPath;
+        _fileType = fileType;
+
         $('#fileManagerModal').modal();
         load(1);
-        callBack = openCallback;
     }
 
     function close() {
@@ -13,13 +18,13 @@ var fileManager = function (dataService) {
 
     function pick(id) {
         var items = $('.filemanager .item-check:checked');
-        if (callBack.name === 'insertImageCallback') {
+        if (_openCallback.name === 'insertImageCallback') {
             if (items.length === 0) {
-                callBack(id);
+                _openCallback(id);
             }
             else {
                 for (i = 0; i < items.length; i++) {
-                    callBack(items[i].id);
+                    _openCallback(items[i].id);
                 }
             }
         }
@@ -33,8 +38,8 @@ var fileManager = function (dataService) {
                 }
             }
             var url = 'assets/' + id;
-            if (callBack.name === 'updatePostCoverCallback') {
-                url = 'api/assets/pick?type=postCover&asset=' + id + '&post=' + $('#Post_Id').val();
+            if (_openCallback.name === 'updatePostCoverCallback') {
+                url = 'api/file/pick?type=postCover&asset=' + id + '&post=' + $('#Post_Id').val();
             }
             //else if (callBack.name === 'updateAppCoverCallback') {
             //    url = 'api/assets/pick?type=appCover&asset=' + id;
@@ -45,7 +50,7 @@ var fileManager = function (dataService) {
             //else if (callBack.name === 'updateAvatarCallback') {
             //    url = 'api/assets/pick?type=avatar&asset=' + id;
             //}
-            dataService.get(url, callBack, fail);
+            dataService.get(url, _openCallback, fail);
         }
         close();
     }
@@ -57,12 +62,12 @@ var fileManager = function (dataService) {
 
     function uploadSubmit() {
         var data = new FormData($('#frmUpload')[0]);
-        dataService.upload('api/file/upload', data, submitCallback, fail);
+        dataService.upload('api/file/upload?targetPath=' + _directoryPath, data, submitCallback, fail);
     }
 
-    //function submitCallback() {
-    //    load(1);
-    //}
+    function submitCallback() {
+        load(1);
+    }
 
     //function remove() {
     //    loading();
@@ -83,6 +88,9 @@ var fileManager = function (dataService) {
     //}
 
     function load(page) {
+        dataService.get('api/file?page=' + page + '&fileType=' + _fileType + '&directoryPath=' + _directoryPath, loadCallback, fail);
+        return false;
+
         //$('#check-all').prop('checked', false);
         //var filter = $('input[name=filter]:checked').val();
         //if (!filter) {
@@ -93,51 +101,49 @@ var fileManager = function (dataService) {
         //    dataService.get('api/assets?page=' + page + '&filter=' + filter + '&search=' + search, loadCallback, fail);
         //}
         //else {
-            dataService.get('api/files?page=' + page + '&filter=' + filter, loadCallback, fail);
+        //    dataService.get('api/files?page=' + page + '&filter=' + filter, loadCallback, fail);
         //}
-        return false;
     }
 
-    //function loadCallback(data) {
-    //    $('#fileManagerList').empty();
-    //    var assets = data.assets;
-    //    $.each(assets, function (index) {
-    //        var asset = assets[index];
-    //        var src = asset.assetType === 0 ? webRoot + asset.url : webRoot + asset.image;
-    //        var tag = '<div class="col-sm-6 col-md-4 col-lg-3">' +
-    //            '	<div class="item">' +
-    //            '		<div class="item-img" onclick="fileManagerController.pick(\'' + asset.url + '\'); return false"><img src="' + src + '" alt="' + asset.title + '" /></div>' +
-    //            '		<label class="custom-control custom-checkbox item-name">' +
-    //            '			<input type="checkbox" id="' + asset.url + '" class="custom-control-input item-check" onchange="fileManagerController.check(this)">' +
-    //            '			<span class="custom-control-label">' + asset.title + '</span>' +
-    //            '		</label>' +
-    //            '	</div>' +
-    //            '</div>';
-    //        $("#fileManagerList").append(tag);
-    //    });
-    //    loadPager(data.pager);
-    //}
-    //function loadPager(pg) {
-    //    $('#file-pagination').empty();
+    function loadCallback(data) {
+        $('#fileManagerList').empty();
+        var files = data.files;
+        $.each(files, function (index) {
+            var file = files[index];
+            var tag = '<div class="col-md-4">' +
+                '	<div class="file">' +
+                '		<div class="file-image" onclick="fileManager.pick(\'' + file + '\'); return false"><img src="' + file + '" /></div>' +
+                //'		<label class="custom-control custom-checkbox item-name">' +
+                //'			<input type="checkbox" id="' + file + '" class="custom-control-input item-check" onchange="fileManager.check(this)">' +
+                //'			<span class="custom-control-label">' + file + '</span>' +
+                //'		</label>' +
+                '	</div>' +
+                '</div>';
+            $("#fileManagerList").append(tag);
+        });
+        loadPager(data.pager);
+    }
 
-    //    var last = pg.currentPage * pg.itemsPerPage;
-    //    var first = pg.currentPage === 1 ? 1 : ((pg.currentPage - 1) * pg.itemsPerPage) + 1;
-    //    if (last > pg.total) { last = pg.total; }
+    function loadPager(pg) {
+        $('#file-pagination').empty();
 
-    //    var pager = "";
+        var last = pg.currentPage * pg.itemsPerPage;
+        var first = pg.currentPage === 1 ? 1 : ((pg.currentPage - 1) * pg.itemsPerPage) + 1;
+        if (last > pg.total) { last = pg.total; }
 
-    //    if (pg.showOlder === true) {
-    //        pager += '<button type="button" class="btn btn-sm btn-link" onclick="return fileManagerController.load(' + pg.older + ')"><i class="fa fa-chevron-left"></i></button>';
-    //    }
-    //    pager += '<span class="bf-filemanager-pagination">' + first + '-' + last + ' out of ' + pg.total + '</span>';
-    //    if (pg.showNewer === true) {
-    //        pager += '<button type="button" class="btn btn-sm btn-link" onclick="return fileManagerController.load(' + pg.newer + ')"><i class="fa fa-chevron-right"></i></button>';
-    //    }
+        var pager = "";
 
+        if (pg.showOlder === true) {
+            pager += '<button type="button" class="btn btn-link" onclick="return fileManager.load(' + pg.older + ')"><i class="fa fa-chevron-left"></i></button>';
+        }
+        pager += '<span class="filemanager-pagination">' + first + '-' + last + ' out of ' + pg.total + '</span>';
+        if (pg.showNewer === true) {
+            pager += '<button type="button" class="btn btn-link" onclick="return fileManager.load(' + pg.newer + ')"><i class="fa fa-chevron-right"></i></button>';
+        }
 
-    //    $('#file-pagination').append(pager);
-    //    showBtns();
-    //}
+        $('#file-pagination').append(pager);
+        //showBtns();
+    }
 
     //function loading() {
     //    $('#btnDelete').hide();
@@ -155,6 +161,7 @@ var fileManager = function (dataService) {
     //    }
     //    showBtns();
     //}
+
     //function showBtns() {
     //    var items = $('.bf-filemanager .item-check:checked');
     //    if (items.length > 0) {
@@ -170,7 +177,7 @@ var fileManager = function (dataService) {
     return {
         open: open,
         close: close,
-        //load: load,
+        load: load,
         pick: pick,
         uploadClick: uploadClick,
         uploadSubmit: uploadSubmit,
