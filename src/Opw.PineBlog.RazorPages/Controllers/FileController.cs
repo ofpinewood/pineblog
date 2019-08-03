@@ -6,7 +6,6 @@ using Microsoft.Extensions.Logging;
 using Opw.PineBlog.Files;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -38,42 +37,31 @@ namespace Opw.PineBlog.Controllers
         /// Get list of images and files.
         /// </summary>
         /// <param name="page">Page number</param>
+        /// <param name="directoryPath">The directory path to get the files from</param>
+        /// <param name="fileType">The file type to filter on.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
         [HttpGet]
-        public async Task<IActionResult> Get(int page = 1)
+        public async Task<IActionResult> Get(CancellationToken cancellationToken, int page = 1, string directoryPath = "", FileType fileType = FileType.All)
         {
-            //var blog = await _data.CustomFields.GetBlogSettings();
-            //var pager = new Pager(page, blog.ItemsPerPage);
-            //IEnumerable<AssetItem> items;
+            try
+            {
+                var result = await _mediator.Send(new GetPagedFileListQuery
+                {
+                    Page = page,
+                    FileType = fileType,
+                    DirectoryPath = directoryPath
+                }, cancellationToken);
 
-            //if (string.IsNullOrEmpty(search))
-            //{
-            //    if (filter == "filterImages")
-            //    {
-            //        items = await _store.Find(a => a.AssetType == AssetType.Image, pager, "", !User.Identity.IsAuthenticated);
-            //    }
-            //    else if (filter == "filterAttachments")
-            //    {
-            //        items = await _store.Find(a => a.AssetType == AssetType.Attachment, pager, "", !User.Identity.IsAuthenticated);
-            //    }
-            //    else
-            //    {
-            //        items = await _store.Find(null, pager, "", !User.Identity.IsAuthenticated);
-            //    }
-            //}
-            //else
-            //{
-            //    items = await _store.Find(a => a.Title.Contains(search), pager, "", !User.Identity.IsAuthenticated);
-            //}
+                if (!result.IsSuccess)
+                    throw result.Exception;
 
-            //if (page < 1 || page > pager.LastPage)
-            //    return null;
-
-            //return new AssetsModel
-            //{
-            //    Assets = items,
-            //    Pager = pager
-            //};
-            return null;
+                return Ok(result.Value);
+            }
+            catch (Exception)
+            {
+                // TODO: is a StatusCode result caught by HttpExceptions middleware?
+                return StatusCode(StatusCodes.Status500InternalServerError, "Get files error");
+            }
         }
 
         /// <summary>

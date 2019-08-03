@@ -2,7 +2,6 @@ using MediatR;
 using Microsoft.Azure.Storage.Blob;
 using Microsoft.Extensions.Options;
 using Opw.PineBlog.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -24,6 +23,11 @@ namespace Opw.PineBlog.Files.Azure
         /// The directory path to get the files from.
         /// </summary>
         public string DirectoryPath { get; set; }
+
+        /// <summary>
+        /// The file type to filter on.
+        /// </summary>
+        public FileType FileType { get; set; } = FileType.All;
 
         /// <summary>
         /// Handler for the GetPagedAzureBlobListQuery.
@@ -56,7 +60,7 @@ namespace Opw.PineBlog.Files.Azure
                     return Result<FileListModel>.Fail(cloudBlobContainer.Exception);
 
                 var pager = request.Pager;
-                var files = await GetPagedListAsync(pager, cloudBlobContainer.Value, request.DirectoryPath, cancellationToken);
+                var files = await GetPagedListAsync(pager, cloudBlobContainer.Value, request.DirectoryPath, request.FileType, cancellationToken);
 
                 var model = new FileListModel
                 {
@@ -71,6 +75,7 @@ namespace Opw.PineBlog.Files.Azure
                 Pager pager,
                 CloudBlobContainer cloudBlobContainer,
                 string directoryPath,
+                FileType fileType,
                 CancellationToken cancellationToken)
             {
                 var directory = cloudBlobContainer.GetDirectoryReference(directoryPath);
@@ -78,6 +83,9 @@ namespace Opw.PineBlog.Files.Azure
                 var files = blobs.Select(b => b.Uri.AbsoluteUri);
 
                 var skip = (pager.CurrentPage - 1) * pager.ItemsPerPage;
+
+                if (fileType != FileType.All)
+                    files = files.Where(f => fileType.IsFileTypeSupported(f.GetMimeType()));
 
                 var count = files.Count();
 

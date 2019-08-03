@@ -55,6 +55,24 @@ namespace Opw.PineBlog.Files.Azure
             result.Value.Pager.Total.Should().Be(9);
         }
 
+        [Fact(Skip = "Integration Test; requires Azure Storage Emulator.")]
+        public async Task Handler_Should_Return3Files_ForFileTypeImage()
+        {
+            var directory = $"{DateTime.UtcNow.Ticks}-{Guid.NewGuid()}";
+            await Mediator.Send(new UploadAzureBlobCommand { FileStream = GetFileStream(), FileName = "file-0.txt", TargetPath = directory });
+            await Mediator.Send(new UploadAzureBlobCommand { FileStream = GetFileStream(), FileName = "file-1.txt", TargetPath = directory });
+            await Mediator.Send(new UploadAzureBlobCommand { FileStream = GetFileStream(), FileName = "file-2.gif", TargetPath = directory });
+            await Mediator.Send(new UploadAzureBlobCommand { FileStream = GetFileStream(), FileName = "file-3.jpg", TargetPath = directory });
+            await Mediator.Send(new UploadAzureBlobCommand { FileStream = GetFileStream(), FileName = "file-4.png", TargetPath = directory });
+
+            var result = await Mediator.Send(new GetPagedAzureBlobListQuery { DirectoryPath = directory, FileType = FileType.Image, Pager = new Pager(1, 5) });
+
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Should().NotBeNull();
+            result.Value.Files.Should().HaveCount(3);
+            result.Value.Pager.Total.Should().Be(3);
+        }
+
         public Stream GetFileStream()
         {
             var fileStream = new MemoryStream();

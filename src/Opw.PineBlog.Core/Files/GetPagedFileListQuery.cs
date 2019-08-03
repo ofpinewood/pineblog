@@ -25,7 +25,12 @@ namespace Opw.PineBlog.Files
         /// <summary>
         /// The directory path to get the files from.
         /// </summary>
-        public string DirectoryPath { get; set; }
+        public string DirectoryPath { get; set; } = "";
+
+        /// <summary>
+        /// The file type to filter on.
+        /// </summary>
+        public FileType FileType { get; set; } = FileType.All;
 
         /// <summary>
         /// Handler for the GetPagedFileListQuery.
@@ -57,7 +62,9 @@ namespace Opw.PineBlog.Files
                 var pager = new Pager(request.Page, itemsPerPage.Value);
 
                 // TODO: make file source configurable (not only azure blob storage)
-                return await _mediator.Send(new GetPagedAzureBlobListQuery { Pager = pager }, cancellationToken);
+                return await _mediator.Send(
+                    new GetPagedAzureBlobListQuery { Pager = pager, DirectoryPath = request.DirectoryPath, FileType = request.FileType },
+                    cancellationToken);
             }
         }
     }
