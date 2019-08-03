@@ -9,7 +9,8 @@ var gulp = require('gulp'),
     runSequence = require('run-sequence');
 
 var paths = {
-    themeroot: './wwwroot/themes/default/'
+    themeroot: './wwwroot/themes/default/',
+    adminroot: './wwwroot/admin/'
 };
 
 gulp.task('default', function (done) {
@@ -22,30 +23,30 @@ gulp.task('sass', function () {
         .pipe(gulp.dest(paths.themeroot + '/css'));
 });
 gulp.task('sass-admin', function () {
-    return gulp.src(paths.themeroot + '/admin.scss')
+    return gulp.src(paths.adminroot + '/admin.scss')
         .pipe(sass())
-        .pipe(gulp.dest(paths.themeroot + '/css'));
+        .pipe(gulp.dest(paths.adminroot + '/css'));
 });
 
 gulp.task('clean:js', function (cb) {
-    rimraf(paths.themeroot + 'js', cb);
+    rimraf('./wwwroot/**/js', cb);
 });
 
 gulp.task('clean:css', function (cb) {
-    rimraf(paths.themeroot + 'css', cb);
+    rimraf('./wwwroot/**/css', cb);
 });
 
 gulp.task('clean', ['clean:js', 'clean:css']);
 
 gulp.task('min:js', function () {
-    return gulp.src([paths.themeroot + 'prism.js', paths.themeroot + 'theme.js'], { base: '.' })
+    return gulp.src([paths.themeroot + '*.js', !paths.themeroot + 'js/*.min.js'], { base: '.' })
         .pipe(concat(paths.themeroot + 'js/theme.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('.'));
 });
 gulp.task('min:js-admin', function () {
-    return gulp.src([paths.themeroot + 'simplemde.js', paths.themeroot + 'dataservice.js', paths.themeroot + 'filemanager.js', paths.themeroot + 'admin.js'], { base: '.' })
-        .pipe(concat(paths.themeroot + 'js/admin.min.js'))
+    return gulp.src([paths.adminroot + '*.js', !paths.adminroot + 'js/*.min.js'], { base: '.' })
+        .pipe(concat(paths.adminroot + 'js/admin.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('.'));
 });
@@ -57,8 +58,8 @@ gulp.task('min:css', function () {
         .pipe(gulp.dest('.'));
 });
 gulp.task('min:css-admin', function () {
-    return gulp.src([paths.themeroot + 'css/admin.css'])
-        .pipe(concat(paths.themeroot + 'css/admin.min.css'))
+    return gulp.src([paths.adminroot + 'css/admin.css'])
+        .pipe(concat(paths.adminroot + 'css/admin.min.css'))
         .pipe(cssmin())
         .pipe(gulp.dest('.'));
 });

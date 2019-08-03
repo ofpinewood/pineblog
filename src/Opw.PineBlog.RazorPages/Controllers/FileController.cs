@@ -55,13 +55,14 @@ namespace Opw.PineBlog.Controllers
                         TargetPath = targetPath
                     }, cancellationToken);
 
-                    //if (!result.IsSuccess)
-                    //    return Result<Cover>.Fail(result.Exception);
+                    if (!result.IsSuccess)
+                        throw result.Exception;
                 }
                 return Ok("Created");
             }
             catch (Exception)
             {
+                // TODO: is a StatusCode result caught by HttpExceptions middleware?
                 return StatusCode(StatusCodes.Status500InternalServerError, "File upload error");
             }
         }
