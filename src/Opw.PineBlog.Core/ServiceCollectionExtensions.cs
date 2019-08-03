@@ -39,7 +39,6 @@ namespace Opw.PineBlog
             services.AddTransient<IValidator<AddPostCommand>, AddPostCommandValidator>();
             services.AddTransient<IValidator<GetPostQuery>, GetPostQueryValidator>();
             services.AddTransient<IValidator<UploadFileCommand>, UploadFileCommandValidator>();
-            services.AddTransient<IValidator<UploadAzureBlobCommand>, UploadAzureBlobCommandValidator>();
 
             services.AddTransient<FilePathHelper>();
             services.AddTransient<AzureBlobHelper>();
@@ -61,6 +60,8 @@ namespace Opw.PineBlog
 
                 return storageAccount.CreateCloudBlobClient();
             });
+
+            services.AddTransient<IValidator<UploadAzureBlobCommand>, UploadAzureBlobCommandValidator>();
 
             return services;
         }

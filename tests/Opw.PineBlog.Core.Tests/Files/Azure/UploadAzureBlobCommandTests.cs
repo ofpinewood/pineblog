@@ -1,12 +1,8 @@
 using FluentAssertions;
 using FluentValidation.Results;
 using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.Storage.Blob;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
 using Opw.HttpExceptions;
-using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,6 +22,7 @@ namespace Opw.PineBlog.Files.Azure
             writer.Flush();
             _fileStream.Position = 0;
 
+            // use the actual UploadAzureBlobCommand for these tests, not the mock
             Services.AddTransient<IRequestHandler<UploadAzureBlobCommand, Result<string>>, UploadAzureBlobCommand.Handler>();
         }
 
