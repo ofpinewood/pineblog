@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Opw.PineBlog.Files
+namespace Opw.PineBlog.Files.Azure
 {
     /// <summary>
     /// Validator for the UploadAzureBlobCommand request.

@@ -12,7 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Opw.PineBlog.Files
+namespace Opw.PineBlog.Files.Azure
 {
     public class UploadAzureBlobCommandTests : MediatRTestsBase
     {

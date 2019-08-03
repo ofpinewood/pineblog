@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Opw.PineBlog.EntityFrameworkCore;
-using Opw.PineBlog.Files;
+using Opw.PineBlog.Files.Azure;
 using Opw.PineBlog.Posts;
 using System;
 using System.Threading;

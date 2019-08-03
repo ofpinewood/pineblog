@@ -82,21 +82,22 @@ var fileManager = function (dataService) {
     //    load(1);
     //}
 
-    //function load(page) {
-    //    $('#check-all').prop('checked', false);
-    //    var filter = $('input[name=filter]:checked').val();
-    //    if (!filter) {
-    //        filter = 'filterAll';
-    //    }
-    //    var search = $('#asset-search').val();
-    //    if (search && search.length > 0) {
-    //        dataService.get('api/assets?page=' + page + '&filter=' + filter + '&search=' + search, loadCallback, fail);
-    //    }
-    //    else {
-    //        dataService.get('api/assets?page=' + page + '&filter=' + filter, loadCallback, fail);
-    //    }
-    //    return false;
-    //}
+    function load(page) {
+        //$('#check-all').prop('checked', false);
+        //var filter = $('input[name=filter]:checked').val();
+        //if (!filter) {
+        //    filter = 'filterAll';
+        //}
+        //var search = $('#asset-search').val();
+        //if (search && search.length > 0) {
+        //    dataService.get('api/assets?page=' + page + '&filter=' + filter + '&search=' + search, loadCallback, fail);
+        //}
+        //else {
+            dataService.get('api/files?page=' + page + '&filter=' + filter, loadCallback, fail);
+        //}
+        return false;
+    }
+
     //function loadCallback(data) {
     //    $('#fileManagerList').empty();
     //    var assets = data.assets;

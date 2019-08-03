@@ -10,6 +10,7 @@ using Microsoft.Azure.Storage.Blob;
 using Microsoft.Azure.Storage;
 using Microsoft.Extensions.Options;
 using System;
+using Opw.PineBlog.Files.Azure;
 
 namespace Opw.PineBlog
 {
@@ -41,6 +42,7 @@ namespace Opw.PineBlog
             services.AddTransient<IValidator<UploadAzureBlobCommand>, UploadAzureBlobCommandValidator>();
 
             services.AddTransient<FilePathHelper>();
+            services.AddTransient<AzureBlobHelper>();
 
             services.AddPineBlogCoreAzureServices();
 

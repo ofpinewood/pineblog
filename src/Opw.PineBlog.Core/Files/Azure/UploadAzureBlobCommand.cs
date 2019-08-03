@@ -1,12 +1,10 @@
 using MediatR;
-using Microsoft.Azure.Storage.Blob;
-using Microsoft.Extensions.Options;
 using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Opw.PineBlog.Files
+namespace Opw.PineBlog.Files.Azure
 {
     /// <summary>
     /// Command that uploads a blob to Azure blob storage.
@@ -33,18 +31,15 @@ namespace Opw.PineBlog.Files
         /// </summary>
         public class Handler : IRequestHandler<UploadAzureBlobCommand, Result<string>>
         {
-            private readonly CloudBlobClient _cloudBlobClient;
-            private readonly IOptions<PineBlogOptions> _options;
+            private readonly AzureBlobHelper _azureBlobHelper;
 
             /// <summary>
             /// Implementation of AddPostCommand.Handler.
             /// </summary>
-            /// <param name="cloudBlobClient">Cloud blob client.</param>
-            /// <param name="options">The blog options.</param>
-            public Handler(CloudBlobClient cloudBlobClient, IOptions<PineBlogOptions> options)
+            /// <param name="azureBlobHelper">Azure blob helper.</param>
+            public Handler(AzureBlobHelper azureBlobHelper)
             {
-                _cloudBlobClient = cloudBlobClient;
-                _options = options;
+                _azureBlobHelper = azureBlobHelper;
             }
 
             /// <summary>
@@ -54,7 +49,7 @@ namespace Opw.PineBlog.Files
             /// <param name="cancellationToken">A cancellation token.</param>
             public async Task<Result<string>> Handle(UploadAzureBlobCommand request, CancellationToken cancellationToken)
             {
-                var cloudBlobContainer = await GetCloudBlobContainerAsync(cancellationToken);
+                var cloudBlobContainer = await _azureBlobHelper.GetCloudBlobContainerAsync(cancellationToken);
                 if (!cloudBlobContainer.IsSuccess)
                     return Result<string>.Fail(cloudBlobContainer.Exception);
 
@@ -72,17 +67,6 @@ namespace Opw.PineBlog.Files
                 {
                     return Result<string>.Fail(new FileUploadException($"The blob ({request.FileName}) upload failed", ex));
                 }
-            }
-
-            private async Task<Result<CloudBlobContainer>> GetCloudBlobContainerAsync(CancellationToken cancellationToken)
-            {
-                var cloudBlobContainer = _cloudBlobClient.GetContainerReference(_options.Value.AzureStorageBlobContainerName);
-                await cloudBlobContainer.CreateIfNotExistsAsync(cancellationToken);
-                
-                // Set the permissions so the blobs are public.
-                await cloudBlobContainer.SetPermissionsAsync(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob }, cancellationToken);
-
-                return Result<CloudBlobContainer>.Success(cloudBlobContainer);
             }
         }
     }

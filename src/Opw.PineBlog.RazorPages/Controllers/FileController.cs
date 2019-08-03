@@ -35,6 +35,48 @@ namespace Opw.PineBlog.Controllers
         }
 
         /// <summary>
+        /// Get list of images and files.
+        /// </summary>
+        /// <param name="page">Page number</param>
+        [HttpGet]
+        public async Task<IActionResult> Get(int page = 1)
+        {
+            //var blog = await _data.CustomFields.GetBlogSettings();
+            //var pager = new Pager(page, blog.ItemsPerPage);
+            //IEnumerable<AssetItem> items;
+
+            //if (string.IsNullOrEmpty(search))
+            //{
+            //    if (filter == "filterImages")
+            //    {
+            //        items = await _store.Find(a => a.AssetType == AssetType.Image, pager, "", !User.Identity.IsAuthenticated);
+            //    }
+            //    else if (filter == "filterAttachments")
+            //    {
+            //        items = await _store.Find(a => a.AssetType == AssetType.Attachment, pager, "", !User.Identity.IsAuthenticated);
+            //    }
+            //    else
+            //    {
+            //        items = await _store.Find(null, pager, "", !User.Identity.IsAuthenticated);
+            //    }
+            //}
+            //else
+            //{
+            //    items = await _store.Find(a => a.Title.Contains(search), pager, "", !User.Identity.IsAuthenticated);
+            //}
+
+            //if (page < 1 || page > pager.LastPage)
+            //    return null;
+
+            //return new AssetsModel
+            //{
+            //    Assets = items,
+            //    Pager = pager
+            //};
+            return null;
+        }
+
+        /// <summary>
         /// Upload file(s).
         /// </summary>
         /// <param name="files">Selected files.</param>
