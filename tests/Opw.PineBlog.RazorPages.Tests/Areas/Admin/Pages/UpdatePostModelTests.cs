@@ -47,6 +47,8 @@ namespace Opw.PineBlog.Areas.Admin.Pages
         {
             var loggerMock = new Mock<ILogger<UpdatePostModel>>();
             var mediaterMock = new Mock<IMediator>();
+            mediaterMock.Setup(m => m.Send(It.IsAny<UpdatePostCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Result<Post>.Success(new Post { Id = _guid }));
 
             var httpContext = new DefaultHttpContext();
             var pageContext = GetPageContext(httpContext);
