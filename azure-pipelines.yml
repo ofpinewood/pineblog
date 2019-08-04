@@ -11,12 +11,6 @@ trigger:
     include:
     - master
     - refs/tags/*
-  paths:
-    include:
-    - src/*
-    - tests/*
-    - samples/*
-    - azure-pipelines.yml
 
 variables:
   buildConfiguration: 'Release'
