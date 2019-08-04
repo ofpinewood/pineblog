@@ -98,13 +98,16 @@ namespace Opw.PineBlog.Posts
                     Description = request.Description,
                     Content = request.Content,
                     Categories = request.Categories,
+                    Published = request.Published,
                     CoverUrl = request.CoverUrl,
                     CoverCaption = request.CoverCaption,
                     CoverLink = request.CoverLink
                 };
 
                 _context.Posts.Add(entity);
-                await _context.SaveChangesAsync(cancellationToken);
+                var result = await _context.SaveChangesAsync(cancellationToken);
+                if (!result.IsSuccess)
+                    return Result<Post>.Fail(result.Exception);
 
                 return Result<Post>.Success(entity);
             }

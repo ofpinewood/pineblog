@@ -16,7 +16,7 @@ namespace Opw.PineBlog.EntityFrameworkCore
         /// <returns>The original services object.</returns>
         public static IServiceCollection AddPineBlogEntityFrameworkCore(this IServiceCollection services, string connectionString)
         {
-            services.AddDbContext<IBlogEntityDbContext, BlogEntityDbContext>(options => DbContextConfigurer.Configure(options, connectionString), ServiceLifetime.Transient);
+            services.AddDbContextPool<IBlogEntityDbContext, BlogEntityDbContext>(options => DbContextConfigurer.Configure(options, connectionString));
 
             return services;
         }

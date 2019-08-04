@@ -64,14 +64,14 @@ namespace Opw.PineBlog.Posts
         public string CoverLink { get; set; }
 
         /// <summary>
-        /// Handler for the AddPostCommand.
+        /// Handler for the UpdatePostCommand.
         /// </summary>
-        public class Handler : IRequestHandler<AddPostCommand, Result<Post>>
+        public class Handler : IRequestHandler<UpdatePostCommand, Result<Post>>
         {
             private readonly IBlogEntityDbContext _context;
 
             /// <summary>
-            /// Implementation of AddPostCommand.Handler.
+            /// Implementation of UpdatePostCommand.Handler.
             /// </summary>
             /// <param name="context">The blog entity context.</param>
             public Handler(IBlogEntityDbContext context)
@@ -80,31 +80,30 @@ namespace Opw.PineBlog.Posts
             }
 
             /// <summary>
-            /// Handle the AddPostCommand request.
+            /// Handle the UpdatePostCommand request.
             /// </summary>
-            /// <param name="request">The AddPostCommand request.</param>
+            /// <param name="request">The UpdatePostCommand request.</param>
             /// <param name="cancellationToken">A cancellation token.</param>
-            public async Task<Result<Post>> Handle(AddPostCommand request, CancellationToken cancellationToken)
+            public async Task<Result<Post>> Handle(UpdatePostCommand request, CancellationToken cancellationToken)
             {
-                var author = await _context.Authors.SingleOrDefaultAsync(a => a.UserName.Equals(request.UserName));
-                if (author == null)
-                    return Result<Post>.Fail(new NotFoundException($"Could not find author for \"{request.UserName}\"."));
+                var entity = await _context.Posts.SingleOrDefaultAsync(e => e.Id.Equals(request.Id));
+                if (entity == null)
+                    return Result<Post>.Fail(new NotFoundException<Post>($"Could not find post, id: \"{request.Id}\""));
 
-                var entity = new Post
-                {
-                    AuthorId = author.Id,
-                    Title = request.Title,
-                    Slug = request.Slug,
-                    Description = request.Description,
-                    Content = request.Content,
-                    Categories = request.Categories,
-                    CoverUrl = request.CoverUrl,
-                    CoverCaption = request.CoverCaption,
-                    CoverLink = request.CoverLink
-                };
+                entity.Title = request.Title;
+                entity.Slug = request.Slug;
+                entity.Description = request.Description;
+                entity.Content = request.Content;
+                entity.Categories = request.Categories;
+                entity.Published = request.Published;
+                entity.CoverUrl = request.CoverUrl;
+                entity.CoverCaption = request.CoverCaption;
+                entity.CoverLink = request.CoverLink;
 
-                _context.Posts.Add(entity);
-                await _context.SaveChangesAsync(cancellationToken);
+                _context.Posts.Update(entity);
+                var result = await _context.SaveChangesAsync(true, cancellationToken);
+                if (!result.IsSuccess)
+                    return Result<Post>.Fail(result.Exception);
 
                 return Result<Post>.Success(entity);
             }
