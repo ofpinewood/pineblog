@@ -39,6 +39,7 @@ namespace Opw.PineBlog
             services.AddTransient<IValidator<AddPostCommand>, AddPostCommandValidator>();
             services.AddTransient<IValidator<UpdatePostCommand>, UpdatePostCommandValidator>();
             services.AddTransient<IValidator<GetPostQuery>, GetPostQueryValidator>();
+            services.AddTransient<IValidator<GetPostByIdQuery>, GetPostByIdQueryValidator>();
             services.AddTransient<IValidator<UploadFileCommand>, UploadFileCommandValidator>();
 
             services.AddTransient<FilePathHelper>();

@@ -1,5 +1,5 @@
-@*@page
-@model AddPostModel
+@page
+@model UpdatePostModel
 @section scripts {
     <script type="text/javascript">
         var _editor = {};
@@ -37,4 +37,4 @@
     <input asp-for="Post.Id" type="hidden">
     <partial name="_EditPost" model="Model.Post" />
 </form>
-<partial name="_FileManager" />*@
+<partial name="_FileManager" />

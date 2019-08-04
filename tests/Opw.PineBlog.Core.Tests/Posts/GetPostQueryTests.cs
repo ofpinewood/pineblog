@@ -35,7 +35,7 @@ namespace Opw.PineBlog.Posts
             var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-invalid" });
 
             result.IsSuccess.Should().BeFalse();
-            result.Exception.Should().BeOfType<NotFoundException>();
+            result.Exception.Should().BeOfType<NotFoundException<Post>>();
         }
 
         [Fact]

@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Opw.HttpExceptions;
+using Opw.PineBlog.Entities;
 using Opw.PineBlog.Models;
 using System.Linq;
 using System.Threading;
@@ -33,7 +34,7 @@ namespace Opw.PineBlog.Posts
                     .SingleOrDefaultAsync(cancellationToken);
 
                 if (post == null)
-                    return Result<PostModel>.Fail(new NotFoundException($"Could not find post for slug: \"{request.Slug}\""));
+                    return Result<PostModel>.Fail(new NotFoundException<Post>($"Could not find post for slug: \"{request.Slug}\""));
 
                 var model = new PostModel
                 {
