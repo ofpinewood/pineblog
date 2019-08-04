@@ -53,6 +53,7 @@ var fileManager = function (dataService) {
             dataService.get(url, _openCallback, fail);
         }
         close();
+
     }
 
     function uploadClick() {
