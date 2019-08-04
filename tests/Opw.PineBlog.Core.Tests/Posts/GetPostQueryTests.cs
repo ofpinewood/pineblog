@@ -4,9 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Opw.PineBlog.Entities;
 using Opw.HttpExceptions;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
+using System.Linq;
 
 namespace Opw.PineBlog.Posts
 {
@@ -25,7 +25,8 @@ namespace Opw.PineBlog.Posts
                 Slug = "this is not a valid slug"
             });
 
-            await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
+            var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
+            ex.Errors.Single(e => e.Key.Equals(nameof(GetPostQuery.Slug))).Should().NotBeNull();
         }
 
         [Fact]
@@ -34,7 +35,7 @@ namespace Opw.PineBlog.Posts
             var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-invalid" });
 
             result.IsSuccess.Should().BeFalse();
-            result.Exception.Should().BeOfType<NotFoundException>();
+            result.Exception.Should().BeOfType<NotFoundException<Post>>();
         }
 
         [Fact]
@@ -107,7 +108,7 @@ namespace Opw.PineBlog.Posts
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Post.Should().NotBeNull();
-            result.Value.Post.Cover.Url.Should().Be("https://ofpinewood.com/cover-url");
+            result.Value.Post.CoverUrl.Should().Be("https://ofpinewood.com/cover-url");
         }
 
         [Fact]
@@ -124,7 +125,7 @@ namespace Opw.PineBlog.Posts
         {
             var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
 
-            var author = new Author { UserId = Guid.NewGuid(), DisplayName = "Author 1" };
+            var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
             context.Authors.Add(author);
             context.SaveChanges();
 
@@ -146,12 +147,9 @@ namespace Opw.PineBlog.Posts
                 Description = "Description",
                 Content = "Content",
                 Published = DateTime.UtcNow.AddDays(-30 + i),
-                Cover = new Cover
-                {
-                    Url = "https://ofpinewood.com/cover-url",
-                    Caption = "Cover caption",
-                    Link = "https://ofpinewood.com/cover-link"
-                }
+                CoverUrl = "https://ofpinewood.com/cover-url",
+                CoverCaption = "Cover caption",
+                CoverLink = "https://ofpinewood.com/cover-link"
             };
         }
     }

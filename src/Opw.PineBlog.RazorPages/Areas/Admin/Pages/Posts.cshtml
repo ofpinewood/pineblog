@@ -1,0 +1,32 @@
+@page
+@model PostsModel
+<div class="container">
+    <h1>
+        Posts
+        <a href="addpost" class="btn btn-primary float-right">New</a>
+    </h1>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Published</th>
+                <th scope="col">Created</th>
+                <th scope="col">Modified</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var post in Model.Posts)
+            {
+                <tr onclick="location.href = 'updatepost?id=@post.Id'" class="clickable">
+                    <td>@post.Title</td>
+                    <td>@post.Author.DisplayName</td>
+                    <td>@post.Published</td>
+                    <td>@post.Created</td>
+                    <td>@post.Modified</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

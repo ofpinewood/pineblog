@@ -9,7 +9,6 @@ namespace Opw.PineBlog.EntityFrameworkCore
         public DbSet<Settings> Settings { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Author> Authors { get; set; }
-        public DbSet<Cover> Covers { get; set; }
 
         public BlogEntityDbContext(DbContextOptions<BlogEntityDbContext> options) : base(options) { }
 
@@ -21,7 +20,7 @@ namespace Opw.PineBlog.EntityFrameworkCore
 
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
-                entityType.Relational().TableName = $"Blog_{entityType.Relational().TableName}";
+                entityType.Relational().TableName = $"PineBlog_{entityType.Relational().TableName}";
             }
         }
     }

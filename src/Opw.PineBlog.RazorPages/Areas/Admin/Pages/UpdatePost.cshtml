@@ -1,0 +1,40 @@
+@page
+@model UpdatePostModel
+@section scripts {
+    <script type="text/javascript">
+        var _editor = {};
+
+        var webRoot = '@Url.Content("~/")';
+        function getUrl(str) {
+            return webRoot + str;
+        }
+
+        $(function () {
+            var simplemde = new SimpleMDE({
+                element: document.getElementById('Content'),
+                toolbar: [
+                    'bold', 'italic', 'heading', 'heading-2', '|',
+                    'quote', 'unordered-list', 'ordered-list', '|',
+                    'code', 'link',
+                    {
+                        name: 'insertImage',
+                        action: function customFunction(editor) {
+                            _editor = editor;
+				            fileManager.open(insertImageCallback, '@Model.Post.Slug', 'image');
+			            },
+                        className: 'fa fa-folder-open',
+                        title: 'Insert image'
+                    },
+                    '|',
+                    'preview', 'side-by-side', 'fullscreen', '|',
+                    'guide'
+                ]
+            });
+        });
+    </script>
+}
+<form method="post" class="post-editor d-flex flex-column">
+    <input type="hidden" name="@nameof(Model.Post.Id)" id="@nameof(Model.Post.Id)" value="@Model.Post.Id">
+    <partial name="_EditPost" model="Model.Post" />
+</form>
+<partial name="_FileManager" />

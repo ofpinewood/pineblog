@@ -23,23 +23,20 @@ namespace Opw.PineBlog.EntityFrameworkCore
         {
             if (_dbContext.Authors.Count() > 0) return;
 
-            var userId = Guid.Parse("bdab3e4b-e676-4490-9ed5-f7769b4ef232");
-            var email = "pineblog@ofpinewood.com";
-            if (_dbContext.Authors.Count(a => a.UserId.Equals(userId)) > 0) return;
+            var email = "pineblog@example.com";
+            if (_dbContext.Authors.Count(a => a.UserName.Equals(email)) > 0) return;
 
             _dbContext.Authors.Add(new Author
             {
-                UserId = userId,
                 UserName = email,
                 Email = email,
-                DisplayName = "Peter van den Hout",
+                DisplayName = "John Smith",
                 Avatar = "images/avatar-male.png",
                 Bio = "It is common knowledge that the consolidation of the mindset cannot be shown to be relevant.This is in contrast to The Affectability Of Determinant Empathy",
             });
             _dbContext.Authors.Add(new Author
             {
-                UserId = userId,
-                UserName = email,
+                UserName = "mary.smith@example.com",
                 Email = email,
                 DisplayName = "Mary Smith",
                 Avatar = "images/avatar-female.png",
@@ -69,10 +66,7 @@ namespace Opw.PineBlog.EntityFrameworkCore
 
 In a strictly mechanistic sense, efforts are already underway in the development of the global business practice. On the other hand, the ball-park figures for the basic definitive rationalization indicates the importance of other systems and the necessity for an elemental change in the adequate timing control.",
                     Categories = "wafflegen",
-                    Cover = new Cover
-                    {
-                        Url = "images/woods.gif",
-                    },
+                    CoverUrl = "images/woods.gif",
                     Published = DateTime.UtcNow.AddDays(-(index * 20) - index)
                 });
 

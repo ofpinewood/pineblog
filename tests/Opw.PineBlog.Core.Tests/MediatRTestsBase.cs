@@ -1,16 +1,23 @@
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using Opw.PineBlog.EntityFrameworkCore;
+using Opw.PineBlog.Files.Azure;
+using Opw.PineBlog.Models;
 using Opw.PineBlog.Posts;
 using System;
+using System.Threading;
 
 namespace Opw.PineBlog
 {
     public abstract class MediatRTestsBase
     {
-        protected readonly IMediator Mediator;
-        protected readonly IServiceProvider ServiceProvider;
+        protected readonly IServiceCollection Services;
+
+        protected IMediator Mediator => ServiceProvider.GetRequiredService<IMediator>();
+
+        protected IServiceProvider ServiceProvider => Services.BuildServiceProvider();
 
         public MediatRTestsBase()
         {
@@ -18,14 +25,26 @@ namespace Opw.PineBlog
                .AddJsonFile("appsettings.json")
                .Build();
 
-            var services = new ServiceCollection();
-            services.AddMediatR(typeof(AddPostCommand).Assembly);
-            services.AddPineBlogCore(configuration);
-            services.AddPineBlogEntityFrameworkCore($"Server=inMemory; Database=opw-db-{DateTime.UtcNow.Ticks};");
+            Services = new ServiceCollection();
+            Services.AddMediatR(typeof(AddPostCommand).Assembly);
+            Services.AddPineBlogCore(configuration);
+            Services.AddPineBlogEntityFrameworkCore($"Server=inMemory; Database=opw-db-{DateTime.UtcNow.Ticks};");
 
-            ServiceProvider = services.BuildServiceProvider();
+            Services.AddTransient((_) => {
+                var mock = new Mock<IRequestHandler<UploadAzureBlobCommand, Result<string>>>();
+                mock.Setup(h => h.Handle(It.IsAny<UploadAzureBlobCommand>(), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync((UploadAzureBlobCommand request, CancellationToken __) =>
+                        Result<string>.Success($"http://azureblobstorage/pineblog-tests/{request.TargetPath}/{request.FileName}"));
+                return mock.Object;
+            });
 
-            Mediator = ServiceProvider.GetRequiredService<IMediator>();
+            Services.AddTransient((_) => {
+                var mock = new Mock<IRequestHandler<GetPagedAzureBlobListQuery, Result<FileListModel>>>();
+                mock.Setup(h => h.Handle(It.IsAny<GetPagedAzureBlobListQuery>(), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync((GetPagedAzureBlobListQuery request, CancellationToken __) =>
+                        Result<FileListModel>.Success(new FileListModel { Pager = request.Pager }));
+                return mock.Object;
+            });
         }
     }
 }

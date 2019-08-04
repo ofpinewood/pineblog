@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Opw.HttpExceptions;
+using Opw.PineBlog.Entities;
 using Opw.PineBlog.Models;
 using System.Linq;
 using System.Threading;
@@ -15,10 +16,10 @@ namespace Opw.PineBlog.Posts
 
         public class Handler : IRequestHandler<GetPostQuery, Result<PostModel>>
         {
-            private readonly IOptions<BlogOptions> _blogOptions;
+            private readonly IOptions<PineBlogOptions> _blogOptions;
             private readonly IBlogEntityDbContext _context;
 
-            public Handler(IBlogEntityDbContext context, IOptions<BlogOptions> blogOptions)
+            public Handler(IBlogEntityDbContext context, IOptions<PineBlogOptions> blogOptions)
             {
                 _blogOptions = blogOptions;
                 _context = context;
@@ -28,13 +29,12 @@ namespace Opw.PineBlog.Posts
             {
                 var post = await _context.Posts
                     .Include(p => p.Author)
-                    .Include(p => p.Cover)
                     .Where(p => p.Published != null)
                     .Where(p => p.Slug.Equals(request.Slug))
                     .SingleOrDefaultAsync(cancellationToken);
 
                 if (post == null)
-                    return Result<PostModel>.Fail(new NotFoundException($"Could not find post for slug: \"{request.Slug}\""));
+                    return Result<PostModel>.Fail(new NotFoundException<Post>($"Could not find post for slug: \"{request.Slug}\""));
 
                 var model = new PostModel
                 {
@@ -44,9 +44,11 @@ namespace Opw.PineBlog.Posts
                     Previous = null
                 };
 
-                if (model.Post.Cover == null)
+                if (string.IsNullOrWhiteSpace(model.Post.CoverUrl))
                 {
-                    model.Post.Cover = model.Blog.Cover;
+                    model.Post.CoverUrl = model.Blog.CoverUrl;
+                    model.Post.CoverCaption = model.Blog.CoverCaption;
+                    model.Post.CoverLink = model.Blog.CoverLink;
                 }
 
                 model.Next = await _context.Posts

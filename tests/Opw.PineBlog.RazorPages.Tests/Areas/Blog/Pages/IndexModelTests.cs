@@ -5,13 +5,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Opw.PineBlog.Areas.Blog.Pages;
+using Opw.PineBlog.Entities;
 using Opw.PineBlog.Models;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Opw.PineBlog.Blog.Pages
+namespace Opw.PineBlog.Areas.Blog.Pages
 {
     public class IndexModelTests : RazorPagesTestsBase
     {
@@ -23,7 +24,9 @@ namespace Opw.PineBlog.Blog.Pages
             var mediaterMock = new Mock<IMediator>();
             mediaterMock.Setup(m => m.Send(It.IsAny<IRequest<Result<PostListModel>>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<PostListModel>.Success(new PostListModel {
-                    Blog = new BlogModel(new BlogOptions()) { Title = "Blog Title" }
+                    Blog = new BlogModel(new PineBlogOptions()) { Title = "Blog Title" },
+                    Pager = new Pager(0),
+                    Posts = new List<Post>()
                 }));
 
             var httpContext = new DefaultHttpContext();
@@ -39,7 +42,9 @@ namespace Opw.PineBlog.Blog.Pages
             var result = await pageModel.OnGetAsync(default, 0);
 
             result.Should().BeOfType<PageResult>();
-            pageModel.Model.Should().NotBeNull();
+            pageModel.Blog.Should().NotBeNull();
+            pageModel.Pager.Should().NotBeNull();
+            pageModel.Posts.Should().NotBeNull();
             pageModel.Title.Should().NotBeNull();
         }
     }

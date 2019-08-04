@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Opw.PineBlog.Entities;
+using Opw.PineBlog.Models;
 using Opw.PineBlog.Posts;
 
 namespace Opw.PineBlog.Areas.Blog.Pages
@@ -11,7 +13,10 @@ namespace Opw.PineBlog.Areas.Blog.Pages
     {
         private readonly IMediator _mediator;
 
-        public Models.PostModel Model { get; private set; }
+        public BlogModel Blog { get; set; }
+        public Post Post { get; set; }
+        public Post Previous { get; set; }
+        public Post Next { get; set; }
 
         [ViewData]
         public string Title { get; private set; }
@@ -27,8 +32,12 @@ namespace Opw.PineBlog.Areas.Blog.Pages
 
             if (!result.IsSuccess) return Error(result);
 
-            Model = result.Value;
-            Title = Model.Blog.Title;
+            Blog = result.Value.Blog;
+            Post = result.Value.Post;
+            Previous = result.Value.Previous;
+            Next = result.Value.Next;
+
+            Title = Blog.Title;
 
             return Page();
         }

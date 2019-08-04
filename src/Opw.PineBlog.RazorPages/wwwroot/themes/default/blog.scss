@@ -1,15 +1,21 @@
-body,
-html {
-    height: 100%;
+@at-root {
+    .pineblog {
+        font-family: "Open Sans", Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 1rem;
+        line-height: 1.6;
+        cursor: default;
+        overflow-y: scroll;
+    }
 }
 
 a {
     color: #5731b3;
-}
+    text-decoration: underline;
 
-    a:focus, a:hover {
+    &:focus, &:hover {
         color: #704acd;
     }
+}
 
 img {
     max-width: 100%;
@@ -46,9 +52,9 @@ button {
     cursor: pointer;
 }
 
-    button:focus {
-        outline: none !important;
-    }
+button:focus {
+    outline: none !important;
+}
 
 code {
     padding: .2rem .4rem;
@@ -60,11 +66,11 @@ pre {
     font-size: 1rem;
 }
 
-    pre > code {
-        padding: 0;
-        background-color: transparent;
-        border-radius: unset;
-    }
+pre > code {
+    padding: 0;
+    background-color: transparent;
+    border-radius: unset;
+}
 
 .progress {
     margin-bottom: 1rem;
@@ -76,16 +82,8 @@ blockquote {
     border-radius: 3px;
 }
 
-    blockquote p:last-child {
-        margin-bottom: 0 !important;
-    }
-
-body {
-    font-family: "Open Sans", Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 1rem;
-    line-height: 1.6;
-    cursor: default;
-    overflow-y: scroll;
+blockquote p:last-child {
+    margin-bottom: 0 !important;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -105,8 +103,10 @@ h4, h5, h6 {
     font-size: 1rem;
 }
 
-a {
-    text-decoration: underline;
+#cookieConsent {
+    margin-bottom: 0;
+    border-radius: 0;
+    border: none;
 }
 
 .page-content {
@@ -147,70 +147,48 @@ a {
     z-index: 1000;
     height: 4rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
 
-    .blog-header a {
+    a {
         text-decoration: none;
+        color: #fff;
+
+        &:hover {
+            color: #aaa;
+        }
     }
 
-    .blog-header .container {
+    .container {
         height: 100%;
     }
+}
 
 .blog-logo {
     display: block;
     color: #fff !important;
-}
 
-    .blog-logo img {
+    img {
         max-height: 2rem;
         font-size: 0;
     }
 
-    .blog-logo span {
+    span {
         display: block;
         margin-left: .75rem;
         font-size: 1.25rem;
         font-family: "Merriweather", "Times New Roman", Times, serif;
         font-weight: 700;
     }
+}
 
 .blog-title {
     font-family: "Merriweather", "Times New Roman", Times, serif;
     font-size: 2.625rem;
     margin-bottom: 1rem;
-}
 
-    .blog-title a {
+    a {
         color: #fff;
     }
-
-.blog-social-item {
-    margin-right: 1.25rem;
 }
-
-    .blog-social-item:last-child {
-        margin-right: 0;
-    }
-
-.blog-social-link {
-    color: #fff;
-    display: block;
-}
-
-    .blog-social-link:hover {
-        color: #fff;
-        opacity: .5;
-    }
-
-.blog-social-icon {
-    display: block;
-    font-size: 1.25rem;
-}
-
-    .blog-social-icon.fa-twitter {
-        font-size: 1.25rem;
-    }
 
 .blog-search .form-control {
     border: 0;
@@ -229,63 +207,63 @@ a {
     position: relative;
 }
 
-    .blog-search-toggle:hover .fa {
-        opacity: .5;
-    }
+.blog-search-toggle:hover .fa {
+    opacity: .5;
+}
 
-    .blog-search-toggle::before {
-        content: "";
-        display: block;
-        width: 1px;
-        height: 1.5rem;
-        background-color: rgba(255, 255, 255, 0.25);
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-    }
+.blog-search-toggle::before {
+    content: "";
+    display: block;
+    width: 1px;
+    height: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.25);
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
 
 .footer {
     color: #f7f7f7;
     font-size: .75rem;
     padding: 2rem 0 1.8rem 0;
     background-color: #222;
-}
 
-    .footer h2 {
+    h2 {
         font-size: 1.2rem;
         font-weight: normal;
     }
 
-    .footer img {
+    img {
         border: 1px solid #f7f7f7;
         max-width: 15%;
         float: left;
         margin: 0.25rem 1rem 0 0;
     }
 
-    .footer.copy {
+    a {
+        color: #fff;
+    }
+
+    p {
+    }
+
+    &.copy {
         background-color: #000;
         padding: 1rem 0;
         padding-bottom: 1.5rem;
         font-size: .65rem;
-    }
 
-        .footer.copy .container {
+        .container {
             opacity: .3;
         }
 
-        .footer.copy a {
+        a {
             font-weight: bold;
             text-decoration: none;
         }
-
-    .footer a {
-        color: #fff;
     }
-
-    .footer p {
-    }
+}
 
 .page-cover {
     padding-top: 9.5rem;
@@ -298,38 +276,38 @@ a {
     text-align: center;
 }
 
-    .page-cover a {
-        text-decoration: none;
-    }
+.page-cover a {
+    text-decoration: none;
+}
 
-    .page-cover::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        left: 0;
-        display: block;
-        background: #000;
-        z-index: 700;
-        opacity: .5;
-        z-index: 0;
-    }
+.page-cover::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    display: block;
+    background: #000;
+    z-index: 700;
+    opacity: .5;
+    z-index: 0;
+}
 
-    .page-cover-desc, .page-cover-title,
-    .page-cover .container {
-        position: relative;
-        z-index: 1;
-    }
+.page-cover-desc, .page-cover-title,
+.page-cover .container {
+    position: relative;
+    z-index: 1;
+}
 
 .page-cover-title {
     font-family: "Merriweather", "Times New Roman", Times, serif;
     font-size: 2.625rem;
 }
 
-    .page-cover-title a {
-        color: #fff;
-    }
+.page-cover-title a {
+    color: #fff;
+}
 
 .page-cover-desc {
     font-size: 1rem;
@@ -343,10 +321,10 @@ a {
         padding: 6rem 1rem 3rem;
     }
 
-        .page-cover .page-cover-title {
-            font-size: 1.5rem;
-            margin-bottom: .25rem;
-        }
+    .page-cover .page-cover-title {
+        font-size: 1.5rem;
+        margin-bottom: .25rem;
+    }
 }
 
 @media screen and (max-width: 800px) {
@@ -354,11 +332,11 @@ a {
         text-align: left;
     }
 
-        .page-cover .page-cover-desc {
-            font-size: .87rem;
-            max-width: none;
-            margin: 0;
-        }
+    .page-cover .page-cover-desc {
+        font-size: .87rem;
+        max-width: none;
+        margin: 0;
+    }
 }
 
 .btn {
@@ -417,9 +395,9 @@ a {
     text-align: center;
 }
 
-    .browserupgrade a {
-        color: aqua;
-    }
+.browserupgrade a {
+    color: aqua;
+}
 
 .modal-backdrop.show {
     opacity: .75;
@@ -480,99 +458,99 @@ a {
   }*/
 }
 
-    .post:last-child {
-        margin-bottom: 0;
-    }
+.post:last-child {
+    margin-bottom: 0;
+}
 
-    .post .post-meta {
-        padding-left: 3.25rem;
-        min-height: 2.5rem;
-        position: relative;
-        font-size: .75rem;
-        color: #888;
-        line-height: 1.25;
-        margin-bottom: 2.5rem;
-    }
+.post .post-meta {
+    padding-left: 3.25rem;
+    min-height: 2.5rem;
+    position: relative;
+    font-size: .75rem;
+    color: #888;
+    line-height: 1.25;
+    margin-bottom: 2.5rem;
+}
 
-        .post .post-meta a {
-            color: #888;
-        }
+.post .post-meta a {
+    color: #888;
+}
 
-            .post .post-meta a:hover {
-                color: #000;
-            }
+.post .post-meta a:hover {
+    color: #000;
+}
 
-    .post .post-meta-author {
-        font-weight: 700;
-        color: #444;
-        padding-top: .25rem;
-        display: block;
-        font-size: .875rem;
-        margin-bottom: .125rem;
-    }
+.post .post-meta-author {
+    font-weight: 700;
+    color: #444;
+    padding-top: .25rem;
+    display: block;
+    font-size: .875rem;
+    margin-bottom: .125rem;
+}
 
-    .post .post-meta-img {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 2.5rem;
-        height: 2.5rem;
-        border-radius: 50%;
-    }
+.post .post-meta-img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+}
 
-    .post .post-meta-time {
-        text-transform: uppercase;
-    }
+.post .post-meta-time {
+    text-transform: uppercase;
+}
 
-        .post .post-meta-time::before {
-            content: "";
-            display: block;
-            height: 0;
-            line-height: 0;
-            font-size: 0;
-        }
+.post .post-meta-time::before {
+    content: "";
+    display: block;
+    height: 0;
+    line-height: 0;
+    font-size: 0;
+}
 
-    .post .post-meta-category {
-        text-transform: uppercase;
-    }
+.post .post-meta-category {
+    text-transform: uppercase;
+}
 
-        .post .post-meta-category::before {
-            content: "/";
-            margin: 0 .125rem;
-        }
+.post .post-meta-category::before {
+    content: "/";
+    margin: 0 .125rem;
+}
 
-        .post .post-meta-category a::after {
-            content: ", ";
-        }
+.post .post-meta-category a::after {
+    content: ", ";
+}
 
-        .post .post-meta-category a:last-child::after {
-            display: none;
-        }
+.post .post-meta-category a:last-child::after {
+    display: none;
+}
 
-    .post .post-description {
-        font-size: .875rem;
-        margin-bottom: 1rem;
-        color: #000;
-    }
+.post .post-description {
+    font-size: .875rem;
+    margin-bottom: 1rem;
+    color: #000;
+}
 
-        .post .post-description p {
-            margin-bottom: .25rem;
-        }
+.post .post-description p {
+    margin-bottom: .25rem;
+}
 
-    .post .post-title {
-        font-family: "Merriweather", "Times New Roman", Times, serif;
-        font-size: 2.5rem;
-        line-height: 1.3;
-    }
+.post .post-title {
+    font-family: "Merriweather", "Times New Roman", Times, serif;
+    font-size: 2.5rem;
+    line-height: 1.3;
+}
 
-        .post .post-title a {
-            color: #000;
-            text-decoration: none;
-        }
+.post .post-title a {
+    color: #000;
+    text-decoration: none;
+}
 
-            .post .post-title a:hover {
-                color: #666;
-            }
+.post .post-title a:hover {
+    color: #666;
+}
 
 @media screen and (min-width: 992px) {
     .post {
@@ -587,11 +565,11 @@ a {
         margin-bottom: 2rem;
     }
 
-        .post:last-child {
-            border-bottom: 0;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
+    .post:last-child {
+        border-bottom: 0;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
 }
 
 .page-error {
@@ -606,37 +584,37 @@ a {
     width: 100%;
 }
 
-    .page-error::after {
-        content: "";
-        display: block;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.4);
-        position: absolute;
-        top: 0;
-        left: 0;
-    }
+.page-error::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    top: 0;
+    left: 0;
+}
 
-    .page-error .page-content {
-        transform: translate(-50%, -50%);
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        color: #fff;
-        z-index: 1;
-        text-align: center;
-        text-transform: uppercase;
-        letter-spacing: .0625rem;
-    }
+.page-error .page-content {
+    transform: translate(-50%, -50%);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    color: #fff;
+    z-index: 1;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: .0625rem;
+}
 
-    .page-error h1 {
-        font-size: 5rem;
-    }
+.page-error h1 {
+    font-size: 5rem;
+}
 
-    .page-error p {
-        font-size: 1rem;
-        font-weight: 300;
-    }
+.page-error p {
+    font-size: 1rem;
+    font-weight: 300;
+}
 
 @media screen and (max-width: 22.5rem) {
     .page-error h1 {

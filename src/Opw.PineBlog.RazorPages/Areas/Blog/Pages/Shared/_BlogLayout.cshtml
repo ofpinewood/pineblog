@@ -1,6 +1,13 @@
 @{
     Layout = "_Layout";
 }
+@section head {
+    @RenderSection("head", required: false)
+}
+@section scripts {
+    @RenderSection("scripts", required: false)
+}
+
 <partial name="_Header" />
 @RenderBody()
 <partial name="_Footer" />

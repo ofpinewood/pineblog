@@ -12,25 +12,57 @@ using System.Threading.Tasks;
 
 namespace Opw.PineBlog.Posts
 {
+    /// <summary>
+    /// Query that gets a PostListModel.
+    /// </summary>
     public class GetPagedPostListQuery : IRequest<Result<PostListModel>>
     {
+        /// <summary>
+        /// The requested page.
+        /// </summary>
         public int Page { get; set; } = 1;
 
+        /// <summary>
+        /// Include unpublished posts or not.
+        /// </summary>
+        public bool IncludeUnpublished { get; set; }
+
+        /// <summary>
+        /// The number of items per page, if not set the BlogOptions.ItemsPerPage will be used.
+        /// </summary>
+        public int? ItemsPerPage { get; set; }
+
+        /// <summary>
+        /// Handler for the GetPagedPostListQuery.
+        /// </summary>
         public class Handler : IRequestHandler<GetPagedPostListQuery, Result<PostListModel>>
         {
-            private readonly IOptions<BlogOptions> _blogOptions;
+            private readonly IOptions<PineBlogOptions> _blogOptions;
             private readonly IBlogEntityDbContext _context;
 
-            public Handler(IBlogEntityDbContext context, IOptions<BlogOptions> blogOptions)
+            /// <summary>
+            /// Implementation of GetPagedPostListQuery.Handler.
+            /// </summary>
+            /// <param name="context">The blog entity context.</param>
+            /// <param name="blogOptions">The blog options.</param>
+            public Handler(IBlogEntityDbContext context, IOptions<PineBlogOptions> blogOptions)
             {
                 _blogOptions = blogOptions;
                 _context = context;
             }
 
+            /// <summary>
+            /// Handle the GetPagedPostListQuery request.
+            /// </summary>
+            /// <param name="request">The GetPagedPostListQuery request.</param>
+            /// <param name="cancellationToken">A cancellation token.</param>
             public async Task<Result<PostListModel>> Handle(GetPagedPostListQuery request, CancellationToken cancellationToken)
             {
-                var pager = new Pager(request.Page, _blogOptions.Value.ItemsPerPage);
-                var posts = await GetPagedListAsync(p => p.Published != null, pager, cancellationToken);
+                var itemsPerPage = (request.ItemsPerPage.HasValue) ? request.ItemsPerPage : _blogOptions.Value.ItemsPerPage;
+                var pager = new Pager(request.Page, itemsPerPage.Value);
+                var posts = request.IncludeUnpublished
+                    ? await GetPagedListAsync(null, pager, cancellationToken)
+                    : await GetPagedListAsync(p => p.Published != null, pager, cancellationToken);
 
                 var model = new PostListModel
                 {
@@ -43,24 +75,26 @@ namespace Opw.PineBlog.Posts
                 return Result<PostListModel>.Success(model);
             }
 
-            public async Task<IEnumerable<Post>> GetPagedListAsync(Expression<Func<Post, bool>> predicate, Pager pager, CancellationToken cancellationToken)
+            private async Task<IEnumerable<Post>> GetPagedListAsync(Expression<Func<Post, bool>> predicate, Pager pager, CancellationToken cancellationToken)
             {
                 var skip = (pager.CurrentPage - 1) * pager.ItemsPerPage;
 
-                var count = await _context.Posts
-                    .Where(predicate)
-                    .CountAsync(cancellationToken);
+                var count = (predicate != null)
+                    ? await _context.Posts.Where(predicate).CountAsync(cancellationToken)
+                    : await _context.Posts.CountAsync(cancellationToken);
 
-                pager.Configure(count, _blogOptions.Value.PostUrlFormat);
+                pager.Configure(count, _blogOptions.Value.PagingUrlPartFormat);
 
-                return await _context.Posts
+                var query = _context.Posts
                     .Include(p => p.Author)
-                    .Include(p => p.Cover)
-                    .Where(predicate)
                     .OrderByDescending(p => p.Published)
                     .Skip(skip)
-                    .Take(pager.ItemsPerPage)
-                    .ToListAsync(cancellationToken);
+                    .Take(pager.ItemsPerPage);
+
+                if (predicate != null)
+                    query = query.Where(predicate);
+
+                return await query.ToListAsync(cancellationToken);
             }
         }
     }

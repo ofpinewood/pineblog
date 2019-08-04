@@ -19,6 +19,7 @@ namespace Opw.FluentValidation
             var context = new PropertyValidatorContext(
                 new ValidationContext(product, new PropertyChain(), selector)
                 , PropertyRule.Create<Product, string>(p => p.Slug)
+                , nameof(product.Slug)
                 , product.Slug);
 
             var result = validator.Validate(context);
@@ -37,6 +38,7 @@ namespace Opw.FluentValidation
             var context = new PropertyValidatorContext(
                 new ValidationContext(product, new PropertyChain(), selector)
                 , PropertyRule.Create<Product, string>(p => p.Slug)
+                , nameof(product.Slug)
                 , product.Slug);
 
             var result = validator.Validate(context);
