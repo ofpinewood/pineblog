@@ -44,7 +44,6 @@ namespace Opw.PineBlog.Posts
             {
                 var post = await _context.Posts
                     .Include(p => p.Author)
-                    .Where(p => p.Published != null)
                     .Where(p => p.Id.Equals(request.Id))
                     .SingleOrDefaultAsync(cancellationToken);
 
