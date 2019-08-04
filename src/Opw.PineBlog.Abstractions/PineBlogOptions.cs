@@ -1,4 +1,3 @@
-using Opw.PineBlog.Entities;
 
 namespace Opw
 {
@@ -11,12 +10,26 @@ namespace Opw
         public string Description { get; set; }
         public int ItemsPerPage { get; set; }
         public string PagingUrlPartFormat { get; set; }
-        public Cover Cover { get; set; }
         public bool CreateAndSeedDatabases { get; set; }
 
         /// <summary>
+        /// Cover URL.
+        /// </summary>
+        public string CoverUrl { get; set; }
+
+        /// <summary>
+        /// Cover caption text.
+        /// </summary>
+        public string CoverCaption { get; set; }
+
+        /// <summary>
+        /// Cover link.
+        /// </summary>
+        public string CoverLink { get; set; }
+
+        /// <summary>
         /// The URL of the CDN where the images and other files are accessible.
-        /// Can also be the web host or a local hostname if no CDN is used.
+        /// Can also be the web host or a local host name if no CDN is used.
         /// </summary>
         public string CdnUrl { get; set; }
 

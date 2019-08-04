@@ -108,7 +108,7 @@ namespace Opw.PineBlog.Posts
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Post.Should().NotBeNull();
-            result.Value.Post.Cover.Url.Should().Be("https://ofpinewood.com/cover-url");
+            result.Value.Post.CoverUrl.Should().Be("https://ofpinewood.com/cover-url");
         }
 
         [Fact]
@@ -147,12 +147,9 @@ namespace Opw.PineBlog.Posts
                 Description = "Description",
                 Content = "Content",
                 Published = DateTime.UtcNow.AddDays(-30 + i),
-                Cover = new Cover
-                {
-                    Url = "https://ofpinewood.com/cover-url",
-                    Caption = "Cover caption",
-                    Link = "https://ofpinewood.com/cover-link"
-                }
+                CoverUrl = "https://ofpinewood.com/cover-url",
+                CoverCaption = "Cover caption",
+                CoverLink = "https://ofpinewood.com/cover-link"
             };
         }
     }

@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 namespace Opw.PineBlog.Posts
 {
     /// <summary>
-    /// Command that adds a post.
+    /// Command that updates a post.
     /// </summary>
-    public class AddPostCommand : IRequest<Result<Post>>, IEditPostCommand
+    public class UpdatePostCommand : IRequest<Result<Post>>, IEditPostCommand
     {
         /// <summary>
-        /// The name of the user adding the post.
+        /// The post id.
         /// </summary>
-        public string UserName { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// The post title.
@@ -26,7 +26,7 @@ namespace Opw.PineBlog.Posts
         /// <summary>
         /// The slug for this post, until the post is published a temporary slug will be used.
         /// </summary>
-        public string Slug { get; set; } = DateTime.UtcNow.Ticks.ToString();
+        public string Slug { get; set; }
 
         /// <summary>
         /// A short description for the post.

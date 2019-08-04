@@ -6,14 +6,14 @@ namespace Opw.PineBlog.Posts
     /// <summary>
     /// Validator for the IEditPostCommand requests.
     /// </summary>
-    public class EditPostCommandValidator : AbstractValidator<IEditPostCommand>
+    public class EditPostCommandValidator<TRequest> : AbstractValidator<TRequest>
+        where TRequest : IEditPostCommand
     {
         /// <summary>
         /// Implementation of EditPostCommandValidator.
         /// </summary>
         public EditPostCommandValidator()
         {
-            RuleFor(c => c.UserName).NotEmpty();
             RuleFor(c => c.Title).MaximumLength(160).NotEmpty();
             RuleFor(c => c.Slug).IsSlug();
             RuleFor(c => c.Description).MaximumLength(450);

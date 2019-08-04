@@ -87,7 +87,6 @@ namespace Opw.PineBlog.Posts
 
                 var query = _context.Posts
                     .Include(p => p.Author)
-                    .Include(p => p.Cover)
                     .OrderByDescending(p => p.Published)
                     .Skip(skip)
                     .Take(pager.ItemsPerPage);

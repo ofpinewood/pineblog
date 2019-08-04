@@ -66,10 +66,7 @@ namespace Opw.PineBlog.EntityFrameworkCore
 
 In a strictly mechanistic sense, efforts are already underway in the development of the global business practice. On the other hand, the ball-park figures for the basic definitive rationalization indicates the importance of other systems and the necessity for an elemental change in the adequate timing control.",
                     Categories = "wafflegen",
-                    Cover = new Cover
-                    {
-                        Url = "images/woods.gif",
-                    },
+                    CoverUrl = "images/woods.gif",
                     Published = DateTime.UtcNow.AddDays(-(index * 20) - index)
                 });
 

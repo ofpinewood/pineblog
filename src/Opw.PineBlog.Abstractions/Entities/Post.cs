@@ -40,8 +40,18 @@ namespace Opw.PineBlog.Entities
         public string Slug { get; set; }
 
         /// <summary>
-        /// Cover.
+        /// Cover URL.
         /// </summary>
-        public virtual Cover Cover { get; set; }
+        public string CoverUrl { get; set; }
+
+        /// <summary>
+        /// Cover caption text.
+        /// </summary>
+        public string CoverCaption { get; set; }
+
+        /// <summary>
+        /// Cover link.
+        /// </summary>
+        public string CoverLink { get; set; }
     }
 }

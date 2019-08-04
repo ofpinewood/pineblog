@@ -28,7 +28,6 @@ namespace Opw.PineBlog.Posts
             {
                 var post = await _context.Posts
                     .Include(p => p.Author)
-                    .Include(p => p.Cover)
                     .Where(p => p.Published != null)
                     .Where(p => p.Slug.Equals(request.Slug))
                     .SingleOrDefaultAsync(cancellationToken);
@@ -44,8 +43,12 @@ namespace Opw.PineBlog.Posts
                     Previous = null
                 };
 
-                if (model.Post.Cover == null)
-                    model.Post.Cover = model.Blog.Cover;
+                if (string.IsNullOrWhiteSpace(model.Post.CoverUrl))
+                {
+                    model.Post.CoverUrl = model.Blog.CoverUrl;
+                    model.Post.CoverCaption = model.Blog.CoverCaption;
+                    model.Post.CoverLink = model.Blog.CoverLink;
+                }
 
                 model.Next = await _context.Posts
                     .Where(p => p.Published > post.Published)

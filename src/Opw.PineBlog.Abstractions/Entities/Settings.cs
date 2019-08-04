@@ -9,6 +9,20 @@ namespace Opw.PineBlog.Entities
         public DateTime Modified { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public virtual Cover Cover { get; set; }
+
+        /// <summary>
+        /// Cover URL.
+        /// </summary>
+        public string CoverUrl { get; set; }
+
+        /// <summary>
+        /// Cover caption text.
+        /// </summary>
+        public string CoverCaption { get; set; }
+
+        /// <summary>
+        /// Cover link.
+        /// </summary>
+        public string CoverLink { get; set; }
     }
 }

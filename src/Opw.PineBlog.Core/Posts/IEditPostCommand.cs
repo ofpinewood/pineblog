@@ -8,11 +8,6 @@ namespace Opw.PineBlog.Posts
     public interface IEditPostCommand
     {
         /// <summary>
-        /// The name of the user adding the post.
-        /// </summary>
-        string UserName { get; set; }
-
-        /// <summary>
         /// The post title.
         /// </summary>
         string Title { get; set; }

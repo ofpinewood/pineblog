@@ -9,6 +9,5 @@ namespace Opw.PineBlog
         DbSet<Settings> Settings { get; set; }
         DbSet<Author> Authors { get; set; }
         DbSet<Post> Posts { get; set; }
-        DbSet<Cover> Covers { get; set; }
     }
 }
