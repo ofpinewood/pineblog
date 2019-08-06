@@ -10,7 +10,7 @@ namespace Opw.PineBlog.Models
         /// <summary>
         /// The list of files.
         /// </summary>
-        public IEnumerable<string> Files { get; set; }
+        public IEnumerable<FileModel> Files { get; set; }
 
         /// <summary>
         /// The pager.

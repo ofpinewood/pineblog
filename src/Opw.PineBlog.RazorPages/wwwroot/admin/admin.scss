@@ -88,24 +88,41 @@
             background-color: #555;
             margin-top: -1rem;
 
-            textarea {
-                width: 100%;
+            &::after {
+                background-color: rgba(0,0,0,0.5);
                 display: block;
-                font-size: 1.5rem;
-                color: #fff;
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 0
+            }
 
-                @media screen and (max-width: 991px) {
-                    font-size: 1.125rem;
+            .container {
+                position: relative;
+                z-index: 1;
+
+                textarea {
+                    width: 100%;
+                    display: block;
+                    font-size: 1.5rem;
+                    color: #fff;
+
+                    @media screen and (max-width: 991px) {
+                        font-size: 1.125rem;
+                    }
+
+                    border: none;
+                    border-radius: 0;
+                    transition: none;
+                    padding: 0;
+                    background: none;
+                    outline: none !important;
+                    margin-top: 3rem;
+                    margin-bottom: 1rem;
                 }
-
-                border: none;
-                border-radius: 0;
-                transition: none;
-                padding: 0;
-                background: none;
-                outline: none !important;
-                margin-top: 3rem;
-                margin-bottom: 1rem;
             }
         }
     }
@@ -116,8 +133,9 @@
                 position: relative;
                 height: 9.5rem;
                 overflow: hidden;
-                border: 1px solid #eee;
-                //border-bottom: 0;
+                border: 1px solid white;
+                border-bottom: none;
+
                 img {
                     width: auto;
                     min-height: 100%;
@@ -129,6 +147,22 @@
                     top: 50%;
                     display: block;
                     transform: translate(-50%, -50%)
+                }
+            }
+
+            .file-name {
+                background-color: #fafafa;
+                font-size: .75rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                padding: .375rem;// .375rem .375rem 1.75rem;
+                border: 1px solid white;
+                border-top: none;
+                margin: 0;
+
+                .custom-control-label::after, .custom-control-label::before {
+                    top: 0 !important
                 }
             }
         }

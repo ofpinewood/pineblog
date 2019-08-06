@@ -3,6 +3,7 @@ using Microsoft.Azure.Storage.Blob;
 using Microsoft.Extensions.Options;
 using Opw.PineBlog.Models;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -71,7 +72,7 @@ namespace Opw.PineBlog.Files.Azure
                 return Result<FileListModel>.Success(model);
             }
 
-            private async Task<IEnumerable<string>> GetPagedListAsync(
+            private async Task<IEnumerable<FileModel>> GetPagedListAsync(
                 Pager pager,
                 CloudBlobContainer cloudBlobContainer,
                 string directoryPath,
@@ -94,7 +95,8 @@ namespace Opw.PineBlog.Files.Azure
                 return files
                     .OrderBy(f => f)
                     .Skip(skip)
-                    .Take(pager.ItemsPerPage);
+                    .Take(pager.ItemsPerPage)
+                    .Select(f => new FileModel { Url = f, FileName = Path.GetFileName(f), MimeType = f.GetMimeType() });
             }
 
             private async Task<List<IListBlobItem>> ListAsync(CloudBlobDirectory directory, CancellationToken cancellationToken)
