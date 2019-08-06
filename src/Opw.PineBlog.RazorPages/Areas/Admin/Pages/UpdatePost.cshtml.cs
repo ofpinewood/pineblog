@@ -30,7 +30,6 @@ namespace Opw.PineBlog.Areas.Admin.Pages
             {
                 Id = result.Value.Id,
                 Title = result.Value.Title,
-                Slug = result.Value.Slug,
                 Description = result.Value.Description,
                 Content = result.Value.Content,
                 Categories = result.Value.Categories,

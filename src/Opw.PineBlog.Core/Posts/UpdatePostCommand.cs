@@ -25,11 +25,6 @@ namespace Opw.PineBlog.Posts
         public string Title { get; set; }
 
         /// <summary>
-        /// The slug for this post, until the post is published a temporary slug will be used.
-        /// </summary>
-        public string Slug { get; set; }
-
-        /// <summary>
         /// A short description for the post.
         /// </summary>
         public string Description { get; set; }
@@ -94,8 +89,10 @@ namespace Opw.PineBlog.Posts
                 if (entity == null)
                     return Result<Post>.Fail(new NotFoundException<Post>($"Could not find post, id: \"{request.Id}\""));
 
+                var oldSlug = entity.Slug;
+
                 entity.Title = request.Title;
-                entity.Slug = request.Slug;
+                entity.Slug = request.Title.ToSlug();
                 entity.Description = request.Description;
                 entity.Content = request.Content;
                 entity.Categories = request.Categories;
@@ -110,6 +107,11 @@ namespace Opw.PineBlog.Posts
                 var result = await _context.SaveChangesAsync(true, cancellationToken);
                 if (!result.IsSuccess)
                     return Result<Post>.Fail(result.Exception);
+
+                if (!oldSlug.Equals(entity.Slug))
+                {
+                    // TODO: update folders
+                }
 
                 return Result<Post>.Success(entity);
             }

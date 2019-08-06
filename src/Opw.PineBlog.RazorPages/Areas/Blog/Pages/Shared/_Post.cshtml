@@ -1,6 +1,6 @@
 @model Opw.PineBlog.Entities.Post
 <article class="post">
-    <h2 class="post-title"><a href="~/blog/@Model.Slug">@Model.Title</a></h2>
+    <h2 class="post-title"><a asp-page="Post" asp-route-slug="@Model.Slug">@Model.Title</a></h2>
     <div class="post-meta">
         <img class="post-meta-img" src="~/@Model.Author.Avatar" alt="@Model.Author.DisplayName" />
         <span class="post-meta-author">@Model.Author.DisplayName</span>

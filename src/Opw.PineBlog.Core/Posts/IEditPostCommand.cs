@@ -13,11 +13,6 @@ namespace Opw.PineBlog.Posts
         string Title { get; set; }
 
         /// <summary>
-        /// The slug for this post.
-        /// </summary>
-        string Slug { get; set; }
-
-        /// <summary>
         /// A short description for the post.
         /// </summary>
         string Description { get; set; }

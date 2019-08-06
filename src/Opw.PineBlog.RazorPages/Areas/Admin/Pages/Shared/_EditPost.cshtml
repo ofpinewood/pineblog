@@ -1,32 +1,43 @@
 @model Opw.PineBlog.Posts.IEditPostCommand
-<input asp-for="Slug" type="hidden">
+@{
+    var isEdit = !string.IsNullOrWhiteSpace(Model.Title);
+    var slug = Model.Title?.ToSlug();
+}
 <input asp-for="CoverUrl" type="hidden">
 <div class="post-cover" style="background-image: url('@Model.CoverUrl')">
     <div class="container">
         <div>
             <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                 <input type="submit" class="btn btn-primary" value="Save" />
-
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Publish</a>
-                        <a class="dropdown-item" href="#">Delete</a>
+                @if (isEdit)
+                {
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Publish</a>
+                            <a class="dropdown-item" href="#">Delete</a>
+                        </div>
                     </div>
+                }
+            </div>
+
+            @if (isEdit)
+            {
+                <a asp-page="Post" asp-area="Blog" asp-route-slug="@slug" target="_blank" class="btn btn-outline-light">View</a>
+            }
+            <a asp-page="Posts" class="btn btn-outline-light">Cancel</a>
+
+            @if (isEdit)
+            {
+                <div class="btn-group float-right" role="group">
+                    <button type="button" class="btn btn-outline-light" title="Cover" onclick="fileManager.open(updatePostCoverCallback, '@slug', 'image'); return false;">
+                        <i class="fa fa-picture-o" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-light" title="Settings" data-toggle="modal" data-target="#settingsModal">
+                        <i class="fa fa-cog" aria-hidden="true"></i>
+                    </button>
                 </div>
-            </div>
-
-            <button type="button" class="btn btn-outline-light">View</button>
-            <button type="button" class="btn btn-outline-light">Cancel</button>
-
-            <div class="btn-group float-right" role="group">
-                <button type="button" class="btn btn-outline-light" title="Cover" onclick="fileManager.open(updatePostCoverCallback, '@Model.Slug', 'image'); return false;">
-                    <i class="fa fa-picture-o" aria-hidden="true"></i>
-                </button>
-                <button type="button" class="btn btn-outline-light" title="Settings" data-toggle="modal" data-target="#settingsModal">
-                    <i class="fa fa-cog" aria-hidden="true"></i>
-                </button>
-            </div>
+            }
         </div>
         <div class="form-group">
             <textarea asp-for="Title" placeholder="Post title.."></textarea>
@@ -34,6 +45,7 @@
     </div>
 </div>
 
+<!--TODO: replace with toasts-->
 <div asp-validation-summary="All" class="invalid-tooltip">
 
 </div>
@@ -62,11 +74,6 @@
                     <textarea asp-for="Description" class="form-control"></textarea>
                     <span asp-validation-for="Description" class="invalid-feedback"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Published"></label>
-                    <input asp-for="Published" class="form-control">
-                    <span asp-validation-for="Published" class="invalid-feedback"></span>
-                </div>
                 <hr />
                 <div class="form-group">
                     <label asp-for="CoverCaption"></label>
@@ -78,6 +85,15 @@
                     <input asp-for="CoverLink" class="form-control">
                     <span asp-validation-for="CoverLink" class="invalid-feedback"></span>
                 </div>
+                @if (Model.Published.HasValue)
+                {
+                    <hr />
+                    <div class="form-group">
+                        <label asp-for="Published"></label>
+                        <input asp-for="Published" class="form-control">
+                        <span asp-validation-for="Published" class="invalid-feedback"></span>
+                    </div>
+                }
             </div>
         </div>
     </div>

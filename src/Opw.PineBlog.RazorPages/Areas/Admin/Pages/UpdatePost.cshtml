@@ -1,5 +1,8 @@
 @page
 @model UpdatePostModel
+@{
+    var slug = Model.Post.Title.ToSlug();
+}
 @section scripts {
     <script type="text/javascript">
         var _editor = {};
@@ -20,7 +23,7 @@
                         name: 'insertImage',
                         action: function customFunction(editor) {
                             _editor = editor;
-				            fileManager.open(insertImageCallback, '@Model.Post.Slug', 'image');
+				            fileManager.open(insertImageCallback, '@slug', 'image');
 			            },
                         className: 'fa fa-folder-open',
                         title: 'Insert image'

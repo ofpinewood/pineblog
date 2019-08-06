@@ -14,7 +14,7 @@
                 {
                     <div class="item-next col-md-6">
                         <label>next</label>
-                        <a href="~/blog/@Model.Next.Slug" title="@Model.Next.Title">
+                        <a asp-page="Post" asp-route-slug="@Model.Next.Slug" title="@Model.Next.Title">
                             @Model.Next.Title
                         </a>
                     </div>
@@ -23,7 +23,7 @@
                     @if (Model.Previous != null)
                     {
                         <label>previous</label>
-                        <a href="~/blog/@Model.Previous.Slug" title="@Model.Previous.Title">
+                        <a asp-page="Post" asp-route-slug="@Model.Previous.Slug" title="@Model.Previous.Title">
                             @Model.Previous.Title
                         </a>
                     }
