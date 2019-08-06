@@ -19,18 +19,19 @@ namespace Opw.PineBlog.Files
         }
 
         /// <summary>
-        /// Get the path format form the full URL.
+        /// Returns a new string in which all occurrences of the BaseUrl replaced with the UrlFormat.
         /// </summary>
-        /// <param name="url">URL of the file.</param>
-        /// <returns>Format; "%URL%filename.ext" or "%URL%path/filename.ext".</returns>
-        public string GetPathFormat(string url)
+        public string ReplaceBaseUrlWithUrlFormat(string s)
         {
-            string path;
-            if (!string.IsNullOrWhiteSpace(_blogOptions.Value.AzureStorageBlobContainerName))
-                path = url.Substring(url.IndexOf(_blogOptions.Value.AzureStorageBlobContainerName) + _blogOptions.Value.AzureStorageBlobContainerName.Length);
-            else
-                path = url.Substring(url.IndexOf(GetBaseUrl()) + GetBaseUrl().Length);
-            return $"%URL%{path}";
+            return s.Replace(GetBaseUrl(), "%URL%");
+        }
+
+        /// <summary>
+        /// Returns a new string in which all occurrences of the UrlFormat replaced with the BaseUrl.
+        /// </summary>
+        public string ReplaceUrlFormatWithBaseUrl(string s)
+        {
+            return s.Replace("%URL%", GetBaseUrl());
         }
 
         /// <summary>
