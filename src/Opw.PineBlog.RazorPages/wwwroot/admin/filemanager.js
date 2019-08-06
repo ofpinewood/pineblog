@@ -86,6 +86,7 @@ var fileManager = function (dataService) {
     //        }
     //    }
     //}
+
     //function removeCallback(data) {
     //    loaded();
     //    toastr.success('Deleted');
@@ -118,12 +119,13 @@ var fileManager = function (dataService) {
         $.each(_files, function (index) {
             var file = _files[index];
             var tag = '<div class="col-md-4">' +
-                '	<div class="file">' +
+                '	<div class="file" title="' + file.fileName + '">' +
                 '		<div class="file-image" onclick="fileManager.pick(' + index + '); return false"><img src="' + file.url + '" /></div>' +
-                '		<label class="custom-control custom-checkbox file-name" title="' + file.fileName + '">' +
-                '			<input type="checkbox" id="file' + index + '" class="custom-control-input file-check" onchange="fileManager.check(this)">' +
-                '			<span class="custom-control-label">' + file.fileName + '</span>' +
-                '		</label>' +
+                '       <div class="file-name">' + file.fileName + '</div>' +
+                //'		<label class="custom-control custom-checkbox file-name" title="' + file.fileName + '">' +
+                //'			<input type="checkbox" id="file' + index + '" class="custom-control-input file-check" onchange="fileManager.check(this)">' +
+                //'			<span class="custom-control-label">' + file.fileName + '</span>' +
+                //'		</label>' +
                 '	</div>' +
                 '</div>';
             $("#fileManagerList").append(tag);
@@ -150,7 +152,7 @@ var fileManager = function (dataService) {
         }
 
         $('#filePagination').append(pager);
-        showBtns();
+        //showBtns();
     }
 
     //function loading() {
@@ -163,25 +165,25 @@ var fileManager = function (dataService) {
 
     //function emptyCallback(data) { }
 
-    function check(cbx) {
-        if (!cbx.checked) {
-            $('#checkAll').prop('checked', false);
-        }
-        showBtns();
-    }
+    //function check(cbx) {
+    //    if (!cbx.checked) {
+    //        $('#checkAll').prop('checked', false);
+    //    }
+    //    showBtns();
+    //}
 
-    function showBtns() {
-        var items = $('#fileManagerList .file-check:checked');
-        console.log('showBtns', items.length);
-        if (items.length > 0) {
-            $('#btnDelete').show();
-            $('#btnSelect').show();
-        }
-        else {
-            $('#btnDelete').hide();
-            $('#btnSelect').hide();
-        }
-    }
+    //function showBtns() {
+    //    var items = $('#fileManagerList .file-check:checked');
+    //    console.log('showBtns', items.length);
+    //    if (items.length > 0) {
+    //        $('#btnDelete').show();
+    //        $('#btnSelect').show();
+    //    }
+    //    else {
+    //        $('#btnDelete').hide();
+    //        $('#btnSelect').hide();
+    //    }
+    //}
 
     return {
         open: open,
@@ -191,8 +193,8 @@ var fileManager = function (dataService) {
         uploadClick: uploadClick,
         uploadSubmit: uploadSubmit,
         //remove: remove,
-        check: check,
-        showBtns: showBtns
+        //check: check,
+        //showBtns: showBtns
     };
 }(DataService);
 
