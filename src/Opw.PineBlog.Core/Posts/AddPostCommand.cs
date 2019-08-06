@@ -69,14 +69,17 @@ namespace Opw.PineBlog.Posts
         public class Handler : IRequestHandler<AddPostCommand, Result<Post>>
         {
             private readonly IBlogEntityDbContext _context;
+            private readonly PostUrlHelper _postUrlHelper;
 
             /// <summary>
             /// Implementation of AddPostCommand.Handler.
             /// </summary>
             /// <param name="context">The blog entity context.</param>
-            public Handler(IBlogEntityDbContext context)
+            /// <param name="postUrlHelper">Post URL helper.</param>
+            public Handler(IBlogEntityDbContext context, PostUrlHelper postUrlHelper)
             {
                 _context = context;
+                _postUrlHelper = postUrlHelper;
             }
 
             /// <summary>
@@ -103,6 +106,8 @@ namespace Opw.PineBlog.Posts
                     CoverCaption = request.CoverCaption,
                     CoverLink = request.CoverLink
                 };
+
+                entity = _postUrlHelper.ReplaceBaseUrlWithUrlFormat(entity);
 
                 _context.Posts.Add(entity);
                 var result = await _context.SaveChangesAsync(cancellationToken);

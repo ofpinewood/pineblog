@@ -1,11 +1,7 @@
 @page
 @model PostModel
 
-<div class="page-cover" style="background-image: url('/@Model.Post.CoverUrl')">
-    <h1 class="page-cover-title">
-        <a href="~/">@Model.Post.Title</a>
-    </h1>
-</div>
+<partial name="_PageCover" model="new Opw.PineBlog.Models.PageCoverModel(Model.Post.Title, Model.Post.CoverUrl, Model.Post.CoverCaption, Model.Post.CoverLink)" />
 
 <div class="page-content">
     <div class="container">

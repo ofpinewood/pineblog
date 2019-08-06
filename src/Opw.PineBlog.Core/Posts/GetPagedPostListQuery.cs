@@ -39,16 +39,19 @@ namespace Opw.PineBlog.Posts
         {
             private readonly IOptions<PineBlogOptions> _blogOptions;
             private readonly IBlogEntityDbContext _context;
+            private readonly PostUrlHelper _postUrlHelper;
 
             /// <summary>
             /// Implementation of GetPagedPostListQuery.Handler.
             /// </summary>
             /// <param name="context">The blog entity context.</param>
             /// <param name="blogOptions">The blog options.</param>
-            public Handler(IBlogEntityDbContext context, IOptions<PineBlogOptions> blogOptions)
+            /// <param name="postUrlHelper">Post URL helper.</param>
+            public Handler(IBlogEntityDbContext context, IOptions<PineBlogOptions> blogOptions, PostUrlHelper postUrlHelper)
             {
                 _blogOptions = blogOptions;
                 _context = context;
+                _postUrlHelper = postUrlHelper;
             }
 
             /// <summary>
@@ -63,6 +66,8 @@ namespace Opw.PineBlog.Posts
                 var posts = request.IncludeUnpublished
                     ? await GetPagedListAsync(null, pager, cancellationToken)
                     : await GetPagedListAsync(p => p.Published != null, pager, cancellationToken);
+
+                posts = posts.Select(p => _postUrlHelper.ReplaceUrlFormatWithBaseUrl(p));
 
                 var model = new PostListModel
                 {

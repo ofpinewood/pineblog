@@ -4,7 +4,6 @@
         font-size: 1rem;
         line-height: 1.6;
         cursor: default;
-        overflow-y: scroll;
     }
 }
 
@@ -274,68 +273,75 @@ h4, h5, h6 {
     background-size: cover;
     background-repeat: no-repeat;
     text-align: center;
-}
 
-.page-cover a {
-    text-decoration: none;
-}
-
-.page-cover::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    display: block;
-    background: #000;
-    z-index: 700;
-    opacity: .5;
-    z-index: 0;
-}
-
-.page-cover-desc, .page-cover-title,
-.page-cover .container {
-    position: relative;
-    z-index: 1;
-}
-
-.page-cover-title {
-    font-family: "Merriweather", "Times New Roman", Times, serif;
-    font-size: 2.625rem;
-}
-
-.page-cover-title a {
-    color: #fff;
-}
-
-.page-cover-desc {
-    font-size: 1rem;
-    font-weight: 300;
-    max-width: 30rem;
-    margin: 0 auto;
-}
-
-@media screen and (max-width: 991px) {
-    .page-cover {
+    @media screen and (max-width: 991px) {
         padding: 6rem 1rem 3rem;
     }
 
-    .page-cover .page-cover-title {
-        font-size: 1.5rem;
-        margin-bottom: .25rem;
-    }
-}
-
-@media screen and (max-width: 800px) {
-    .page-cover {
+    @media screen and (max-width: 800px) {
         text-align: left;
     }
 
-    .page-cover .page-cover-desc {
-        font-size: .87rem;
-        max-width: none;
-        margin: 0;
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        display: block;
+        background: #000;
+        z-index: 700;
+        opacity: .5;
+        z-index: 0;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .page-cover-desc, .page-cover-title, .container, .page-cover-info-btn {
+        position: relative;
+        z-index: 1;
+    }
+
+    .page-cover-title {
+        font-family: "Merriweather", "Times New Roman", Times, serif;
+        font-size: 2.625rem;
+
+        @media screen and (max-width: 991px) {
+            font-size: 1.5rem;
+            margin-bottom: .25rem;
+        }
+
+        a {
+            color: #fff;
+        }
+    }
+
+    .page-cover-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        text-align: right;
+
+        .page-cover-info-btn {
+            color: #fff;
+        }
+    }
+
+    .page-cover-desc {
+        font-size: 1rem;
+        font-weight: 300;
+        max-width: 30rem;
+        margin: 0 auto;
+
+        @media screen and (max-width: 800px) {
+            font-size: .87rem;
+            max-width: none;
+            margin: 0;
+        }
     }
 }
 

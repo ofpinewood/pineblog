@@ -18,11 +18,13 @@ namespace Opw.PineBlog.Posts
         {
             private readonly IOptions<PineBlogOptions> _blogOptions;
             private readonly IBlogEntityDbContext _context;
+            private readonly PostUrlHelper _postUrlHelper;
 
-            public Handler(IBlogEntityDbContext context, IOptions<PineBlogOptions> blogOptions)
+            public Handler(IBlogEntityDbContext context, IOptions<PineBlogOptions> blogOptions, PostUrlHelper postUrlHelper)
             {
                 _blogOptions = blogOptions;
                 _context = context;
+                _postUrlHelper = postUrlHelper;
             }
 
             public async Task<Result<PostModel>> Handle(GetPostQuery request, CancellationToken cancellationToken)
@@ -62,6 +64,10 @@ namespace Opw.PineBlog.Posts
                     .OrderByDescending(p => p.Published)
                     .Take(1)
                     .SingleOrDefaultAsync(cancellationToken);
+
+                model.Post = _postUrlHelper.ReplaceUrlFormatWithBaseUrl(model.Post);
+                model.Next = _postUrlHelper.ReplaceUrlFormatWithBaseUrl(model.Next);
+                model.Previous = _postUrlHelper.ReplaceUrlFormatWithBaseUrl(model.Previous);
 
                 return Result<PostModel>.Success(model);
             }
