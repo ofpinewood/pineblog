@@ -42,7 +42,8 @@ namespace Opw.PineBlog
             services.AddTransient<IValidator<GetPostByIdQuery>, GetPostByIdQueryValidator>();
             services.AddTransient<IValidator<UploadFileCommand>, UploadFileCommandValidator>();
 
-            services.AddTransient<FilePathHelper>();
+            services.AddTransient<FileUrlHelper>();
+            services.AddTransient<PostUrlHelper>();
             services.AddTransient<AzureBlobHelper>();
 
             services.AddPineBlogCoreAzureServices();

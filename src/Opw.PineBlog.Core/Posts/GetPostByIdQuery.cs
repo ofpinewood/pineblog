@@ -25,14 +25,17 @@ namespace Opw.PineBlog.Posts
         public class Handler : IRequestHandler<GetPostByIdQuery, Result<Post>>
         {
             private readonly IBlogEntityDbContext _context;
+            private readonly PostUrlHelper _postUrlHelper;
 
             /// <summary>
             /// Implementation of GetPostByIdQuery.Handler.
             /// </summary>
             /// <param name="context">The blog entity context.</param>
-            public Handler(IBlogEntityDbContext context)
+            /// <param name="postUrlHelper">Post URL helper.</param>
+            public Handler(IBlogEntityDbContext context, PostUrlHelper postUrlHelper)
             {
                 _context = context;
+                _postUrlHelper = postUrlHelper;
             }
 
             /// <summary>
@@ -49,6 +52,8 @@ namespace Opw.PineBlog.Posts
 
                 if (post == null)
                     return Result<Post>.Fail(new NotFoundException<Post>($"Could not find post, id: \"{request.Id}\""));
+
+                post = _postUrlHelper.ReplaceUrlFormatWithBaseUrl(post);
 
                 return Result<Post>.Success(post);
             }

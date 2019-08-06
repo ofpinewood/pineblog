@@ -3,17 +3,17 @@ using Microsoft.Extensions.Options;
 namespace Opw.PineBlog.Files
 {
     /// <summary>
-    /// Helper for working with file paths.
+    /// Helper for working with file URLs.
     /// </summary>
-    public class FilePathHelper
+    public class FileUrlHelper
     {
         private readonly IOptions<PineBlogOptions> _blogOptions;
 
         /// <summary>
-        /// Implementation of FilePathHelper.
+        /// Implementation of FileUrlHelper.
         /// </summary>
         /// <param name="blogOptions">The blog options.</param>
-        public FilePathHelper(IOptions<PineBlogOptions> blogOptions)
+        public FileUrlHelper(IOptions<PineBlogOptions> blogOptions)
         {
             _blogOptions = blogOptions;
         }
@@ -23,6 +23,8 @@ namespace Opw.PineBlog.Files
         /// </summary>
         public string ReplaceBaseUrlWithUrlFormat(string s)
         {
+            if (string.IsNullOrWhiteSpace(s)) return s;
+
             return s.Replace(GetBaseUrl(), "%URL%");
         }
 
@@ -31,6 +33,8 @@ namespace Opw.PineBlog.Files
         /// </summary>
         public string ReplaceUrlFormatWithBaseUrl(string s)
         {
+            if (string.IsNullOrWhiteSpace(s)) return s;
+
             return s.Replace("%URL%", GetBaseUrl());
         }
 

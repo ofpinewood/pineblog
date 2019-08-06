@@ -5,14 +5,14 @@ using Xunit;
 
 namespace Opw.PineBlog.Files
 {
-    public class FilePathHelperTests
+    public class FileUrlHelperTests
     {
         private const string CDN_URL = "http://localhost/azure-blob-storage";
         private const string CONTAINER_NAME = "container-name";
 
-        private readonly FilePathHelper _filePathHelper;
+        private readonly FileUrlHelper _fileUrlHelper;
 
-        public FilePathHelperTests()
+        public FileUrlHelperTests()
         {
             var blogOptionsMock = new Mock<IOptions<PineBlogOptions>>();
             blogOptionsMock.Setup(o => o.Value).Returns(new PineBlogOptions
@@ -21,7 +21,7 @@ namespace Opw.PineBlog.Files
                 AzureStorageBlobContainerName = CONTAINER_NAME
             });
 
-            _filePathHelper = new FilePathHelper(blogOptionsMock.Object);
+            _fileUrlHelper = new FileUrlHelper(blogOptionsMock.Object);
         }
 
         [Fact]
@@ -30,7 +30,7 @@ namespace Opw.PineBlog.Files
             var baseUrl = string.Join('/', CDN_URL, CONTAINER_NAME);
             var s = $"Image 1: {baseUrl}/images/aaa.jpg, image 2: {baseUrl}/images/bbb.jpg.";
 
-            var result = _filePathHelper.ReplaceBaseUrlWithUrlFormat(s);
+            var result = _fileUrlHelper.ReplaceBaseUrlWithUrlFormat(s);
 
             result.Should().Be("Image 1: %URL%/images/aaa.jpg, image 2: %URL%/images/bbb.jpg.");
         }
@@ -40,7 +40,7 @@ namespace Opw.PineBlog.Files
         {
             var s = "Image 1: %URL%/images/aaa.jpg, image 2: %URL%/images/bbb.jpg.";
 
-            var result = _filePathHelper.ReplaceUrlFormatWithBaseUrl(s);
+            var result = _fileUrlHelper.ReplaceUrlFormatWithBaseUrl(s);
 
             result.Should().Be($"Image 1: {string.Join('/', CDN_URL, CONTAINER_NAME, "images/aaa.jpg")}, image 2: {string.Join('/', CDN_URL, CONTAINER_NAME, "images/bbb.jpg")}.");
         }
