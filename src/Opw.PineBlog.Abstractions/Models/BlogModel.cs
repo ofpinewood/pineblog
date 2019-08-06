@@ -1,6 +1,4 @@
 
-using Opw.PineBlog.Entities;
-
 namespace Opw.PineBlog.Models
 {
     public class BlogModel

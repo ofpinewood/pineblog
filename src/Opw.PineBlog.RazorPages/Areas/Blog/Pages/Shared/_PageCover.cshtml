@@ -1,0 +1,29 @@
+@model Opw.PineBlog.Models.PageCoverModel
+<div class="page-cover" style="background-image: url('@Model.CoverUrl')">
+    <h1 class="page-cover-title">
+        <a href="~/">@Model.Title</a>
+    </h1>
+    @if (!string.IsNullOrWhiteSpace(Model.CoverCaption) || !string.IsNullOrWhiteSpace(Model.CoverLink))
+    {
+        <div class="page-cover-info container">
+            <a href="#" class="page-cover-info-btn" role="button" data-toggle="popover" data-placement="bottom" data-trigger="focus" data-popover-content="#coverInfo">
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+            </a>
+            <div id="coverInfo" style="display: none">
+                <div class="popover-header"></div>
+                <div class="popover-body">
+                    @if (!string.IsNullOrWhiteSpace(Model.CoverCaption))
+                    {
+                        @Model.CoverCaption
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.CoverLink))
+                    {
+                        <a href="@Model.CoverLink">
+                            <i class="fa fa-external-link" aria-hidden="true"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
