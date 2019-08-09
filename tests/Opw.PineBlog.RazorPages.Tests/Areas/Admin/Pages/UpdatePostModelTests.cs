@@ -1,6 +1,7 @@
 using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
@@ -72,6 +73,54 @@ namespace Opw.PineBlog.Areas.Admin.Pages
 
             result.Should().BeOfType<PageResult>();
             pageModel.ModelState.IsValid.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task OnGetPublishAsync_Should_ReturnRedirectToPageResult()
+        {
+            var loggerMock = new Mock<ILogger<UpdatePostModel>>();
+            var mediaterMock = new Mock<IMediator>();
+            mediaterMock.Setup(m => m.Send(It.IsAny<PublishPostCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Result<Post>.Success(new Post { Id = _guid }));
+
+            var httpContext = new DefaultHttpContext();
+            var pageContext = GetPageContext(httpContext);
+
+            var pageModel = new UpdatePostModel(mediaterMock.Object, loggerMock.Object)
+            {
+                PageContext = pageContext.Item1,
+                TempData = GetTempDataDictionary(httpContext),
+                Url = new UrlHelper(pageContext.Item2)
+            };
+
+            var result = await pageModel.OnGetPublishAsync(_guid, default);
+
+            result.Should().BeOfType<RedirectToPageResult>()
+                .Which.PageName.Should().Be("UpdatePost");
+        }
+
+        [Fact]
+        public async Task OnGetUnpublishAsync_Should_ReturnRedirectToPageResult()
+        {
+            var loggerMock = new Mock<ILogger<UpdatePostModel>>();
+            var mediaterMock = new Mock<IMediator>();
+            mediaterMock.Setup(m => m.Send(It.IsAny<UnpublishPostCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Result<Post>.Success(new Post { Id = _guid }));
+
+            var httpContext = new DefaultHttpContext();
+            var pageContext = GetPageContext(httpContext);
+
+            var pageModel = new UpdatePostModel(mediaterMock.Object, loggerMock.Object)
+            {
+                PageContext = pageContext.Item1,
+                TempData = GetTempDataDictionary(httpContext),
+                Url = new UrlHelper(pageContext.Item2)
+            };
+
+            var result = await pageModel.OnGetUnpublishAsync(_guid, default);
+
+            result.Should().BeOfType<RedirectToPageResult>()
+                .Which.PageName.Should().Be("UpdatePost");
         }
     }
 }

@@ -53,5 +53,23 @@ namespace Opw.PineBlog.Areas.Admin.Pages
 
             return Page();
         }
+
+        public async Task<IActionResult> OnGetPublishAsync(Guid id, CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(new PublishPostCommand { Id = id }, cancellationToken);
+            if (!result.IsSuccess)
+                throw result.Exception;
+
+            return RedirectToPage("UpdatePost", new { id });
+        }
+
+        public async Task<IActionResult> OnGetUnpublishAsync(Guid id, CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(new UnpublishPostCommand { Id = id }, cancellationToken);
+            if (!result.IsSuccess)
+                throw result.Exception;
+
+            return RedirectToPage("UpdatePost", new { id });
+        }
     }
 }
