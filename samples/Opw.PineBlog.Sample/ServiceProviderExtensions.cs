@@ -2,8 +2,9 @@ using Microsoft.Extensions.Options;
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Opw.EntityFrameworkCore;
+using Opw.PineBlog.EntityFrameworkCore;
 
-namespace Opw.PineBlog.EntityFrameworkCore
+namespace Opw.PineBlog.Sample
 {
     public static class ServiceProviderExtensions
     {
