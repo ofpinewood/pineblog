@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
 using System.Threading;
@@ -9,22 +10,22 @@ namespace Opw.PineBlog.Files.Azure
     /// <summary>
     /// Command that uploads a blob to Azure blob storage.
     /// </summary>
-    public class UploadAzureBlobCommand : IRequest<Result<string>>
+    public class UploadAzureBlobCommand : IUploadFileCommand
     {
         /// <summary>
-        /// The file stream of the to upload file.
+        /// The file sent with the HTTP request.
         /// </summary>
-        public Stream FileStream { get; set; }
+        public IFormFile File { get; set; }
+
+        /// <summary>
+        /// Allowed file type.
+        /// </summary>
+        public FileType AllowedFileType { get; set; }
 
         /// <summary>
         /// The target file path, excluding the file name.
         /// </summary>
         public string TargetPath { get; set; }
-
-        /// <summary>
-        /// The target file name.
-        /// </summary>
-        public string FileName { get; set; }
 
         /// <summary>
         /// Handler for the UploadAzureBlobCommand.
@@ -49,24 +50,45 @@ namespace Opw.PineBlog.Files.Azure
             /// <param name="cancellationToken">A cancellation token.</param>
             public async Task<Result<string>> Handle(UploadAzureBlobCommand request, CancellationToken cancellationToken)
             {
+                // Use Path.GetFileName to obtain the file name, which will strip any path information passed as part of the FileName property.
+                var fileName = Path.GetFileName(request.File.FileName);
+
+                var stream = new MemoryStream();
+                var result = await ProcessFormFileAsync(request.File, fileName, stream);
+                if (!result.IsSuccess) return result;
+
                 var cloudBlobContainer = await _azureBlobHelper.GetCloudBlobContainerAsync(cancellationToken);
                 if (!cloudBlobContainer.IsSuccess)
                     return Result<string>.Fail(cloudBlobContainer.Exception);
 
                 try
                 {
-                    var blobName = $"{request.TargetPath.Trim('/')}/{request.FileName.Trim('/')}";
+                    var blobName = $"{request.TargetPath.Trim('/')}/{fileName.Trim('/')}";
                     var cloudBlockBlob = cloudBlobContainer.Value.GetBlockBlobReference(blobName);
-                    cloudBlockBlob.Properties.ContentType = request.FileName.GetMimeType();
+                    cloudBlockBlob.Properties.ContentType = fileName.GetMimeType();
 
-                    request.FileStream.Position = 0;
-                    await cloudBlockBlob.UploadFromStreamAsync(request.FileStream);
+                    stream.Position = 0;
+                    await cloudBlockBlob.UploadFromStreamAsync(stream);
                     return Result<string>.Success(cloudBlockBlob.Uri.AbsoluteUri);
                 }
                 catch (Exception ex)
                 {
-                    return Result<string>.Fail(new FileUploadException($"The blob ({request.FileName}) upload failed", ex));
+                    return Result<string>.Fail(new FileUploadException($"The blob ({fileName}) upload failed", ex));
                 }
+            }
+
+            private async Task<Result<string>> ProcessFormFileAsync(IFormFile formFile, string fileName, Stream targetStream)
+            {
+                try
+                {
+                    await formFile.OpenReadStream().CopyToAsync(targetStream);
+                }
+                catch (Exception ex)
+                {
+                    return Result<string>.Fail(new FileUploadException($"The {formFile.Name} file ({fileName}) upload failed. Error: {ex.Message}", ex));
+                }
+
+                return Result<string>.Success();
             }
         }
     }

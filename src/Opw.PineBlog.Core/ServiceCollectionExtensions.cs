@@ -36,7 +36,6 @@ namespace Opw.PineBlog
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
-            services.AddTransient<IValidator<IEditPostCommand>, EditPostCommandValidator<IEditPostCommand>>();
             services.AddTransient<IValidator<AddPostCommand>, AddPostCommandValidator>();
             services.AddTransient<IValidator<UpdatePostCommand>, UpdatePostCommandValidator>();
             services.AddTransient<IValidator<PublishPostCommand>, PublishPostCommandValidator>();
@@ -45,7 +44,8 @@ namespace Opw.PineBlog
             services.AddTransient<IValidator<GetPostQuery>, GetPostQueryValidator>();
             services.AddTransient<IValidator<GetPostByIdQuery>, GetPostByIdQueryValidator>();
 
-            services.AddTransient<IValidator<UploadFileCommand>, UploadFileCommandValidator>();
+            services.AddTransient<IUploadFileCommandFactory, UploadFileCommandFactory>();
+            services.AddTransient<IGetPagedFileListQueryFactory, GetPagedFileListQueryFactory>();
 
             services.AddTransient<FileUrlHelper>();
             services.AddTransient<PostUrlHelper>();

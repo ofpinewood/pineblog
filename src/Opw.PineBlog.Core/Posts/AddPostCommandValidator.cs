@@ -5,7 +5,7 @@ namespace Opw.PineBlog.Posts
     /// <summary>
     /// Validator for the AddPostCommand request.
     /// </summary>
-    public class AddPostCommandValidator : EditPostCommandValidator<AddPostCommand>
+    public class AddPostCommandValidator : AbstractEditPostCommandValidator<AddPostCommand>
     {
         /// <summary>
         /// Implementation of AddPostCommandValidator.

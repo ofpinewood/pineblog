@@ -3,15 +3,15 @@ using FluentValidation;
 namespace Opw.PineBlog.Posts
 {
     /// <summary>
-    /// Validator for the IEditPostCommand requests.
+    /// Base class for validators for the IEditPostCommand requests.
     /// </summary>
-    public class EditPostCommandValidator<TRequest> : AbstractValidator<TRequest>
+    public abstract class AbstractEditPostCommandValidator<TRequest> : AbstractValidator<TRequest>
         where TRequest : IEditPostCommand
     {
         /// <summary>
-        /// Implementation of EditPostCommandValidator.
+        /// Implementation of AbstractEditPostCommandValidator.
         /// </summary>
-        public EditPostCommandValidator()
+        public AbstractEditPostCommandValidator()
         {
             RuleFor(c => c.Title).MaximumLength(160).NotEmpty();
             RuleFor(c => c.Description).MaximumLength(450);

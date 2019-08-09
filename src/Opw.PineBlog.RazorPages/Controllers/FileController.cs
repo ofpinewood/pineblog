@@ -20,16 +20,26 @@ namespace Opw.PineBlog.Controllers
     public class FileController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IUploadFileCommandFactory _uploadFileCommandFactory;
+        private readonly IGetPagedFileListQueryFactory _getPagedFileListQueryFactory;
         private readonly ILogger<FileController> _logger;
 
         /// <summary>
         /// Implementation of FileController.
         /// </summary>
         /// <param name="mediator">Mediator.</param>
+        /// <param name="uploadFileCommandFactory">Upload file command factory</param>
+        /// <param name="getPagedFileListQueryFactory">Get paged file list query factory.</param>
         /// <param name="logger">Logger.</param>
-        public FileController(IMediator mediator, ILogger<FileController> logger)
+        public FileController(
+            IMediator mediator,
+            IUploadFileCommandFactory uploadFileCommandFactory,
+            IGetPagedFileListQueryFactory getPagedFileListQueryFactory,
+            ILogger<FileController> logger)
         {
             _mediator = mediator;
+            _uploadFileCommandFactory = uploadFileCommandFactory;
+            _getPagedFileListQueryFactory = getPagedFileListQueryFactory;
             _logger = logger;
         }
 
@@ -45,14 +55,7 @@ namespace Opw.PineBlog.Controllers
         {
             try
             {
-                var result = await _mediator.Send(new GetPagedFileListQuery
-                {
-                    Page = page,
-                    FileType = fileType,
-                    DirectoryPath = directoryPath,
-                    ItemsPerPage = 9
-                }, cancellationToken);
-
+                var result = await _mediator.Send(_getPagedFileListQueryFactory.Create(page, 9, directoryPath, fileType), cancellationToken);
                 if (!result.IsSuccess)
                     throw result.Exception;
 
@@ -78,14 +81,7 @@ namespace Opw.PineBlog.Controllers
             {
                 foreach (var file in files)
                 {
-                    var result = await _mediator.Send(new UploadFileCommand
-                    {
-                        File = file,
-                        FileName = file.FileName,
-                        AllowedFileType = FileType.All,
-                        TargetPath = targetPath
-                    }, cancellationToken);
-
+                    var result = await _mediator.Send(_uploadFileCommandFactory.Create(file, FileType.All, targetPath), cancellationToken);
                     if (!result.IsSuccess)
                         throw result.Exception;
                 }
