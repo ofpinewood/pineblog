@@ -69,7 +69,7 @@ namespace Opw.PineBlog.Sample
                     post.CoverUrl = "/images/woods.gif";
                     post.CoverCaption = "Battle background for the Misty Woods in the game Shadows of Adam by Tim Wendorf";
                     post.CoverLink = "http://pixeljoint.com/pixelart/94359.htm";
-                    post.Content = $"## {WaffleEngine.Text(1, true)}  {WaffleEngine.Text(1, false)}  \n``` csharp\npublic class {{\nvar myVar = \"Some value\";\n}}\n```\n  ## {WaffleEngine.Text(1, true)}  {WaffleEngine.Text(2, false)}";
+                    post.Content = $"## {WaffleEngine.Text(1, true)}  {WaffleEngine.Text(1, false)}  \n``` csharp\npublic class {{\n  var myVar = \"Some value\";\n}}\n```\n  ## {WaffleEngine.Text(1, true)}  {WaffleEngine.Text(2, false)}";
                 }
 
                 _dbContext.Posts.Add(post);
