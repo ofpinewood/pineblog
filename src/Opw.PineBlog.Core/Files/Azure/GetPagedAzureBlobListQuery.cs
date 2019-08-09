@@ -103,6 +103,7 @@ namespace Opw.PineBlog.Files.Azure
                     .Select(f => new FileModel { Url = f, FileName = Path.GetFileName(f), MimeType = f.GetMimeType() });
             }
 
+            // TODO: duplicate code move to helper and add tests
             private async Task<List<IListBlobItem>> ListAsync(CloudBlobDirectory directory, CancellationToken cancellationToken)
             {
                 var blobsInDirectory = new List<IListBlobItem>();
