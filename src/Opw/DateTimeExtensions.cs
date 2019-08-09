@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace Opw
@@ -23,7 +24,7 @@ namespace Opw
 
         static string FriendlyDate(DateTime date)
         {
-            string FormattedDate = "";
+            string FormattedDate;
             if (date.Date == DateTime.Today)
             {
                 FormattedDate = "Today";
@@ -35,11 +36,11 @@ namespace Opw
             else if (date.Date > DateTime.Today.AddDays(-6))
             {
                 // *** Show the Day of the week
-                FormattedDate = date.ToString("dddd").ToString();
+                FormattedDate = date.ToString("dddd", CultureInfo.InvariantCulture);
             }
             else
             {
-                FormattedDate = date.ToString("MMMM dd, yyyy");
+                FormattedDate = date.ToString("MMMM dd, yyyy", CultureInfo.InvariantCulture);
             }
             return FormattedDate;
         }
