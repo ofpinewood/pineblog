@@ -1,5 +1,4 @@
 using FluentValidation;
-using Opw.FluentValidation;
 
 namespace Opw.PineBlog.Posts
 {
@@ -15,7 +14,6 @@ namespace Opw.PineBlog.Posts
         public EditPostCommandValidator()
         {
             RuleFor(c => c.Title).MaximumLength(160).NotEmpty();
-            RuleFor(c => c.Slug).IsSlug();
             RuleFor(c => c.Description).MaximumLength(450);
             RuleFor(c => c.Categories).MaximumLength(2000);
             RuleFor(c => c.Content).NotEmpty();

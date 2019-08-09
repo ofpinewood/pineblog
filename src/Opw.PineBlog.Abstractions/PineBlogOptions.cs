@@ -28,10 +28,10 @@ namespace Opw
         public string CoverLink { get; set; }
 
         /// <summary>
-        /// The URL of the CDN where the images and other files are accessible.
-        /// Can also be the web host or a local host name if no CDN is used.
+        /// The URL of the location where the images and other files are stored.
+        /// Can be the web host, a CDN or a local host.
         /// </summary>
-        public string CdnUrl { get; set; }
+        public string FileBaseUrl { get; set; }
 
         /// <summary>
         /// The path for the folder where the cover images are stored.

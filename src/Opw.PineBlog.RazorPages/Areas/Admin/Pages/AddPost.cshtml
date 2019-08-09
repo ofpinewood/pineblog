@@ -13,14 +13,13 @@
             var simplemde = new SimpleMDE({
                 element: document.getElementById('Content'),
                 toolbar: [
-                    'bold', 'italic', 'heading', 'heading-2', '|',
+                    'bold', 'italic', 'heading-2', 'heading-3', '|',
                     'quote', 'unordered-list', 'ordered-list', '|',
                     'code', 'link',
                     {
                         name: 'insertImage',
                         action: function customFunction(editor) {
-                            _editor = editor;
-				            fileManager.open(insertImageCallback, '@Model.Post.Slug', 'image');
+                            // TODO: alert that the post needs to be saved first
 			            },
                         className: 'fa fa-folder-open',
                         title: 'Insert image'

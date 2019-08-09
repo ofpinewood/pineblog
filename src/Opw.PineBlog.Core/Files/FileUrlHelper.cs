@@ -43,7 +43,7 @@ namespace Opw.PineBlog.Files
         /// </summary>
         public string GetBaseUrl()
         {
-            var url = _blogOptions.Value.CdnUrl;
+            var url = _blogOptions.Value.FileBaseUrl;
             if (!string.IsNullOrWhiteSpace(_blogOptions.Value.AzureStorageBlobContainerName))
                 url += "/" + _blogOptions.Value.AzureStorageBlobContainerName;
 

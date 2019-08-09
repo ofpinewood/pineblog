@@ -24,11 +24,6 @@ namespace Opw.PineBlog.Posts
         public string Title { get; set; }
 
         /// <summary>
-        /// The slug for this post, until the post is published a temporary slug will be used.
-        /// </summary>
-        public string Slug { get; set; } = DateTime.UtcNow.Ticks.ToString();
-
-        /// <summary>
         /// A short description for the post.
         /// </summary>
         public string Description { get; set; }
@@ -97,7 +92,7 @@ namespace Opw.PineBlog.Posts
                 {
                     AuthorId = author.Id,
                     Title = request.Title,
-                    Slug = request.Slug,
+                    Slug = request.Title.ToSlug(),
                     Description = request.Description,
                     Content = request.Content,
                     Categories = request.Categories,

@@ -1,5 +1,9 @@
 @page
 @model UpdatePostModel
+@{
+    ViewData["Id"] = Model.Post.Id;
+    ViewData["Slug"] = Model.Post.Title.ToSlug();
+}
 @section scripts {
     <script type="text/javascript">
         var _editor = {};
@@ -13,14 +17,14 @@
             var simplemde = new SimpleMDE({
                 element: document.getElementById('Content'),
                 toolbar: [
-                    'bold', 'italic', 'heading', 'heading-2', '|',
+                    'bold', 'italic', 'heading-2', 'heading-3', '|',
                     'quote', 'unordered-list', 'ordered-list', '|',
                     'code', 'link',
                     {
                         name: 'insertImage',
                         action: function customFunction(editor) {
                             _editor = editor;
-				            fileManager.open(insertImageCallback, '@Model.Post.Slug', 'image');
+				            fileManager.open(insertImageCallback, '@ViewData["Slug"]', 'image');
 			            },
                         className: 'fa fa-folder-open',
                         title: 'Insert image'
