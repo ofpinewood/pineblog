@@ -1,5 +1,5 @@
 /* PrismJS 1.17.1
-https://prismjs.com/download.html#themes=prism-tomorrow&languages=markup+css+clike+javascript+csharp+json+typescript+scss+yaml */
+https://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript+csharp+json+typescript+scss+yaml */
 var _self = (typeof window !== 'undefined')
     ? window   // if in browser
     : (
