@@ -18,20 +18,12 @@ variables:
 steps:
 - task: gittools.gitversion.gitversion-task.GitVersion@4
   displayName: GitVersion
-  inputs:
-    updateAssemblyInfo: true
-
-# # https://dotnet.microsoft.com/download/dotnet-core/3.0
-# - task: DotNetCoreInstaller@0
-#   displayName: 'Install .Net Core 3.0 (preview)'
-#   inputs:
-#     version: '3.0.100-preview6-012264'
 
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
     projects: '**/*.csproj'
-    arguments: '--configuration $(buildConfiguration) /p:Version=$(Build.BuildNumber)'
+    arguments: '--configuration $(buildConfiguration) /p:Version=$(GitVersion.AssemblySemVer)'
 
 - task: DotNetCoreCLI@2
   displayName: Test
@@ -45,10 +37,11 @@ steps:
 # Release: triggered by a version tag
 - task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.PineBlog.Core
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+# condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
   inputs:
     command: pack
     packagesToPack: '**/Opw.PineBlog.Core.csproj'
+    nobuild: true
     versioningScheme: byEnvVar
     versionEnvVar: 'GitVersion_NuGetVersion'
 
@@ -58,6 +51,7 @@ steps:
   inputs:
     command: pack
     packagesToPack: '**/Opw.PineBlog.RazorPages.csproj'
+    nobuild: true
     versioningScheme: byEnvVar
     versionEnvVar: 'GitVersion_NuGetVersion'
 
@@ -67,6 +61,7 @@ steps:
   inputs:
     command: pack
     packagesToPack: '**/Opw.PineBlog.EntityFrameworkCore.csproj'
+    nobuild: true
     versioningScheme: byEnvVar
     versionEnvVar: 'GitVersion_NuGetVersion'
 
@@ -76,6 +71,7 @@ steps:
   inputs:
     command: pack
     packagesToPack: '**/Opw.PineBlog.csproj'
+    nobuild: true
     versioningScheme: byEnvVar
     versionEnvVar: 'GitVersion_NuGetVersion'
 

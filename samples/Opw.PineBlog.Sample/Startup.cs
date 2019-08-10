@@ -36,6 +36,7 @@ namespace Opw.PineBlog.Sample
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
 
+            // TODO: combine with AddPineBlogRazorPages?
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddPineBlog(Configuration, connectionString);
         }
