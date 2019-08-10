@@ -25,7 +25,8 @@ steps:
   displayName: Build
   inputs:
     projects: '**/*.csproj'
-    arguments: '--configuration $(buildConfiguration) /p:Version=$(Build.BuildNumber)'
+    arguments: '--configuration $(buildConfiguration)'
+    versioningScheme: byBuildNumber
 
 - task: DotNetCoreCLI@2
   displayName: Test
@@ -39,11 +40,10 @@ steps:
 # Release: triggered by a version tag
 - task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.PineBlog.Core
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+# condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
   inputs:
     command: pack
     packagesToPack: '**/Opw.PineBlog.Core.csproj'
-    arguments: '--configuration $(buildConfiguration) /p:Version=$(Build.BuildNumber)'
     versioningScheme: byEnvVar
     versionEnvVar: 'GitVersion_NuGetVersion'
 
