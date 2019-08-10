@@ -1,29 +1,38 @@
 @page
 @model IndexModel
+@{
+    var pageCoverModel = new Opw.PineBlog.Models.PageCoverModel(
+        Model.PostList.Blog.Title,
+        Model.PostList.Blog.CoverUrl,
+        Model.PostList.Blog.CoverCaption,
+        Model.PostList.Blog.CoverLink,
+        Model.PostList.PostListType,
+        Model.PostList.Category);
+}
 
-<partial name="_PageCover" model="new Opw.PineBlog.Models.PageCoverModel(Model.Blog.Title, Model.Blog.CoverUrl, Model.Blog.CoverCaption, Model.Blog.CoverLink)" />
+<partial name="_PageCover" model="pageCoverModel" />
 
 <div class="page-content">
     <div class="container">
-        @foreach (var post in Model.Posts)
+        @foreach (var post in Model.PostList.Posts)
         {
             <partial name="_Post" model="post" />
         }
-        @if (Model.Pager != null && (Model.Pager.ShowOlder || Model.Pager.ShowNewer))
+        @if (Model.PostList.Pager != null && (Model.PostList.Pager.ShowOlder || Model.PostList.Pager.ShowNewer))
         {
             <nav class="pagination row">
                 <div class="item-next col-md-6">
-                    @if (Model.Pager.ShowNewer)
+                    @if (Model.PostList.Pager.ShowNewer)
                     {
-                        <a href="?@Model.Pager.LinkToNewer" title="Newer">
+                        <a href="?@Model.PostList.Pager.LinkToNewer" title="Newer">
                             Newer
                         </a>
                     }
                 </div>
                 <div class="item-prev col-md-6">
-                    @if (Model.Pager.ShowOlder)
+                    @if (Model.PostList.Pager.ShowOlder)
                     {
-                        <a href="?@Model.Pager.LinkToOlder" title="Older">
+                        <a href="?@Model.PostList.Pager.LinkToOlder" title="Older">
                             Older
                         </a>
                     }

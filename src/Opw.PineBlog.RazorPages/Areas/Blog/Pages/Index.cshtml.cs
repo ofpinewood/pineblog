@@ -14,9 +14,7 @@ namespace Opw.PineBlog.Areas.Blog.Pages
     {
         private readonly IMediator _mediator;
 
-        public BlogModel Blog { get; set; }
-        public Pager Pager { get; private set; }
-        public IEnumerable<Post> Posts { get; set; }
+        public PostListModel PostList { get; set; }
 
         [ViewData]
         public string Title { get; private set; }
@@ -26,15 +24,12 @@ namespace Opw.PineBlog.Areas.Blog.Pages
             _mediator = mediator;
         }
 
-        public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken, [FromQuery]int page = 1)
+        public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken, [FromQuery]int page = 1, [FromQuery]string category = null)
         {
-            var result = await _mediator.Send(new GetPagedPostListQuery { Page = page }, cancellationToken);
+            var result = await _mediator.Send(new GetPagedPostListQuery { Page = page, Category = category }, cancellationToken);
 
-            Blog = result.Value.Blog;
-            Pager = result.Value.Pager;
-            Posts = result.Value.Posts;
-            
-            Title = Blog.Title;
+            PostList = result.Value;
+            Title = result.Value.Blog.Title;
 
             return Page();
         }

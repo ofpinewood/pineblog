@@ -10,6 +10,7 @@ namespace Opw
         public string Description { get; set; }
         public int ItemsPerPage { get; set; }
         public string PagingUrlPartFormat { get; set; }
+        public string CategoryUrlPartFormat { get; set; }
         public bool CreateAndSeedDatabases { get; set; }
 
         /// <summary>

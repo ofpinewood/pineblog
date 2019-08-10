@@ -1,30 +1,38 @@
 @page
 @model PostModel
+@{
+    var pageCoverModel = new Opw.PineBlog.Models.PageCoverModel(
+        Model.Post.Post.Title,
+        Model.Post.Post.CoverUrl,
+        Model.Post.Post.CoverCaption,
+        Model.Post.Post.CoverLink,
+        null, null);
+}
 
-<partial name="_PageCover" model="new Opw.PineBlog.Models.PageCoverModel(Model.Post.Title, Model.Post.CoverUrl, Model.Post.CoverCaption, Model.Post.CoverLink)" />
+<partial name="_PageCover" model="pageCoverModel" />
 
 <div class="page-content">
     <div class="container">
         <partial name="_Post" model="@Model.Post" />
 
-        @if (Model.Previous != null || Model.Next != null)
+        @if (Model.Post.Previous != null || Model.Post.Next != null)
         {
             <nav class="pagination row justify-content-end">
-                @if (Model.Next != null)
+                @if (Model.Post.Next != null)
                 {
                     <div class="item-next col-md-6">
                         <label>next</label>
-                        <a asp-page="Post" asp-route-slug="@Model.Next.Slug" title="@Model.Next.Title">
-                            @Model.Next.Title
+                        <a asp-page="Post" asp-route-slug="@Model.Post.Next.Slug" title="@Model.Post.Next.Title">
+                            @Model.Post.Next.Title
                         </a>
                     </div>
                 }
                 <div class="item-prev col-md-6">
-                    @if (Model.Previous != null)
+                    @if (Model.Post.Previous != null)
                     {
                         <label>previous</label>
-                        <a asp-page="Post" asp-route-slug="@Model.Previous.Slug" title="@Model.Previous.Title">
-                            @Model.Previous.Title
+                        <a asp-page="Post" asp-route-slug="@Model.Post.Previous.Slug" title="@Model.Post.Previous.Title">
+                            @Model.Post.Previous.Title
                         </a>
                     }
                 </div>

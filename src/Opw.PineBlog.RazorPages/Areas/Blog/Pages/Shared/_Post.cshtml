@@ -12,7 +12,7 @@
             foreach (var cat in cats)
             {
                 <span>
-                    <a href="~/categories/@cat">@cat</a>
+                    <a asp-page="Index" asp-route-category="@cat">@cat</a>
                 </span>
             }
         }

@@ -13,11 +13,8 @@ namespace Opw.PineBlog.Areas.Blog.Pages
     {
         private readonly IMediator _mediator;
 
-        public BlogModel Blog { get; set; }
-        public Post Post { get; set; }
-        public Post Previous { get; set; }
-        public Post Next { get; set; }
-
+        public Models.PostModel Post { get; set; }
+        
         [ViewData]
         public string Title { get; private set; }
 
@@ -32,12 +29,8 @@ namespace Opw.PineBlog.Areas.Blog.Pages
 
             if (!result.IsSuccess) return Error(result);
 
-            Blog = result.Value.Blog;
-            Post = result.Value.Post;
-            Previous = result.Value.Previous;
-            Next = result.Value.Next;
-
-            Title = Blog.Title;
+            Post = result.Value;
+            Title = result.Value.Post.Title;
 
             return Page();
         }
