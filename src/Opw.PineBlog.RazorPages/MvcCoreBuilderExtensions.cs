@@ -1,10 +1,7 @@
-using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
-using Opw.PineBlog.Areas.Admin.Pages;
-using Opw.PineBlog.Posts;
 
-namespace Opw.PineBlog
+namespace Opw.PineBlog.RazorPages
 {
     /// <summary>
     /// Provides extension methods for the Microsoft.Extensions.DependencyInjection.IMvcCoreBuilder and Microsoft.Extensions.DependencyInjection.IMvcBuilder interfaces.
@@ -25,10 +22,7 @@ namespace Opw.PineBlog
                 option.Conventions.AuthorizeAreaFolder("Admin", "/");
                 option.Conventions.AddAreaPageRoute("Blog", "/Post", "blog/{*slug}");
             });
-            builder.AddFluentValidation(config => {
-                //config.ImplicitlyValidateChildProperties = true;
-                //config.RegisterValidatorsFromAssembly(typeof(AddPostCommandValidator).Assembly);
-            });
+            builder.AddFluentValidation();
 
             return builder;
         }
@@ -47,10 +41,7 @@ namespace Opw.PineBlog
                 option.Conventions.AuthorizeAreaFolder("Admin", "/");
                 option.Conventions.AddAreaPageRoute("Blog", "/Post", "blog/{*slug}");
             });
-            builder.AddFluentValidation(config => {
-                //config.ImplicitlyValidateChildProperties = true;
-                //config.RegisterValidatorsFromAssembly(typeof(AddPostCommandValidator).Assembly);
-            });
+            builder.AddFluentValidation();
 
             return builder;
         }
@@ -62,6 +53,9 @@ namespace Opw.PineBlog
             {
                 options.PagingUrlPartFormat = "page={0}";
                 options.CategoryUrlPartFormat = "category={0}";
+
+                var version = typeof(StaticFilePostConfigureOptions).Assembly.GetName().Version;
+                options.Version = version.ToString();
             });
         }
     }

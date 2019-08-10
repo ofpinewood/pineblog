@@ -3,22 +3,19 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Opw.PineBlog.Entities;
-using Opw.PineBlog.Models;
+using Microsoft.Extensions.Options;
 using Opw.PineBlog.Posts;
 
-namespace Opw.PineBlog.Areas.Blog.Pages
+namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
 {
     public class PostModel : PageModelBase<PostModel>
     {
         private readonly IMediator _mediator;
 
-        public Models.PostModel Post { get; set; }
+        public PineBlog.Models.PostModel Post { get; set; }
         
-        [ViewData]
-        public string Title { get; private set; }
-
-        public PostModel(IMediator mediator, ILogger<PostModel> logger) : base(logger)
+        public PostModel(IMediator mediator, IOptions<PineBlogOptions> options, ILogger<PostModel> logger)
+            : base(options, logger)
         {
             _mediator = mediator;
         }

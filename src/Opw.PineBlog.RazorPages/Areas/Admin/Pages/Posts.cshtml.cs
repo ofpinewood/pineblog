@@ -4,11 +4,12 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Opw.PineBlog.Entities;
 using Opw.PineBlog.Models;
 using Opw.PineBlog.Posts;
 
-namespace Opw.PineBlog.Areas.Admin.Pages
+namespace Opw.PineBlog.RazorPages.Areas.Admin.Pages
 {
     public class PostsModel : PageModelBase<PostsModel>
     {
@@ -17,7 +18,8 @@ namespace Opw.PineBlog.Areas.Admin.Pages
         public Pager Pager { get; private set; }
         public IEnumerable<Post> Posts { get; set; }
 
-        public PostsModel(IMediator mediator, ILogger<PostsModel> logger) : base(logger)
+        public PostsModel(IMediator mediator, IOptions<PineBlogOptions> options, ILogger<PostsModel> logger)
+            : base(options, logger)
         {
             _mediator = mediator;
         }

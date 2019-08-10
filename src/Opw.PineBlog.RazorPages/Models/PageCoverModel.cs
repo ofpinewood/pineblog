@@ -1,5 +1,6 @@
+using Opw.PineBlog.Models;
 
-namespace Opw.PineBlog.Models
+namespace Opw.PineBlog.RazorPages.Models
 {
     /// <summary>
     /// Model for the _PageCover partial view.
@@ -29,7 +30,7 @@ namespace Opw.PineBlog.Models
         /// <summary>
         /// Post list type.
         /// </summary>
-        public PostListType? PostListType { get; set; }
+        public PostListType PostListType { get; set; }
 
         /// <summary>
         /// Category filter.
@@ -45,7 +46,7 @@ namespace Opw.PineBlog.Models
         /// <param name="coverLink">Cover link.</param>
         /// <param name="postListType">Post list type.</param>
         /// <param name="category">Category filter.</param>
-        public PageCoverModel(string title, string coverUrl, string coverCaption, string coverLink, PostListType? postListType, string category)
+        public PageCoverModel(string title, string coverUrl, string coverCaption, string coverLink, PostListType postListType = PostListType.NotSet, string category = null)
         {
             Title = title;
             CoverUrl = coverUrl;

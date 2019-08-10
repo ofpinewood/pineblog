@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using Opw.PineBlog.Entities;
 using Opw.PineBlog.Models;
@@ -12,7 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Opw.PineBlog.Areas.Blog.Pages
+namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
 {
     public class IndexModelTests : RazorPagesTestsBase
     {
@@ -20,7 +21,6 @@ namespace Opw.PineBlog.Areas.Blog.Pages
         public async Task OnGetAsync_Should_SetPostListModel()
         {
             var loggerMock = new Mock<ILogger<IndexModel>>();
-
             var mediaterMock = new Mock<IMediator>();
             mediaterMock.Setup(m => m.Send(It.IsAny<IRequest<Result<PostListModel>>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<PostListModel>.Success(new PostListModel {
@@ -32,7 +32,7 @@ namespace Opw.PineBlog.Areas.Blog.Pages
             var httpContext = new DefaultHttpContext();
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new IndexModel(mediaterMock.Object, loggerMock.Object)
+            var pageModel = new IndexModel(mediaterMock.Object, OptionsMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),

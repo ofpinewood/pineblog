@@ -12,7 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Opw.PineBlog.Areas.Admin.Pages
+namespace Opw.PineBlog.RazorPages.Areas.Admin.Pages
 {
     public class PostsModelTests : RazorPagesTestsBase
     {
@@ -20,7 +20,6 @@ namespace Opw.PineBlog.Areas.Admin.Pages
         public async Task OnGetAsync_Should_SetPostListModel()
         {
             var loggerMock = new Mock<ILogger<PostsModel>>();
-
             var mediaterMock = new Mock<IMediator>();
             mediaterMock.Setup(m => m.Send(It.IsAny<IRequest<Result<PostListModel>>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<PostListModel>.Success(new PostListModel {
@@ -32,7 +31,7 @@ namespace Opw.PineBlog.Areas.Admin.Pages
             var httpContext = new DefaultHttpContext();
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new PostsModel(mediaterMock.Object, loggerMock.Object)
+            var pageModel = new PostsModel(mediaterMock.Object, OptionsMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),

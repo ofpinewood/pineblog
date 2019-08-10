@@ -4,9 +4,10 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Opw.PineBlog.Posts;
 
-namespace Opw.PineBlog.Areas.Admin.Pages
+namespace Opw.PineBlog.RazorPages.Areas.Admin.Pages
 {
     public class UpdatePostModel : PageModelBase<UpdatePostModel>
     {
@@ -15,7 +16,8 @@ namespace Opw.PineBlog.Areas.Admin.Pages
         [BindProperty]
         public UpdatePostCommand Post { get; set; }
 
-        public UpdatePostModel(IMediator mediator, ILogger<UpdatePostModel> logger) : base(logger)
+        public UpdatePostModel(IMediator mediator, IOptions<PineBlogOptions> options, ILogger<UpdatePostModel> logger)
+            : base(options, logger)
         {
             _mediator = mediator;
         }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Options;
 using Moq;
 using System;
 
@@ -11,6 +12,14 @@ namespace Opw.PineBlog
 {
     public abstract class RazorPagesTestsBase
     {
+        protected Mock<IOptions<PineBlogOptions>> OptionsMock { get; set; }
+
+        public RazorPagesTestsBase()
+        {
+            OptionsMock = new Mock<IOptions<PineBlogOptions>>();
+            OptionsMock.Setup(o => o.Value).Returns(new PineBlogOptions());
+        }
+
         protected Tuple<PageContext, ActionContext> GetPageContext(HttpContext httpContext)
         {
             var modelState = new ModelStateDictionary();

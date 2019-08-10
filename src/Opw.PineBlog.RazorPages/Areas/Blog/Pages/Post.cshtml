@@ -1,19 +1,19 @@
 @page
 @model PostModel
 @{
-    var pageCoverModel = new Opw.PineBlog.Models.PageCoverModel(
+    ViewData["BlogTitle"] = Model.Post.Blog.Title;
+    var pageCoverModel = new Opw.PineBlog.RazorPages.Models.PageCoverModel(
         Model.Post.Post.Title,
         Model.Post.Post.CoverUrl,
         Model.Post.Post.CoverCaption,
-        Model.Post.Post.CoverLink,
-        null, null);
+        Model.Post.Post.CoverLink);
 }
 
 <partial name="_PageCover" model="pageCoverModel" />
 
 <div class="page-content">
     <div class="container">
-        <partial name="_Post" model="@Model.Post" />
+        <partial name="_Post" model="@Model.Post.Post" />
 
         @if (Model.Post.Previous != null || Model.Post.Next != null)
         {

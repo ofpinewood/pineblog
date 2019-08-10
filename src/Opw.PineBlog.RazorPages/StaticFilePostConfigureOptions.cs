@@ -5,7 +5,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using System;
 
-namespace Opw.PineBlog
+namespace Opw.PineBlog.RazorPages
 {
     /// <summary>
     /// Configures the StaticFileOptions type.

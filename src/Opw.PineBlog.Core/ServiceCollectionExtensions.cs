@@ -30,8 +30,8 @@ namespace Opw.PineBlog
             services.AddOptions();
             services.Configure<PineBlogOptions>(configuration.GetSection(nameof(PineBlogOptions)));
 
-            // TODO: only add MediatR if it has not been added yet
-            services.AddMediatR(typeof(AddPostCommand).Assembly);
+            if (services.BuildServiceProvider().GetService<IMediator>() == null)
+                services.AddMediatR(typeof(AddPostCommand).Assembly);
             ServiceRegistrar.AddMediatRClasses(services, new[] { typeof(AddPostCommand).Assembly });
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));

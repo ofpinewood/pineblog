@@ -1,10 +1,12 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Opw.HttpExceptions;
 using System;
 
-namespace Opw.PineBlog
+namespace Opw.PineBlog.RazorPages
 {
     /// <summary>
     /// Base class for PageModels.
@@ -12,17 +14,39 @@ namespace Opw.PineBlog
     public abstract class PageModelBase<TPageModel> : PageModel
     {
         /// <summary>
+        /// Blog options.
+        /// </summary>
+        protected IOptions<PineBlogOptions> Options { get; }
+
+        /// <summary>
         /// Logger.
         /// </summary>
         protected readonly ILogger Logger;
 
         /// <summary>
+        /// Page title.
+        /// </summary>
+        [ViewData]
+        public string Title { get; protected set; }
+
+        /// <summary>
+        /// The version of the current running code. 
+        /// </summary>
+        [ViewData]
+        public string ApplicationVersion { get; }
+
+        /// <summary>
         /// Implementation of PageModelBase.
         /// </summary>
+        /// <param name="options">Blog options.</param>
         /// <param name="logger">Logger.</param>
-        public PageModelBase(ILogger<TPageModel> logger)
+        public PageModelBase(IOptions<PineBlogOptions> options, ILogger<TPageModel> logger)
         {
+            Options = options;
             Logger = logger;
+
+            ApplicationVersion = Options.Value.Version;
+            Title = Options.Value.Title;
         }
 
         /// <summary>

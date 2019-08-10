@@ -14,6 +14,11 @@ namespace Opw
         public bool CreateAndSeedDatabases { get; set; }
 
         /// <summary>
+        /// The version of the current running code.
+        /// </summary>
+        public string Version { get; set; }
+
+        /// <summary>
         /// Cover URL.
         /// </summary>
         public string CoverUrl { get; set; }
