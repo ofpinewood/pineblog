@@ -21,12 +21,6 @@ steps:
   inputs:
     updateAssemblyInfo: true
 
-# # https://dotnet.microsoft.com/download/dotnet-core/3.0
-# - task: DotNetCoreInstaller@0
-#   displayName: 'Install .Net Core 3.0 (preview)'
-#   inputs:
-#     version: '3.0.100-preview6-012264'
-
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
@@ -49,6 +43,7 @@ steps:
   inputs:
     command: pack
     packagesToPack: '**/Opw.PineBlog.Core.csproj'
+    arguments: '--configuration $(buildConfiguration) /p:Version=$(Build.BuildNumber)'
     versioningScheme: byEnvVar
     versionEnvVar: 'GitVersion_NuGetVersion'
 
@@ -58,6 +53,7 @@ steps:
   inputs:
     command: pack
     packagesToPack: '**/Opw.PineBlog.RazorPages.csproj'
+    arguments: '--configuration $(buildConfiguration) /p:Version=$(Build.BuildNumber)'
     versioningScheme: byEnvVar
     versionEnvVar: 'GitVersion_NuGetVersion'
 
@@ -67,6 +63,7 @@ steps:
   inputs:
     command: pack
     packagesToPack: '**/Opw.PineBlog.EntityFrameworkCore.csproj'
+    arguments: '--configuration $(buildConfiguration) /p:Version=$(Build.BuildNumber)'
     versioningScheme: byEnvVar
     versionEnvVar: 'GitVersion_NuGetVersion'
 
@@ -76,6 +73,7 @@ steps:
   inputs:
     command: pack
     packagesToPack: '**/Opw.PineBlog.csproj'
+    arguments: '--configuration $(buildConfiguration) /p:Version=$(Build.BuildNumber)'
     versioningScheme: byEnvVar
     versionEnvVar: 'GitVersion_NuGetVersion'
 
