@@ -41,7 +41,7 @@ steps:
   inputs:
     command: pack
     packagesToPack: '**/Opw.PineBlog.Core.csproj'
-    arguments: '--configuration $(buildConfiguration) /p:Version=$(GitVersion.AssemblySemVer)'
+    arguments: '--no-build'
     versioningScheme: byEnvVar
     versionEnvVar: 'GitVersion_NuGetVersion'
 
