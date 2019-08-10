@@ -25,9 +25,7 @@ steps:
   displayName: Build
   inputs:
     projects: '**/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
-    versioningScheme: byEnvVar
-    versionEnvVar: 'GitVersion_AssemblySemVer'
+    arguments: '--configuration $(buildConfiguration) /p:Version=$(GitVersion_AssemblySemVer)'
 
 - task: DotNetCoreCLI@2
   displayName: Test
