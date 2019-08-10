@@ -51,6 +51,7 @@ steps:
   inputs:
     command: pack
     packagesToPack: '**/Opw.PineBlog.RazorPages.csproj'
+    nobuild: true
     versioningScheme: byEnvVar
     versionEnvVar: 'GitVersion_NuGetVersion'
 
@@ -60,6 +61,7 @@ steps:
   inputs:
     command: pack
     packagesToPack: '**/Opw.PineBlog.EntityFrameworkCore.csproj'
+    nobuild: true
     versioningScheme: byEnvVar
     versionEnvVar: 'GitVersion_NuGetVersion'
 
@@ -69,6 +71,7 @@ steps:
   inputs:
     command: pack
     packagesToPack: '**/Opw.PineBlog.csproj'
+    nobuild: true
     versioningScheme: byEnvVar
     versionEnvVar: 'GitVersion_NuGetVersion'
 
