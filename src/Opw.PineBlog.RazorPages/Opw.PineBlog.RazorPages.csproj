@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <RootNamespace>Opw.PineBlog</RootNamespace>
+        <RootNamespace>Opw.PineBlog.RazorPages</RootNamespace>
         <Description>PineBlog UI using ASP.NET Core MVC Razor Pages.</Description>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageId>Opw.PineBlog.RazorPages</PackageId>

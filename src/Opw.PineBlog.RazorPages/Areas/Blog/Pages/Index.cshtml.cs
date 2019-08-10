@@ -1,14 +1,13 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Opw.PineBlog.Entities;
+using Microsoft.Extensions.Options;
 using Opw.PineBlog.Models;
 using Opw.PineBlog.Posts;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Opw.PineBlog.Areas.Blog.Pages
+namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
 {
     public class IndexModel : PageModelBase<IndexModel>
     {
@@ -19,7 +18,8 @@ namespace Opw.PineBlog.Areas.Blog.Pages
         [ViewData]
         public string Title { get; private set; }
 
-        public IndexModel(IMediator mediator, ILogger<IndexModel> logger) : base(logger)
+        public IndexModel(IMediator mediator, IOptions<PineBlogOptions> options, ILogger<IndexModel> logger)
+            : base(options, logger)
         {
             _mediator = mediator;
         }

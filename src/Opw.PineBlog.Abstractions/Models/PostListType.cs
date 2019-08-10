@@ -7,14 +7,19 @@ namespace Opw.PineBlog.Models
     public enum PostListType
     {
         /// <summary>
+        /// Not set.
+        /// </summary>
+        NotSet = 0,
+
+        /// <summary>
         /// Default post list.
         /// </summary>
-        Blog,
+        Blog = 1,
 
         /// <summary>
         /// Post list filtered on category.
         /// </summary>
-        Category,
+        Category = 2,
 
         ///// <summary>
         ///// Search results

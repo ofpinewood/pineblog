@@ -1,16 +1,20 @@
-@model Opw.PineBlog.Models.PageCoverModel
+@model Opw.PineBlog.RazorPages.Models.PageCoverModel
 <div class="page-cover" style="background-image: url('@Model.CoverUrl')">
     <h1 class="page-cover-title">
-        @if (Model.PostListType != null && Model.PostListType == Models.PostListType.Category)
+        @if (Model.PostListType == Opw.PineBlog.Models.PostListType.Category)
         {
             <a href="#">
                 <i class="fa fa-tag" aria-hidden="true"></i>
                 @Model.Category
             </a>
         }
-        else
+        else if (Model.PostListType == Opw.PineBlog.Models.PostListType.Blog)
         {
             <a href="~/">@Model.Title</a>
+        }
+        else
+        {
+            @:&nbsp;
         }
     </h1>
     @if (!string.IsNullOrWhiteSpace(Model.CoverCaption) || !string.IsNullOrWhiteSpace(Model.CoverLink))

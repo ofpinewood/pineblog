@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Opw.PineBlog.Controllers
+namespace Opw.PineBlog.RazorPages.Controllers
 {
     /// <summary>
     /// API controller for managing files.

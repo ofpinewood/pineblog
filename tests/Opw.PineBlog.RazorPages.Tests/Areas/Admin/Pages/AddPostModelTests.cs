@@ -16,7 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Opw.PineBlog.Areas.Admin.Pages
+namespace Opw.PineBlog.RazorPages.Areas.Admin.Pages
 {
     public class AddPostModelTests : RazorPagesTestsBase
     {
@@ -28,7 +28,7 @@ namespace Opw.PineBlog.Areas.Admin.Pages
             var httpContext = new DefaultHttpContext();
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new AddPostModel(mediaterMock.Object, loggerMock.Object)
+            var pageModel = new AddPostModel(mediaterMock.Object, OptionsMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),
@@ -53,7 +53,7 @@ namespace Opw.PineBlog.Areas.Admin.Pages
             httpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new Claim[] { new Claim(ClaimTypes.Name, "user@example.com") }));
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new AddPostModel(mediaterMock.Object, loggerMock.Object)
+            var pageModel = new AddPostModel(mediaterMock.Object, OptionsMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),
@@ -84,7 +84,7 @@ namespace Opw.PineBlog.Areas.Admin.Pages
             httpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new Claim[] { new Claim(ClaimTypes.Name, "user@example.com") }));
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new AddPostModel(mediaterMock.Object, loggerMock.Object)
+            var pageModel = new AddPostModel(mediaterMock.Object, OptionsMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),
@@ -116,7 +116,7 @@ namespace Opw.PineBlog.Areas.Admin.Pages
             httpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new Claim[] { new Claim(ClaimTypes.Name, "user@example.com") }));
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new AddPostModel(mediaterMock.Object, loggerMock.Object)
+            var pageModel = new AddPostModel(mediaterMock.Object, OptionsMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),

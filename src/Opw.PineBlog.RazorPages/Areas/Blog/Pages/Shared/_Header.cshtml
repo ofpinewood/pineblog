@@ -1,4 +1,30 @@
 @{
-    //TODO: Update this view from _Header in sample project
+    //var showSearch = ViewData["ShowSearch"] != null && true;
 }
-<h1>TODO: Update this view from _Header in sample project</h1>
+<header class="blog-header d-flex flex-column">
+    <div class="container d-flex">
+        <a href="~/" class="blog-logo my-auto d-flex">
+            @if (ViewData["BlogTitle"] != null)
+            {
+                <span class="my-auto">@ViewData["BlogTitle"]</span>
+            }
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+            <ul class="nav ml-auto my-auto">
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-page="/Privacy">Privacy</a>
+                </li>
+            </ul>
+        </div>
+        @*@if (showSearch)
+            {
+                <button class="blog-search-toggle btn-unstyled" type="button" data-toggle="modal" data-target="#blog-search">
+                    <i class="fa fa-search"></i>
+                </button>
+            }*@
+    </div>
+</header>

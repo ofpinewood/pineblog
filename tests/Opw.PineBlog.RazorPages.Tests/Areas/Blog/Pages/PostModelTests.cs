@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
@@ -13,7 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Opw.PineBlog.Areas.Blog.Pages
+namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
 {
     public class PostModelTests : RazorPagesTestsBase
     {
@@ -21,10 +22,9 @@ namespace Opw.PineBlog.Areas.Blog.Pages
         public async Task OnGetAsync_Should_SetPostModel()
         {
             var loggerMock = new Mock<ILogger<PostModel>>();
-
             var mediaterMock = new Mock<IMediator>();
-            mediaterMock.Setup(m => m.Send(It.IsAny<IRequest<Result<Models.PostModel>>>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Result<Models.PostModel>.Success(new Models.PostModel
+            mediaterMock.Setup(m => m.Send(It.IsAny<IRequest<Result<PineBlog.Models.PostModel>>>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Result<PineBlog.Models.PostModel>.Success(new PineBlog.Models.PostModel
                 {
                     Blog = new BlogModel(new PineBlogOptions()),
                     Post = new Post() { Title = "Post Title" }
@@ -33,7 +33,7 @@ namespace Opw.PineBlog.Areas.Blog.Pages
             var httpContext = new DefaultHttpContext();
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new PostModel(mediaterMock.Object, loggerMock.Object)
+            var pageModel = new PostModel(mediaterMock.Object, OptionsMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),
@@ -52,14 +52,13 @@ namespace Opw.PineBlog.Areas.Blog.Pages
         public async Task OnGetAsync_Should_ThrowNotFoundException()
         {
             var loggerMock = new Mock<ILogger<PostModel>>();
-
             var mediaterMock = new Mock<IMediator>();
-            mediaterMock.Setup(m => m.Send(It.IsAny<IRequest<Result<Models.PostModel>>>(), It.IsAny<CancellationToken>())).Throws<NotFoundException>();
+            mediaterMock.Setup(m => m.Send(It.IsAny<IRequest<Result<PineBlog.Models.PostModel>>>(), It.IsAny<CancellationToken>())).Throws<NotFoundException>();
 
             var httpContext = new DefaultHttpContext();
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new PostModel(mediaterMock.Object, loggerMock.Object)
+            var pageModel = new PostModel(mediaterMock.Object, OptionsMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),

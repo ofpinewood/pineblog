@@ -14,6 +14,11 @@ namespace Opw
         public bool CreateAndSeedDatabases { get; set; }
 
         /// <summary>
+        /// The version of the current running code.
+        /// </summary>
+        public string Version { get; set; }
+
+        /// <summary>
         /// Cover URL.
         /// </summary>
         public string CoverUrl { get; set; }
@@ -33,11 +38,6 @@ namespace Opw
         /// Can be the web host, a CDN or a local host.
         /// </summary>
         public string FileBaseUrl { get; set; }
-
-        /// <summary>
-        /// The path for the folder where the cover images are stored.
-        /// </summary>
-        public string CoverImagesPath { get; set; }
 
         /// <summary>
         /// Database connection string.

@@ -156,7 +156,7 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                padding: .375rem;// .375rem .375rem 1.75rem;
+                padding: .375rem; // .375rem .375rem 1.75rem;
                 border: 1px solid white;
                 border-top: none;
                 margin: 0;
@@ -172,16 +172,16 @@
         }
     }
 
-    .table .cover-image {
-        width: 16rem;
-        height: 9rem;
+    .footer {
+        &.copy {
+            font-size: .65rem;
+            color: #ccc;
 
-        div {
-            height: 100%;
-            position: relative;
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
+            a {
+                color: #ccc;
+                font-weight: bold;
+                text-decoration: none;
+            }
         }
     }
 }
