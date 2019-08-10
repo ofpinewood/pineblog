@@ -1,0 +1,1 @@
+// TODO: move `Opw.PineBlog.Files.Azure` namespace to a separate project. It should be not be in `Core` because it is "infractructure". 

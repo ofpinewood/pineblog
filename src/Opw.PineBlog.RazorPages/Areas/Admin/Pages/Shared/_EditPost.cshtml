@@ -1,6 +1,6 @@
 @model Opw.PineBlog.Posts.IEditPostCommand
 @{
-    var isEdit = ViewData["Id"] != null;// !string.IsNullOrWhiteSpace(Model.Title);
+    var isEdit = ViewData["Id"] != null;
 }
 <input asp-for="CoverUrl" type="hidden">
 <div class="post-cover" style="background-image: url('@Model.CoverUrl')">
@@ -36,7 +36,7 @@
             @if (isEdit)
             {
                 <div class="btn-group float-right" role="group">
-                    <button type="button" class="btn btn-outline-light" title="Cover" onclick="fileManager.open(updatePostCoverCallback, '@ViewData["Slug"]', 'image'); return false;">
+                    <button type="button" class="btn btn-outline-light" title="Cover" onclick="fileManager.open(updatePostCoverCallback, '@ViewData["FilePath"]', 'image'); return false;">
                         <i class="fa fa-picture-o" aria-hidden="true"></i>
                     </button>
                     <button type="button" class="btn btn-outline-light" title="Settings" data-toggle="modal" data-target="#settingsModal">

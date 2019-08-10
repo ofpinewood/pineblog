@@ -1,4 +1,3 @@
-using MediatR;
 using Microsoft.Azure.Storage.Blob;
 using Microsoft.Extensions.Options;
 using Opw.PineBlog.Models;
@@ -13,12 +12,17 @@ namespace Opw.PineBlog.Files.Azure
     /// <summary>
     /// Query that gets a FileListModel using Azure blob storage.
     /// </summary>
-    public class GetPagedAzureBlobListQuery : IRequest<Result<FileListModel>>
+    public class GetPagedAzureBlobListQuery : IGetPagedFileListQuery
     {
         /// <summary>
-        /// The pager.
+        /// The requested page.
         /// </summary>
-        public Pager Pager { get; set; }
+        public int Page { get; set; }
+
+        /// <summary>
+        /// The number of items per page, if not set the BlogOptions.ItemsPerPage will be used.
+        /// </summary>
+        public int ItemsPerPage { get; set; }
 
         /// <summary>
         /// The directory path to get the files from.
@@ -28,12 +32,12 @@ namespace Opw.PineBlog.Files.Azure
         /// <summary>
         /// The file type to filter on.
         /// </summary>
-        public FileType FileType { get; set; } = FileType.All;
+        public FileType FileType { get; set; }
 
         /// <summary>
         /// Handler for the GetPagedAzureBlobListQuery.
         /// </summary>
-        public class Handler : IRequestHandler<GetPagedAzureBlobListQuery, Result<FileListModel>>
+        public class Handler : IGetPagedFileListQueryHandler<GetPagedAzureBlobListQuery>
         {
             private readonly AzureBlobHelper _azureBlobHelper;
             private readonly IOptions<PineBlogOptions> _blogOptions;
@@ -60,7 +64,7 @@ namespace Opw.PineBlog.Files.Azure
                 if (!cloudBlobContainer.IsSuccess)
                     return Result<FileListModel>.Fail(cloudBlobContainer.Exception);
 
-                var pager = request.Pager;
+                var pager = new Pager(request.Page, request.ItemsPerPage);
                 var files = await GetPagedListAsync(pager, cloudBlobContainer.Value, request.DirectoryPath, request.FileType, cancellationToken);
 
                 var model = new FileListModel
@@ -80,7 +84,7 @@ namespace Opw.PineBlog.Files.Azure
                 CancellationToken cancellationToken)
             {
                 var directory = cloudBlobContainer.GetDirectoryReference(directoryPath);
-                var blobs = await ListAsync(directory, cancellationToken);
+                var blobs = await _azureBlobHelper.ListAsync(directory, cancellationToken);
                 var files = blobs.Select(b => b.Uri.AbsoluteUri);
 
                 var skip = (pager.CurrentPage - 1) * pager.ItemsPerPage;
@@ -97,20 +101,6 @@ namespace Opw.PineBlog.Files.Azure
                     .Skip(skip)
                     .Take(pager.ItemsPerPage)
                     .Select(f => new FileModel { Url = f, FileName = Path.GetFileName(f), MimeType = f.GetMimeType() });
-            }
-
-            private async Task<List<IListBlobItem>> ListAsync(CloudBlobDirectory directory, CancellationToken cancellationToken)
-            {
-                var blobsInDirectory = new List<IListBlobItem>();
-                BlobContinuationToken blobContinuationToken = null;
-                do
-                {
-                    var items = await directory.ListBlobsSegmentedAsync(blobContinuationToken, cancellationToken);
-                    blobsInDirectory.AddRange(items.Results);
-                }
-                while (blobContinuationToken != null);
-
-                return blobsInDirectory;
             }
         }
     }

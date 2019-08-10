@@ -1,7 +1,7 @@
 using FluentAssertions;
 using FluentValidation.Results;
-using MediatR;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Http;
+using Moq;
 using Opw.HttpExceptions;
 using System.IO;
 using System.Linq;
@@ -12,18 +12,21 @@ namespace Opw.PineBlog.Files.Azure
 {
     public class UploadAzureBlobCommandTests : MediatRTestsBase
     {
-        private readonly MemoryStream _fileStream;
+        private readonly Mock<IFormFile> _formFileMock;
 
         public UploadAzureBlobCommandTests()
         {
-            _fileStream = new MemoryStream();
-            var writer = new StreamWriter(_fileStream);
+            var fileStream = new MemoryStream();
+            var writer = new StreamWriter(fileStream);
             writer.Write("Contents of the text file.");
             writer.Flush();
-            _fileStream.Position = 0;
+            fileStream.Position = 0;
 
-            // use the actual UploadAzureBlobCommand for these tests, not the mock
-            Services.AddTransient<IRequestHandler<UploadAzureBlobCommand, Result<string>>, UploadAzureBlobCommand.Handler>();
+            _formFileMock = new Mock<IFormFile>();
+            _formFileMock.Setup(f => f.Name).Returns("CoverImage");
+            _formFileMock.Setup(f => f.FileName).Returns("filename.txt");
+            _formFileMock.Setup(f => f.Length).Returns(fileStream.Length);
+            _formFileMock.Setup(f => f.OpenReadStream()).Returns(fileStream);
         }
 
         [Fact]
@@ -32,17 +35,59 @@ namespace Opw.PineBlog.Files.Azure
             Task action() => Mediator.Send(new UploadAzureBlobCommand());
 
             var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
-            ex.Errors.Single(e => e.Key.Equals(nameof(UploadAzureBlobCommand.FileName))).Should().NotBeNull();
-            ex.Errors.Single(e => e.Key.Equals(nameof(UploadAzureBlobCommand.FileStream))).Should().NotBeNull();
+            ex.Errors.Single(e => e.Key.Equals(nameof(UploadAzureBlobCommand.File))).Should().NotBeNull();
+            ex.Errors.Single(e => e.Key.Equals(nameof(UploadAzureBlobCommand.AllowedFileType))).Should().NotBeNull();
         }
 
         [Fact(Skip = "Integration Test; requires Azure Storage Emulator.")]
         public async Task Handler_Should_ReturnTrue()
         {
-            var result = await Mediator.Send(new UploadAzureBlobCommand { FileStream = _fileStream, FileName = "filename.txt", TargetPath = "files" });
+            var result = await Mediator.Send(new UploadAzureBlobCommand { File = _formFileMock.Object, TargetPath = "files", AllowedFileType = FileType.All });
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Should().EndWith("files/filename.txt");
+        }
+
+        [Fact]
+        public async Task Handler_Should_ReturnError_WithEmptyFile()
+        {
+            _formFileMock.Setup(f => f.Length).Returns(0);
+
+            Task action() => Mediator.Send(new UploadAzureBlobCommand { File = _formFileMock.Object, AllowedFileType = FileType.All });
+
+            var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
+            ex.Errors.Single(e => e.Key.Equals(nameof(UploadAzureBlobCommand.File))).Value[0].ErrorMessage.Should().Contain("is empty");
+        }
+
+        [Fact]
+        public async Task Handler_Should_ReturnError_WithTooLargeFile()
+        {
+            _formFileMock.Setup(f => f.Length).Returns(2048576);
+
+            Task action() => Mediator.Send(new UploadAzureBlobCommand { File = _formFileMock.Object, AllowedFileType = FileType.All });
+
+            var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
+            ex.Errors.Single(e => e.Key.Equals(nameof(UploadAzureBlobCommand.File))).Value[0].ErrorMessage.Should().Contain("exceeds");
+        }
+
+        [Fact]
+        public async Task Handler_Should_ReturnError_WithInvalidFileType()
+        {
+            Task action() => Mediator.Send(new UploadAzureBlobCommand { File = _formFileMock.Object, AllowedFileType = FileType.Image });
+
+            var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
+            ex.Errors.Single(e => e.Key.Equals(nameof(UploadAzureBlobCommand.File))).Value[0].ErrorMessage.Should().Contain("must be of type");
+        }
+
+        [Fact]
+        public async Task Handler_Should_ReturnError_WhenFileNull()
+        {
+            _formFileMock.Setup(f => f.OpenReadStream()).Returns<Stream>(null);
+
+            var result = await Mediator.Send(new UploadAzureBlobCommand { File = _formFileMock.Object, AllowedFileType = FileType.All });
+
+            result.Exception.Should().BeOfType<FileUploadException>();
+            result.Exception.Message.Should().Contain("upload failed");
         }
     }
 }

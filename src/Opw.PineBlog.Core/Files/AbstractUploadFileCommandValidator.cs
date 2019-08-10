@@ -1,19 +1,19 @@
 using FluentValidation;
 using Opw.FluentValidation;
 using System.IO;
-using System.Net;
 
 namespace Opw.PineBlog.Files
 {
     /// <summary>
-    /// Validator for the UploadFileCommand request.
+    /// Base class for validators for UploadFileCommand requests.
     /// </summary>
-    public class UploadFileCommandValidator : AbstractValidator<UploadFileCommand>
+    public abstract class AbstractUploadFileCommandValidator<TRequest> : AbstractValidator<TRequest>
+        where TRequest : IUploadFileCommand
     {
         /// <summary>
-        /// Implementation of UploadFileCommandValidator.
+        /// Implementation of AbstractUploadFileCommandValidator.
         /// </summary>
-        public UploadFileCommandValidator()
+        public AbstractUploadFileCommandValidator()
         {
             RuleFor(c => c.File).NotEmpty();
             RuleFor(c => c.AllowedFileType).IsRequiredEnum();

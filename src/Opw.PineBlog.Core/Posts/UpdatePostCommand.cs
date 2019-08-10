@@ -89,8 +89,6 @@ namespace Opw.PineBlog.Posts
                 if (entity == null)
                     return Result<Post>.Fail(new NotFoundException<Post>($"Could not find post, id: \"{request.Id}\""));
 
-                var oldSlug = entity.Slug;
-
                 entity.Title = request.Title;
                 entity.Slug = request.Title.ToSlug();
                 entity.Description = request.Description;
@@ -107,11 +105,6 @@ namespace Opw.PineBlog.Posts
                 var result = await _context.SaveChangesAsync(true, cancellationToken);
                 if (!result.IsSuccess)
                     return Result<Post>.Fail(result.Exception);
-
-                if (!oldSlug.Equals(entity.Slug))
-                {
-                    // TODO: update folders
-                }
 
                 return Result<Post>.Success(entity);
             }
