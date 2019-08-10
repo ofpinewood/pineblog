@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
@@ -10,6 +10,14 @@
         <NuspecFile>Opw.PineBlog.Core.nuspec</NuspecFile>
         <NuspecProperties>version=$(PackageVersion)</NuspecProperties>
     </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="Files\Azure\_namespace.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="Files\Azure\_namespace.cs" />
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="FluentValidation" Version="8.4.0" />

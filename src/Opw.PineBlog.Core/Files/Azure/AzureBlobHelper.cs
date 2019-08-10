@@ -1,5 +1,6 @@
 using Microsoft.Azure.Storage.Blob;
 using Microsoft.Extensions.Options;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,6 +38,25 @@ namespace Opw.PineBlog.Files.Azure
             await cloudBlobContainer.SetPermissionsAsync(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob }, cancellationToken);
 
             return Result<CloudBlobContainer>.Success(cloudBlobContainer);
+        }
+
+        /// <summary>
+        /// List blobs in a directory.
+        /// </summary>
+        /// <param name="directory">Blob directory.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public async Task<IEnumerable<IListBlobItem>> ListAsync(CloudBlobDirectory directory, CancellationToken cancellationToken)
+        {
+            var blobsInDirectory = new List<IListBlobItem>();
+            BlobContinuationToken blobContinuationToken = null;
+            do
+            {
+                var items = await directory.ListBlobsSegmentedAsync(blobContinuationToken, cancellationToken);
+                blobsInDirectory.AddRange(items.Results);
+            }
+            while (blobContinuationToken != null);
+
+            return blobsInDirectory;
         }
     }
 }

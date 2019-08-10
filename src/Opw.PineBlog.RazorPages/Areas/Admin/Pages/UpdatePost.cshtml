@@ -3,6 +3,7 @@
 @{
     ViewData["Id"] = Model.Post.Id;
     ViewData["Slug"] = Model.Post.Title.ToSlug();
+    ViewData["FilePath"] = Model.Post.Id.ToShortGuid();
 }
 @section scripts {
     <script type="text/javascript">
@@ -24,7 +25,7 @@
                         name: 'insertImage',
                         action: function customFunction(editor) {
                             _editor = editor;
-				            fileManager.open(insertImageCallback, '@ViewData["Slug"]', 'image');
+				            fileManager.open(insertImageCallback, '@ViewData["FilePath"]', 'image');
 			            },
                         className: 'fa fa-folder-open',
                         title: 'Insert image'

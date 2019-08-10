@@ -5,7 +5,7 @@ using System.IO;
 namespace Opw.PineBlog.Files
 {
     /// <summary>
-    /// Base class for validators for the UploadFileCommand request.
+    /// Base class for validators for UploadFileCommand requests.
     /// </summary>
     public abstract class AbstractUploadFileCommandValidator<TRequest> : AbstractValidator<TRequest>
         where TRequest : IUploadFileCommand

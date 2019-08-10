@@ -84,7 +84,7 @@ namespace Opw.PineBlog.Files.Azure
                 CancellationToken cancellationToken)
             {
                 var directory = cloudBlobContainer.GetDirectoryReference(directoryPath);
-                var blobs = await ListAsync(directory, cancellationToken);
+                var blobs = await _azureBlobHelper.ListAsync(directory, cancellationToken);
                 var files = blobs.Select(b => b.Uri.AbsoluteUri);
 
                 var skip = (pager.CurrentPage - 1) * pager.ItemsPerPage;
@@ -101,21 +101,6 @@ namespace Opw.PineBlog.Files.Azure
                     .Skip(skip)
                     .Take(pager.ItemsPerPage)
                     .Select(f => new FileModel { Url = f, FileName = Path.GetFileName(f), MimeType = f.GetMimeType() });
-            }
-
-            // TODO: duplicate code move to helper and add tests
-            private async Task<List<IListBlobItem>> ListAsync(CloudBlobDirectory directory, CancellationToken cancellationToken)
-            {
-                var blobsInDirectory = new List<IListBlobItem>();
-                BlobContinuationToken blobContinuationToken = null;
-                do
-                {
-                    var items = await directory.ListBlobsSegmentedAsync(blobContinuationToken, cancellationToken);
-                    blobsInDirectory.AddRange(items.Results);
-                }
-                while (blobContinuationToken != null);
-
-                return blobsInDirectory;
             }
         }
     }
