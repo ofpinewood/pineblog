@@ -33,6 +33,11 @@ namespace Opw.PineBlog.Posts
         public int? ItemsPerPage { get; set; }
 
         /// <summary>
+        /// Category to filter on.
+        /// </summary>
+        public string Category { get; set; }
+
+        /// <summary>
         /// Handler for the GetPagedPostListQuery.
         /// </summary>
         public class Handler : IRequestHandler<GetPagedPostListQuery, Result<PostListModel>>
@@ -63,9 +68,19 @@ namespace Opw.PineBlog.Posts
             {
                 var itemsPerPage = (request.ItemsPerPage.HasValue) ? request.ItemsPerPage : _blogOptions.Value.ItemsPerPage;
                 var pager = new Pager(request.Page, itemsPerPage.Value);
-                var posts = request.IncludeUnpublished
-                    ? await GetPagedListAsync(null, pager, cancellationToken)
-                    : await GetPagedListAsync(p => p.Published != null, pager, cancellationToken);
+
+                var pagingUrlPartFormat = _blogOptions.Value.PagingUrlPartFormat;
+
+                var predicates = new List<Expression<Func<Post, bool>>>();
+                if (!request.IncludeUnpublished)
+                    predicates.Add(p => p.Published != null);
+                if (!string.IsNullOrWhiteSpace(request.Category))
+                {
+                    predicates.Add(p => p.Categories.Contains(request.Category));
+                    pagingUrlPartFormat += "&" + string.Format(_blogOptions.Value.CategoryUrlPartFormat, request.Category);
+                }
+
+                var posts = await GetPagedListAsync(predicates, pager, pagingUrlPartFormat, cancellationToken);
 
                 posts = posts.Select(p => _postUrlHelper.ReplaceUrlFormatWithBaseUrl(p));
 
@@ -77,27 +92,36 @@ namespace Opw.PineBlog.Posts
                     Pager = pager
                 };
 
+                if (!string.IsNullOrWhiteSpace(request.Category))
+                {
+                    model.PostListType = PostListType.Category;
+                    model.Category = request.Category;
+                }
+
                 return Result<PostListModel>.Success(model);
             }
 
-            private async Task<IEnumerable<Post>> GetPagedListAsync(Expression<Func<Post, bool>> predicate, Pager pager, CancellationToken cancellationToken)
+            private async Task<IEnumerable<Post>> GetPagedListAsync(IEnumerable<Expression<Func<Post, bool>>> predicates, Pager pager, string pagingUrlPartFormat, CancellationToken cancellationToken)
             {
                 var skip = (pager.CurrentPage - 1) * pager.ItemsPerPage;
 
-                var count = (predicate != null)
-                    ? await _context.Posts.Where(predicate).CountAsync(cancellationToken)
-                    : await _context.Posts.CountAsync(cancellationToken);
+                var countQuery = _context.Posts.Where(_ => true);
+                foreach(var predicate in predicates)
+                    countQuery = countQuery.Where(predicate);
 
-                pager.Configure(count, _blogOptions.Value.PagingUrlPartFormat);
+                var count = await countQuery.CountAsync(cancellationToken);
 
-                var query = _context.Posts
-                    .Include(p => p.Author)
+                pager.Configure(count, pagingUrlPartFormat);
+
+                var query = _context.Posts.Where(_ => true);
+
+                foreach (var predicate in predicates)
+                    query = query.Where(predicate);
+
+                query = query.Include(p => p.Author)
                     .OrderByDescending(p => p.Published)
                     .Skip(skip)
                     .Take(pager.ItemsPerPage);
-
-                if (predicate != null)
-                    query = query.Where(predicate);
 
                 return await query.ToListAsync(cancellationToken);
             }

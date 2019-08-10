@@ -42,9 +42,9 @@ namespace Opw.PineBlog.Areas.Blog.Pages
             var result = await pageModel.OnGetAsync(default, 0);
 
             result.Should().BeOfType<PageResult>();
-            pageModel.Blog.Should().NotBeNull();
-            pageModel.Pager.Should().NotBeNull();
-            pageModel.Posts.Should().NotBeNull();
+            pageModel.PostList.Blog.Should().NotBeNull();
+            pageModel.PostList.Pager.Should().NotBeNull();
+            pageModel.PostList.Posts.Should().NotBeNull();
             pageModel.Title.Should().NotBeNull();
         }
     }
