@@ -22,13 +22,13 @@ steps:
     updateAssemblyInfo: true
 
 - task: bleddynrichards.Assembly-Info-Task.Assembly-Info-NetCore.Assembly-Info-NetCore@2
-    displayName: 'Set Assembly Manifest Data'
-    inputs:
-      FileNames: '**/*.csproj'
-      InsertAttributes: true
-      VersionNumber: '$(Build.BuildNumber)'
-      #FileVersionNumber: '$(Build.BuildNumber)'
-      #InformationalVersion: '$(Build.BuildNumber)'
+  displayName: Set Assembly Version
+  inputs:
+    FileNames: '**/*.csproj'
+    InsertAttributes: true
+    VersionNumber: '$(Build.BuildNumber)'
+    #FileVersionNumber: '$(Build.BuildNumber)'
+    #InformationalVersion: '$(Build.BuildNumber)'
 
 - task: DotNetCoreCLI@2
   displayName: Build
