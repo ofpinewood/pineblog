@@ -22,8 +22,8 @@
                 <dependency id="Microsoft.EntityFrameworkCore" version="2.2.6" exclude="Build,Analyzers" />
                 <dependency id="Microsoft.Extensions.Options" version="2.2.0" exclude="Build,Analyzers" />
                 <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.2.0" exclude="Build,Analyzers" />
-                <dependency id="MimeMapping" version="1.0.1.12" exclude="Build,Analyzers" />
-                <dependency id="Microsoft.Azure.Storage.Blob" version="10.0.3" exclude="Build,Analyzers" />
+                <dependency id="MimeMapping" version="1.0.1.14" exclude="Build,Analyzers" />
+                <dependency id="Microsoft.Azure.Storage.Blob" version="11.0.0" exclude="Build,Analyzers" />
                 
                 <!-- Opw dependencies -->
                 <!--<dependency id="FluentValidation" version="8.4.0" exclude="Build,Analyzers" />-->
