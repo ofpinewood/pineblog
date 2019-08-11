@@ -19,6 +19,11 @@ namespace Opw
         public string Version { get; set; }
 
         /// <summary>
+        /// The theme for the blog, defaults to "default".
+        /// </summary>
+        public string Theme { get; set; } = "default";
+
+        /// <summary>
         /// Cover URL.
         /// </summary>
         public string CoverUrl { get; set; }

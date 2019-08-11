@@ -39,6 +39,7 @@ namespace Opw.PineBlog.RazorPages
             }
 
             pageModel.ViewData["PineBlogVersion"] = _options.Value.Version;
+            pageModel.ViewData["PineBlogTheme"] = _options.Value.Theme;
             pageModel.ViewData["Title"] = _options.Value.Title;
 
             await next();
