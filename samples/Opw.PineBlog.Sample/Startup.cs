@@ -37,8 +37,7 @@ namespace Opw.PineBlog.Sample
                 .AddCookie();
 
             // TODO: combine with AddPineBlogRazorPages?
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddPineBlog(Configuration, connectionString);
+            services.AddPineBlog(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
