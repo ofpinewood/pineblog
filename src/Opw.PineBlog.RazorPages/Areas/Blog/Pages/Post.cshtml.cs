@@ -13,9 +13,12 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
         private readonly IMediator _mediator;
 
         public PineBlog.Models.PostModel Post { get; set; }
-        
-        public PostModel(IMediator mediator, IOptions<PineBlogOptions> options, ILogger<PostModel> logger)
-            : base(options, logger)
+
+        [ViewData]
+        public string Title { get; private set; }
+
+        public PostModel(IMediator mediator, ILogger<PostModel> logger)
+            : base(logger)
         {
             _mediator = mediator;
         }

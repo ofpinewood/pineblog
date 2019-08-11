@@ -31,7 +31,7 @@ namespace Opw.PineBlog.RazorPages.Areas.Admin.Pages
             var httpContext = new DefaultHttpContext();
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new PostsModel(mediaterMock.Object, OptionsMock.Object, loggerMock.Object)
+            var pageModel = new PostsModel(mediaterMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),

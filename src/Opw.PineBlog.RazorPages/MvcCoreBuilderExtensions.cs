@@ -22,6 +22,10 @@ namespace Opw.PineBlog.RazorPages
                 option.Conventions.AuthorizeAreaFolder("Admin", "/");
                 option.Conventions.AddAreaPageRoute("Blog", "/Post", "blog/{*slug}");
             });
+            builder.AddMvcOptions(options =>
+            {
+                options.Filters.Add<PineBlogViewDataAsyncPageFilter>();
+            });
             builder.AddFluentValidation();
 
             return builder;
@@ -40,6 +44,10 @@ namespace Opw.PineBlog.RazorPages
             {
                 option.Conventions.AuthorizeAreaFolder("Admin", "/");
                 option.Conventions.AddAreaPageRoute("Blog", "/Post", "blog/{*slug}");
+            });
+            builder.AddMvcOptions(options =>
+            {
+                options.Filters.Add<PineBlogViewDataAsyncPageFilter>();
             });
             builder.AddFluentValidation();
 

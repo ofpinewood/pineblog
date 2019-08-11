@@ -14,12 +14,11 @@ namespace Opw.PineBlog
         /// </summary>
         /// <param name="services">The services available in the application.</param>
         /// <param name="configuration">The application configuration properties.</param>
-        /// <param name="connectionString">The connectionString.</param>
         /// <returns>The original services object.</returns>
-        public static IServiceCollection AddPineBlog(this IServiceCollection services, IConfiguration configuration, string connectionString)
+        public static IServiceCollection AddPineBlog(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddPineBlogCore(configuration);
-            services.AddPineBlogEntityFrameworkCore(connectionString);
+            services.AddPineBlogEntityFrameworkCore(configuration);
 
             return services;
         }

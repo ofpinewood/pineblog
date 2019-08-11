@@ -18,8 +18,8 @@ namespace Opw.PineBlog.RazorPages.Areas.Admin.Pages
         public Pager Pager { get; private set; }
         public IEnumerable<Post> Posts { get; set; }
 
-        public PostsModel(IMediator mediator, IOptions<PineBlogOptions> options, ILogger<PostsModel> logger)
-            : base(options, logger)
+        public PostsModel(IMediator mediator, ILogger<PostsModel> logger)
+            : base(logger)
         {
             _mediator = mediator;
         }

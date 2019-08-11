@@ -40,10 +40,9 @@ namespace Opw
         public string FileBaseUrl { get; set; }
 
         /// <summary>
-        /// Database connection string.
+        /// Database connection string name.
         /// </summary>
-        // TODO: use this connection string
-        public string ConnectionString { get; set; }
+        public string ConnectionStringName { get; set; }
 
         /// <summary>
         /// Azure storage connection string.

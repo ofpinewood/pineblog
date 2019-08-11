@@ -1,6 +1,10 @@
 <footer class="footer copy">
     <div class="container d-lg-flex text-center text-lg-left">
-        <p><a href="https://github.com/ofpinewood/pineblog">PineBlog</a> &copy; @DateTime.Now.Year Of Pine Wood (@ViewData["ApplicationVersion"])</p>
+        <p>
+            Powered by <a href="https://github.com/ofpinewood/pineblog">PineBlog</a>
+            &copy; @DateTime.Now.Year <a href="https://github.com/ofpinewood">Of Pine Wood</a>
+            (@ViewData["PineBlogVersion"])
+        </p>
         <div class="ml-auto">
             @if (User.Identity.IsAuthenticated)
             {
