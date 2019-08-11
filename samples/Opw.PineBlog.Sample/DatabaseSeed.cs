@@ -57,7 +57,7 @@ namespace Opw.PineBlog.Sample
                 {
                     AuthorId = author.Id,
                     Title = title,
-                    Slug = title.ToSlug(),
+                    Slug = title.ToPostSlug(),
                     Description = WaffleEngine.Text(1, false),
                     Published = DateTime.UtcNow.AddDays(-i * 10)
                 };

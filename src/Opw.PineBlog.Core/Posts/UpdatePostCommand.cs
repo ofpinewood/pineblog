@@ -90,7 +90,7 @@ namespace Opw.PineBlog.Posts
                     return Result<Post>.Fail(new NotFoundException<Post>($"Could not find post, id: \"{request.Id}\""));
 
                 entity.Title = request.Title;
-                entity.Slug = request.Title.ToSlug();
+                entity.Slug = request.Title.ToPostSlug();
                 entity.Description = request.Description;
                 entity.Content = request.Content;
                 entity.Categories = request.Categories;

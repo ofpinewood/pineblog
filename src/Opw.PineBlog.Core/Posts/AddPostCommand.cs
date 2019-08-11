@@ -92,7 +92,7 @@ namespace Opw.PineBlog.Posts
                 {
                     AuthorId = author.Id,
                     Title = request.Title,
-                    Slug = request.Title.ToSlug(),
+                    Slug = request.Title.ToPostSlug(),
                     Description = request.Description,
                     Content = request.Content,
                     Categories = request.Categories,
