@@ -1,22 +1,23 @@
 @{
     Layout = "_Layout";
+    var theme = ViewData["PineBlogTheme"];
 }
 @section head {
     <environment include="Development">
-        <link rel="stylesheet" href="~/themes/default/css/theme.css">
+        <link rel="stylesheet" href="~/themes/@theme/css/theme.css">
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/themes/default/css/theme.min.css" asp-append-version="true">
+        <link rel="stylesheet" href="~/themes/@theme/css/theme.min.css" asp-append-version="true">
     </environment>
     @RenderSection("head", required: false)
 }
 @section scripts {
     <partial name="_ValidationScriptsPartial" />
     <environment include="Development">
-        <script src="~/themes/default/js/theme.min.js" asp-append-version="true"></script>
+        <script src="~/themes/@theme/js/theme.min.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
-        <script src="~/themes/default/js/theme.min.js" asp-append-version="true"></script>
+        <script src="~/themes/@theme/js/theme.min.js" asp-append-version="true"></script>
     </environment>
     @RenderSection("scripts", required: false)
 }
