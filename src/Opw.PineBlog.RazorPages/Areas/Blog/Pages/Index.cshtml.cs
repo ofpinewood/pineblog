@@ -18,8 +18,8 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
         [ViewData]
         public string Title { get; private set; }
 
-        public IndexModel(IMediator mediator, IOptions<PineBlogOptions> options, ILogger<IndexModel> logger)
-            : base(options, logger)
+        public IndexModel(IMediator mediator, ILogger<IndexModel> logger)
+            : base(logger)
         {
             _mediator = mediator;
         }

@@ -15,8 +15,8 @@ namespace Opw.PineBlog.RazorPages.Areas.Admin.Pages
         [BindProperty]
         public AddPostCommand Post { get; set; }
 
-        public AddPostModel(IMediator mediator, IOptions<PineBlogOptions> options, ILogger<AddPostModel> logger)
-            : base(options, logger)
+        public AddPostModel(IMediator mediator, ILogger<AddPostModel> logger)
+            : base(logger)
         {
             _mediator = mediator;
         }

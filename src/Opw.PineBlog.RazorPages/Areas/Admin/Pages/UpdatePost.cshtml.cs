@@ -16,8 +16,8 @@ namespace Opw.PineBlog.RazorPages.Areas.Admin.Pages
         [BindProperty]
         public UpdatePostCommand Post { get; set; }
 
-        public UpdatePostModel(IMediator mediator, IOptions<PineBlogOptions> options, ILogger<UpdatePostModel> logger)
-            : base(options, logger)
+        public UpdatePostModel(IMediator mediator, ILogger<UpdatePostModel> logger)
+            : base(logger)
         {
             _mediator = mediator;
         }
