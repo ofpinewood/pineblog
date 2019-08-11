@@ -109,12 +109,10 @@ h4, h5, h6 {
 }
 
 .page-content {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-}
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 
-@media screen and (min-width: 992px) {
-    .page-content {
+    @media screen and (min-width: 992px) {
         padding-top: 5rem;
         padding-bottom: 5rem;
     }
@@ -226,32 +224,18 @@ h4, h5, h6 {
 .footer {
     color: #f7f7f7;
     font-size: .75rem;
-    padding: 2rem 0 1.8rem 0;
-    background-color: #222;
-
-    h2 {
-        font-size: 1.2rem;
-        font-weight: normal;
-    }
-
-    img {
-        border: 1px solid #f7f7f7;
-        max-width: 15%;
-        float: left;
-        margin: 0.25rem 1rem 0 0;
-    }
 
     a {
         color: #fff;
     }
 
     p {
+        margin: 0;
     }
 
     &.copy {
         background-color: #000;
         padding: 1rem 0;
-        padding-bottom: 1.5rem;
         font-size: .65rem;
 
         .container {
