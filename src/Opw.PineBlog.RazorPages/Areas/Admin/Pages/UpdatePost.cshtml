@@ -2,7 +2,7 @@
 @model UpdatePostModel
 @{
     ViewData["Id"] = Model.Post.Id;
-    ViewData["Slug"] = Model.Post.Title.ToSlug();
+    ViewData["Slug"] = Model.Post.Title.ToPostSlug();
     ViewData["FilePath"] = Model.Post.Id.ToShortGuid();
 }
 @section scripts {

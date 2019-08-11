@@ -80,7 +80,7 @@ namespace Opw.PineBlog.Posts
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Title.Should().Be("title or slug");
-            result.Value.Slug.Should().MatchRegex(result.Value.Title.ToSlug());
+            result.Value.Slug.Should().MatchRegex(result.Value.Title.ToPostSlug());
         }
 
         private void SeedDatabase()

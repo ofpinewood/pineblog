@@ -9,7 +9,7 @@ namespace Opw
         public static string ToSlug(this string s)
         {
             string str = s.RemoveDiacritics();
-            // add add a space before every upercase char
+            // add a space before every uppercase char
             str = Regex.Replace(str, @"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", " $1");
             str = str.ToLower();
 
