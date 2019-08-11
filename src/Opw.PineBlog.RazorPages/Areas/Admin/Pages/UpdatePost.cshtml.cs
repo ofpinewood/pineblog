@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Opw.PineBlog.Posts;
 
 namespace Opw.PineBlog.RazorPages.Areas.Admin.Pages
@@ -51,7 +50,10 @@ namespace Opw.PineBlog.RazorPages.Areas.Admin.Pages
 
             var result = await _mediator.Send(Post, cancellationToken);
             if (!result.IsSuccess)
+            {
+                Logger.LogError(result.Exception, "Could not update post.");
                 ModelState.AddModelError("", result.Exception.Message);
+            }
 
             return Page();
         }

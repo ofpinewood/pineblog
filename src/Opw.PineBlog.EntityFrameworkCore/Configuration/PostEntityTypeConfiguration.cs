@@ -13,7 +13,7 @@ namespace Opw.PineBlog.EntityFrameworkCore.Configuration
 
             builder.Property(e => e.Title).HasMaxLength(160).IsRequired();
             builder.Property(e => e.Slug).HasMaxLength(160).IsRequired();
-            builder.Property(e => e.Description).HasMaxLength(450).IsRequired();
+            builder.Property(e => e.Description).HasMaxLength(450);
             builder.Property(e => e.Categories).HasMaxLength(2000);
             builder.Property(e => e.Content).IsRequired();
             builder.Property(e => e.CoverUrl).HasMaxLength(254);
