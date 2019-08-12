@@ -44,6 +44,7 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
                 Url = Request.GetEncodedUrl()
             };
 
+            Metadata.Image = PostList.Blog.CoverUrl;
             if (PostList.Blog.CoverUrl != null && !PostList.Blog.CoverUrl.StartsWith("http", System.StringComparison.OrdinalIgnoreCase))
                 Metadata.Image = $"{Request.Scheme}://{Request.Host}{PostList.Blog.CoverUrl}";
 
