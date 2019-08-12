@@ -32,6 +32,13 @@ PM> Install-Package Opw.PineBlog
 ## Getting started
 [TODO]
 
+### Open Graph protocol
+The blog pages include Open Graph `<meta>` tags in the `<head>` of the page. Make sure you add the prefix to the `<html>` tag in your pagers.
+
+``` html
+<html prefix="og: http://ogp.me/ns#">
+```
+
 ## Samples
 See [Opw.PineBlog.Sample](/docs/Opw.PineBlog.Sample.md).
 
