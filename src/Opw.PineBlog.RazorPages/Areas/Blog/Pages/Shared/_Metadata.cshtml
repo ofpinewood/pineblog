@@ -1,0 +1,45 @@
+@model Opw.PineBlog.RazorPages.Models.MetadataModel
+@if (!string.IsNullOrWhiteSpace(Model.Author))
+{
+    <meta name="author" content="@Model.Author">
+}
+@if (Model.Keywords.Any())
+{
+    <meta name="keywords" content="@string.Join(",", Model.Keywords)">
+}
+@if (!string.IsNullOrWhiteSpace(Model.Description))
+{
+    <meta name="Description" content="@Model.Description">
+    <meta property="og:description " content="@Model.Description" />
+}
+@if (!string.IsNullOrWhiteSpace(Model.Title))
+{
+    <meta property="og:title" content="@Model.Title" />
+}
+@if (!string.IsNullOrWhiteSpace(Model.Type))
+{
+    <meta property="og:type" content="@Model.Type" />
+    if (Model.Type == "article")
+    {
+        @if (Model.Published.HasValue)
+        {
+            <meta name="article:published_time" content="@Model.Published.Value.ToUtc()">
+        }
+        @if (!string.IsNullOrWhiteSpace(Model.Author))
+        {
+            <meta name="article:author" content="@Model.Author">
+        }
+        @foreach (var tag in Model.Keywords)
+        {
+            <meta name="article:tag" content="@tag">
+        }
+    }
+}
+@if (!string.IsNullOrWhiteSpace(Model.Url))
+{
+    <meta property="og:url" content="@Model.Url" />
+}
+@if (!string.IsNullOrWhiteSpace(Model.Image))
+{
+    <meta property="og:image" content="@Model.Image" />
+}

@@ -26,8 +26,12 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
             mediaterMock.Setup(m => m.Send(It.IsAny<IRequest<Result<PineBlog.Models.PostModel>>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<PineBlog.Models.PostModel>.Success(new PineBlog.Models.PostModel
                 {
-                    Blog = new BlogModel(new PineBlogOptions()),
-                    Post = new Post() { Title = "Post Title" }
+                    Blog = new BlogModel(new PineBlogOptions { Title = "Blog title" }),
+                    Post = new Post() {
+                        Title = "Post title",
+                        Description = "Post description",
+                        Author = new Author { DisplayName = "Post author" }
+                    }
                 }));
 
             var httpContext = new DefaultHttpContext();
@@ -43,9 +47,14 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
             var result = await pageModel.OnGetAsync("slug", default);
 
             result.Should().BeOfType<PageResult>();
-            pageModel.Post.Blog.Should().NotBeNull();
-            pageModel.Post.Post.Should().NotBeNull();
-            pageModel.Title.Should().NotBeNull();
+            pageModel.Post.Blog.Title.Should().Be("Blog title");
+            pageModel.Post.Post.Title.Should().Be("Post title");
+            pageModel.Post.Post.Author.DisplayName.Should().Be("Post author");
+            pageModel.Title.Should().Be("Post title");
+            pageModel.Metadata.Description.Should().Be("Post description");
+            pageModel.Metadata.Author.Should().Be("Post author");
+            pageModel.PageCover.Title.Should().Be("Post title");
+            pageModel.BlogTitle.Should().Be("Blog title");
         }
 
         [Fact]

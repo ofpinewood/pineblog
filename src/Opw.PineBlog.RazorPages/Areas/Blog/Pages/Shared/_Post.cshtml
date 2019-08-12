@@ -4,7 +4,10 @@
     <div class="post-meta">
         <img class="post-meta-img" src="~/@Model.Author.Avatar" alt="@Model.Author.DisplayName" />
         <span class="post-meta-author">@Model.Author.DisplayName</span>
-        <time class="post-meta-time">@Model.Published.Value.ToFriendlyDateString()</time>
+        @if (Model.Published.HasValue)
+        {
+            <time class="post-meta-time" datetime="@Model.Published.Value.ToUtc()">@Model.Published.Value.ToFriendlyDateString()</time>
+        }
         @if (!string.IsNullOrEmpty(Model.Categories))
         {
             <span>/</span>

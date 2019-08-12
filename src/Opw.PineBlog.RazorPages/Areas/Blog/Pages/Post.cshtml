@@ -1,15 +1,10 @@
 @page
 @model PostModel
-@{
-    ViewData["BlogTitle"] = Model.Post.Blog.Title;
-    var pageCoverModel = new Opw.PineBlog.RazorPages.Models.PageCoverModel(
-        Model.Post.Post.Title,
-        Model.Post.Post.CoverUrl,
-        Model.Post.Post.CoverCaption,
-        Model.Post.Post.CoverLink);
+@section head {
+    <partial name="_Metadata" model="@Model.Metadata" />
 }
 
-<partial name="_PageCover" model="pageCoverModel" />
+<partial name="_PageCover" model="@Model.PageCover" />
 
 <div class="page-content">
     <div class="container">
