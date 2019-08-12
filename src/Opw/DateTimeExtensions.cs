@@ -7,6 +7,11 @@ namespace Opw
 {
     public static class DateTimeExtensions
     {
+        public static string ToUtc(this DateTime dateTime)
+        {
+            return dateTime.ToString("yyyy-MM-ddTHH:mm:sszzz");
+        }
+
         public static string ToFriendlyDateTimeString(this DateTime Date)
         {
             return FriendlyDate(Date) + " @ " + Date.ToString("t").ToLower();

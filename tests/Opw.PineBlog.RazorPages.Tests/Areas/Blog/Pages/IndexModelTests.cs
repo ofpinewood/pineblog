@@ -24,7 +24,7 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
             var mediaterMock = new Mock<IMediator>();
             mediaterMock.Setup(m => m.Send(It.IsAny<IRequest<Result<PostListModel>>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<PostListModel>.Success(new PostListModel {
-                    Blog = new BlogModel(new PineBlogOptions()) { Title = "Blog Title" },
+                    Blog = new BlogModel(new PineBlogOptions { Title = "Blog title", Description = "Blog description" }),
                     Pager = new Pager(0),
                     Posts = new List<Post>()
                 }));
@@ -46,6 +46,14 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
             pageModel.PostList.Pager.Should().NotBeNull();
             pageModel.PostList.Posts.Should().NotBeNull();
             pageModel.Title.Should().NotBeNull();
+
+
+            pageModel.PostList.Blog.Title.Should().Be("Blog title");
+            pageModel.PostList.Pager.Should().NotBeNull();
+            pageModel.PostList.Posts.Should().NotBeNull();
+            pageModel.Title.Should().Be("Blog title");
+            pageModel.Metadata.Description.Should().Be("Blog description");
+            pageModel.PageCover.Title.Should().Be("Blog title");
         }
     }
 }

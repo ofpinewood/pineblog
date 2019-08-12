@@ -1,9 +1,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Opw.PineBlog.Posts;
 
 namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
@@ -13,6 +13,13 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
         private readonly IMediator _mediator;
 
         public PineBlog.Models.PostModel Post { get; set; }
+
+        public Models.MetadataModel Metadata { get; set; }
+
+        public Models.PageCoverModel PageCover { get; set; }
+
+        [ViewData]
+        public string BlogTitle { get; set; }
 
         [ViewData]
         public string Title { get; private set; }
@@ -31,6 +38,31 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
 
             Post = result.Value;
             Title = result.Value.Post.Title;
+
+            BlogTitle = Post.Blog.Title;
+
+            Metadata = new Models.MetadataModel
+            {
+                Author = Post.Post.Author.DisplayName,
+                Description = Post.Post.Description,
+                Published = Post.Post.Published,
+                Title = Post.Post.Title,
+                Type = "article",
+                Url = Request.GetEncodedUrl()
+            };
+
+            if (Post.Post.CoverUrl != null && !Post.Post.CoverUrl.StartsWith("http", System.StringComparison.OrdinalIgnoreCase))
+                Metadata.Image = $"{Request.Scheme}://{Request.Host}{Post.Post.CoverUrl}";
+            if (!string.IsNullOrWhiteSpace(Post.Post.Categories))
+                Metadata.Keywords = Post.Post.Categories?.Split(',');
+
+            PageCover = new Models.PageCoverModel
+            {
+                Title = Post.Post.Title,
+                CoverUrl = Post.Post.CoverUrl,
+                CoverCaption = Post.Post.CoverCaption,
+                CoverLink = Post.Post.CoverLink
+            };
 
             return Page();
         }

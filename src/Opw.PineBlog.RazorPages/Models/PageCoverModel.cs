@@ -36,24 +36,5 @@ namespace Opw.PineBlog.RazorPages.Models
         /// Category filter.
         /// </summary>
         public string Category { get; set; }
-
-        /// <summary>
-        /// Implementation of PageCoverModel.
-        /// </summary>
-        /// <param name="title">The page title.</param>
-        /// <param name="coverUrl">Cover URL.</param>
-        /// <param name="coverCaption">Cover caption.</param>
-        /// <param name="coverLink">Cover link.</param>
-        /// <param name="postListType">Post list type.</param>
-        /// <param name="category">Category filter.</param>
-        public PageCoverModel(string title, string coverUrl, string coverCaption, string coverLink, PostListType postListType = PostListType.NotSet, string category = null)
-        {
-            Title = title;
-            CoverUrl = coverUrl;
-            CoverCaption = coverCaption;
-            CoverLink = coverLink;
-            PostListType = postListType;
-            Category = category;
-        }
     }
 }

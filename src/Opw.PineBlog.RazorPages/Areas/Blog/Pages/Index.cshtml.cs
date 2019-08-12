@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -15,6 +16,10 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
 
         public PostListModel PostList { get; set; }
 
+        public Models.MetadataModel Metadata { get; set; }
+
+        public Models.PageCoverModel PageCover { get; set; }
+
         [ViewData]
         public string Title { get; private set; }
 
@@ -30,6 +35,25 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
 
             PostList = result.Value;
             Title = result.Value.Blog.Title;
+
+            Metadata = new Models.MetadataModel
+            {
+                Description = PostList.Blog.Description,
+                Title = PostList.Blog.Title,
+                Type = "website",
+                Url = Request.GetEncodedUrl()
+            };
+
+            if (PostList.Blog.CoverUrl != null && !PostList.Blog.CoverUrl.StartsWith("http", System.StringComparison.OrdinalIgnoreCase))
+                Metadata.Image = $"{Request.Scheme}://{Request.Host}{PostList.Blog.CoverUrl}";
+
+            PageCover = new Models.PageCoverModel
+            {
+                Title = PostList.Blog.Title,
+                CoverUrl = PostList.Blog.CoverUrl,
+                CoverCaption = PostList.Blog.CoverCaption,
+                CoverLink = PostList.Blog.CoverLink
+            };
 
             return Page();
         }
