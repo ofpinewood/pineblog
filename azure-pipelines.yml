@@ -95,8 +95,6 @@ steps:
    target: $(Build.SourceVersion)
    tagSource: auto
    tag: '$(Build.BuildNumber)'
-   releaseNotesSource: file
-   releaseNotesFile: CHANGELOG.md
 
 # Finalize
 - task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
