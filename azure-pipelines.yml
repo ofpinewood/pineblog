@@ -32,7 +32,7 @@ steps:
     projects: |
       **/tests/*.Tests/*.csproj
       **/tests/*.IntegrationTests/*.csproj
-    arguments: '--configuration $(buildConfiguration) --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[Opw.*]*" /p:Exclude="[*.Tests]*%2c[*.*Tests]*"'
+    arguments: '--configuration $(buildConfiguration) --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[Opw.*]*" /p:Exclude="[*Tests]*"'
 
 # Release: triggered by a version tag
 - task: DotNetCoreCLI@2
