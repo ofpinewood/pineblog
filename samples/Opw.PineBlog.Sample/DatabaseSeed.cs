@@ -2,6 +2,7 @@ using Opw.PineBlog.Entities;
 using Opw.PineBlog.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Text;
 using WaffleGenerator;
 
 namespace Opw.PineBlog.Sample
@@ -62,17 +63,31 @@ namespace Opw.PineBlog.Sample
                     Published = DateTime.UtcNow.AddDays(-i * 10)
                 };
 
+                var content = new StringBuilder();
+                content.Append($"## {WaffleEngine.Text(1, true)}");
+                content.Append($"{WaffleEngine.Text(1, false)}");
+
+                if (i % 2 == 0)
+                    content.Append("``` csharp\npublic class {{\n  var myVar = \"Some value\";\n}}\n```\n");
+                else
+                    content.Append("``` yaml\nYAML: YAML Ain't Markup Language\n```\n");
+
+                content.Append($"## {WaffleEngine.Text(1, true)}");
+                content.Append($"{WaffleEngine.Text(2, false)}");
+                content.Append($"> {WaffleEngine.Text(1, false)}\n");
+                content.Append($"{WaffleEngine.Text(1, false)}");
+
+                post.Content = content.ToString();
+
                 if (i % 2 == 0)
                 {
                     post.CoverUrl = "/images/woods.gif";
                     post.CoverCaption = "Battle background for the Misty Woods in the game Shadows of Adam by Tim Wendorf";
                     post.CoverLink = "http://pixeljoint.com/pixelart/94359.htm";
-                    post.Content = $"## {WaffleEngine.Text(1, true)}  {WaffleEngine.Text(1, false)}  \n``` csharp\npublic class {{\n  var myVar = \"Some value\";\n}}\n```\n  ## {WaffleEngine.Text(1, true)}  {WaffleEngine.Text(2, false)}";
                     post.Categories = "csharp,waffle,random";
                 }
                 else
                 {
-                    post.Content = $"## {WaffleEngine.Text(1, true)}  {WaffleEngine.Text(1, false)}  ### {WaffleEngine.Text(1, true)}  \n``` yaml\nYAML: YAML Ain't Markup Language\n```\n  ## {WaffleEngine.Text(1, true)}  {WaffleEngine.Text(2, false)}";
                     post.Categories = "yaml,waffle,random";
                 }
 
