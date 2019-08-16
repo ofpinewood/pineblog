@@ -76,13 +76,13 @@ pre > code {
 }
 
 blockquote {
-    background: #eee;
-    padding: 2rem;
-    border-radius: 3px;
-}
+    padding: 1rem;
+    font-size: .85rem;
+    border-left: .5rem solid #eee;
 
-blockquote p:last-child {
-    margin-bottom: 0 !important;
+    p:last-child {
+        margin-bottom: 0 !important;
+    }
 }
 
 h1, h2, h3, h4, h5, h6 {
