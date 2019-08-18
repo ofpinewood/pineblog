@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Opw.PineBlog.Entities;
+using Opw.PineBlog.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -49,6 +50,24 @@ namespace Opw.PineBlog.Posts
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Posts.Should().HaveCount(6);
+        }
+
+        [Fact]
+        public async Task Handler_Should_ReturnPostListModel_WithPostListTypeBlog()
+        {
+            var result = await Mediator.Send(new GetPagedPostListQuery());
+
+            result.IsSuccess.Should().BeTrue();
+            result.Value.PostListType.Should().Be(PostListType.Blog);
+        }
+
+        [Fact]
+        public async Task Handler_Should_ReturnPostListModel_WhenFilterOnCategory_WithPostListTypeCategory()
+        {
+            var result = await Mediator.Send(new GetPagedPostListQuery { Category = "category" });
+
+            result.IsSuccess.Should().BeTrue();
+            result.Value.PostListType.Should().Be(PostListType.Category);
         }
 
         [Fact]

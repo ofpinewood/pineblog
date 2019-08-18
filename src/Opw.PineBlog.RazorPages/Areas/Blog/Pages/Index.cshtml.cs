@@ -50,10 +50,12 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
 
             PageCover = new Models.PageCoverModel
             {
+                PostListType = PostList.PostListType,
+                Category = PostList.Category,
                 Title = PostList.Blog.Title,
                 CoverUrl = PostList.Blog.CoverUrl,
                 CoverCaption = PostList.Blog.CoverCaption,
-                CoverLink = PostList.Blog.CoverLink
+                CoverLink = PostList.Blog.CoverLink,
             };
 
             return Page();
