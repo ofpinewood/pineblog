@@ -4,7 +4,7 @@
 [![NuGet Badge](https://img.shields.io/nuget/v/Opw.PineBlog.svg)](https://www.nuget.org/packages/Opw.PineBlog/)
 [![License: MIT](https://img.shields.io/github/license/ofpinewood/pineblog.svg)](https://github.com/ofpinewood/pineblog/blob/master/LICENSE)
 
-PineBlog is a light-weight open source blogging engine written in ASP.NET Core MVC Razor Pages, using Entity Framework Core. It is highly extendable, customizable and easy to integrate in an existing web application.
+PineBlog is a light-weight blogging engine written in ASP.NET Core MVC Razor Pages, using Entity Framework Core. It is highly extendable, customizable and easy to integrate in an existing web application.
 
 ### Features
 
@@ -64,14 +64,13 @@ public void ConfigureServices(IServiceCollection services)
 ### Configuration
 A few properties need to be configured before you can run your web application with PineBlog.
 
-**Title** the title of your blog/website.  
-**CoverUrl** the URL for the cover image of your blog, this can be a relative or absolute URL.  
-**ConnectionStringName** this is the name to the connection string used in your application.  
-**CreateAndSeedDatabases** to automatically create and seed the tables for the blog set this property to `true`, if you want to create and seed your database in any other way set this property to `false`.  
-**AzureStorageConnectionString** your Azure Blog Storage connection string.  
-**AzureStorageBlobContainerName** the name of the blob container to use for file storage.  
-**FileBaseUrl** The base URL for the files, this should be the URL for your Azure Blob Storage, e.g. `https://<storage-account>.blob.core.windows.net`.
-
+**Title:** the title of your blog/website.  
+**CoverUrl:** the URL for the cover image of your blog, this can be a relative or absolute URL.  
+**ConnectionStringName:** this is the name to the connection string used in your application.  
+**CreateAndSeedDatabases:** to automatically create and seed the tables for the blog set this property to `true`, if you want to create and seed your database in any other way set this property to `false`.  
+**AzureStorageConnectionString:** your Azure Blog Storage connection string.  
+**AzureStorageBlobContainerName:** the name of the blob container to use for file storage.  
+**FileBaseUrl:** the base URL for the files, this should be the URL for your Azure Blob Storage, e.g. `https://<storage-account>.blob.core.windows.net`.  
 
 The rest of the properties are optional and will be set with default values if you don't specify them.
 

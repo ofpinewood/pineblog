@@ -12,17 +12,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 Solution Files", "00 Sol
 		CONTRIBUTING.md = CONTRIBUTING.md
 		Directory.Build.props = Directory.Build.props
 		LICENSE = LICENSE
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 Tests", "02 Tests", "{39C10DDD-2F23-4F19-BBB1-CF31D9850002}"
 	ProjectSection(SolutionItems) = preProject
 		tests\test-netcoreapp2_2.ps1 = tests\test-netcoreapp2_2.ps1
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Docs", "01 Docs", "{A4785B91-D8E5-4206-9B46-E38169859622}"
-	ProjectSection(SolutionItems) = preProject
-		docs\Opw.PineBlog.Sample.md = docs\Opw.PineBlog.Sample.md
-		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "10 Samples", "10 Samples", "{5FEBABA0-73A1-464A-8715-19F76F742B22}"
