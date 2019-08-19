@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Opw.PineBlog.Models;
 using Opw.PineBlog.Posts;
 
 namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
