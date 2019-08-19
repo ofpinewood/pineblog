@@ -19,7 +19,7 @@ PineBlog is a light-weight blogging engine written in ASP.NET Core MVC Razor Pag
 - ..only a blogging engine, nothing else..
 
 ### What is not included
-Because PineBlog is very light-weight it is not a complete website, it needs to be integrated in an existing web application of you need to create a basic web application for it. There are a few things PineBlog depends on, but that it does not provide.
+Because PineBlog is very light-weight it is not a complete web application, it needs to be integrated in an existing web application or you need to create a basic web application for it. There are a few things PineBlog depends on, but that it does not provide.
 
 - Authentication and authorization
 
