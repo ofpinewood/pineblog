@@ -36,6 +36,17 @@ steps:
 
 # Release: triggered by a version tag
 - task: DotNetCoreCLI@2
+  displayName: Publish
+  # condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  inputs:
+    command: publish
+    publishWebProjects: false
+    projects: |
+      **/samples/Opw.PineBlog.Sample/*.csproj
+    arguments: '--configuration $(buildConfiguration) --output $(build.artifactstagingdirectory) /p:Version=$(GitVersion.AssemblySemVer) --no-build'
+    zipAfterPublish: false
+
+- task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.PineBlog.Core
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
   inputs:
@@ -84,17 +95,6 @@ steps:
     publishFeedCredentials: NuGet
     versioningScheme: byEnvVar
     versionEnvVar: 'GitVersion_NuGetVersion'
-
-- task: DotNetCoreCLI@2
-  displayName: Publish
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
-  inputs:
-    command: publish
-    publishWebProjects: false
-    projects: |
-      **/samples/Opw.PineBlog.Sample/*.csproj
-    arguments: '--configuration $(buildConfiguration) --output $(build.artifactstagingdirectory) /p:Version=$(GitVersion.AssemblySemVer) --no-build'
-    zipAfterPublish: false
 
 - task: GithubRelease@0
   displayName: Create GitHub Release
