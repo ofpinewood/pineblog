@@ -33,11 +33,13 @@ namespace Opw.PineBlog.Sample
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseApplicationInsights()
                 .UseStartup<Startup>()
-                .ConfigureLogging((hostingContext, logging) =>
+                .ConfigureLogging((hostingContext, builder) =>
                 {
-                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                    logging.AddConsole();
+                    builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                    builder.AddApplicationInsights();
+                    builder.AddConsole();
                 });
     }
 }
