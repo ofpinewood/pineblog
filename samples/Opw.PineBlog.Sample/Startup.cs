@@ -32,15 +32,15 @@ namespace Opw.PineBlog.Sample
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddPineBlogRazorPages();
-
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
 
             // TODO: combine with AddPineBlogRazorPages?
             services.AddPineBlog(Configuration);
+
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddPineBlogRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
