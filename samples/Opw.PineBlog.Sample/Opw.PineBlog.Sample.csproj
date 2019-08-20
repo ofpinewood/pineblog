@@ -3,8 +3,6 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp2.2</TargetFramework>
         <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-        <ApplicationInsightsResourceId>/subscriptions/278ca744-b3c7-4b5d-b931-4c3052b3b7d1/resourcegroups/opw-web/providers/microsoft.insights/components/pineblog-ai</ApplicationInsightsResourceId>
-        <ApplicationInsightsAnnotationResourceId>/subscriptions/278ca744-b3c7-4b5d-b931-4c3052b3b7d1/resourcegroups/opw-web/providers/microsoft.insights/components/pineblog-ai</ApplicationInsightsAnnotationResourceId>
     </PropertyGroup>
 
     <ItemGroup>
@@ -16,10 +14,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\ref\Opw.PineBlog\Opw.PineBlog.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <WCFMetadata Include="Connected Services" />
     </ItemGroup>
 
 </Project>
