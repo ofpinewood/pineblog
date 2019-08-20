@@ -92,11 +92,14 @@ namespace Opw.PineBlog.Sample.Pages.Account
                 return null;
             }
 
-            return new ApplicationUser()
-            {
-                Email = ApplicationConstants.UserEmail,
-                FullName = "John Smith"
-            };
+            var user = new ApplicationUser { Email = ApplicationConstants.UserEmail };
+
+            if (DateTime.UtcNow.Day % 2 == 0)
+                user.FullName = "John Smith";
+            else
+                user.FullName = "Mary Smith";
+
+            return user;
         }
     }
 }
