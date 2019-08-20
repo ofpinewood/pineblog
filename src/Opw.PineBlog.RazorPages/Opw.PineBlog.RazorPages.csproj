@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
@@ -23,7 +23,6 @@
 
     <ItemGroup>
         <PackageReference Include="FluentValidation.AspNetCore" Version="8.4.0" />
-        <PackageReference Include="Markdig" Version="0.17.1" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="2.2.0" />
