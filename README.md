@@ -82,6 +82,7 @@ And a few properties need to be configured before you can run your web applicati
 }
 ```
 
+## Documentation
 For more information, please check the [documentation](https://github.com/ofpinewood/pineblog/tree/master/docs/getting-started.md).
 
 ## Samples
