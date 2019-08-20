@@ -46,6 +46,13 @@ steps:
     arguments: '--configuration $(buildConfiguration) --output $(build.artifactstagingdirectory) /p:Version=$(GitVersion.AssemblySemVer) --no-build'
     zipAfterPublish: false
 
+# Delete the "Areas" folder, this should not be deployed
+- task: DeleteFiles@1
+  displayName: Publish Cleanup
+  inputs:
+    sourceFolder: $(build.artifactstagingdirectory)\Opw.PineBlog.Sample
+    contents: 'Areas'
+
 - task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.PineBlog.Core
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
