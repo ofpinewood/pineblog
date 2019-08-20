@@ -89,6 +89,14 @@ The [sample project](https://github.com/ofpinewood/pineblog/tree/master/samples/
 
 **Please see the code** :nerd_face
 
+## Demo website
+The demo site is a playground to check out PineBlog. You can write and publish posts, upload files and test application before install.
+And no worries, it is just a sandbox and will clean itself.
+
+> **Url:** [pineblog.azurewebsites.net](https://pineblog.azurewebsites.net)  
+> **Username:** pineblog@example.com  
+> **Password:** demo  
+
 ## Usage
 PineBlog is used on the following website:
 - [ofpinewood.com](https://ofpinewood.com)

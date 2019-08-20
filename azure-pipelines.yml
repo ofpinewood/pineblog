@@ -85,6 +85,17 @@ steps:
     versioningScheme: byEnvVar
     versionEnvVar: 'GitVersion_NuGetVersion'
 
+- task: DotNetCoreCLI@2
+  displayName: Publish
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  inputs:
+    command: publish
+    publishWebProjects: false
+    projects: |
+      **/samples/Opw.PineBlog.Sample/*.csproj
+    arguments: '--configuration $(buildConfiguration) --output $(build.artifactstagingdirectory) /p:Version=$(GitVersion.AssemblySemVer) --no-build'
+    zipAfterPublish: false
+
 - task: GithubRelease@0
   displayName: Create GitHub Release
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))

@@ -30,7 +30,7 @@ namespace Opw.PineBlog.Sample
         {
             if (_dbContext.Authors.Count() > 0) return;
 
-            var email = "pineblog@example.com";
+            var email = ApplicationConstants.UserEmail;
             if (_dbContext.Authors.Count(a => a.UserName.Equals(email)) > 0) return;
 
             _dbContext.Authors.Add(new Author

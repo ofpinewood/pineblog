@@ -52,7 +52,6 @@ namespace Opw.PineBlog.Sample.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = await AuthenticateUser(Input.Email, Input.Password);
-
                 if (user == null)
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
@@ -87,18 +86,17 @@ namespace Opw.PineBlog.Sample.Pages.Account
 
             await Task.Delay(500);
 
-            if (string.Equals(email, "pineblog@example.com", StringComparison.OrdinalIgnoreCase))
-            {
-                return new ApplicationUser()
-                {
-                    Email = "pineblog@example.com",
-                    FullName = "John Smith"
-                };
-            }
-            else
+            if (!string.Equals(email, ApplicationConstants.UserEmail, StringComparison.OrdinalIgnoreCase)
+                || !string.Equals(password, ApplicationConstants.UserPassword, StringComparison.OrdinalIgnoreCase))
             {
                 return null;
             }
+
+            return new ApplicationUser()
+            {
+                Email = ApplicationConstants.UserEmail,
+                FullName = "John Smith"
+            };
         }
     }
 }

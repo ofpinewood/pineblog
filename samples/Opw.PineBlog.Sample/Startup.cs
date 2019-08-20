@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Opw.PineBlog.RazorPages;
+using Opw.PineBlog.Sample.Middleware;
 
 namespace Opw.PineBlog.Sample
 {
@@ -43,6 +44,8 @@ namespace Opw.PineBlog.Sample
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseMiddleware<StopApplicationMiddleware>();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
