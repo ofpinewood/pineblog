@@ -1,6 +1,7 @@
 using Opw.PineBlog.Entities;
 using Opw.PineBlog.EntityFrameworkCore;
 using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 using WaffleGenerator;
@@ -51,7 +52,9 @@ namespace Opw.PineBlog.Sample
 
             var author = _dbContext.Authors.Single();
 
-            for(int i = 0; i < 5; i++)
+            CreateBlogPostFromFile(author);
+
+            for(int i = 1; i < 4; i++)
             {
                 var title = WaffleEngine.Title();
                 var post = new Post
@@ -95,6 +98,30 @@ namespace Opw.PineBlog.Sample
             }
 
             _dbContext.SaveChanges();
+        }
+
+        void CreateBlogPostFromFile(Author author)
+        {
+            var title = "PineBlog an ASP.NET Core blogging engine";
+
+            var assembly = typeof(DatabaseSeed).Assembly;
+            var resourceStream = assembly.GetManifestResourceStream("Opw.PineBlog.Sample.Resources.post-pineblog-demo-website.md");
+            string content = null;
+            using (var reader = new StreamReader(resourceStream, Encoding.UTF8))
+                content = reader.ReadToEnd();
+
+            var post = new Post
+            {
+                AuthorId = author.Id,
+                Title = title,
+                Slug = title.ToPostSlug(),
+                Description = "PineBlog is a light-weight open source blogging engine written in ASP.NET Core MVC Razor Pages, using Entity Framework Core.",
+                Categories = "pineblog,aspnetcore,blog,razor pages,entity framework,github,demo",
+                Published = DateTime.UtcNow,
+                Content = content
+            };
+
+            _dbContext.Posts.Add(post);
         }
     }
 }
