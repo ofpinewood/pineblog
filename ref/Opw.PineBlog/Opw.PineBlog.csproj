@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp2.2</TargetFramework>
-        <Description>PineBlog; a blogging engine based on ASP.NET Core MVC Razor Pages and Entity Framework Core.</Description>
+        <Description>PineBlog; a light-weight blogging engine written in ASP.NET Core MVC Razor Pages, using Entity Framework Core.</Description>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageId>Opw.PineBlog</PackageId>
         <PackageTags>blog aspnetcore mvc razorpages entityframeworkcore</PackageTags>
