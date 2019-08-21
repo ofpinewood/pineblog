@@ -12,7 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 Solution Files", "00 Sol
 		CONTRIBUTING.md = CONTRIBUTING.md
 		Directory.Build.props = Directory.Build.props
 		LICENSE = LICENSE
-		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 Tests", "02 Tests", "{39C10DDD-2F23-4F19-BBB1-CF31D9850002}"
@@ -62,7 +61,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "70 Data", "70 Data", "{F800
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "50 UI", "50 UI", "{08132695-AE8D-4A34-B826-9A87148A9985}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05 Docs", "05 Docs", "{5D82D89B-A30F-4C3F-87A0-6D3408A449BB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Docs", "01 Docs", "{5D82D89B-A30F-4C3F-87A0-6D3408A449BB}"
 	ProjectSection(SolutionItems) = preProject
 		docs\getting-started.md = docs\getting-started.md
 		README.md = README.md

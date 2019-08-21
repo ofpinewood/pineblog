@@ -43,16 +43,16 @@ var fileManager = function (dataService) {
             //var url = 'assets/' + id;
             if (_openCallback.name === 'updatePostCoverCallback') {
                 _openCallback(file);
-                //url = 'api/file/pick?type=postCover&asset=' + id + '&post=' + $('#Post_Id').val();
+                //url = 'admin/file/pick?type=postCover&asset=' + id + '&post=' + $('#Post_Id').val();
             }
             //else if (callBack.name === 'updateAppCoverCallback') {
-            //    url = 'api/assets/pick?type=appCover&asset=' + id;
+            //    url = 'admin/assets/pick?type=appCover&asset=' + id;
             //}
             //else if (callBack.name === 'updateAppLogoCallback') {
-            //    url = 'api/assets/pick?type=appLogo&asset=' + id;
+            //    url = 'admin/assets/pick?type=appLogo&asset=' + id;
             //}
             //else if (callBack.name === 'updateAvatarCallback') {
-            //    url = 'api/assets/pick?type=avatar&asset=' + id;
+            //    url = 'admin/assets/pick?type=avatar&asset=' + id;
             //}
             //dataService.get(url, _openCallback, fail);
         }
@@ -67,7 +67,7 @@ var fileManager = function (dataService) {
 
     function uploadSubmit() {
         var data = new FormData($('#frmUpload')[0]);
-        dataService.upload('api/file/upload?targetPath=' + _directoryPath, data, submitCallback, fail);
+        dataService.upload('admin/file/upload?targetPath=' + _directoryPath, data, submitCallback, fail);
     }
 
     function submitCallback() {
@@ -79,10 +79,10 @@ var fileManager = function (dataService) {
     //    var items = $('#fileManagerList input:checked');
     //    for (i = 0; i < items.length; i++) {
     //        if (i + 1 < items.length) {
-    //            dataService.remove('api/assets/remove?url=' + items[i].id, emptyCallback, fail);
+    //            dataService.remove('admin/assets/remove?url=' + items[i].id, emptyCallback, fail);
     //        }
     //        else {
-    //            dataService.remove('api/assets/remove?url=' + items[i].id, removeCallback, fail);
+    //            dataService.remove('admin/assets/remove?url=' + items[i].id, removeCallback, fail);
     //        }
     //    }
     //}
@@ -96,7 +96,7 @@ var fileManager = function (dataService) {
     function load(page) {
         $('#checkAll').prop('checked', false);
 
-        dataService.get('api/file?page=' + page + '&fileType=' + _fileType + '&directoryPath=' + _directoryPath, loadCallback, fail);
+        dataService.get('admin/file?page=' + page + '&fileType=' + _fileType + '&directoryPath=' + _directoryPath, loadCallback, fail);
         return false;
 
         //var filter = $('input[name=filter]:checked').val();
@@ -105,10 +105,10 @@ var fileManager = function (dataService) {
         //}
         //var search = $('#asset-search').val();
         //if (search && search.length > 0) {
-        //    dataService.get('api/assets?page=' + page + '&filter=' + filter + '&search=' + search, loadCallback, fail);
+        //    dataService.get('admin/assets?page=' + page + '&filter=' + filter + '&search=' + search, loadCallback, fail);
         //}
         //else {
-        //    dataService.get('api/files?page=' + page + '&filter=' + filter, loadCallback, fail);
+        //    dataService.get('admin/files?page=' + page + '&filter=' + filter, loadCallback, fail);
         //}
     }
 
