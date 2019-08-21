@@ -5,17 +5,19 @@ using Opw.PineBlog.Models;
 using Opw.PineBlog.Posts;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Opw.PineBlog.Feeds
 {
     /// <summary>
     /// Query that gets a syndication feed.
     /// </summary>
-    public class GetSyndicationFeedQuery : IRequest<Result<FeedModel<SyndicationFeedFormatter>>>
+    public class GetSyndicationFeedQuery : IRequest<Result<FeedModel>>
     {
         /// <summary>
         /// The type of feed to return.
@@ -35,7 +37,7 @@ namespace Opw.PineBlog.Feeds
         /// <summary>
         /// Handler for the GetFeedQuery.
         /// </summary>
-        public class Handler : IRequestHandler<GetSyndicationFeedQuery, Result<FeedModel<SyndicationFeedFormatter>>>
+        public class Handler : IRequestHandler<GetSyndicationFeedQuery, Result<FeedModel>>
         {
             private readonly IOptions<PineBlogOptions> _blogOptions;
             private readonly IBlogEntityDbContext _context;
@@ -59,23 +61,29 @@ namespace Opw.PineBlog.Feeds
             /// </summary>
             /// <param name="request">The GetFeedQuery request.</param>
             /// <param name="cancellationToken">A cancellation token.</param>
-            public async Task<Result<FeedModel<SyndicationFeedFormatter>>> Handle(GetSyndicationFeedQuery request, CancellationToken cancellationToken)
+            public async Task<Result<FeedModel>> Handle(GetSyndicationFeedQuery request, CancellationToken cancellationToken)
             {
                 var feed = await GetFeedAsync(request, cancellationToken);
-                var model = new FeedModel<SyndicationFeedFormatter>();
+                var model = new FeedModel();
 
                 if (request.FeedType == FeedType.Atom)
-                {
                     model.ContentType = "application/atom+xml";
-                    model.Feed = new Atom10FeedFormatter(feed);
-                }
                 else if (request.FeedType == FeedType.Rss)
-                {
                     model.ContentType = "application/rss+xml";
-                    model.Feed = new Rss20FeedFormatter(feed);
+
+                var feedWriter = new StringWriter();
+                using (var xmlWriter = new XmlTextWriter(feedWriter))
+                {
+                    xmlWriter.Formatting = Formatting.Indented;
+                    if (request.FeedType == FeedType.Atom)
+                        feed.SaveAsAtom10(xmlWriter);
+                    else if (request.FeedType == FeedType.Rss)
+                        feed.SaveAsRss20(xmlWriter);
                 }
 
-                return Result<FeedModel<SyndicationFeedFormatter>>.Success(model);
+                model.Feed = feedWriter.ToString();
+
+                return Result<FeedModel>.Success(model);
             }
 
             private async Task<SyndicationFeed> GetFeedAsync(GetSyndicationFeedQuery request, CancellationToken cancellationToken)

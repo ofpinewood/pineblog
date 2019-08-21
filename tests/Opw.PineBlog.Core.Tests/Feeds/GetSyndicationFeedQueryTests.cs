@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
+using System.Xml;
 using Xunit;
 
 namespace Opw.PineBlog.Feeds
@@ -30,20 +31,7 @@ namespace Opw.PineBlog.Feeds
         }
 
         [Fact]
-        public async Task Handler_Should_ReturnFeedModel_With5Posts()
-        {
-            var result = await Mediator.Send(new GetSyndicationFeedQuery {
-                BaseUri = new Uri("http://www.example.com"),
-                FeedType = FeedType.Rss,
-                PostBasePath = "posts"
-            });
-
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Feed.Feed.Items.Should().HaveCount(5);
-        }
-
-        [Fact]
-        public async Task Handler_Should_ReturnFeedModel_WithFeedOfTypeRss20FeedFormatter()
+        public async Task Handler_Should_ReturnRssFeed_WhenFeedTypeRss()
         {
             var result = await Mediator.Send(new GetSyndicationFeedQuery
             {
@@ -54,11 +42,11 @@ namespace Opw.PineBlog.Feeds
 
             result.IsSuccess.Should().BeTrue();
             result.Value.ContentType.Should().Be("application/rss+xml");
-            result.Value.Feed.Should().BeOfType<Rss20FeedFormatter>();
+            result.Value.Feed.Should().StartWith("<rss xmlns:a10=\"http://www.w3.org/2005/Atom\" version=\"2.0\">");
         }
 
         [Fact]
-        public async Task Handler_Should_ReturnFeedModel_WithFeedOfTypeAtom10FeedFormatter()
+        public async Task Handler_Should_ReturnAtomFeed_WhenFeedTypeAtom()
         {
             var result = await Mediator.Send(new GetSyndicationFeedQuery
             {
@@ -69,7 +57,26 @@ namespace Opw.PineBlog.Feeds
 
             result.IsSuccess.Should().BeTrue();
             result.Value.ContentType.Should().Be("application/atom+xml");
-            result.Value.Feed.Should().BeOfType<Atom10FeedFormatter>();
+            result.Value.Feed.Should().StartWith("<feed xml:base=\"http://www.example.com/\" xmlns=\"http://www.w3.org/2005/Atom\">");
+        }
+
+        [Fact]
+        public async Task Handler_Should_ReturnFeedModel_With5Posts()
+        {
+            var result = await Mediator.Send(new GetSyndicationFeedQuery
+            {
+                BaseUri = new Uri("http://www.example.com"),
+                FeedType = FeedType.Rss,
+                PostBasePath = "posts"
+            });
+
+            result.IsSuccess.Should().BeTrue();
+
+            var feedXml = new XmlDocument();
+            feedXml.LoadXml(result.Value.Feed);
+
+            var items = feedXml.SelectNodes("/rss/channel/item");
+            items.Should().HaveCount(5);
         }
 
         [Fact]
@@ -83,7 +90,13 @@ namespace Opw.PineBlog.Feeds
             });
 
             result.IsSuccess.Should().BeTrue();
-            result.Value.Feed.Feed.Items.First().Title.Text.Should().Be("Post title 4");
+
+            var feedXml = new XmlDocument();
+            feedXml.LoadXml(result.Value.Feed);
+
+            var items = feedXml.SelectNodes("/rss/channel/item");
+            var title = items[0].SelectSingleNode("title").InnerText;
+            title.Should().Be("Post title 4");
         }
 
         [Fact]
@@ -97,7 +110,13 @@ namespace Opw.PineBlog.Feeds
             });
 
             result.IsSuccess.Should().BeTrue();
-            result.Value.Feed.Feed.Items.First().Id.Should().Be("http://www.example.com/posts/post-title-4");
+
+            var feedXml = new XmlDocument();
+            feedXml.LoadXml(result.Value.Feed);
+
+            var items = feedXml.SelectNodes("/rss/channel/item");
+            var guid = items[0].SelectSingleNode("guid").InnerText;
+            guid.Should().Be("http://www.example.com/posts/post-title-4");
         }
 
         private void SeedDatabase()

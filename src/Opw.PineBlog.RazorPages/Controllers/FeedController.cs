@@ -4,10 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Opw.PineBlog.Feeds;
 using System;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml;
 
 namespace Opw.PineBlog.RazorPages.Controllers
 {
@@ -84,14 +82,7 @@ namespace Opw.PineBlog.RazorPages.Controllers
             if (!result.IsSuccess)
                 throw result.Exception;
 
-            var stringWriter = new StringWriter();
-            using (var xmlWriter = new XmlTextWriter(stringWriter))
-            {
-                xmlWriter.Formatting = Formatting.Indented;
-                result.Value.Feed.WriteTo(xmlWriter);
-            }
-
-            return Content(stringWriter.ToString(), result.Value.ContentType);
+            return Content(result.Value.Feed, result.Value.ContentType);
         }
     }
 }

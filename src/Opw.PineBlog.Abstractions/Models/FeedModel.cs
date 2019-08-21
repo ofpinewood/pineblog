@@ -4,12 +4,12 @@ namespace Opw.PineBlog.Models
     /// <summary>
     /// Feed model.
     /// </summary>
-    public class FeedModel<T> where T : class
+    public class FeedModel
     {
         /// <summary>
-        /// The feed.
+        /// The response feed.
         /// </summary>
-        public T Feed { get; set; }
+        public string Feed { get; set; }
 
         /// <summary>
         /// The content type for the feed.
