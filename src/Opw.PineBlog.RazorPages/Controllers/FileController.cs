@@ -16,7 +16,7 @@ namespace Opw.PineBlog.RazorPages.Controllers
     /// </summary>
     [ApiController]
     [Authorize]
-    [Route("api/[controller]")]
+    [Route(PineBlogConstants.AdminAreaPath + "/[controller]")]
     public class FileController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -61,10 +61,10 @@ namespace Opw.PineBlog.RazorPages.Controllers
 
                 return Ok(result.Value);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // TODO: is a StatusCode result caught by HttpExceptions middleware?
-                return StatusCode(StatusCodes.Status500InternalServerError, "Get files error");
+                _logger.LogError("Get files error.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Get files error.");
             }
         }
 
@@ -87,10 +87,10 @@ namespace Opw.PineBlog.RazorPages.Controllers
                 }
                 return Ok("Created");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // TODO: is a StatusCode result caught by HttpExceptions middleware?
-                return StatusCode(StatusCodes.Status500InternalServerError, "File upload error");
+                _logger.LogError("File upload error.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "File upload error.");
             }
         }
     }

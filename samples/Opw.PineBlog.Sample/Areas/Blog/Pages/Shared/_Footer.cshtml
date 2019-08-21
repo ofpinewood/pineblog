@@ -11,6 +11,9 @@
             &copy; @DateTime.Now.Year <a href="https://github.com/ofpinewood">Of Pine Wood</a>
             (@ViewData["PineBlogVersion"])
         </p>
+        <p>
+            <a asp-controller="Feed" asp-action="Rss"><i class="fa fa-rss" aria-hidden="true"></i></a>
+        </p>
         <div class="ml-auto">
             @if (User.Identity.IsAuthenticated)
             {

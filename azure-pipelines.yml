@@ -37,7 +37,7 @@ steps:
 # Release: triggered by a version tag
 - task: DotNetCoreCLI@2
   displayName: Publish
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  #condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
   inputs:
     command: publish
     publishWebProjects: false
@@ -49,7 +49,7 @@ steps:
 # Delete the "Areas" folder, this should not be deployed
 - task: DeleteFiles@1
   displayName: Publish Cleanup
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  #condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
   inputs:
     sourceFolder: $(build.artifactstagingdirectory)\Opw.PineBlog.Sample
     contents: 'Areas'

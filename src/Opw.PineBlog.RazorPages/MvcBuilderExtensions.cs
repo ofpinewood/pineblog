@@ -20,7 +20,7 @@ namespace Opw.PineBlog.RazorPages
             builder.AddRazorPages(option =>
             {
                 option.Conventions.AuthorizeAreaFolder("Admin", "/");
-                option.Conventions.AddAreaPageRoute("Blog", "/Post", "blog/{*slug}");
+                option.Conventions.AddAreaPageRoute("Blog", "/Post", PineBlogConstants.BlogAreaPath + "/{*slug}");
             });
             builder.AddMvcOptions(options =>
             {
@@ -43,7 +43,7 @@ namespace Opw.PineBlog.RazorPages
             builder.AddRazorPagesOptions(option =>
             {
                 option.Conventions.AuthorizeAreaFolder("Admin", "/");
-                option.Conventions.AddAreaPageRoute("Blog", "/Post", "blog/{*slug}");
+                option.Conventions.AddAreaPageRoute("Blog", "/Post", PineBlogConstants.BlogAreaPath + "/{*slug}");
             });
             builder.AddMvcOptions(options =>
             {

@@ -6,6 +6,8 @@
 
 PineBlog is a light-weight blogging engine written in ASP.NET Core MVC Razor Pages, using Entity Framework Core. It is highly extendable, customizable and easy to integrate in an existing web application.
 
+![PineBlog screenshot](docs/screenshot.png)
+
 ### Features
 
 - Markdown post editor
@@ -82,7 +84,12 @@ And a few properties need to be configured before you can run your web applicati
 }
 ```
 
-For more information, please check the [documentation](https://github.com/ofpinewood/pineblog/tree/master/docs/getting-started.md).
+## Documentation
+For more information, please check the documentation.
+
+- [Getting started](https://github.com/ofpinewood/pineblog/tree/master/docs/getting-started.md)
+- [Customizing the layout](https://github.com/ofpinewood/pineblog/tree/master/docs/custom-layout.md)
+- [Features](https://github.com/ofpinewood/pineblog/tree/master/docs/features.md)
 
 ## Samples
 The [sample project](https://github.com/ofpinewood/pineblog/tree/master/samples/Opw.PineBlog.Sample) contains an example web application with PineBlog.
