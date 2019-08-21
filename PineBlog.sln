@@ -63,6 +63,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "50 UI", "50 UI", "{08132695
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Docs", "01 Docs", "{5D82D89B-A30F-4C3F-87A0-6D3408A449BB}"
 	ProjectSection(SolutionItems) = preProject
+		docs\custom-layout.md = docs\custom-layout.md
+		docs\features.md = docs\features.md
 		docs\getting-started.md = docs\getting-started.md
 		README.md = README.md
 	EndProjectSection
