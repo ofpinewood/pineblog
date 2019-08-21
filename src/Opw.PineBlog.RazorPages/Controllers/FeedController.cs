@@ -4,10 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Opw.PineBlog.Feeds;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.ServiceModel.Syndication;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
@@ -51,7 +48,7 @@ namespace Opw.PineBlog.RazorPages.Controllers
             }
             catch (Exception ex)
             {
-                // TODO: is a StatusCode result caught by HttpExceptions middleware?
+                _logger.LogError("RSS feed error.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "RSS feed error.");
             }
         }
@@ -70,7 +67,7 @@ namespace Opw.PineBlog.RazorPages.Controllers
             }
             catch (Exception ex)
             {
-                // TODO: is a StatusCode result caught by HttpExceptions middleware?
+                _logger.LogError("Atom feed error.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Atom feed error.");
             }
         }

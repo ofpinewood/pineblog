@@ -3,7 +3,6 @@ using FluentValidation.Results;
 using Microsoft.Extensions.DependencyInjection;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
-using Opw.PineBlog.Models;
 using System;
 using System.Linq;
 using System.ServiceModel.Syndication;

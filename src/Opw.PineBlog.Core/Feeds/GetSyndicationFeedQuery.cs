@@ -82,7 +82,7 @@ namespace Opw.PineBlog.Feeds
             {
                 var blog = new BlogModel(_blogOptions.Value);
 
-                var feed = new SyndicationFeed()
+                var feed = new SyndicationFeed
                 {
                     Title = new TextSyndicationContent(blog.Title),
                     Description = new TextSyndicationContent("Latest blog posts"),
