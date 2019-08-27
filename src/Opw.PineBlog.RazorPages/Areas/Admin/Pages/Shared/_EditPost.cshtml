@@ -7,7 +7,7 @@
     <div class="container">
         <div>
             <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                <input type="submit" class="btn btn-primary" value="Save" />
+                <input type="submit" id="" class="btn btn-primary" value="Save" />
                 @if (isEdit)
                 {
                     <div class="btn-group" role="group">
@@ -52,9 +52,8 @@
 </div>
 
 <!--TODO: replace with toasts-->
-<div asp-validation-summary="All" class="invalid-tooltip">
+<div asp-validation-summary="All" class="invalid-tooltip"></div>
 
-</div>
 <div class="md-editor">
     <textarea asp-for="Content"></textarea>
 </div>
@@ -104,3 +103,20 @@
         </div>
     </div>
 </div>
+
+@if (Model.Published.HasValue)
+{
+<input type="checkbox" id="titleChangeConfirmed" name="titleChangeConfirmed" style="display:none" />
+<script>
+    jQuery.validator.addMethod('titleChange', function (value, element) {
+        if ($('#titleChangeConfirmed').prop('checked'))
+            return true;
+        return value !== @Model.Title;
+    }, 'Changing the title will also update the slug, are you sure you want that?');
+    $('#Post_Title').validate({
+        rules : {
+            titleChange : { titleChange : true }
+        }
+    });
+</script>
+}
