@@ -37,6 +37,39 @@
             });
         });
     </script>
+    @if (Model.Post.Published.HasValue)
+    {
+        <input type="checkbox" id="titleChangeConfirmed" name="titleChangeConfirmed" style="display:none" />
+        <script>
+            $(function () {
+                $.validator.addMethod('titleChange', function (value, element) {
+                    var result = false;
+                    if ($('#titleChangeConfirmed').prop('checked')) result = true;
+                    else result = value === '@Model.Post.Title';
+
+                    if (!result) $('#titleChangedConfirmation').show();
+                    else $('#titleChangedConfirmation').hide();
+
+                    return result;
+                }, 'Changing the title will also update the slug (URL) for the post, are you sure you want to do this?');
+
+                $('.post-editor').validate({
+                    rules: {
+                        Title: { titleChange: true }
+                    }
+                });
+            });
+            function confirmTitleChange() {
+                $('#titleChangeConfirmed').prop('checked', true);
+                $('#titleChangedConfirmation').hide();
+            }
+            function resetTitleChange() {
+                $('#titleChangeConfirmed').prop('checked', false);
+                $('#Title').val('@Model.Post.Title');
+                $('#titleChangedConfirmation').hide();
+            }
+        </script>
+    }
 }
 <form method="post" class="post-editor d-flex flex-column">
     <input type="hidden" name="@nameof(Model.Post.Id)" id="@nameof(Model.Post.Id)" value="@Model.Post.Id">

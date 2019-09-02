@@ -9,11 +9,16 @@
         cursor: pointer;
     }
 
+    #Title-error {
+        display: none !important;
+    }
+
     .invalid-tooltip {
         &.field-validation-error {
             display: block;
         }
 
+        &#titleChangedConfirmation,
         &.validation-summary-errors {
             border-radius: 0;
             border: none;
@@ -35,6 +40,12 @@
                     list-style: none;
                 }
             }
+        }
+
+        &#titleChangedConfirmation {
+            padding: .5rem;
+            background-color: #ffc107;
+            color: #000000;
         }
     }
 
