@@ -52,6 +52,16 @@
 </div>
 
 <!--TODO: replace with toasts-->
+@if (Model.Published.HasValue)
+{
+<div id="titleChangedConfirmation" class="invalid-tooltip" style="display: none">
+    <div class="container">
+        Changing the title will also update the slug (URL) for the post, are you sure you want to do this?
+        <button type="button" class="btn btn-sm btn-outline-dark" onclick="confirmTitleChange()">Yes</button>
+        <button type="button" class="btn btn-sm btn-dark" onclick="resetTitleChange()">No</button>
+    </div>
+</div>
+}
 <div asp-validation-summary="All" class="invalid-tooltip"></div>
 
 <div class="md-editor">
@@ -103,20 +113,3 @@
         </div>
     </div>
 </div>
-
-@if (Model.Published.HasValue)
-{
-<input type="checkbox" id="titleChangeConfirmed" name="titleChangeConfirmed" style="display:none" />
-<script>
-    jQuery.validator.addMethod('titleChange', function (value, element) {
-        if ($('#titleChangeConfirmed').prop('checked'))
-            return true;
-        return value !== @Model.Title;
-    }, 'Changing the title will also update the slug, are you sure you want that?');
-    $('#Post_Title').validate({
-        rules : {
-            titleChange : { titleChange : true }
-        }
-    });
-</script>
-}
