@@ -87,7 +87,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete <code>@Model.Post.Title</code>? This action can not be undone!</p>
+                <p>
+                    Are you sure you want to delete <code>@Model.Post.Title</code>?<br />
+                    This action cannot be undone!
+                </p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-light" asp-page-handler="Delete" asp-route-id="@ViewData["Id"]">Delete</button>
