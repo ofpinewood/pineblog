@@ -23,7 +23,7 @@
                 <dependency id="Microsoft.EntityFrameworkCore" version="2.2.6" exclude="Build,Analyzers" />
                 <dependency id="Microsoft.Extensions.Options" version="2.2.0" exclude="Build,Analyzers" />
                 <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.2.0" exclude="Build,Analyzers" />
-                <dependency id="MimeMapping" version="1.0.1.14" exclude="Build,Analyzers" />
+                <dependency id="MimeMapping" version="1.0.1.15" exclude="Build,Analyzers" />
                 <dependency id="Microsoft.Azure.Storage.Blob" version="11.0.0" exclude="Build,Analyzers" />
                 <dependency id="System.ServiceModel.Syndication" version="4.5.0" exclude="Build,Analyzers" />
                 

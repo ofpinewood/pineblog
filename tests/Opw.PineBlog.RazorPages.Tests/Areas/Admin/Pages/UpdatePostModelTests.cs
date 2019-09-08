@@ -123,5 +123,29 @@ namespace Opw.PineBlog.RazorPages.Areas.Admin.Pages
             result.Should().BeOfType<RedirectToPageResult>()
                 .Which.PageName.Should().Be("UpdatePost");
         }
+
+        [Fact]
+        public async Task OnGetDeleteAsync_Should_ReturnRedirectToPageResult()
+        {
+            var loggerMock = new Mock<ILogger<UpdatePostModel>>();
+            var mediaterMock = new Mock<IMediator>();
+            mediaterMock.Setup(m => m.Send(It.IsAny<DeletePostCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Result.Success());
+
+            var httpContext = new DefaultHttpContext();
+            var pageContext = GetPageContext(httpContext);
+
+            var pageModel = new UpdatePostModel(mediaterMock.Object, loggerMock.Object)
+            {
+                PageContext = pageContext.Item1,
+                TempData = GetTempDataDictionary(httpContext),
+                Url = new UrlHelper(pageContext.Item2)
+            };
+
+            var result = await pageModel.OnGetDeleteAsync(_guid, default);
+
+            result.Should().BeOfType<RedirectToPageResult>()
+                .Which.PageName.Should().Be("Posts");
+        }
     }
 }
