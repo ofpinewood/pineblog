@@ -11,11 +11,11 @@ using Xunit;
 
 namespace Opw.PineBlog.Posts
 {
-    public class UnpublishPostCommandTests : MediatRTestsBase
+    public class DeletePostCommandTests : MediatRTestsBase
     {
         private Guid _postId;
 
-        public UnpublishPostCommandTests()
+        public DeletePostCommandTests()
         {
             SeedDatabase();
         }
@@ -23,34 +23,33 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Validator_Should_ThrowValidationErrorException()
         {
-            Task action() => Mediator.Send(new UnpublishPostCommand());
+            Task action() => Mediator.Send(new DeletePostCommand());
 
             var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
-            ex.Errors.Single(e => e.Key.Equals(nameof(UnpublishPostCommand.Id))).Should().NotBeNull();
+            ex.Errors.Single(e => e.Key.Equals(nameof(DeletePostCommand.Id))).Should().NotBeNull();
         }
 
         [Fact]
         public async Task Handler_Should_ReturnNotFoundException()
         {
-            var result = await Mediator.Send(new UnpublishPostCommand { Id = Guid.NewGuid() });
+            var result = await Mediator.Send(new DeletePostCommand { Id = Guid.NewGuid() });
 
             result.IsSuccess.Should().BeFalse();
             result.Exception.Should().BeOfType<NotFoundException<Post>>();
         }
 
         [Fact]
-        public async Task Handler_Should_UnpublishPost()
+        public async Task Handler_Should_DeletePost()
         {
-            var result = await Mediator.Send(new UnpublishPostCommand { Id = _postId });
+            var result = await Mediator.Send(new DeletePostCommand { Id = _postId });
 
             result.IsSuccess.Should().BeTrue();
 
             var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
 
-            var post = await context.Posts.SingleAsync(p => p.Id.Equals(_postId));
+            var post = await context.Posts.SingleOrDefaultAsync(p => p.Id.Equals(_postId));
 
-            post.Should().NotBeNull();
-            post.Published.Should().BeNull();
+            post.Should().BeNull();
         }
 
         private void SeedDatabase()

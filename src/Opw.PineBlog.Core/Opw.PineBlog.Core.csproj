@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
@@ -29,7 +29,7 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
         <PackageReference Include="Microsoft.Extensions.Options" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
-        <PackageReference Include="MimeMapping" Version="1.0.1.14" />
+        <PackageReference Include="MimeMapping" Version="1.0.1.15" />
         <PackageReference Include="System.ServiceModel.Syndication" Version="4.5.0" />
     </ItemGroup>
 

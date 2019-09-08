@@ -21,7 +21,7 @@
                             {
                                 <a asp-page-handler="Publish" asp-route-id="@ViewData["Id"]" class="dropdown-item">Publish</a>
                             }
-                            <a class="dropdown-item" href="#">Delete</a>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#confirmDeletePostModal">Delete</a>
                         </div>
                     </div>
                 }
@@ -54,7 +54,7 @@
 <!--TODO: replace with toasts-->
 @if (Model.Published.HasValue)
 {
-<div id="titleChangedConfirmation" class="invalid-tooltip" style="display: none">
+<div id="titleChangedConfirmation" class="invalid-tooltip block block-warning" style="display: none">
     <div class="container">
         Changing the title will also update the slug (URL) for the post, are you sure you want to do this?
         <button type="button" class="btn btn-sm btn-outline-dark" onclick="confirmTitleChange()">Yes</button>

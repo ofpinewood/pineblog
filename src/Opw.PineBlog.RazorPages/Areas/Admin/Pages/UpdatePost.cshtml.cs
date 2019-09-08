@@ -75,5 +75,14 @@ namespace Opw.PineBlog.RazorPages.Areas.Admin.Pages
 
             return RedirectToPage("UpdatePost", new { id });
         }
+
+        public async Task<IActionResult> OnGetDeleteAsync(Guid id, CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(new DeletePostCommand { Id = id }, cancellationToken);
+            if (!result.IsSuccess)
+                throw result.Exception;
+
+            return RedirectToPage("Posts");
+        }
     }
 }

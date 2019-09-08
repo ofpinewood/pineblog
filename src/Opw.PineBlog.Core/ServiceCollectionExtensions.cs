@@ -41,6 +41,7 @@ namespace Opw.PineBlog
             services.AddTransient<IValidator<UpdatePostCommand>, UpdatePostCommandValidator>();
             services.AddTransient<IValidator<PublishPostCommand>, PublishPostCommandValidator>();
             services.AddTransient<IValidator<UnpublishPostCommand>, UnpublishPostCommandValidator>();
+            services.AddTransient<IValidator<DeletePostCommand>, DeletePostCommandValidator>();
 
             services.AddTransient<IValidator<GetPostQuery>, GetPostQueryValidator>();
             services.AddTransient<IValidator<GetPostByIdQuery>, GetPostByIdQueryValidator>();

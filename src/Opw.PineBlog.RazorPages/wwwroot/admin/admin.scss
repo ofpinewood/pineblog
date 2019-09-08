@@ -44,8 +44,47 @@
 
         &#titleChangedConfirmation {
             padding: .5rem;
-            background-color: #ffc107;
-            color: #000000;
+        }
+    }
+
+    .block {
+        code {
+            color: inherit;
+            padding: 0 .2rem;
+        }
+
+        &.block-warning {
+            background-color: $warning;
+            border-color: $warning;
+            color: #000;
+
+            code {
+                background-color: #000;
+                color: $warning;
+            }
+
+            .btn-light {
+                color: $warning;
+            }
+        }
+
+        &.block-danger {
+            background-color: $danger;
+            border-color: $danger;
+            color: #fff;
+
+            code {
+                background-color: #fff;
+                color: $danger;
+            }
+
+            .btn-light {
+                color: $danger;
+            }
+
+            .close {
+                color: #fff;
+            }
         }
     }
 
