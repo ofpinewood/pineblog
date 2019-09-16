@@ -6,7 +6,7 @@ namespace Opw.PineBlog
 {
     public interface IBlogEntityDbContext : IEntityDbContext
     {
-        DbSet<Settings> Settings { get; set; }
+        DbSet<BlogSettings> BlogSettings { get; set; }
         DbSet<Author> Authors { get; set; }
         DbSet<Post> Posts { get; set; }
     }

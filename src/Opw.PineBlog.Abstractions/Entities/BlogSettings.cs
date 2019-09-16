@@ -3,7 +3,7 @@ using System;
 
 namespace Opw.PineBlog.Entities
 {
-    public class Settings : IEntityCreated, IEntityModified
+    public class BlogSettings : IEntityCreated, IEntityModified
     {
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
