@@ -27,7 +27,7 @@ namespace Opw.PineBlog.Blogs
         }
 
         [Fact]
-        public async Task Handler_Should_ReturnNotFoundException()
+        public async Task Handler_Should_AddSettings_WhenNotFound()
         {
             var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
 
@@ -37,11 +37,17 @@ namespace Opw.PineBlog.Blogs
 
             var result = await Mediator.Send(new UpdateBlogSettingsCommand
             {
-                Title = "title"
+                Title = "blog title-NEW"
             });
 
-            result.IsSuccess.Should().BeFalse();
-            result.Exception.Should().BeOfType<NotFoundException<BlogSettings>>();
+            result.IsSuccess.Should().BeTrue();
+
+            context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+
+            var settings = await context.BlogSettings.SingleAsync();
+
+            settings.Should().NotBeNull();
+            settings.Title.Should().Be("blog title-NEW");
         }
 
         [Fact]

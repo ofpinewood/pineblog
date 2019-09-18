@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
 using Opw.PineBlog.Files;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -66,7 +67,7 @@ namespace Opw.PineBlog.Blogs
             {
                 var entity = await _context.BlogSettings.SingleOrDefaultAsync();
                 if (entity == null)
-                    return Result<BlogSettings>.Fail(new NotFoundException<BlogSettings>("Could not find blog settings."));
+                    entity = new BlogSettings();
 
                 entity.Title = request.Title;
                 entity.Description = request.Description;
@@ -74,7 +75,11 @@ namespace Opw.PineBlog.Blogs
                 entity.CoverCaption = request.CoverCaption;
                 entity.CoverLink = request.CoverLink;
 
-                _context.BlogSettings.Update(entity);
+                if (entity.Created == DateTime.MinValue)
+                    _context.BlogSettings.Add(entity);
+                else
+                    _context.BlogSettings.Update(entity);
+
                 var result = await _context.SaveChangesAsync(true, cancellationToken);
                 if (!result.IsSuccess)
                     return Result<BlogSettings>.Fail(result.Exception);

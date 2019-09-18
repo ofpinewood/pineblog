@@ -41,7 +41,8 @@ var fileManager = function (dataService) {
                 }
             }
             //var url = 'assets/' + id;
-            if (_openCallback.name === 'updatePostCoverCallback') {
+            if (_openCallback.name === 'updatePostCoverCallback'
+                || _openCallback.name === 'updateBlogCoverCallback') {
                 _openCallback(file);
                 //url = 'admin/file/pick?type=postCover&asset=' + id + '&post=' + $('#Post_Id').val();
             }
@@ -268,5 +269,11 @@ var insertImageCallback = function (data) {
 var updatePostCoverCallback = function (data) {
     $('.post-cover').css('background-image', 'url(' + data.url + ')');
     $('#CoverUrl').val(data.url);
+    //toastr.success('Updated');
+};
+
+var updateBlogCoverCallback = function (data) {
+    $('.post-cover').css('background-image', 'url(' + data.url + ')');
+    $('#BlogSettings_CoverUrl').val(data.url);
     //toastr.success('Updated');
 };
