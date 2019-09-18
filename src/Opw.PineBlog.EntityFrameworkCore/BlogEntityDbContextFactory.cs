@@ -17,7 +17,7 @@ namespace Opw.PineBlog.EntityFrameworkCore
             var builder = new DbContextOptionsBuilder<BlogEntityDbContext>();
 
             var connectionString = GetConfiguration().GetConnectionString("DefaultConnection");
-            DbContextConfigurer.Configure(builder, connectionString);
+            DbContextOptionsHelper.ConfigureOptionsBuilder(builder, connectionString);
 
             return new BlogEntityDbContext(builder.Options);
         }

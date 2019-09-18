@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Opw.PineBlog.RazorPages;
 using Opw.PineBlog.Sample.Middleware;
+using Opw.PineBlog.EntityFrameworkCore;
 
 namespace Opw.PineBlog.Sample
 {
