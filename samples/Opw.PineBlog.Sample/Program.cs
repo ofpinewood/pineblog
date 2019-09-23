@@ -36,7 +36,7 @@ namespace Opw.PineBlog.Sample
                 .UseApplicationInsights()
                 .UseStartup<Startup>()
                 .ConfigureAppConfiguration((hostingContext, config) => {
-                    config.AddPineBlogEntityFrameworkCoreConfiguration();
+                    config.AddPineBlogConfiguration(reloadOnChange: true);
                 })
                 .ConfigureLogging((hostingContext, builder) =>
                 {

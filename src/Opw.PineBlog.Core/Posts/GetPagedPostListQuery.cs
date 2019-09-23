@@ -42,7 +42,7 @@ namespace Opw.PineBlog.Posts
         /// </summary>
         public class Handler : IRequestHandler<GetPagedPostListQuery, Result<PostListModel>>
         {
-            private readonly IOptions<PineBlogOptions> _blogOptions;
+            private readonly IOptionsMonitor<PineBlogOptions> _blogOptions;
             private readonly IBlogEntityDbContext _context;
             private readonly PostUrlHelper _postUrlHelper;
 
@@ -52,7 +52,7 @@ namespace Opw.PineBlog.Posts
             /// <param name="context">The blog entity context.</param>
             /// <param name="blogOptions">The blog options.</param>
             /// <param name="postUrlHelper">Post URL helper.</param>
-            public Handler(IBlogEntityDbContext context, IOptions<PineBlogOptions> blogOptions, PostUrlHelper postUrlHelper)
+            public Handler(IBlogEntityDbContext context, IOptionsMonitor<PineBlogOptions> blogOptions, PostUrlHelper postUrlHelper)
             {
                 _blogOptions = blogOptions;
                 _context = context;
@@ -66,10 +66,10 @@ namespace Opw.PineBlog.Posts
             /// <param name="cancellationToken">A cancellation token.</param>
             public async Task<Result<PostListModel>> Handle(GetPagedPostListQuery request, CancellationToken cancellationToken)
             {
-                var itemsPerPage = (request.ItemsPerPage.HasValue) ? request.ItemsPerPage : _blogOptions.Value.ItemsPerPage;
+                var itemsPerPage = (request.ItemsPerPage.HasValue) ? request.ItemsPerPage : _blogOptions.CurrentValue.ItemsPerPage;
                 var pager = new Pager(request.Page, itemsPerPage.Value);
 
-                var pagingUrlPartFormat = _blogOptions.Value.PagingUrlPartFormat;
+                var pagingUrlPartFormat = _blogOptions.CurrentValue.PagingUrlPartFormat;
 
                 var predicates = new List<Expression<Func<Post, bool>>>();
                 if (!request.IncludeUnpublished)
@@ -77,7 +77,7 @@ namespace Opw.PineBlog.Posts
                 if (!string.IsNullOrWhiteSpace(request.Category))
                 {
                     predicates.Add(p => p.Categories.Contains(request.Category));
-                    pagingUrlPartFormat += "&" + string.Format(_blogOptions.Value.CategoryUrlPartFormat, request.Category);
+                    pagingUrlPartFormat += "&" + string.Format(_blogOptions.CurrentValue.CategoryUrlPartFormat, request.Category);
                 }
 
                 var posts = await GetPagedListAsync(predicates, pager, pagingUrlPartFormat, cancellationToken);
@@ -86,7 +86,7 @@ namespace Opw.PineBlog.Posts
 
                 var model = new PostListModel
                 {
-                    Blog = new BlogModel(_blogOptions.Value),
+                    Blog = new BlogModel(_blogOptions.CurrentValue),
                     PostListType = PostListType.Blog,
                     Posts = posts,
                     Pager = pager

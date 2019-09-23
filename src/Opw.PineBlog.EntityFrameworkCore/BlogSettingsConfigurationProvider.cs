@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Opw.EntityFrameworkCore;
 using Opw.PineBlog.Entities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Opw.PineBlog.EntityFrameworkCore
 {
@@ -12,24 +13,26 @@ namespace Opw.PineBlog.EntityFrameworkCore
     /// </summary>
     public class BlogSettingsConfigurationProvider : ConfigurationProvider, IBlogSettingsConfigurationProvider
     {
-        Action<DbContextOptionsBuilder> OptionsAction { get; }
+        private readonly BlogSettingsConfigurationSource _source;
 
         /// <summary>
         /// Implementation of BlogSettingsConfigurationProvider.
         /// </summary>
-        public BlogSettingsConfigurationProvider(Action<DbContextOptionsBuilder> optionsAction)
+        public BlogSettingsConfigurationProvider(BlogSettingsConfigurationSource source)
         {
-            OptionsAction = optionsAction;
-            // TODO: for ReloadOnChange check https://github.com/aspnet/Extensions/blob/master/src/Configuration/Config.FileExtensions/src/FileConfigurationProvider.cs
+            _source = source;
+
+            if (_source.ReloadOnChange)
+                EntityChangeWatcher.Instance.Changed += EntityChangeWatcher_Changed;
         }
 
-        /// <summary>
-        /// Trigger a reload.
-        /// </summary>
-        public void Reload()
+        private void EntityChangeWatcher_Changed(object sender, EntityChangeEventArgs e)
         {
+            if (e.Entry.Entity.GetType() != typeof(BlogSettings))
+                return;
+
+            Thread.Sleep(_source.ReloadDelay);
             Load();
-            OnReload();
         }
 
         /// <summary>
@@ -38,8 +41,7 @@ namespace Opw.PineBlog.EntityFrameworkCore
         public override void Load()
         {
             var builder = new DbContextOptionsBuilder<BlogEntityDbContext>();
-
-            OptionsAction(builder);
+            _source.OptionsAction(builder);
 
             using (var context = new BlogEntityDbContext(builder.Options))
             {
