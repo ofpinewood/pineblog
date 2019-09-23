@@ -52,11 +52,11 @@ namespace Opw.PineBlog.EntityFrameworkCore
                 //TODO: save the defaults?
 
                 Data = new Dictionary<string, string>();
-                Data.Add($"PineBlogOptions:{nameof(BlogSettings.Title)}", settings.Title);
-                Data.Add($"PineBlogOptions:{nameof(BlogSettings.Description)}", settings.Description);
-                Data.Add($"PineBlogOptions:{nameof(BlogSettings.CoverCaption)}", settings.CoverCaption);
-                Data.Add($"PineBlogOptions:{nameof(BlogSettings.CoverLink)}", settings.CoverLink);
-                Data.Add($"PineBlogOptions:{nameof(BlogSettings.CoverUrl)}", settings.CoverUrl);
+                Data.Add($"{nameof(PineBlogOptions)}:{nameof(PineBlogOptions.Title)}", settings.Title);
+                Data.Add($"{nameof(PineBlogOptions)}:{nameof(PineBlogOptions.Description)}", settings.Description);
+                Data.Add($"{nameof(PineBlogOptions)}:{nameof(PineBlogOptions.CoverCaption)}", settings.CoverCaption);
+                Data.Add($"{nameof(PineBlogOptions)}:{nameof(PineBlogOptions.CoverLink)}", settings.CoverLink);
+                Data.Add($"{nameof(PineBlogOptions)}:{nameof(PineBlogOptions.CoverUrl)}", settings.CoverUrl);
             }
         }
     }
