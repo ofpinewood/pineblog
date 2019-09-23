@@ -10,13 +10,13 @@ namespace Opw.PineBlog.RazorPages
     /// </summary>
     public class PineBlogViewDataAsyncPageFilter : IAsyncPageFilter
     {
-        private readonly IOptions<PineBlogOptions> _options;
+        private readonly IOptionsSnapshot<PineBlogOptions> _options;
 
         /// <summary>
         /// Implementation of PineBlogViewDataAsyncPageFilter.
         /// </summary>
         /// <param name="options">Blog options.</param>
-        public PineBlogViewDataAsyncPageFilter(IOptions<PineBlogOptions> options)
+        public PineBlogViewDataAsyncPageFilter(IOptionsSnapshot<PineBlogOptions> options)
         {
             _options = options;
         }

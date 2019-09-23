@@ -8,13 +8,13 @@ namespace Opw.PineBlog.Files
     /// </summary>
     public class GetPagedFileListQueryFactory : IGetPagedFileListQueryFactory
     {
-        private readonly IOptions<PineBlogOptions> _blogOptions;
+        private readonly IOptionsSnapshot<PineBlogOptions> _blogOptions;
 
         /// <summary>
         /// Implementation of GetPagedFileListQueryFactory.
         /// </summary>
         /// <param name="blogOptions">Blog options.</param>
-        public GetPagedFileListQueryFactory(IOptions<PineBlogOptions> blogOptions)
+        public GetPagedFileListQueryFactory(IOptionsSnapshot<PineBlogOptions> blogOptions)
         {
             _blogOptions = blogOptions;
         }

@@ -21,14 +21,14 @@ namespace Opw.PineBlog.Blogs
         {
             private readonly IBlogEntityDbContext _context;
             private readonly FileUrlHelper _fileUrlHelper;
-            private readonly IOptions<PineBlogOptions> _blogOptions;
+            private readonly IOptionsSnapshot<PineBlogOptions> _blogOptions;
 
             /// <summary>
             /// Implementation of GetBlogSettigsQuery.Handler.
             /// </summary>
             /// <param name="context">The blog entity context.</param>
             /// <param name="fileUrlHelper">File URL helper.</param>
-            public Handler(IBlogEntityDbContext context, FileUrlHelper fileUrlHelper, IOptions<PineBlogOptions> blogOptions)
+            public Handler(IBlogEntityDbContext context, FileUrlHelper fileUrlHelper, IOptionsSnapshot<PineBlogOptions> blogOptions)
             {
                 _context = context;
                 _fileUrlHelper = fileUrlHelper;

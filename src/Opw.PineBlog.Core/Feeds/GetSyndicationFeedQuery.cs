@@ -39,7 +39,7 @@ namespace Opw.PineBlog.Feeds
         /// </summary>
         public class Handler : IRequestHandler<GetSyndicationFeedQuery, Result<FeedModel>>
         {
-            private readonly IOptions<PineBlogOptions> _blogOptions;
+            private readonly IOptionsSnapshot<PineBlogOptions> _blogOptions;
             private readonly IBlogEntityDbContext _context;
             private readonly PostUrlHelper _postUrlHelper;
 
@@ -49,7 +49,7 @@ namespace Opw.PineBlog.Feeds
             /// <param name="context">The blog entity context.</param>
             /// <param name="blogOptions">The blog options.</param>
             /// <param name="postUrlHelper">Post URL helper.</param>
-            public Handler(IBlogEntityDbContext context, IOptions<PineBlogOptions> blogOptions, PostUrlHelper postUrlHelper)
+            public Handler(IBlogEntityDbContext context, IOptionsSnapshot<PineBlogOptions> blogOptions, PostUrlHelper postUrlHelper)
             {
                 _blogOptions = blogOptions;
                 _context = context;

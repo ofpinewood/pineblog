@@ -40,14 +40,14 @@ namespace Opw.PineBlog.Files.Azure
         public class Handler : IGetPagedFileListQueryHandler<GetPagedAzureBlobListQuery>
         {
             private readonly AzureBlobHelper _azureBlobHelper;
-            private readonly IOptions<PineBlogOptions> _blogOptions;
+            private readonly IOptionsSnapshot<PineBlogOptions> _blogOptions;
 
             /// <summary>
             /// Implementation of GetPagedAzureBlobListQuery.Handler.
             /// </summary>
             /// <param name="azureBlobHelper">Azure blob helper.</param>
             /// <param name="blogOptions">Blog options.</param>
-            public Handler(AzureBlobHelper azureBlobHelper, IOptions<PineBlogOptions> blogOptions)
+            public Handler(AzureBlobHelper azureBlobHelper, IOptionsSnapshot<PineBlogOptions> blogOptions)
             {
                 _azureBlobHelper = azureBlobHelper;
                 _blogOptions = blogOptions;
