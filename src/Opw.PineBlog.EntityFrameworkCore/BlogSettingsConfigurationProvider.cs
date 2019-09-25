@@ -49,7 +49,6 @@ namespace Opw.PineBlog.EntityFrameworkCore
 
                 var settings = context.BlogSettings.SingleOrDefault();
                 if (settings == null) return;
-                //TODO: save the defaults?
 
                 Data = new Dictionary<string, string>();
                 Data.Add($"{nameof(PineBlogOptions)}:{nameof(PineBlogOptions.Title)}", settings.Title);
