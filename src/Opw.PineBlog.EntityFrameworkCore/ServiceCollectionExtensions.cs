@@ -22,7 +22,7 @@ namespace Opw.PineBlog.EntityFrameworkCore
             {
                 var blogOptions = provider.GetRequiredService<IOptions<PineBlogOptions>>();
                 var connectionString = configuration.GetConnectionString(blogOptions.Value.ConnectionStringName);
-                DbContextConfigurer.Configure(options, connectionString);
+                DbContextOptionsHelper.ConfigureOptionsBuilder(options, connectionString);
             });
 
             return services;

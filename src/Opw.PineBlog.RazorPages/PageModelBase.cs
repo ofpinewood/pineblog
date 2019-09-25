@@ -15,7 +15,7 @@ namespace Opw.PineBlog.RazorPages
         /// <summary>
         /// Blog options.
         /// </summary>
-        protected IOptions<PineBlogOptions> Options { get; }
+        protected IOptionsSnapshot<PineBlogOptions> Options { get; }
 
         /// <summary>
         /// Logger.

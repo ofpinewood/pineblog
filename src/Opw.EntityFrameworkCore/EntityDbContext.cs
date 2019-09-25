@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Linq;
 using System.Threading;
@@ -19,6 +20,7 @@ namespace Opw.EntityFrameworkCore
         {
             UpdatedCreateDate();
             UpdatedModifiedDate();
+            NotifyEntityChangeWatchers();
 
             try
             {
@@ -34,6 +36,7 @@ namespace Opw.EntityFrameworkCore
         {
             UpdatedCreateDate();
             UpdatedModifiedDate();
+            NotifyEntityChangeWatchers();
 
             try
             {
@@ -49,6 +52,7 @@ namespace Opw.EntityFrameworkCore
         {
             UpdatedCreateDate();
             UpdatedModifiedDate();
+            NotifyEntityChangeWatchers();
 
             try
             {
@@ -65,6 +69,7 @@ namespace Opw.EntityFrameworkCore
         {
             UpdatedCreateDate();
             UpdatedModifiedDate();
+            NotifyEntityChangeWatchers();
 
             try
             {
@@ -74,6 +79,15 @@ namespace Opw.EntityFrameworkCore
             catch (Exception ex)
             {
                 return Result<int>.Fail(ex);
+            }
+        }
+
+        private void NotifyEntityChangeWatchers()
+        {
+            foreach(var entry in ChangeTracker.Entries()
+                .Where(i => i.State == EntityState.Modified || i.State == EntityState.Added))
+            {
+                EntityChangeWatcher.Instance.OnChanged(new EntityChangeEventArgs(entry));
             }
         }
 

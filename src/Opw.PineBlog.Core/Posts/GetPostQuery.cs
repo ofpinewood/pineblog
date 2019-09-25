@@ -16,11 +16,11 @@ namespace Opw.PineBlog.Posts
 
         public class Handler : IRequestHandler<GetPostQuery, Result<PostModel>>
         {
-            private readonly IOptions<PineBlogOptions> _blogOptions;
+            private readonly IOptionsSnapshot<PineBlogOptions> _blogOptions;
             private readonly IBlogEntityDbContext _context;
             private readonly PostUrlHelper _postUrlHelper;
 
-            public Handler(IBlogEntityDbContext context, IOptions<PineBlogOptions> blogOptions, PostUrlHelper postUrlHelper)
+            public Handler(IBlogEntityDbContext context, IOptionsSnapshot<PineBlogOptions> blogOptions, PostUrlHelper postUrlHelper)
             {
                 _blogOptions = blogOptions;
                 _context = context;

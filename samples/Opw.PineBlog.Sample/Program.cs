@@ -35,6 +35,9 @@ namespace Opw.PineBlog.Sample
             WebHost.CreateDefaultBuilder(args)
                 .UseApplicationInsights()
                 .UseStartup<Startup>()
+                .ConfigureAppConfiguration((hostingContext, config) => {
+                    config.AddPineBlogConfiguration(reloadOnChange: true);
+                })
                 .ConfigureLogging((hostingContext, builder) =>
                 {
                     builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));

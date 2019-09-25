@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using System;
 using Opw.PineBlog.Files.Azure;
 using Opw.PineBlog.Feeds;
+using Opw.PineBlog.Blogs;
 
 namespace Opw.PineBlog
 {
@@ -47,6 +48,8 @@ namespace Opw.PineBlog
             services.AddTransient<IValidator<GetPostByIdQuery>, GetPostByIdQueryValidator>();
 
             services.AddTransient<IValidator<GetSyndicationFeedQuery>, GetSyndicationFeedQueryValidator>();
+
+            services.AddTransient<IValidator<UpdateBlogSettingsCommand>, UpdateBlogSettingsCommandValidator>();
 
             services.AddTransient<IUploadFileCommandFactory, UploadFileCommandFactory>();
             services.AddTransient<IGetPagedFileListQueryFactory, GetPagedFileListQueryFactory>();
