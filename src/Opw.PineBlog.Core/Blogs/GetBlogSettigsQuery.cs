@@ -28,6 +28,7 @@ namespace Opw.PineBlog.Blogs
             /// </summary>
             /// <param name="context">The blog entity context.</param>
             /// <param name="fileUrlHelper">File URL helper.</param>
+            /// <param name="blogOptions">Blog options.</param>
             public Handler(IBlogEntityDbContext context, FileUrlHelper fileUrlHelper, IOptionsSnapshot<PineBlogOptions> blogOptions)
             {
                 _context = context;
