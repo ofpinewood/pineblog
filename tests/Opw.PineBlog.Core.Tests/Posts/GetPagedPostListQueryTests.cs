@@ -53,6 +53,15 @@ namespace Opw.PineBlog.Posts
         }
 
         [Fact]
+        public async Task Handler_Should_ReturnPostListModel_WithBlogCoverUrlFormatReplaced()
+        {
+            var result = await Mediator.Send(new GetPagedPostListQuery());
+
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Blog.CoverUrl.Should().Be("http://127.0.0.1:10000/devstoreaccount1/pineblog-tests/blog/cover-image.png");
+        }
+
+        [Fact]
         public async Task Handler_Should_ReturnPostListModel_WithPostListTypeBlog()
         {
             var result = await Mediator.Send(new GetPagedPostListQuery());
