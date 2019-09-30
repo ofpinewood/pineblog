@@ -15,7 +15,7 @@
         <dependencies>
             <group targetFramework=".NETStandard2.0">
                 <!--<dependency id="Opw.PineBlog.Abstractions" version="1.0.0" exclude="Build,Analyzers" />-->
-                <dependency id="FluentValidation" version="8.4.0" exclude="Build,Analyzers" />
+                <dependency id="FluentValidation" version="8.5.0" exclude="Build,Analyzers" />
                 <dependency id="Markdig" version="0.17.1" exclude="Build,Analyzers" />
                 <dependency id="MediatR" version="7.0.0" exclude="Build,Analyzers" />
                 <dependency id="MediatR.Extensions.Microsoft.DependencyInjection" version="7.0.0" exclude="Build,Analyzers" />
@@ -31,7 +31,7 @@
                 <!--<dependency id="FluentValidation" version="8.4.0" exclude="Build,Analyzers" />-->
                 <!--<dependency id="MediatR" version="7.0.0" exclude="Build,Analyzers" />-->
                 <dependency id="Newtonsoft.Json" version="12.0.2" exclude="Build,Analyzers" />
-                <dependency id="Opw.HttpExceptions" version="2.2.0" exclude="Build,Analyzers" />
+                <dependency id="Opw.HttpExceptions" version="2.3.0" exclude="Build,Analyzers" />
                 <dependency id="System.ComponentModel.Annotations" version="4.5.0" exclude="Build,Analyzers" />
 
                 <!-- Opw.EntityFrameworkCore dependencies -->
