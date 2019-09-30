@@ -47,3 +47,15 @@ The rest of the properties are optional and will be set with default values if y
     }
 }
 ```
+
+#### Blog Settings ConfigurationSource
+To be able to update the blog settings from the admin pages, you need to add the PineBlog `IConfigurationSource`s to the
+`IConfigurationBuilder` in the `Program.cs`. Add `config.AddPineBlogConfiguration(reloadOnChange: true);` to `ConfigureAppConfiguration(..)`.
+
+``` csharp
+WebHost.CreateDefaultBuilder(args)
+    .UseStartup<Startup>()
+    .ConfigureAppConfiguration((hostingContext, config) => {
+        config.AddPineBlogConfiguration(reloadOnChange: true);
+    });
+```
