@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Opw.PineBlog.Entities;
+using Opw.PineBlog.Files;
 using Opw.PineBlog.Models;
 using System;
 using System.Collections.Generic;
@@ -45,6 +46,7 @@ namespace Opw.PineBlog.Posts
             private readonly IOptionsSnapshot<PineBlogOptions> _blogOptions;
             private readonly IBlogEntityDbContext _context;
             private readonly PostUrlHelper _postUrlHelper;
+            private readonly FileUrlHelper _fileUrlHelper;
 
             /// <summary>
             /// Implementation of GetPagedPostListQuery.Handler.
@@ -52,11 +54,13 @@ namespace Opw.PineBlog.Posts
             /// <param name="context">The blog entity context.</param>
             /// <param name="blogOptions">The blog options.</param>
             /// <param name="postUrlHelper">Post URL helper.</param>
-            public Handler(IBlogEntityDbContext context, IOptionsSnapshot<PineBlogOptions> blogOptions, PostUrlHelper postUrlHelper)
+            /// <param name="fileUrlHelper">File URL helper.</param>
+            public Handler(IBlogEntityDbContext context, IOptionsSnapshot<PineBlogOptions> blogOptions, PostUrlHelper postUrlHelper, FileUrlHelper fileUrlHelper)
             {
                 _blogOptions = blogOptions;
                 _context = context;
                 _postUrlHelper = postUrlHelper;
+                _fileUrlHelper = fileUrlHelper;
             }
 
             /// <summary>
@@ -91,6 +95,8 @@ namespace Opw.PineBlog.Posts
                     Posts = posts,
                     Pager = pager
                 };
+
+                model.Blog.CoverUrl = _fileUrlHelper.ReplaceUrlFormatWithBaseUrl(model.Blog.CoverUrl);
 
                 if (!string.IsNullOrWhiteSpace(request.Category))
                 {
