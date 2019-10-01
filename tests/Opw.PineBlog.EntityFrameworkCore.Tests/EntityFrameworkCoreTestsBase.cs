@@ -1,21 +1,16 @@
-using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Opw.PineBlog.EntityFrameworkCore;
-using Opw.PineBlog.Posts;
 using System;
 
-namespace Opw.PineBlog
+namespace Opw.PineBlog.EntityFrameworkCore
 {
-    public abstract class MediatRTestsBase
+    public abstract class EntityFrameworkCoreTestsBase
     {
         protected readonly IServiceCollection Services;
 
-        protected IMediator Mediator => ServiceProvider.GetRequiredService<IMediator>();
-
         protected IServiceProvider ServiceProvider => Services.BuildServiceProvider();
 
-        public MediatRTestsBase()
+        public EntityFrameworkCoreTestsBase()
         {
             var configuration = new ConfigurationBuilder()
                .AddJsonFile("appsettings.json")
@@ -26,7 +21,6 @@ namespace Opw.PineBlog
             configuration.GetSection("ConnectionStrings").GetSection("DefaultConnection").Value = $"Server=inMemory; Database=pineblog-tests-{DateTime.UtcNow.Ticks};";
 
             Services = new ServiceCollection();
-            Services.AddMediatR(typeof(AddPostCommand).Assembly);
             Services.AddPineBlogCore(configuration);
             Services.AddPineBlogEntityFrameworkCore(configuration);
         }
