@@ -33,8 +33,8 @@ namespace Opw.PineBlog.Sample
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            //    .AddCookie();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie();
 
             // TODO: combine with AddPineBlogRazorPages?
             services.AddPineBlog(Configuration);
@@ -65,7 +65,7 @@ namespace Opw.PineBlog.Sample
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            //app.UseAuthentication();
+            app.UseAuthentication();
 
             app.UseMvc();
         }
