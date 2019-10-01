@@ -69,6 +69,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Docs", "01 Docs", "{5D82
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opw.PineBlog.EntityFrameworkCore.Tests", "tests\Opw.PineBlog.EntityFrameworkCore.Tests\Opw.PineBlog.EntityFrameworkCore.Tests.csproj", "{09215473-245F-4484-B61C-7FBFC70E8C18}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -135,6 +137,10 @@ Global
 		{122A1302-2B62-485F-B80F-3E9210B0616F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{122A1302-2B62-485F-B80F-3E9210B0616F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{122A1302-2B62-485F-B80F-3E9210B0616F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09215473-245F-4484-B61C-7FBFC70E8C18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09215473-245F-4484-B61C-7FBFC70E8C18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09215473-245F-4484-B61C-7FBFC70E8C18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09215473-245F-4484-B61C-7FBFC70E8C18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -155,6 +161,7 @@ Global
 		{649BCA96-82AC-4B88-A617-3E14F6A29001} = {08132695-AE8D-4A34-B826-9A87148A9985}
 		{49EA4528-BA74-4FE9-862D-BC1448D50EF8} = {FCEC3C6B-0FC0-42CC-AEE8-EBBC570A67A0}
 		{122A1302-2B62-485F-B80F-3E9210B0616F} = {64F9A954-9830-45BA-B47F-D3589072E347}
+		{09215473-245F-4484-B61C-7FBFC70E8C18} = {F800AFAF-471F-41F4-8F17-0C4FAEC41F6A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DF018025-4A97-49F8-888F-C70856C1862A}
