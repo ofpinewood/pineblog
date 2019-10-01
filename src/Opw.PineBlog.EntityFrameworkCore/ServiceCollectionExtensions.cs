@@ -2,6 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Opw.EntityFrameworkCore;
+using System.Linq;
 
 namespace Opw.PineBlog.EntityFrameworkCore
 {
@@ -18,6 +19,14 @@ namespace Opw.PineBlog.EntityFrameworkCore
         /// <returns>The original services object.</returns>
         public static IServiceCollection AddPineBlogEntityFrameworkCore(this IServiceCollection services, IConfiguration configuration)
         {
+            if (((IConfigurationRoot)configuration).Providers.SingleOrDefault(p => p.GetType() == typeof(BlogSettingsConfigurationProvider)) == null)
+            {
+                throw new ConfigurationException("The PineBlog IConfigurationProvider(s) are not configured, please add \"AddPineBlogConfiguration\" to the \"ConfigureAppConfiguration\" on the \"IWebHostBuilder\".")
+                {
+                    HelpLink = "https://github.com/ofpinewood/pineblog/blob/master/docs/getting-started.md#blog-settings-configurationprovider"
+                };
+            }
+
             services.AddDbContextPool<IBlogEntityDbContext, BlogEntityDbContext>((provider, options) =>
             {
                 var blogOptions = provider.GetRequiredService<IOptions<PineBlogOptions>>();

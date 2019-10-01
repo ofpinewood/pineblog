@@ -71,7 +71,7 @@ namespace Opw.PineBlog
 
                 CloudStorageAccount storageAccount;
                 if (!CloudStorageAccount.TryParse(options.Value.AzureStorageConnectionString, out storageAccount))
-                    throw new ApplicationException("The PineBlogOptions.AzureStorageConnectionString is invalid.");
+                    throw new ConfigurationException("The PineBlogOptions.AzureStorageConnectionString is invalid.");
 
                 return storageAccount.CreateCloudBlobClient();
             });
