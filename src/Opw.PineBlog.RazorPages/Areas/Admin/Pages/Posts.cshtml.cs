@@ -26,7 +26,7 @@ namespace Opw.PineBlog.RazorPages.Areas.Admin.Pages
 
         public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken, [FromQuery]int page = 1)
         {
-            var result = await _mediator.Send(new GetPagedPostListQuery { Page = page, IncludeUnpublished = true, ItemsPerPage = 25 }, cancellationToken);
+            var result = await _mediator.Send(new GetPagedPostListQuery { Page = page, IncludeUnpublished = true, ItemsPerPage = 10 }, cancellationToken);
 
             Pager = result.Value.Pager;
             Posts = result.Value.Posts;

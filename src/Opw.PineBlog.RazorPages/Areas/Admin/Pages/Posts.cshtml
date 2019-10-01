@@ -29,4 +29,48 @@
             }
         </tbody>
     </table>
+    @if (Model.Pager != null && (Model.Pager.ShowOlder || Model.Pager.ShowNewer))
+    {
+        <nav>
+            <ul class="pagination justify-content-center">
+                @if (Model.Pager.ShowNewer)
+                {
+                    <li class="page-item">
+                        <a href="?@Model.Pager.LinkToNewer" title="Newer" class="page-link">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><span aria-hidden="true">&laquo;</span></a>
+                    </li>
+                }
+
+                @for (int i = 1; i <= Model.Pager.LastPage; i++)
+                {
+                    var activeClassName = (i == Model.Pager.CurrentPage) ? "active" : "";
+                    <li class="page-item @activeClassName">
+                        <a href="?page=@i" title="Newer" class="page-link">@i</a>
+                    </li>
+                }
+
+                @if (Model.Pager.ShowOlder)
+                {
+                    <li class="page-item">
+                        <a href="?@Model.Pager.LinkToOlder" title="Newer" class="page-link">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true"><span aria-hidden="true">&raquo;</span></a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
 </div>
