@@ -54,7 +54,7 @@ namespace Opw.PineBlog.Sample
 
             CreateBlogPostFromFile(author);
 
-            for(int i = 1; i < 4; i++)
+            for(int i = 1; i < 40; i++)
             {
                 var title = WaffleEngine.Title();
                 var post = new Post
