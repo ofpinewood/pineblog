@@ -103,6 +103,8 @@ For more information, please check the documentation.
 - [Customizing the layout](https://github.com/ofpinewood/pineblog/tree/master/docs/custom-layout.md)
 - [Features](https://github.com/ofpinewood/pineblog/tree/master/docs/features.md)
 
+For technical background information, check the blog: [ofpinewood.com](https://ofpinewood.com/Blog?category=pineblog).
+
 ## Samples
 The [sample project](https://github.com/ofpinewood/pineblog/tree/master/samples/Opw.PineBlog.Sample) contains an example web application with PineBlog.
 
