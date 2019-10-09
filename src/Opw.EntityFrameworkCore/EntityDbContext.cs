@@ -87,7 +87,7 @@ namespace Opw.EntityFrameworkCore
             foreach(var entry in ChangeTracker.Entries()
                 .Where(i => i.State == EntityState.Modified || i.State == EntityState.Added))
             {
-                EntityChangeWatcher.Instance.OnChanged(new EntityChangeEventArgs(entry));
+                EntityChangeObserver.Instance.OnChanged(new EntityChangeEventArgs(entry));
             }
         }
 

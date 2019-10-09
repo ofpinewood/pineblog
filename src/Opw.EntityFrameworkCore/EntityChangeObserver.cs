@@ -4,9 +4,9 @@ using System.Threading;
 namespace Opw.EntityFrameworkCore
 {
     /// <summary>
-    /// Watches for changes on entities.
+    /// Observer for changes on entities.
     /// </summary>
-    public class EntityChangeWatcher
+    public class EntityChangeObserver
     {
         /// <summary>
         /// An event fired when an entity that is tracked by the associated Microsoft.EntityFrameworkCore.DbContext
@@ -15,7 +15,7 @@ namespace Opw.EntityFrameworkCore
         public event EventHandler<EntityChangeEventArgs> Changed;
 
         /// <summary>
-        /// Let the EntityChangeWatcher know an entity has changed.
+        /// Let the EntityChangeObserver know an entity has changed.
         /// </summary>
         /// <param name="e">Event arguments for events relating to tracked Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntrys.</param>
         public void OnChanged(EntityChangeEventArgs e)
@@ -25,14 +25,14 @@ namespace Opw.EntityFrameworkCore
 
         #region singleton
 
-        private static readonly Lazy<EntityChangeWatcher> lazy = new Lazy<EntityChangeWatcher>(() => new EntityChangeWatcher());
+        private static readonly Lazy<EntityChangeObserver> lazy = new Lazy<EntityChangeObserver>(() => new EntityChangeObserver());
 
-        private EntityChangeWatcher() { }
+        private EntityChangeObserver() { }
 
         /// <summary>
-        /// Singleton instance of EntityChangeWatcher.
+        /// Singleton instance of EntityChangeObserver.
         /// </summary>
-        public static EntityChangeWatcher Instance => lazy.Value;
+        public static EntityChangeObserver Instance => lazy.Value;
 
         #endregion
     }
