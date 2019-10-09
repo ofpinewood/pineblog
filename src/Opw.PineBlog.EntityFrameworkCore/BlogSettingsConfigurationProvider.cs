@@ -23,10 +23,10 @@ namespace Opw.PineBlog.EntityFrameworkCore
             _source = source;
 
             if (_source.ReloadOnChange)
-                EntityChangeWatcher.Instance.Changed += EntityChangeWatcher_Changed;
+                EntityChangeObserver.Instance.Changed += EntityChangeObserver_Changed;
         }
 
-        private void EntityChangeWatcher_Changed(object sender, EntityChangeEventArgs e)
+        private void EntityChangeObserver_Changed(object sender, EntityChangeEventArgs e)
         {
             if (e.Entry.Entity.GetType() != typeof(BlogSettings))
                 return;
