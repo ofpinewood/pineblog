@@ -101,20 +101,18 @@ namespace Opw.PineBlog.RazorPages.Controllers
         /// <summary>
         /// Delete file(s).
         /// </summary>
-        /// <param name="fileNames">Selected file names.</param>
+        /// <param name="fileName">File name.</param>
         /// <param name="targetPath">Target path.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
-        [HttpPost("delete")]
-        public async Task<IActionResult> Delete(ICollection<string> fileNames, string targetPath, CancellationToken cancellationToken)
+        [HttpDelete("delete")]
+        public async Task<IActionResult> Delete(string fileName, string targetPath, CancellationToken cancellationToken)
         {
             try
             {
-                foreach (var fileName in fileNames)
-                {
-                    var result = await _mediator.Send(_deleteFileCommandFactory.Create(fileName, targetPath), cancellationToken);
-                    if (!result.IsSuccess)
-                        throw result.Exception;
-                }
+                var result = await _mediator.Send(_deleteFileCommandFactory.Create(fileName, targetPath), cancellationToken);
+                if (!result.IsSuccess)
+                    throw result.Exception;
+
                 return Ok("Deleted");
             }
             catch (Exception ex)

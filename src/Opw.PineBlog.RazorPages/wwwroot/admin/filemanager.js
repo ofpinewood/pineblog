@@ -76,21 +76,26 @@ var fileManager = function (dataService) {
     }
 
     function remove() {
-        loading();
+        //loading();
         var items = $('#fileManagerList input:checked');
         for (i = 0; i < items.length; i++) {
+            var index = items[i].id.substring(4);
+            var file = _files[index];
+
+            var url = 'admin/file/delete?targetPath=' + encodeURI(_directoryPath) + '&fileName=' + encodeURI(file.fileName);
+
             if (i + 1 < items.length) {
-                dataService.remove('admin/file/delete?targetPath=' + _directoryPath + '&fileName=' + items[i].id, emptyCallback, fail);
+                dataService.remove(url, emptyCallback, fail);
             }
             else {
-                dataService.remove('admin/file/delete?targetPath=' + _directoryPath + '&fileName=' + items[i].id, removeCallback, fail);
+                dataService.remove(url, removeCallback, fail);
             }
         }
     }
 
     function removeCallback(data) {
-        loaded();
-        toastr.success('Deleted');
+        //loaded();
+        //toastr.success('Deleted');
         load(1);
     }
 
@@ -122,9 +127,8 @@ var fileManager = function (dataService) {
             var tag = '<div class="col-md-4">' +
                 '	<div class="file" title="' + file.fileName + '">' +
                 '		<div class="file-image" onclick="fileManager.pick(' + index + '); return false"><img src="' + file.url + '" /></div>' +
-                '       <div class="file-name">' + file.fileName + '</div>' +
                 '		<label class="custom-control custom-checkbox file-name" title="' + file.fileName + '">' +
-                '			<input type="checkbox" id="file' + index + '" class="custom-control-input file-check" onchange="fileManager.check(this)">' +
+                '			<input type="checkbox" id="file' + index + '" class="custom-control-input file-check">' + // onchange="fileManager.check(this)">' +
                 '			<span class="custom-control-label">' + file.fileName + '</span>' +
                 '		</label>' +
                 '	</div>' +
@@ -144,15 +148,15 @@ var fileManager = function (dataService) {
 
         var pager = "";
 
-        if (pg.showOlder === true) {
-            pager += '<button type="button" class="btn btn-link" onclick="return fileManager.load(' + pg.older + ')"><i class="fa fa-chevron-left"></i></button>';
+        if (pg.showNewer === true) {
+            pager += '<button type="button" class="btn btn-link" onclick="return fileManager.load(' + pg.newer + ')"><i class="fa fa-chevron-left"></i></button>';
         }
         pager += '<span class="filemanager-pagination">' + first + '-' + last + ' out of ' + pg.total + '</span>';
-        if (pg.showNewer === true) {
-            pager += '<button type="button" class="btn btn-link" onclick="return fileManager.load(' + pg.newer + ')"><i class="fa fa-chevron-right"></i></button>';
+        if (pg.showOlder === true) {
+            pager += '<button type="button" class="btn btn-link" onclick="return fileManager.load(' + pg.older + ')"><i class="fa fa-chevron-right"></i></button>';
         }
 
-        $('#filePagination').append(pager);
+        $('#filePagination').html(pager);
         //showBtns();
     }
 

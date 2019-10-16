@@ -6,8 +6,8 @@
                     <input type="checkbox" id="checkAll" class="custom-control-input file-check">
                     <span class="custom-control-label"></span>
                 </label>*@
-                <button class="btn btn-primary" type="button" onclick="return fileManager.uploadClick()">Upload</button>
-                <button id="btnDelete" class="btn btn-outline-secondary btn-icon" type="button" data-placement="bottom" data-tooltip title="Delete" onclick="return fileManager.remove()"><i class="fa fa-trash"></i></button>
+                <button class="btn btn-primary" onclick="return fileManager.uploadClick()">Upload</button>
+                <button id="btnDelete" class="btn btn-outline-secondary btn-icon" title="Delete" onclick="return fileManager.remove()"><i class="fa fa-trash"></i></button>
                 @*<div class="loading loading-white loading-sm"><div class="loading-dot-1"></div><div class="loading-dot-2"></div><div class="loading-dot-3"></div></div>*@
                 @*<div class="dropdown ml-auto">
                     <button class="btn btn-outline-secondary btn-icon btn-rounded btn-sm" type="button" data-placement="bottom" data-tooltip title="Filters" id="filterFileManager" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-filter"></i></button>
