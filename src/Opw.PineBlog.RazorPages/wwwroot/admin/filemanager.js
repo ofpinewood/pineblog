@@ -75,24 +75,24 @@ var fileManager = function (dataService) {
         load(1);
     }
 
-    //function remove() {
-    //    loading();
-    //    var items = $('#fileManagerList input:checked');
-    //    for (i = 0; i < items.length; i++) {
-    //        if (i + 1 < items.length) {
-    //            dataService.remove('admin/assets/remove?url=' + items[i].id, emptyCallback, fail);
-    //        }
-    //        else {
-    //            dataService.remove('admin/assets/remove?url=' + items[i].id, removeCallback, fail);
-    //        }
-    //    }
-    //}
+    function remove() {
+        loading();
+        var items = $('#fileManagerList input:checked');
+        for (i = 0; i < items.length; i++) {
+            if (i + 1 < items.length) {
+                dataService.remove('admin/file/delete?targetPath=' + _directoryPath + '&fileName=' + items[i].id, emptyCallback, fail);
+            }
+            else {
+                dataService.remove('admin/file/delete?targetPath=' + _directoryPath + '&fileName=' + items[i].id, removeCallback, fail);
+            }
+        }
+    }
 
-    //function removeCallback(data) {
-    //    loaded();
-    //    toastr.success('Deleted');
-    //    load(1);
-    //}
+    function removeCallback(data) {
+        loaded();
+        toastr.success('Deleted');
+        load(1);
+    }
 
     function load(page) {
         $('#checkAll').prop('checked', false);
@@ -123,10 +123,10 @@ var fileManager = function (dataService) {
                 '	<div class="file" title="' + file.fileName + '">' +
                 '		<div class="file-image" onclick="fileManager.pick(' + index + '); return false"><img src="' + file.url + '" /></div>' +
                 '       <div class="file-name">' + file.fileName + '</div>' +
-                //'		<label class="custom-control custom-checkbox file-name" title="' + file.fileName + '">' +
-                //'			<input type="checkbox" id="file' + index + '" class="custom-control-input file-check" onchange="fileManager.check(this)">' +
-                //'			<span class="custom-control-label">' + file.fileName + '</span>' +
-                //'		</label>' +
+                '		<label class="custom-control custom-checkbox file-name" title="' + file.fileName + '">' +
+                '			<input type="checkbox" id="file' + index + '" class="custom-control-input file-check" onchange="fileManager.check(this)">' +
+                '			<span class="custom-control-label">' + file.fileName + '</span>' +
+                '		</label>' +
                 '	</div>' +
                 '</div>';
             $("#fileManagerList").append(tag);
@@ -164,7 +164,7 @@ var fileManager = function (dataService) {
     //    $('.loading').hide();
     //}
 
-    //function emptyCallback(data) { }
+    function emptyCallback(data) { }
 
     //function check(cbx) {
     //    if (!cbx.checked) {
@@ -193,7 +193,7 @@ var fileManager = function (dataService) {
         pick: pick,
         uploadClick: uploadClick,
         uploadSubmit: uploadSubmit,
-        //remove: remove,
+        remove: remove,
         //check: check,
         //showBtns: showBtns
     };

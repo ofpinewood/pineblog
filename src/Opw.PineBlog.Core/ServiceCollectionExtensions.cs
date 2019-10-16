@@ -52,6 +52,7 @@ namespace Opw.PineBlog
             services.AddTransient<IValidator<UpdateBlogSettingsCommand>, UpdateBlogSettingsCommandValidator>();
 
             services.AddTransient<IUploadFileCommandFactory, UploadFileCommandFactory>();
+            services.AddTransient<IDeleteFileCommandFactory, DeleteFileCommandFactory>();
             services.AddTransient<IGetPagedFileListQueryFactory, GetPagedFileListQueryFactory>();
 
             services.AddTransient<FileUrlHelper>();

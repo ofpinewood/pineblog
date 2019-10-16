@@ -54,9 +54,12 @@ namespace Opw.PineBlog.Sample
 
             CreateBlogPostFromFile(author);
 
-            for(int i = 1; i < 40; i++)
+            for (int i = 1; i < 40; i++)
             {
                 var title = WaffleEngine.Title();
+                if (title.Length > 160)
+                    title = title.Substring(0, 160);
+
                 var post = new Post
                 {
                     AuthorId = author.Id,
@@ -65,6 +68,9 @@ namespace Opw.PineBlog.Sample
                     Description = WaffleEngine.Text(1, false),
                     Published = DateTime.UtcNow.AddDays(-i * 10)
                 };
+
+                if (post.Description.Length > 450)
+                    post.Description = post.Description.Substring(0, 450);
 
                 var content = new StringBuilder();
                 content.Append($"## {WaffleEngine.Text(1, true)}");
@@ -94,7 +100,7 @@ namespace Opw.PineBlog.Sample
                     post.Categories = "yaml,waffle,random";
                 }
 
-                _dbContext.Posts.Add(post);
+                _dbContext.Posts.Add(post);                
             }
 
             _dbContext.SaveChanges();
