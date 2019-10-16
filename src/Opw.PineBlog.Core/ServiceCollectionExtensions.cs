@@ -77,6 +77,7 @@ namespace Opw.PineBlog
             });
 
             services.AddTransient<IValidator<UploadAzureBlobCommand>, UploadAzureBlobCommandValidator>();
+            services.AddTransient<IValidator<DeleteAzureBlobCommand>, DeleteAzureBlobCommandValidator>();
 
             return services;
         }
