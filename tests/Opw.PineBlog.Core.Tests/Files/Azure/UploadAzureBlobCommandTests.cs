@@ -24,7 +24,7 @@ namespace Opw.PineBlog.Files.Azure
 
             _formFileMock = new Mock<IFormFile>();
             _formFileMock.Setup(f => f.Name).Returns("CoverImage");
-            _formFileMock.Setup(f => f.FileName).Returns("filename.txt");
+            _formFileMock.Setup(f => f.FileName).Returns("file name.txt");
             _formFileMock.Setup(f => f.Length).Returns(fileStream.Length);
             _formFileMock.Setup(f => f.OpenReadStream()).Returns(fileStream);
         }
@@ -39,13 +39,13 @@ namespace Opw.PineBlog.Files.Azure
             ex.Errors.Single(e => e.Key.Equals(nameof(UploadAzureBlobCommand.AllowedFileType))).Should().NotBeNull();
         }
 
-        [Fact(Skip = "Integration Test; requires Azure Storage Emulator.")]
+        [Fact]//(Skip = "Integration Test; requires Azure Storage Emulator.")]
         public async Task Handler_Should_ReturnTrue()
         {
             var result = await Mediator.Send(new UploadAzureBlobCommand { File = _formFileMock.Object, TargetPath = "files", AllowedFileType = FileType.All });
 
             result.IsSuccess.Should().BeTrue();
-            result.Value.Should().EndWith("files/filename.txt");
+            result.Value.Should().EndWith("files/file-name.txt");
         }
 
         [Fact]

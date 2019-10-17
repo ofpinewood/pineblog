@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 using FluentAssertions;
 
@@ -8,6 +5,14 @@ namespace Opw
 {
     public class StringExtensionsTests
     {
+        [Fact]
+        public void ToUrlSafeFileName_Should_ReturnUrlSafeFileName()
+        {
+            var result = "creme brûlée.txt.jpg".ToUrlSafeFileName();
+
+            result.Should().Be("creme-bruleetxt.jpg");
+        }
+
         [Fact]
         public void ToSlug_Should_ReturnSlug_WithoutAccents()
         {

@@ -51,6 +51,8 @@ namespace Opw.PineBlog.Files.Azure
             {
                 // Use Path.GetFileName to obtain the file name, which will strip any path information passed as part of the FileName property.
                 var fileName = Path.GetFileName(request.File.FileName);
+                // Make the filename url safe
+                fileName = fileName.ToUrlSafeFileName();
 
                 var stream = new MemoryStream();
                 var result = await ProcessFormFileAsync(request.File, fileName, stream);
