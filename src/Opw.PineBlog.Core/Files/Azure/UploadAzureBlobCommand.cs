@@ -1,4 +1,3 @@
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
@@ -30,12 +29,12 @@ namespace Opw.PineBlog.Files.Azure
         /// <summary>
         /// Handler for the UploadAzureBlobCommand.
         /// </summary>
-        public class Handler : IRequestHandler<UploadAzureBlobCommand, Result<string>>
+        public class Handler : IUploadFileCommandHandler<UploadAzureBlobCommand>
         {
             private readonly AzureBlobHelper _azureBlobHelper;
 
             /// <summary>
-            /// Implementation of AddPostCommand.Handler.
+            /// Implementation of UploadAzureBlobCommand.Handler.
             /// </summary>
             /// <param name="azureBlobHelper">Azure blob helper.</param>
             public Handler(AzureBlobHelper azureBlobHelper)
@@ -52,6 +51,8 @@ namespace Opw.PineBlog.Files.Azure
             {
                 // Use Path.GetFileName to obtain the file name, which will strip any path information passed as part of the FileName property.
                 var fileName = Path.GetFileName(request.File.FileName);
+                // Make the filename url safe
+                fileName = fileName.ToUrlSafeFileName();
 
                 var stream = new MemoryStream();
                 var result = await ProcessFormFileAsync(request.File, fileName, stream);

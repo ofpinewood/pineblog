@@ -52,6 +52,7 @@ namespace Opw.PineBlog
             services.AddTransient<IValidator<UpdateBlogSettingsCommand>, UpdateBlogSettingsCommandValidator>();
 
             services.AddTransient<IUploadFileCommandFactory, UploadFileCommandFactory>();
+            services.AddTransient<IDeleteFileCommandFactory, DeleteFileCommandFactory>();
             services.AddTransient<IGetPagedFileListQueryFactory, GetPagedFileListQueryFactory>();
 
             services.AddTransient<FileUrlHelper>();
@@ -77,6 +78,7 @@ namespace Opw.PineBlog
             });
 
             services.AddTransient<IValidator<UploadAzureBlobCommand>, UploadAzureBlobCommandValidator>();
+            services.AddTransient<IValidator<DeleteAzureBlobCommand>, DeleteAzureBlobCommandValidator>();
 
             return services;
         }

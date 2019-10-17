@@ -6,6 +6,15 @@ namespace Opw
 {
     public static class StringExtensions
     {
+        public static string ToUrlSafeFileName(this string fileName)
+        {
+            var extension = fileName.Substring(fileName.LastIndexOf('.')).Trim('.');
+            var name = fileName.Substring(0, fileName.LastIndexOf('.'));
+
+            name = name.ToSlug();
+            return $"{name}.{extension}";
+        }
+
         public static string ToSlug(this string s)
         {
             string str = s.RemoveDiacritics();

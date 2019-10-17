@@ -45,7 +45,8 @@ namespace Opw.PineBlog.EntityFrameworkCore
 
             using (var context = new BlogEntityDbContext(builder.Options))
             {
-                context.Database.EnsureCreated();
+                if (!context.Database.CanConnect())
+                    return;
 
                 var settings = context.BlogSettings.SingleOrDefault();
                 if (settings == null) return;

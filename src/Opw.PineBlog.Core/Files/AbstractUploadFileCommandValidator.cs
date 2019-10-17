@@ -8,7 +8,7 @@ namespace Opw.PineBlog.Files
     /// Base class for validators for UploadFileCommand requests.
     /// </summary>
     public abstract class AbstractUploadFileCommandValidator<TRequest> : AbstractValidator<TRequest>
-        where TRequest : IUploadFileCommand
+    where TRequest : IUploadFileCommand
     {
         /// <summary>
         /// Implementation of AbstractUploadFileCommandValidator.

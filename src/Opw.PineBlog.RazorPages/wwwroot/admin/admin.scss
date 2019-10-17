@@ -182,6 +182,10 @@
     }
 
     .fileManager {
+        .modal-header .btn {
+            margin-right: .2rem
+        }
+
         .file {
             .file-image {
                 position: relative;
@@ -210,7 +214,7 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                padding: .375rem; // .375rem .375rem 1.75rem;
+                padding: .375rem .375rem .375rem 1.75rem;
                 border: 1px solid white;
                 border-top: none;
                 margin: 0;
