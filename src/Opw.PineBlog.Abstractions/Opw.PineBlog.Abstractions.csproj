@@ -7,8 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Opw.EntityFrameworkCore\Opw.EntityFrameworkCore.csproj" />
-        <ProjectReference Include="..\Opw\Opw.csproj" />
+      <PackageReference Include="Opw.EntityFrameworkCore" Version="1.0.1" />
     </ItemGroup>
 
 </Project>
