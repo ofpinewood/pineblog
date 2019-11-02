@@ -25,7 +25,7 @@
                 <dependency id="System.ServiceModel.Syndication" version="4.5.0" exclude="Build,Analyzers" />
 
                 <!-- Opw.PineBlog.Abstractions -->
-                <dependency id="Opw.EntityFrameworkCore" Version="1.0.1" exclude="Build,Analyzers" />
+                <dependency id="Opw.EntityFrameworkCore" version="1.0.1" exclude="Build,Analyzers" />
             </group>
         </dependencies>
     </metadata>
