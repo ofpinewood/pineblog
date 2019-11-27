@@ -39,7 +39,7 @@ namespace Opw.PineBlog.Sample
             // TODO: combine with AddPineBlogRazorPages?
             services.AddPineBlog(Configuration);
 
-            services.AddMvc()
+            services.AddRazorPages()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddPineBlogRazorPages();
         }
