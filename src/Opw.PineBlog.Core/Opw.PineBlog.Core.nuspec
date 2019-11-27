@@ -13,7 +13,7 @@
         <tags>blog core</tags>
         <repository type="git" url="https://github.com/ofpinewood/pineblog" />
         <dependencies>
-            <group targetFramework=".NETStandard2.0">
+            <group targetFramework=".NETStandard2.1">
                 <!-- Opw.PineBlog.Core -->
                 <dependency id="Markdig" version="0.18.0" exclude="Build,Analyzers" />
                 <dependency id="MediatR.Extensions.Microsoft.DependencyInjection" version="7.0.0" exclude="Build,Analyzers" />
@@ -25,12 +25,12 @@
                 <dependency id="System.ServiceModel.Syndication" version="4.5.0" exclude="Build,Analyzers" />
 
                 <!-- Opw.PineBlog.Abstractions -->
-                <dependency id="Opw.EntityFrameworkCore" version="1.0.1" exclude="Build,Analyzers" />
+                <dependency id="Opw.EntityFrameworkCore" version="1.1.0" exclude="Build,Analyzers" />
             </group>
         </dependencies>
     </metadata>
     <files>
-        <file src="bin\Release\netstandard2.0\*.dll" target="lib\netstandard2.0\"/>
-        <file src="bin\Release\netstandard2.0\*.xml" target="lib\netstandard2.0\"/>
+        <file src="bin\Release\netstandard2.1\*.dll" target="lib\netstandard2.1\"/>
+        <file src="bin\Release\netstandard2.1\*.xml" target="lib\netstandard2.1\"/>
     </files>
 </package>
