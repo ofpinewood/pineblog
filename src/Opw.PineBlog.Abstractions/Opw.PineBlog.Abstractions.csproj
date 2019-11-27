@@ -1,13 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <RootNamespace>Opw.PineBlog</RootNamespace>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Opw.EntityFrameworkCore" Version="1.0.1" />
+      <PackageReference Include="Opw.EntityFrameworkCore" Version="1.1.0" />
     </ItemGroup>
 
 </Project>

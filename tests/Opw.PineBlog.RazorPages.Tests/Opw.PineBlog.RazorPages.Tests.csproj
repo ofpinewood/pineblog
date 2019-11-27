@@ -1,30 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>Opw.PineBlog</RootNamespace>
+  </PropertyGroup>
 
-        <IsPackable>false</IsPackable>
+  <ItemGroup>
+    <PackageReference Include="coverlet.msbuild" Version="2.7.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" Version="5.9.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+    <PackageReference Include="Moq" Version="4.13.1" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 
-        <RootNamespace>Opw.PineBlog</RootNamespace>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="coverlet.msbuild" Version="2.7.0">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="FluentAssertions" Version="5.9.0" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />
-        <PackageReference Include="Moq" Version="4.13.0" />
-        <PackageReference Include="xunit" Version="2.4.1" />
-        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\src\Opw.PineBlog.RazorPages\Opw.PineBlog.RazorPages.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Opw.PineBlog.RazorPages\Opw.PineBlog.RazorPages.csproj" />
+  </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Net;
@@ -11,14 +11,14 @@ namespace Opw.PineBlog.Sample.Middleware
     public class StopApplicationMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly IApplicationLifetime _applicationLifetime;
+        private readonly IHostApplicationLifetime _applicationLifetime;
         private readonly ILogger<StopApplicationMiddleware> _logger;
         private readonly string _restartPath;
 
         public StopApplicationMiddleware(
             RequestDelegate next,
             IConfiguration configuration,
-            IApplicationLifetime applicationLifetime,
+            IHostApplicationLifetime applicationLifetime,
             ILogger<StopApplicationMiddleware> logger)
         {
             _next = next;

@@ -16,7 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 Solution Files", "00 Sol
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 Tests", "02 Tests", "{39C10DDD-2F23-4F19-BBB1-CF31D9850002}"
 	ProjectSection(SolutionItems) = preProject
-		tests\test-netcoreapp2_2.ps1 = tests\test-netcoreapp2_2.ps1
+		tests\test-netcoreapp3_0.ps1 = tests\test-netcoreapp3_0.ps1
+		tests\test-netcoreapp3_1.ps1 = tests\test-netcoreapp3_1.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "10 Samples", "10 Samples", "{5FEBABA0-73A1-464A-8715-19F76F742B22}"
@@ -30,8 +31,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.Core", "src\Opw.PineBlog.Core\Opw.PineBlog.Core.csproj", "{871343FA-6920-43B6-893F-B3127C04017E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.EntityFrameworkCore", "src\Opw.PineBlog.EntityFrameworkCore\Opw.PineBlog.EntityFrameworkCore.csproj", "{6F3FF55D-3189-4895-BA0A-9E0FEBB63339}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "90 Common", "90 Common", "{D524BD25-46D1-410E-A4AA-338422252720}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.Abstractions.Tests", "tests\Opw.PineBlog.Abstractions.Tests\Opw.PineBlog.Abstractions.Tests.csproj", "{F47B0200-E3C4-4517-8C98-062DC246E8F6}"
 EndProject

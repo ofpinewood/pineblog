@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Opw.PineBlog.RazorPages;
 using Opw.PineBlog.Sample.Middleware;
-using Opw.PineBlog.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 
 namespace Opw.PineBlog.Sample
 {
@@ -39,20 +39,20 @@ namespace Opw.PineBlog.Sample
             // TODO: combine with AddPineBlogRazorPages?
             services.AddPineBlog(Configuration);
 
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+            services.AddRazorPages()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddPineBlogRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseMiddleware<StopApplicationMiddleware>();
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                //TODO: app.UseDatabaseErrorPage();
             }
             else
             {
@@ -65,9 +65,10 @@ namespace Opw.PineBlog.Sample
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            app.UseRouting();
             app.UseAuthentication();
-
-            app.UseMvc();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints => endpoints.MapRazorPages());
         }
     }
 }

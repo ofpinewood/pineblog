@@ -12,12 +12,12 @@ namespace Opw.PineBlog.RazorPages
     /// </summary>
     public class StaticFilePostConfigureOptions : IPostConfigureOptions<StaticFileOptions>
     {
-        private readonly IHostingEnvironment _environment;
+        private readonly IWebHostEnvironment _environment;
 
         /// <summary>
         /// Initializes the StaticFilePostConfigureOptions.
         /// </summary>
-        public StaticFilePostConfigureOptions(IHostingEnvironment environment)
+        public StaticFilePostConfigureOptions(IWebHostEnvironment environment)
         {
             _environment = environment;
         }
