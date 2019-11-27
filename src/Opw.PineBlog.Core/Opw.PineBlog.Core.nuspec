@@ -15,12 +15,12 @@
         <dependencies>
             <group targetFramework=".NETStandard2.0">
                 <!-- Opw.PineBlog.Core -->
-                <dependency id="Markdig" version="0.17.1" exclude="Build,Analyzers" />
+                <dependency id="Markdig" version="0.18.0" exclude="Build,Analyzers" />
                 <dependency id="MediatR.Extensions.Microsoft.DependencyInjection" version="7.0.0" exclude="Build,Analyzers" />
                 <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="2.2.0" exclude="Build,Analyzers" />
-                <dependency id="Microsoft.Extensions.Options" version="2.2.0" exclude="Build,Analyzers" />
-                <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="2.2.0" exclude="Build,Analyzers" />
-                <dependency id="MimeMapping" version="1.0.1.15" exclude="Build,Analyzers" />
+                <dependency id="Microsoft.Extensions.Options" version="3.0.0" exclude="Build,Analyzers" />
+                <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="3.0.0" exclude="Build,Analyzers" />
+                <dependency id="MimeMapping" version="1.0.1.17" exclude="Build,Analyzers" />
                 <dependency id="Microsoft.Azure.Storage.Blob" version="11.0.0" exclude="Build,Analyzers" />
                 <dependency id="System.ServiceModel.Syndication" version="4.5.0" exclude="Build,Analyzers" />
 

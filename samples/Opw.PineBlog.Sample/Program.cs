@@ -33,7 +33,6 @@ namespace Opw.PineBlog.Sample
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseApplicationInsights()
                 .UseStartup<Startup>()
                 .ConfigureAppConfiguration((hostingContext, config) => {
                     config.AddPineBlogConfiguration(reloadOnChange: true);

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Opw.PineBlog.RazorPages;
 using Opw.PineBlog.Sample.Middleware;
-using Opw.PineBlog.EntityFrameworkCore;
 
 namespace Opw.PineBlog.Sample
 {
@@ -40,7 +39,7 @@ namespace Opw.PineBlog.Sample
             services.AddPineBlog(Configuration);
 
             services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddPineBlogRazorPages();
         }
 
@@ -65,9 +64,10 @@ namespace Opw.PineBlog.Sample
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            app.UseRouting();
             app.UseAuthentication();
-
-            app.UseMvc();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
         }
     }
 }
