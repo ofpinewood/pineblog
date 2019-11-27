@@ -68,7 +68,7 @@ namespace Opw.PineBlog.Sample
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints => endpoints.MapDefaultControllerRoute());
+            app.UseEndpoints(endpoints => endpoints.MapRazorPages());
         }
     }
 }
