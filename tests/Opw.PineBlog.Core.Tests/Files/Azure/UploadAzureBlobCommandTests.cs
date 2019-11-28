@@ -39,7 +39,7 @@ namespace Opw.PineBlog.Files.Azure
             ex.Errors.Single(e => e.Key.Equals(nameof(UploadAzureBlobCommand.AllowedFileType))).Should().NotBeNull();
         }
 
-        [Fact(Skip = "Integration Test; requires Azure Storage Emulator.")]
+        [Fact(Skip = Constants.SkipAzureStorageEmulatorTests)]
         public async Task Handler_Should_ReturnTrue()
         {
             var result = await Mediator.Send(new UploadAzureBlobCommand { File = _formFileMock.Object, TargetPath = "files", AllowedFileType = FileType.All });

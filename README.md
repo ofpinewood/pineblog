@@ -57,8 +57,21 @@ public void ConfigureServices(IServiceCollection services)
     ...
     services.AddPineBlog(Configuration);
     
-    services.AddMvc().AddPineBlogRazorPages();
+    services.AddRazorPages().AddPineBlogRazorPages();
     // or services.AddMvcCore().AddPineBlogRazorPages();
+    // or services.AddMvc().AddPineBlogRazorPages();
+    ...
+}
+
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+{
+    ...
+    app.UseEndpoints(endpoints =>
+    {
+        // make sure to add the endpoint mapping for both RazorPages and Controllers
+        endpoints.MapRazorPages();
+        endpoints.MapControllers();
+    });
     ...
 }
 ```
