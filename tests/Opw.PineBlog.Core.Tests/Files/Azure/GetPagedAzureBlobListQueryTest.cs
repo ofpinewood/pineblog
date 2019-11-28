@@ -10,7 +10,7 @@ namespace Opw.PineBlog.Files.Azure
 {
     public class GetPagedAzureBlobListQueryTest : MediatRTestsBase
     {
-        [Fact(Skip = "Integration Test; requires Azure Storage Emulator.")]
+        [Fact(Skip = Constants.SkipAzureStorageEmulatorTests)]
         public async Task Handler_Should_ReturnFirstPageWith5Files()
         {
             var directory = $"{DateTime.UtcNow.Ticks}-{Guid.NewGuid()}";
@@ -28,7 +28,7 @@ namespace Opw.PineBlog.Files.Azure
             result.Value.Pager.Total.Should().Be(9);
         }
 
-        [Fact(Skip = "Integration Test; requires Azure Storage Emulator.")]
+        [Fact(Skip = Constants.SkipAzureStorageEmulatorTests)]
         public async Task Handler_Should_ReturnSecondPageWith4Files()
         {
             var directory = $"{DateTime.UtcNow.Ticks}-{Guid.NewGuid()}";
@@ -46,7 +46,7 @@ namespace Opw.PineBlog.Files.Azure
             result.Value.Pager.Total.Should().Be(9);
         }
 
-        [Fact(Skip = "Integration Test; requires Azure Storage Emulator.")]
+        [Fact(Skip = Constants.SkipAzureStorageEmulatorTests)]
         public async Task Handler_Should_Return3Files_ForFileTypeImage()
         {
             var directory = $"{DateTime.UtcNow.Ticks}-{Guid.NewGuid()}";

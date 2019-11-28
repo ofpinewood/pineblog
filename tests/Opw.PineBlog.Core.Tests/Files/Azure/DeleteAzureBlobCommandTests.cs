@@ -38,7 +38,7 @@ namespace Opw.PineBlog.Files.Azure
             ex.Errors.Single(e => e.Key.Equals(nameof(DeleteAzureBlobCommand.FileName))).Should().NotBeNull();
         }
 
-        [Fact(Skip = "Integration Test; requires Azure Storage Emulator.")]
+        [Fact(Skip = Constants.SkipAzureStorageEmulatorTests)]
         public async Task Handler_Should_ReturnTrue()
         {
             await Mediator.Send(new UploadAzureBlobCommand { File = _formFileMock.Object, TargetPath = "files", AllowedFileType = FileType.All });
@@ -48,7 +48,7 @@ namespace Opw.PineBlog.Files.Azure
             result.IsSuccess.Should().BeTrue();
         }
 
-        [Fact(Skip = "Integration Test; requires Azure Storage Emulator.")]
+        [Fact(Skip = Constants.SkipAzureStorageEmulatorTests)]
         public async Task Handler_Should_ReturnFalse_WhenFileDoesNotExist()
         {
             var result = await Mediator.Send(new DeleteAzureBlobCommand { FileName = "invalid-filename.txt", TargetPath = "files" });

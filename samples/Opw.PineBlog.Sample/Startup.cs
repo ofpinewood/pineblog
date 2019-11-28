@@ -39,7 +39,8 @@ namespace Opw.PineBlog.Sample
             // TODO: combine with AddPineBlogRazorPages?
             services.AddPineBlog(Configuration);
 
-            services.AddRazorPages()
+            services
+                .AddRazorPages()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddPineBlogRazorPages();
         }
@@ -52,7 +53,6 @@ namespace Opw.PineBlog.Sample
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                //TODO: app.UseDatabaseErrorPage();
             }
             else
             {
@@ -68,7 +68,11 @@ namespace Opw.PineBlog.Sample
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints => endpoints.MapRazorPages());
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapRazorPages();
+                endpoints.MapControllers();
+            });
         }
     }
 }
