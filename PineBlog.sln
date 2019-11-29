@@ -58,7 +58,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Docs", "01 Docs", "{5D82
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.EntityFrameworkCore.Tests", "tests\Opw.PineBlog.EntityFrameworkCore.Tests\Opw.PineBlog.EntityFrameworkCore.Tests.csproj", "{09215473-245F-4484-B61C-7FBFC70E8C18}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opw.PineBlog.Sample.Tests", "tests\Opw.PineBlog.Sample.Tests\Opw.PineBlog.Sample.Tests.csproj", "{FD61CF8C-B52E-4692-9B93-8D48255FD3D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.Sample.Tests", "tests\Opw.PineBlog.Sample.Tests\Opw.PineBlog.Sample.Tests.csproj", "{FD61CF8C-B52E-4692-9B93-8D48255FD3D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opw.AspNetCore.Testing", "src\Opw.AspNetCore.Testing\Opw.AspNetCore.Testing.csproj", "{42B13F5C-7803-41B9-94A6-296599F67360}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -110,6 +112,10 @@ Global
 		{FD61CF8C-B52E-4692-9B93-8D48255FD3D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD61CF8C-B52E-4692-9B93-8D48255FD3D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD61CF8C-B52E-4692-9B93-8D48255FD3D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42B13F5C-7803-41B9-94A6-296599F67360}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42B13F5C-7803-41B9-94A6-296599F67360}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42B13F5C-7803-41B9-94A6-296599F67360}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42B13F5C-7803-41B9-94A6-296599F67360}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

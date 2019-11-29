@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\samples\Opw.PineBlog.Sample\Opw.PineBlog.Sample.csproj" />
+    <ProjectReference Include="..\..\src\Opw.AspNetCore.Testing\Opw.AspNetCore.Testing.csproj" />
   </ItemGroup>
 
   <ItemGroup>
