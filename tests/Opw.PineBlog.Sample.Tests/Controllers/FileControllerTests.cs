@@ -7,6 +7,7 @@ using Opw.PineBlog.Models;
 using FluentAssertions;
 using Opw.AspNetCore.Testing.Net.Http;
 using System.Reflection;
+using System.Net;
 
 namespace Opw.PineBlog.Sample.Controllers
 {
@@ -32,7 +33,7 @@ namespace Opw.PineBlog.Sample.Controllers
         }
 
         [Fact]
-        public async Task Get_Should_BeFound()
+        public async Task Get_Should_Return1File()
         {
             await _client.EnsureAuthenticationCookieAsync(_authenticationContext);
 
@@ -45,10 +46,10 @@ namespace Opw.PineBlog.Sample.Controllers
             result.Files.Should().HaveCount(1);
         }
 
-        [Theory]
-        [InlineData("Opw.PineBlog.Sample.Resources.large-image.jpg")]
-        public async Task Upload_Should_UploadFile(string file)
+        [Fact]
+        public async Task Upload_Should_ReturnBadRequest_WhenUploadingLargeFile()
         {
+            var file = "Opw.PineBlog.Sample.Resources.large-image.jpg";
             await _client.EnsureAuthenticationCookieAsync(_authenticationContext);
 
             using (var fileStream = typeof(FileControllerTests).Assembly.GetManifestResourceStream(file))
@@ -57,7 +58,12 @@ namespace Opw.PineBlog.Sample.Controllers
             {
                 formData.Add(content, "files", file);
                 var response = await _client.PostAsync("admin/file/upload", formData);
-                response.EnsureSuccessStatusCode();
+
+                response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+
+                var result = await response.Content.ReadAsStringAsync();
+
+                result.Should().Be("File: \"Opw.PineBlog.Sample.Resources.large-image.jpg\" exceeds 1 MB.");
             }
         }
     }

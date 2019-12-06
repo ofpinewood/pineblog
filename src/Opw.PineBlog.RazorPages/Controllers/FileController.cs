@@ -1,8 +1,10 @@
+using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Opw.HttpExceptions;
 using Opw.PineBlog.Files;
 using System;
 using System.Collections.Generic;
@@ -67,8 +69,7 @@ namespace Opw.PineBlog.RazorPages.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("Get files error.", ex);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Get files error.");
+                return Error(ex, "Get files error.");
             }
         }
 
@@ -93,9 +94,21 @@ namespace Opw.PineBlog.RazorPages.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("File upload error.", ex);
-                return StatusCode(StatusCodes.Status500InternalServerError, "File upload error.");
+                return Error(ex, "File upload error.");
             }
+        }
+
+        private IActionResult Error(Exception ex, string errorMessage)
+        {
+            var statusCode = StatusCodes.Status500InternalServerError;
+            if (ex is ValidationErrorException<ValidationFailure> exc)
+            {
+                statusCode = StatusCodes.Status400BadRequest;
+                errorMessage = exc.GetAggregatedExceptionMessage();
+            }
+
+            _logger.LogError(errorMessage, ex);
+            return StatusCode(statusCode, errorMessage);
         }
 
         /// <summary>
@@ -117,8 +130,7 @@ namespace Opw.PineBlog.RazorPages.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("File delete error.", ex);
-                return StatusCode(StatusCodes.Status500InternalServerError, "File delete error.");
+                return Error(ex, "File delete error.");
             }
         }
     }

@@ -28,7 +28,7 @@ namespace Opw.PineBlog.Files
                 var fileName = Path.GetFileName(request.File.FileName);
 
                 if (!request.AllowedFileType.IsFileTypeSupported(fileName.GetMimeType()))
-                    context.AddFailure(nameof(request.File), $"The {request.File.Name} file ({fileName}) must be of type \"{request.AllowedFileType.ToString().ToLowerInvariant()}\".");
+                    context.AddFailure(nameof(request.File), $"\"{fileName}\" is not of type \"{request.AllowedFileType.ToString().ToLowerInvariant()}\".");
             });
 
             RuleFor(c => c).Custom((request, context) =>
@@ -44,10 +44,10 @@ namespace Opw.PineBlog.Files
                 // doesn't catch files that only have a BOM as their content, so a content length check is made later after 
                 // reading the file's content to catch a file that only contains a BOM.
                 if (request.File.Length == 0)
-                    context.AddFailure(nameof(request.File), $"The {request.File.Name} file ({fileName}) is empty.");
+                    context.AddFailure(nameof(request.File), $"\"{fileName}\" is empty.");
 
                 if (request.File.Length > 1048576)
-                    context.AddFailure(nameof(request.File), $"The {request.File.Name} file ({fileName}) exceeds 1 MB.");
+                    context.AddFailure(nameof(request.File), $"\"{fileName}\" exceeds 1 MB.");
             });
         }
     }
