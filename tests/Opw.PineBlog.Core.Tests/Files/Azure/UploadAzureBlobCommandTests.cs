@@ -76,7 +76,7 @@ namespace Opw.PineBlog.Files.Azure
             Task action() => Mediator.Send(new UploadAzureBlobCommand { File = _formFileMock.Object, AllowedFileType = FileType.Image });
 
             var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
-            ex.Errors.Single(e => e.Key.Equals(nameof(UploadAzureBlobCommand.File))).Value[0].ErrorMessage.Should().Contain("must be of type");
+            ex.Errors.Single(e => e.Key.Equals(nameof(UploadAzureBlobCommand.File))).Value[0].ErrorMessage.Should().Contain("is not of type");
         }
 
         [Fact]

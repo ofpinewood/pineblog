@@ -32,7 +32,7 @@ steps:
 - task: DotNetCoreInstaller@0
   displayName: 'Install .Net Core 3.1'
   inputs:
-    version: '3.1.100-preview3-014645'
+    version: '3.1.100'
 
 - task: DotNetCoreCLI@2
   displayName: Build

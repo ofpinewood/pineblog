@@ -1,9 +1,13 @@
-using System;
-using System.Net.Http;
+using MediatR.Registration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Opw.PineBlog.EntityFrameworkCore;
+using Opw.PineBlog.Files;
+using Opw.PineBlog.Sample.Mocks;
+using System.Linq;
 
 namespace Opw.PineBlog.Sample
 {
@@ -26,10 +30,18 @@ namespace Opw.PineBlog.Sample
                 .ConfigureAppConfiguration((_, config) => config.AddPineBlogConfiguration(reloadOnChange: true));
         }
 
-        //public new HttpClient CreateClient()
-        //{
-        //    var baseAddress = new Uri($"http://localhost/");
-        //    return CreateClient(new WebApplicationFactoryClientOptions { BaseAddress = baseAddress });
-        //}
+        protected override TestServer CreateServer(IWebHostBuilder builder)
+        {
+            builder.ConfigureTestServices(services =>
+            {
+                ServiceRegistrar.AddMediatRClasses(services, new[] { typeof(TestWebApplicationFactory).Assembly });
+
+                var serviceDescriptor = services.FirstOrDefault(descriptor => descriptor.ServiceType == typeof(IGetPagedFileListQueryFactory));
+                services.Remove(serviceDescriptor);
+
+                services.AddTransient<IGetPagedFileListQueryFactory, GetPagedFileListQueryFactoryMock>();
+            });
+            return base.CreateServer(builder);
+        }
     }
 }
