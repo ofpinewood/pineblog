@@ -10,4 +10,8 @@
       <PackageReference Include="Opw.EntityFrameworkCore" Version="1.1.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Opw.Core.Temp\Opw.Core.Temp.csproj" />
+    </ItemGroup>
+
 </Project>
