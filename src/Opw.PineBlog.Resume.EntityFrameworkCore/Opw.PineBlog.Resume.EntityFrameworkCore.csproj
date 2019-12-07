@@ -1,11 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
-    <Description>PineBlog data provider that uses Entity Framework Core.</Description>
+    <!--<TargetFrameworks>netcoreapp3.0;netcoreapp3.1</TargetFrameworks>-->
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <Description>PineBlog data provider for the resume module that uses Entity Framework Core.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageId>Opw.PineBlog.EntityFrameworkCore</PackageId>
-    <PackageTags>pineblog blog entity framework core entityframeworkcore</PackageTags>
+    <PackageId>Opw.PineBlog.Resume.EntityFrameworkCore</PackageId>
+    <PackageTags>pineblog resume entity framework core entityframeworkcore</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Opw.PineBlog.Core\Opw.PineBlog.Core.csproj" />
+    <ProjectReference Include="..\Opw.PineBlog.Resume.Core\Opw.PineBlog.Resume.Core.csproj" />
   </ItemGroup>
 
 </Project>

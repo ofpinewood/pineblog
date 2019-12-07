@@ -1,11 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <Description>PineBlog; a light-weight blogging engine written in ASP.NET Core MVC Razor Pages, using Entity Framework Core.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>Opw.PineBlog</PackageId>
-    <PackageTags>blog aspnetcore mvc razorpages entityframeworkcore</PackageTags>
+    <PackageTags>pineblog blog aspnetcore mvc razorpages entityframeworkcore</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

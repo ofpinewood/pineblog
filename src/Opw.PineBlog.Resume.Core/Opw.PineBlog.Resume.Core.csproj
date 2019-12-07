@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <RootNamespace>Opw.PineBlog.Resume</RootNamespace>
+    <Description>PineBlog resume module core package.</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageId>Opw.PineBlog.Resume.Core</PackageId>
+    <PackageTags>pineblog resume core</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Opw.EntityFrameworkCore" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Opw.PineBlog.Core\Opw.PineBlog.Core.csproj" />
+  </ItemGroup>
+
+</Project>

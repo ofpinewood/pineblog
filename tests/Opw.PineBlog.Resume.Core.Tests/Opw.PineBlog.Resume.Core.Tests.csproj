@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
     <IsPackable>false</IsPackable>
-    <RootNamespace>Opw.PineBlog.RazorPages</RootNamespace>
+    <RootNamespace>Opw.PineBlog.Resume</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Opw.PineBlog.RazorPages\Opw.PineBlog.RazorPages.csproj" />
+    <ProjectReference Include="..\..\src\Opw.PineBlog.Resume.Core\Opw.PineBlog.Resume.Core.csproj" />
   </ItemGroup>
 
 </Project>

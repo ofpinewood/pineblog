@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <Description>PineBlog resume module; present your personal background, skills, and accomplishments on your website.</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageId>Opw.PineBlog.Resume</PackageId>
+    <PackageTags>pineblog resume aspnetcore mvc razorpages entityframeworkcore</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Opw.PineBlog.Resume.EntityFrameworkCore\Opw.PineBlog.Resume.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\..\src\Opw.PineBlog.Resume.RazorPages\Opw.PineBlog.Resume.RazorPages.csproj" />
+  </ItemGroup>
+
+</Project>

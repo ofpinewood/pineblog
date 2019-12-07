@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 using Moq;
 using System;
 
-namespace Opw.PineBlog
+namespace Opw.PineBlog.RazorPages
 {
     public abstract class RazorPagesTestsBase
     {

@@ -1,13 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <!--<TargetFrameworks>netcoreapp3.0;netcoreapp3.1</TargetFrameworks>-->
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    <RootNamespace>Opw.PineBlog.RazorPages</RootNamespace>
-    <Description>PineBlog UI using ASP.NET Core MVC Razor Pages.</Description>
+    <RootNamespace>Opw.PineBlog.Resume.RazorPages</RootNamespace>
+    <Description>PineBlog resume module UI using ASP.NET Core MVC Razor Pages.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageId>Opw.PineBlog.RazorPages</PackageId>
-    <PackageTags>pineblog blog aspnetcore mvc razor razorpages</PackageTags>
+    <PackageId>Opw.PineBlog.Resume.RazorPages</PackageId>
+    <PackageTags>pineblog resume aspnetcore mvc razor razorpages</PackageTags>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
   </PropertyGroup>
 
@@ -24,15 +25,6 @@
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="FluentValidation.AspNetCore" Version="8.5.0" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="3.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Opw.PineBlog.Core\Opw.PineBlog.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

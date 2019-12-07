@@ -1,37 +1,36 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
-        <RootNamespace>Opw.PineBlog</RootNamespace>
-        <Description>PineBlog core package.</Description>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <PackageId>Opw.PineBlog.Core</PackageId>
-        <PackageTags>blog core</PackageTags>
-        <NuspecFile>Opw.PineBlog.Core.nuspec</NuspecFile>
-        <NuspecProperties>version=$(PackageVersion)</NuspecProperties>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <RootNamespace>Opw.PineBlog</RootNamespace>
+    <Description>PineBlog core package.</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageId>Opw.PineBlog.Core</PackageId>
+    <PackageTags>pineblog blog core</PackageTags>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <Compile Remove="Files\Azure\_namespace.cs" />
-    </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Files\Azure\_namespace.cs" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <None Include="Files\Azure\_namespace.cs" />
-    </ItemGroup>
+  <ItemGroup>
+    <None Include="Files\Azure\_namespace.cs" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Markdig" Version="0.18.0" />
-        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-        <PackageReference Include="Microsoft.Azure.Storage.Blob" Version="11.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Options" Version="3.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.0.0" />
-        <PackageReference Include="MimeMapping" Version="1.0.1.17" />
-        <PackageReference Include="System.ServiceModel.Syndication" Version="4.5.0" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Markdig" Version="0.18.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Azure.Storage.Blob" Version="11.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.0.0" />
+    <PackageReference Include="MimeMapping" Version="1.0.1.17" />
+    <PackageReference Include="System.ServiceModel.Syndication" Version="4.5.0" />
+    <PackageReference Include="Opw.EntityFrameworkCore" Version="1.1.0" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\Opw.PineBlog.Abstractions\Opw.PineBlog.Abstractions.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Opw.Core.Temp\Opw.Core.Temp.csproj" />
+  </ItemGroup>
 
 </Project>
