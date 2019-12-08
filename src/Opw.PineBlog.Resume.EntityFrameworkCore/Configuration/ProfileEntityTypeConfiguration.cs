@@ -11,7 +11,8 @@ namespace Opw.PineBlog.Resume.EntityFrameworkCore.Configuration
             builder.HasKey(e => e.Id);
 
             builder.Property(e => e.UserName).HasMaxLength(160).IsRequired();
-            
+            builder.Property(e => e.Slug).HasMaxLength(160).IsRequired();
+
             builder.Property(e => e.FirstName).HasMaxLength(64);
             builder.Property(e => e.LastName).HasMaxLength(128);
             builder.Property(e => e.Email).HasMaxLength(254);

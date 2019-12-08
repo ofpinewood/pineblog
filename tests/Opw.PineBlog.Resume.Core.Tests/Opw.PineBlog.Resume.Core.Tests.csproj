@@ -23,6 +23,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Opw.PineBlog.Resume.Core\Opw.PineBlog.Resume.Core.csproj" />
+    <ProjectReference Include="..\..\src\Opw.PineBlog.Resume.EntityFrameworkCore\Opw.PineBlog.Resume.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

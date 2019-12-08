@@ -5,10 +5,11 @@ namespace Opw.PineBlog.Resume.Entities
     public class Profile : Entity
     {
         public string UserName { get; set; }
-        public string Email { get; set; }
+        public string Slug { get; set; }
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Email { get; set; }
 
         public string Headline { get; set; }
         public string Industry { get; set; }

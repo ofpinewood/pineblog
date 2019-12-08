@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Opw.PineBlog.EntityFrameworkCore\Opw.PineBlog.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\..\src\Opw.PineBlog.Core\Opw.PineBlog.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
