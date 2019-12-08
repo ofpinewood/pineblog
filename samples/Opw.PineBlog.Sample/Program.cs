@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Opw.PineBlog.EntityFrameworkCore;
+using Opw.PineBlog.Resume.EntityFrameworkCore;
 using System;
 
 namespace Opw.PineBlog.Sample
@@ -19,12 +20,13 @@ namespace Opw.PineBlog.Sample
                 var services = scope.ServiceProvider;
                 try
                 {
-                    services.InitializePineBlogDatabase((context) => new DatabaseSeed(context).Run());
+                    services.InitializePineBlogDatabase((context) => new PineBlogDatabaseSeed(context).Run());
+                    services.InitializePineBlogResumeDatabase((context) => new PineBlogResumeDatabaseSeed(context).Run());
                 }
                 catch (Exception ex)
                 {
                     var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred while migrating the database.");
+                    logger.LogError(ex, "An error occurred while initializing the database.");
                 }
             }
 

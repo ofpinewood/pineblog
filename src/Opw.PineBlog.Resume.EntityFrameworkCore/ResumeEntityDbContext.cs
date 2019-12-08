@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Opw.EntityFrameworkCore;
+using Opw.PineBlog.Resume.Entities;
 
 namespace Opw.PineBlog.Resume.EntityFrameworkCore
 {
     public class ResumeEntityDbContext : EntityDbContext, IResumeEntityDbContext
     {
-        //public DbSet<Author> Authors { get; set; }
+        public DbSet<Profile> Profiles { get; set; }
 
         public ResumeEntityDbContext(DbContextOptions<ResumeEntityDbContext> options) : base(options) { }
 

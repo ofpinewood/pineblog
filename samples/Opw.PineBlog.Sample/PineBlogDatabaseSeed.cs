@@ -8,11 +8,11 @@ using WaffleGenerator;
 
 namespace Opw.PineBlog.Sample
 {
-    internal class DatabaseSeed
+    internal class PineBlogDatabaseSeed
     {
         private readonly BlogEntityDbContext _dbContext;
 
-        public DatabaseSeed(BlogEntityDbContext context)
+        public PineBlogDatabaseSeed(BlogEntityDbContext context)
         {
             _dbContext = context;
         }
@@ -110,7 +110,7 @@ namespace Opw.PineBlog.Sample
         {
             var title = "PineBlog an ASP.NET Core blogging engine";
 
-            var assembly = typeof(DatabaseSeed).Assembly;
+            var assembly = typeof(PineBlogDatabaseSeed).Assembly;
             var resourceStream = assembly.GetManifestResourceStream("Opw.PineBlog.Sample.Resources.post-pineblog-demo-website.md");
             string content = null;
             using (var reader = new StreamReader(resourceStream, Encoding.UTF8))

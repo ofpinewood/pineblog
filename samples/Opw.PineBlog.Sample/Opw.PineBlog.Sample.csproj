@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\ref\Opw.PineBlog\Opw.PineBlog.csproj" />
+    <ProjectReference Include="..\..\ref\Opw.PineBlog.Resume\Opw.PineBlog.Resume.csproj" />
   </ItemGroup>
 
 </Project>
