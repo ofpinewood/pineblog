@@ -8,7 +8,7 @@ namespace Opw.PineBlog.Resume.RazorPages
     public static class MvcBuilderExtensions
     {
         /// <summary>
-        /// Adds PineBlog resume module Razor Pages services to the services collection.
+        /// Adds PineBlog:Resume Razor Pages services to the services collection.
         /// </summary>
         /// <param name="builder">The Microsoft.Extensions.DependencyInjection.IMvcCoreBuilder.</param>
         public static IMvcCoreBuilder AddPineBlogResumeRazorPages(this IMvcCoreBuilder builder)
@@ -19,7 +19,7 @@ namespace Opw.PineBlog.Resume.RazorPages
         }
 
         /// <summary>
-        /// Adds PineBlog resume module Razor Pages services to the services collection.
+        /// Adds PineBlog:Resume Razor Pages services to the services collection.
         /// </summary>
         /// <param name="builder">The Microsoft.Extensions.DependencyInjection.IMvcBuilder.</param>
         public static IMvcBuilder AddPineBlogResumeRazorPages(this IMvcBuilder builder)

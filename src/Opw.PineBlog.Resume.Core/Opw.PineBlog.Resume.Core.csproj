@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <RootNamespace>Opw.PineBlog.Resume</RootNamespace>
-    <Description>PineBlog resume module core package.</Description>
+    <Description>PineBlog:Resume core package.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>Opw.PineBlog.Resume.Core</PackageId>
     <PackageTags>pineblog resume core</PackageTags>

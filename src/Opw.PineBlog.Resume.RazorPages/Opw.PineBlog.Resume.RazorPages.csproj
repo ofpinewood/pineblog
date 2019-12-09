@@ -5,7 +5,7 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <RootNamespace>Opw.PineBlog.Resume.RazorPages</RootNamespace>
-    <Description>PineBlog resume module UI using ASP.NET Core MVC Razor Pages.</Description>
+    <Description>PineBlog:Resume UI using ASP.NET Core MVC Razor Pages.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>Opw.PineBlog.Resume.RazorPages</PackageId>
     <PackageTags>pineblog resume aspnetcore mvc razor razorpages</PackageTags>

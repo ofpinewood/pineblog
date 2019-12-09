@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
-    <Description>PineBlog resume module; present your personal background, skills, and accomplishments on your website.</Description>
+    <Description>PineBlog:Resume; present your personal background, skills, and accomplishments on your website.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>Opw.PineBlog.Resume</PackageId>
     <PackageTags>pineblog resume aspnetcore mvc razorpages entityframeworkcore</PackageTags>

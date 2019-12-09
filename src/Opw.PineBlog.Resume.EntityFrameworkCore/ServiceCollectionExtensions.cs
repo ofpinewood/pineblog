@@ -11,7 +11,7 @@ namespace Opw.PineBlog.Resume.EntityFrameworkCore
     public static class ServiceCollectionExtensions
     {
         /// <summary>
-        /// Adds PineBlog resume module Entity Framework Core services to the specified services collection.
+        /// Adds PineBlog:Resume Entity Framework Core services to the specified services collection.
         /// </summary>
         /// <param name="services">The services available in the application.</param>
         /// <param name="configuration">The application configuration properties.</param>
