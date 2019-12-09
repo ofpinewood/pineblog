@@ -32,4 +32,8 @@
     <EmbeddedResource Include="wwwroot\**\js\*" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Pages\Shared\" />
+  </ItemGroup>
+
 </Project>
