@@ -31,7 +31,8 @@ namespace Opw.PineBlog.Resume
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
             services.AddTransient<IValidator<GetProfileQuery>, GetProfileQueryValidator>();
-            
+            services.AddTransient<IValidator<GetProfileByUserQuery>, GetProfileByUserQueryValidator>();
+
             return services;
         }
     }

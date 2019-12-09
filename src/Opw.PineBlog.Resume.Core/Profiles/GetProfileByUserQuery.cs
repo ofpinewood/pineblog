@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Opw.PineBlog.Resume.Profiles
 {
-    public class GetProfileQuery : IRequest<Result<Profile>>
+    public class GetProfileByUserQuery : IRequest<Result<Profile>>
     {
-        public string Slug { get; set; }
+        public string UserName { get; set; }
 
-        public class Handler : IRequestHandler<GetProfileQuery, Result<Profile>>
+        public class Handler : IRequestHandler<GetProfileByUserQuery, Result<Profile>>
         {
             private readonly IResumeEntityDbContext _context;
 
@@ -21,7 +21,7 @@ namespace Opw.PineBlog.Resume.Profiles
                 _context = context;
             }
 
-            public async Task<Result<Profile>> Handle(GetProfileQuery request, CancellationToken cancellationToken)
+            public async Task<Result<Profile>> Handle(GetProfileByUserQuery request, CancellationToken cancellationToken)
             {
                 var profile = await _context.Profiles
                     .Include(p => p.Education)
@@ -29,11 +29,11 @@ namespace Opw.PineBlog.Resume.Profiles
                     .Include(p => p.Languages)
                     .Include(p => p.Links)
                     .Include(p => p.Skills)
-                    .Where(p => p.Slug.Equals(request.Slug))
+                    .Where(p => p.UserName.Equals(request.UserName))
                     .SingleOrDefaultAsync(cancellationToken);
 
                 if (profile == null)
-                    return Result<Profile>.Fail(new NotFoundException<Profile>($"Could not find profile for slug: \"{request.Slug}\""));
+                    return Result<Profile>.Fail(new NotFoundException<Profile>($"Could not find profile for user: \"{request.UserName}\""));
 
                 return Result<Profile>.Success(profile);
             }

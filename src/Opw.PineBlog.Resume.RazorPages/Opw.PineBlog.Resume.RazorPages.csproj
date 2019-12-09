@@ -12,7 +12,7 @@
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
   </PropertyGroup>
 
-  <Target Name="MyPreCompileTarget" BeforeTargets="Build">
+  <Target Name="MyPreCompileTarget" BeforeTargets="Build" Condition="">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
