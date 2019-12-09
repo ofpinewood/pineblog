@@ -32,6 +32,7 @@ namespace Opw.PineBlog.Resume
 
             services.AddTransient<IValidator<GetProfileQuery>, GetProfileQueryValidator>();
             services.AddTransient<IValidator<GetProfileByUserQuery>, GetProfileByUserQueryValidator>();
+            services.AddTransient<IValidator<AddOrUpdateProfileCommand>, AddOrUpdateProfileCommandValidator>();
 
             return services;
         }

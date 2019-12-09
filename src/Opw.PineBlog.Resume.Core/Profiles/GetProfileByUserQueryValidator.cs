@@ -1,5 +1,4 @@
 using FluentValidation;
-using Opw.FluentValidation;
 
 namespace Opw.PineBlog.Resume.Profiles
 {
@@ -13,7 +12,7 @@ namespace Opw.PineBlog.Resume.Profiles
         /// </summary>
         public GetProfileByUserQueryValidator()
         {
-            RuleFor(c => c.UserName).IsSlug();
+            RuleFor(c => c.UserName).NotEmpty();
         }
     }
 }

@@ -8,9 +8,9 @@ namespace Opw.PineBlog.Resume.EntityFrameworkCore.Configuration
     {
         public void Configure(EntityTypeBuilder<Profile> builder)
         {
-            builder.HasKey(e => e.Id);
-
             builder.Property(e => e.UserName).HasMaxLength(160).IsRequired();
+            builder.HasKey(e => e.UserName);
+
             builder.Property(e => e.Slug).HasMaxLength(160).IsRequired();
 
             builder.Property(e => e.FirstName).HasMaxLength(64);
