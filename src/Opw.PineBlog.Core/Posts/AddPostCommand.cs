@@ -44,7 +44,7 @@ namespace Opw.PineBlog.Posts
         public DateTime? Published { get; set; }
 
         /// <summary>
-        /// Cover UURLrl.
+        /// Cover URL.
         /// </summary>
         public string CoverUrl { get; set; }
 
