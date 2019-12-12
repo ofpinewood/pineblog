@@ -22,7 +22,7 @@ namespace Opw.PineBlog.Resume
         public static IServiceCollection AddPineBlogResumeCore(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddOptions();
-            services.Configure<PineBlogOptions>(configuration.GetSection(nameof(PineBlogOptions)));
+            services.Configure<PineBlogResumeOptions>(configuration.GetSection(nameof(PineBlogResumeOptions)));
 
             if (services.BuildServiceProvider().GetService<IMediator>() == null)
                 services.AddMediatR(typeof(GetProfileQuery).Assembly);

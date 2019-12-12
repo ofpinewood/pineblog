@@ -20,8 +20,8 @@ namespace Opw.PineBlog.Resume.EntityFrameworkCore
         {
             services.AddDbContextPool<IResumeEntityDbContext, ResumeEntityDbContext>((provider, options) =>
             {
-                var blogOptions = provider.GetRequiredService<IOptions<PineBlogOptions>>();
-                var connectionString = configuration.GetConnectionString(blogOptions.Value.ConnectionStringName);
+                var resumeOptions = provider.GetRequiredService<IOptions<PineBlogResumeOptions>>();
+                var connectionString = configuration.GetConnectionString(resumeOptions.Value.ConnectionStringName);
                 DbContextOptionsHelper.ConfigureOptionsBuilder(options, connectionString);
             });
 

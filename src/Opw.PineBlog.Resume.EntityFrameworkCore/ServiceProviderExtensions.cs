@@ -9,10 +9,10 @@ namespace Opw.PineBlog.Resume.EntityFrameworkCore
     {
         public static void InitializePineBlogResumeDatabase(this IServiceProvider serviceProvider, Action<ResumeEntityDbContext> seedAction)
         {
-            var blogOptions = serviceProvider.GetService<IOptions<PineBlogOptions>>();
-            if (blogOptions.Value.CreateAndSeedDatabases)
+            var resumeOptions = serviceProvider.GetService<IOptions<PineBlogResumeOptions>>();
+            if (resumeOptions.Value.CreateAndSeedDatabases)
             {
-                var dbContext = (ResumeEntityDbContext)serviceProvider.GetRequiredService<IBlogEntityDbContext>();
+                var dbContext = (ResumeEntityDbContext)serviceProvider.GetRequiredService<IResumeEntityDbContext>();
                 new DbMigrator<ResumeEntityDbContext>(dbContext).CreateOrMigrate(seedAction);
             }
         }

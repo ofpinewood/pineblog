@@ -36,8 +36,19 @@ namespace Opw.PineBlog
         /// </summary>
         public string CoverLink { get; set; }
 
+        /// <summary>
+        /// Paging URL part format.
+        /// </summary>
         public string PagingUrlPartFormat { get; set; }
+
+        /// <summary>
+        /// Category URL part format.
+        /// </summary>
         public string CategoryUrlPartFormat { get; set; }
+
+        /// <summary>
+        /// Create and seed databases.
+        /// </summary>
         public bool CreateAndSeedDatabases { get; set; }
 
         /// <summary>

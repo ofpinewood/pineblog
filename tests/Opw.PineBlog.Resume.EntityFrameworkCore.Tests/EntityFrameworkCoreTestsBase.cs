@@ -20,7 +20,7 @@ namespace Opw.PineBlog.Resume.EntityFrameworkCore
             configuration.GetSection("ConnectionStrings").GetSection("DefaultConnection").Value = $"Server=inMemory; Database=pineblog-tests-{DateTime.UtcNow.Ticks};";
 
             Services = new ServiceCollection();
-            Services.AddPineBlogCore(configuration);
+            Services.AddPineBlogResumeCore(configuration);
             Services.AddPineBlogResumeEntityFrameworkCore(configuration);
         }
     }
