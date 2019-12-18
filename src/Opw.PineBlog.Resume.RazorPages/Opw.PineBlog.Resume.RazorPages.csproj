@@ -28,12 +28,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Include="wwwroot\**\css\*" />
     <EmbeddedResource Include="wwwroot\**\js\*" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Pages\Shared\" />
+    <ProjectReference Include="..\Opw.PineBlog.Resume.Core\Opw.PineBlog.Resume.Core.csproj" />
   </ItemGroup>
 
 </Project>
