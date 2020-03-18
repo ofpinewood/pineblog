@@ -11,12 +11,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 Solution Files", "00 Sol
 		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
 		CONTRIBUTING.md = CONTRIBUTING.md
 		Directory.Build.props = Directory.Build.props
+		global.json = global.json
 		LICENSE = LICENSE
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 Tests", "02 Tests", "{39C10DDD-2F23-4F19-BBB1-CF31D9850002}"
 	ProjectSection(SolutionItems) = preProject
-		tests\test-netcoreapp3_0.ps1 = tests\test-netcoreapp3_0.ps1
 		tests\test-netcoreapp3_1.ps1 = tests\test-netcoreapp3_1.ps1
 	EndProjectSection
 EndProject
@@ -60,7 +60,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.EntityFramewor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.Sample.Tests", "tests\Opw.PineBlog.Sample.Tests\Opw.PineBlog.Sample.Tests.csproj", "{FD61CF8C-B52E-4692-9B93-8D48255FD3D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opw.AspNetCore.Testing", "src\Opw.AspNetCore.Testing\Opw.AspNetCore.Testing.csproj", "{42B13F5C-7803-41B9-94A6-296599F67360}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.AspNetCore.Testing", "src\Opw.AspNetCore.Testing\Opw.AspNetCore.Testing.csproj", "{42B13F5C-7803-41B9-94A6-296599F67360}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

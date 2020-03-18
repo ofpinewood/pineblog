@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <RootNamespace>Opw.PineBlog.RazorPages</RootNamespace>
     <Description>PineBlog UI using ASP.NET Core MVC Razor Pages.</Description>
@@ -27,8 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation.AspNetCore" Version="8.5.0" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="3.0.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.2" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="3.1.2" />
   </ItemGroup>
 
   <ItemGroup>
