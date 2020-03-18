@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
     <Description>PineBlog data provider that uses Entity Framework Core.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>Opw.PineBlog.EntityFrameworkCore</PackageId>
