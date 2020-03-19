@@ -130,7 +130,7 @@ steps:
    action: create
    target: $(Build.SourceVersion)
    tagSource: auto
-   tag: '$(Build.BuildNumber)'
+   tag: '$(GitVersion.SemVer)'
 
 # Finalize
 - task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
