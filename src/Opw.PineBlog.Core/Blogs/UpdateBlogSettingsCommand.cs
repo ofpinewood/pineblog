@@ -1,5 +1,4 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
 using Opw.PineBlog.Files;
@@ -44,17 +43,17 @@ namespace Opw.PineBlog.Blogs
         /// </summary>
         public class Handler : IRequestHandler<UpdateBlogSettingsCommand, Result<BlogSettings>>
         {
-            private readonly IBlogEntityDbContext _context;
+            private readonly IRepository _repo;
             private readonly FileUrlHelper _fileUrlHelper;
 
             /// <summary>
             /// Implementation of UpdateBlogSettingsCommand.Handler.
             /// </summary>
-            /// <param name="context">The blog entity context.</param>
+            /// <param name="repo">The blog entity repo.</param>
             /// <param name="fileUrlHelper">File URL helper.</param>
-            public Handler(IBlogEntityDbContext context, FileUrlHelper fileUrlHelper)
+            public Handler(IRepository repo, FileUrlHelper fileUrlHelper)
             {
-                _context = context;
+                _repo = repo;
                 _fileUrlHelper = fileUrlHelper;
             }
 
@@ -65,26 +64,24 @@ namespace Opw.PineBlog.Blogs
             /// <param name="cancellationToken">A cancellation token.</param>
             public async Task<Result<BlogSettings>> Handle(UpdateBlogSettingsCommand request, CancellationToken cancellationToken)
             {
-                var entity = await _context.BlogSettings.SingleOrDefaultAsync();
-                if (entity == null)
-                    entity = new BlogSettings();
+                try
+                {
+                    var entity = await _repo.GetBlogSettingsAsync(cancellationToken) ?? new BlogSettings();
 
-                entity.Title = request.Title;
-                entity.Description = request.Description;
-                entity.CoverUrl = _fileUrlHelper.ReplaceBaseUrlWithUrlFormat(request.CoverUrl);
-                entity.CoverCaption = request.CoverCaption;
-                entity.CoverLink = request.CoverLink;
+                    entity.Title = request.Title;
+                    entity.Description = request.Description;
+                    entity.CoverUrl = _fileUrlHelper.ReplaceBaseUrlWithUrlFormat(request.CoverUrl);
+                    entity.CoverCaption = request.CoverCaption;
+                    entity.CoverLink = request.CoverLink;
 
-                if (entity.Created == DateTime.MinValue)
-                    _context.BlogSettings.Add(entity);
-                else
-                    _context.BlogSettings.Update(entity);
-
-                var result = await _context.SaveChangesAsync(true, cancellationToken);
-                if (!result.IsSuccess)
-                    return Result<BlogSettings>.Fail(result.Exception);
-
-                return Result<BlogSettings>.Success(entity);
+                    return await _repo.UpdateBlogSettingsAsync(entity, cancellationToken) is { } result
+                        ? Result<BlogSettings>.Success(entity)
+                        : Result<BlogSettings>.Fail(result.Exception);
+                }
+                catch (Exception ex)
+                {
+                    return Result<BlogSettings>.Fail(ex);
+                }
             }
         }
     }

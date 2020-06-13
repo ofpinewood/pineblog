@@ -1,9 +1,9 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
 using Opw.PineBlog.Files;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,7 +19,7 @@ namespace Opw.PineBlog.Blogs
         /// </summary>
         public class Handler : IRequestHandler<GetBlogSettigsQuery, Result<BlogSettings>>
         {
-            private readonly IBlogEntityDbContext _context;
+            private readonly IRepository _repo;
             private readonly FileUrlHelper _fileUrlHelper;
             private readonly IOptionsSnapshot<PineBlogOptions> _blogOptions;
 
@@ -29,9 +29,9 @@ namespace Opw.PineBlog.Blogs
             /// <param name="context">The blog entity context.</param>
             /// <param name="fileUrlHelper">File URL helper.</param>
             /// <param name="blogOptions">Blog options.</param>
-            public Handler(IBlogEntityDbContext context, FileUrlHelper fileUrlHelper, IOptionsSnapshot<PineBlogOptions> blogOptions)
+            public Handler(IRepository repo, FileUrlHelper fileUrlHelper, IOptionsSnapshot<PineBlogOptions> blogOptions)
             {
-                _context = context;
+                _repo = repo;
                 _fileUrlHelper = fileUrlHelper;
                 _blogOptions = blogOptions;
             }
@@ -43,22 +43,29 @@ namespace Opw.PineBlog.Blogs
             /// <param name="cancellationToken">A cancellation token.</param>
             public async Task<Result<BlogSettings>> Handle(GetBlogSettigsQuery request, CancellationToken cancellationToken)
             {
-                var blogSettings = await _context.BlogSettings.SingleOrDefaultAsync();
-                if (blogSettings == null)
+                try
                 {
-                    blogSettings = new BlogSettings
+                    var blogSettings = await _repo.GetBlogSettingsAsync(cancellationToken);
+                    if (blogSettings == null)
                     {
-                        Title = _blogOptions.Value.Title,
-                        Description = _blogOptions.Value.Description,
-                        CoverCaption = _blogOptions.Value.CoverCaption,
-                        CoverLink = _blogOptions.Value.CoverLink,
-                        CoverUrl = _blogOptions.Value.CoverUrl
-                    };
+                        blogSettings = new BlogSettings
+                        {
+                            Title = _blogOptions.Value.Title,
+                            Description = _blogOptions.Value.Description,
+                            CoverCaption = _blogOptions.Value.CoverCaption,
+                            CoverLink = _blogOptions.Value.CoverLink,
+                            CoverUrl = _blogOptions.Value.CoverUrl
+                        };
+                    }
+
+                    blogSettings.CoverUrl = _fileUrlHelper.ReplaceUrlFormatWithBaseUrl(blogSettings.CoverUrl);
+
+                    return Result<BlogSettings>.Success(blogSettings);
                 }
-
-                blogSettings.CoverUrl = _fileUrlHelper.ReplaceUrlFormatWithBaseUrl(blogSettings.CoverUrl);
-
-                return Result<BlogSettings>.Success(blogSettings);
+                catch (Exception ex)
+                {
+                    return Result<BlogSettings>.Fail(ex);
+                }
             }
         }
     }

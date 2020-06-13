@@ -1,5 +1,4 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
 using System;
@@ -63,17 +62,17 @@ namespace Opw.PineBlog.Posts
         /// </summary>
         public class Handler : IRequestHandler<AddPostCommand, Result<Post>>
         {
-            private readonly IBlogEntityDbContext _context;
+            private readonly IRepository _repo;
             private readonly PostUrlHelper _postUrlHelper;
 
             /// <summary>
             /// Implementation of AddPostCommand.Handler.
             /// </summary>
-            /// <param name="context">The blog entity context.</param>
+            /// <param name="repo">The blog entity repository.</param>
             /// <param name="postUrlHelper">Post URL helper.</param>
-            public Handler(IBlogEntityDbContext context, PostUrlHelper postUrlHelper)
+            public Handler(IRepository repo, PostUrlHelper postUrlHelper)
             {
-                _context = context;
+                _repo = repo;
                 _postUrlHelper = postUrlHelper;
             }
 
@@ -84,32 +83,34 @@ namespace Opw.PineBlog.Posts
             /// <param name="cancellationToken">A cancellation token.</param>
             public async Task<Result<Post>> Handle(AddPostCommand request, CancellationToken cancellationToken)
             {
-                var author = await _context.Authors.SingleOrDefaultAsync(a => a.UserName.Equals(request.UserName));
-                if (author == null)
-                    return Result<Post>.Fail(new NotFoundException($"Could not find author for \"{request.UserName}\"."));
-
-                var entity = new Post
+                try
                 {
-                    AuthorId = author.Id,
-                    Title = request.Title,
-                    Slug = request.Title.ToPostSlug(),
-                    Description = request.Description,
-                    Content = request.Content,
-                    Categories = request.Categories,
-                    Published = request.Published,
-                    CoverUrl = request.CoverUrl,
-                    CoverCaption = request.CoverCaption,
-                    CoverLink = request.CoverLink
-                };
+                    var author = await _repo.GetAuthorByUsernameAsync(request.UserName);
+                    if (author == null)
+                        return Result<Post>.Fail(new NotFoundException($"Could not find author for \"{request.UserName}\"."));
 
-                entity = _postUrlHelper.ReplaceBaseUrlWithUrlFormat(entity);
+                    var entity = _postUrlHelper.ReplaceBaseUrlWithUrlFormat(new Post
+                    {
+                        AuthorId = author.Id,
+                        Title = request.Title,
+                        Slug = request.Title.ToPostSlug(),
+                        Description = request.Description,
+                        Content = request.Content,
+                        Categories = request.Categories,
+                        Published = request.Published,
+                        CoverUrl = request.CoverUrl,
+                        CoverCaption = request.CoverCaption,
+                        CoverLink = request.CoverLink
+                    });
 
-                _context.Posts.Add(entity);
-                var result = await _context.SaveChangesAsync(cancellationToken);
-                if (!result.IsSuccess)
-                    return Result<Post>.Fail(result.Exception);
-
-                return Result<Post>.Success(entity);
+                    return await _repo.AddPostAsync(entity, cancellationToken) is { } result
+                        ? Result<Post>.Success(entity)
+                        : Result<Post>.Fail(result.Exception);
+                }
+                catch (Exception ex)
+                {
+                    return Result<Post>.Fail(ex);
+                }
             }
         }
     }

@@ -4,6 +4,7 @@ using Opw.PineBlog.Entities;
 using Opw.PineBlog.Models;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -13,12 +14,13 @@ namespace Opw.PineBlog.Posts
     {
         public GetPagedPostListQueryTests() : base()
         {
-            SeedDatabase();
         }
 
         [Fact]
         public async Task Handler_Should_ReturnPostListModel_With3Posts()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPagedPostListQuery { Page = 1 });
 
             result.IsSuccess.Should().BeTrue();
@@ -28,6 +30,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostListModel_With3Posts_WithItemsPerPage2()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPagedPostListQuery { Page = 1, ItemsPerPage = 2 });
 
             result.IsSuccess.Should().BeTrue();
@@ -37,6 +41,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostListModel_With2Posts()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPagedPostListQuery { Page = 2 });
 
             result.IsSuccess.Should().BeTrue();
@@ -46,6 +52,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostListModel_With6Posts_WhenIncludingUnpublishedPosts()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPagedPostListQuery { Page = 1, IncludeUnpublished = true, ItemsPerPage = 100 });
 
             result.IsSuccess.Should().BeTrue();
@@ -55,6 +63,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostListModel_WithBlogCoverUrlFormatReplaced()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPagedPostListQuery());
 
             result.IsSuccess.Should().BeTrue();
@@ -64,6 +74,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostListModel_WithPostListTypeBlog()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPagedPostListQuery());
 
             result.IsSuccess.Should().BeTrue();
@@ -73,6 +85,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostListModel_WhenFilterOnCategory_WithPostListTypeCategory()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPagedPostListQuery { Category = "category" });
 
             result.IsSuccess.Should().BeTrue();
@@ -82,6 +96,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostListModel_WithBlogInfo()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPagedPostListQuery());
 
             result.IsSuccess.Should().BeTrue();
@@ -92,6 +108,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostListModel_WithPostCovers()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPagedPostListQuery());
 
             result.IsSuccess.Should().BeTrue();
@@ -102,6 +120,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostListModel_WithPostAuthors()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPagedPostListQuery());
 
             result.IsSuccess.Should().BeTrue();
@@ -112,6 +132,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostListModel_WithPager()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPagedPostListQuery());
 
             result.IsSuccess.Should().BeTrue();
@@ -122,6 +144,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostListModel_With3Posts_ForCategoryCat2()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPagedPostListQuery { Page = 1, Category = "cat2", ItemsPerPage = 100 });
 
             result.IsSuccess.Should().BeTrue();
@@ -131,6 +155,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostListModel_With1Post_ForCategoryCat3()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPagedPostListQuery { Page = 1, Category = "cat3", ItemsPerPage = 100 });
 
             result.IsSuccess.Should().BeTrue();
@@ -140,27 +166,28 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostListModel_With2Posts_ForCategoryCat3IncludingUnpublishedPosts()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPagedPostListQuery { Page = 1, IncludeUnpublished = true, Category = "cat3", ItemsPerPage = 100 });
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Posts.Should().HaveCount(2);
         }
 
-        private void SeedDatabase()
+        private async Task SeedDatabase()
         {
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var repo = ServiceProvider.GetRequiredService<IRepository>();
+            CancellationToken cancelToken = CancellationToken.None;
 
             var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
-            context.Authors.Add(author);
-            context.SaveChanges();
+            await repo.AddAuthorAsync(author, cancelToken);
 
-            context.Posts.Add(CreatePost(0, author.Id, true, false, "cat1"));
-            context.Posts.Add(CreatePost(1, author.Id, true, true, "cat1"));
-            context.Posts.Add(CreatePost(2, author.Id, true, true, "cat1,cat2"));
-            context.Posts.Add(CreatePost(3, author.Id, true, true, "cat2"));
-            context.Posts.Add(CreatePost(4, author.Id, true, true, "cat1,cat2,cat3"));
-            context.Posts.Add(CreatePost(5, author.Id, false, true, "cat3"));
-            context.SaveChanges();
+            await repo.AddPostAsync(CreatePost(0, author.Id, true, false, "cat1"), cancelToken);
+            await repo.AddPostAsync(CreatePost(1, author.Id, true, true, "cat1"), cancelToken);
+            await repo.AddPostAsync(CreatePost(2, author.Id, true, true, "cat1,cat2"), cancelToken);
+            await repo.AddPostAsync(CreatePost(3, author.Id, true, true, "cat2"), cancelToken);
+            await repo.AddPostAsync(CreatePost(4, author.Id, true, true, "cat1,cat2,cat3"), cancelToken);
+            await repo.AddPostAsync(CreatePost(5, author.Id, false, true, "cat3"), cancelToken);
         }
 
         private Post CreatePost(int i, Guid authorId, bool published, bool cover, string categories)

@@ -6,6 +6,7 @@ using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -17,12 +18,13 @@ namespace Opw.PineBlog.Posts
 
         public UnpublishPostCommandTests()
         {
-            SeedDatabase();
         }
-        
+
         [Fact]
         public async Task Validator_Should_ThrowValidationErrorException()
         {
+            await SeedDatabase();
+
             Task action() => Mediator.Send(new UnpublishPostCommand());
 
             var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
@@ -32,6 +34,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnNotFoundException()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new UnpublishPostCommand { Id = Guid.NewGuid() });
 
             result.IsSuccess.Should().BeFalse();
@@ -41,29 +45,29 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_UnpublishPost()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new UnpublishPostCommand { Id = _postId });
 
             result.IsSuccess.Should().BeTrue();
 
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var repo = ServiceProvider.GetRequiredService<IRepository>();
 
-            var post = await context.Posts.SingleAsync(p => p.Id.Equals(_postId));
+            var post = await repo.GetPostByIdAsync(_postId, CancellationToken.None);
 
             post.Should().NotBeNull();
             post.Published.Should().BeNull();
         }
 
-        private void SeedDatabase()
+        private async Task SeedDatabase()
         {
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var repo = ServiceProvider.GetRequiredService<IRepository>();
 
             var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
-            context.Authors.Add(author);
-            context.SaveChanges();
+            await repo.AddAuthorAsync(author, CancellationToken.None);
 
             var post = CreatePost(0, author.Id, true, false);
-            context.Posts.Add(post);
-            context.SaveChanges();
+            await repo.AddPostAsync(post, CancellationToken.None);
 
             _postId = post.Id;
         }

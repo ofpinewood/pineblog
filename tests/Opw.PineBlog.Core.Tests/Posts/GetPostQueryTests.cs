@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 using System.Linq;
+using System.Threading;
 
 namespace Opw.PineBlog.Posts
 {
@@ -14,12 +15,13 @@ namespace Opw.PineBlog.Posts
     {
         public GetPostQueryTests()
         {
-            SeedDatabase();
         }
 
         [Fact]
         public async Task Validator_Should_ThrowValidationErrorException()
         {
+            await SeedDatabase();
+
             Task action() => Mediator.Send(new GetPostQuery
             {
                 Slug = "this is not a valid slug"
@@ -32,6 +34,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnNotFoundException()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-invalid" });
 
             result.IsSuccess.Should().BeFalse();
@@ -41,6 +45,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostModel_WithFirstPost()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-0" });
 
             result.IsSuccess.Should().BeTrue();
@@ -52,6 +58,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostModel_WithMiddlePost()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-2" });
 
             result.IsSuccess.Should().BeTrue();
@@ -63,6 +71,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostModel_WithMiddlePost_WithCorrectPreviousPost()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-2" });
 
             result.IsSuccess.Should().BeTrue();
@@ -73,6 +83,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostModel_WithMiddlePost_WithCorrectNextPost()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-2" });
 
             result.IsSuccess.Should().BeTrue();
@@ -83,6 +95,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostModel_WithLastPost()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-4" });
 
             result.IsSuccess.Should().BeTrue();
@@ -94,6 +108,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostModel_WithBlogInfo()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-0" });
 
             result.IsSuccess.Should().BeTrue();
@@ -104,6 +120,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostModel_WithPostCover()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-0" });
 
             result.IsSuccess.Should().BeTrue();
@@ -114,6 +132,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostModel_WithPostAuthor()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPostQuery { Slug = "post-title-0" });
 
             result.IsSuccess.Should().BeTrue();
@@ -121,20 +141,19 @@ namespace Opw.PineBlog.Posts
             result.Value.Post.Author.DisplayName.Should().Be("Author 1");
         }
 
-        private void SeedDatabase()
+        private async Task SeedDatabase()
         {
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var repo = ServiceProvider.GetRequiredService<IRepository>();
+            CancellationToken cancelToken = CancellationToken.None;
 
             var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
-            context.Authors.Add(author);
-            context.SaveChanges();
+            await repo.AddAuthorAsync(author, cancelToken);
 
-            context.Posts.Add(CreatePost(0, author.Id));
-            context.Posts.Add(CreatePost(1, author.Id));
-            context.Posts.Add(CreatePost(2, author.Id));
-            context.Posts.Add(CreatePost(3, author.Id));
-            context.Posts.Add(CreatePost(4, author.Id));
-            context.SaveChanges();
+            await repo.AddPostAsync(CreatePost(0, author.Id), cancelToken);
+            await repo.AddPostAsync(CreatePost(1, author.Id), cancelToken);
+            await repo.AddPostAsync(CreatePost(2, author.Id), cancelToken);
+            await repo.AddPostAsync(CreatePost(3, author.Id), cancelToken);
+            await repo.AddPostAsync(CreatePost(4, author.Id), cancelToken);
         }
 
         private Post CreatePost(int i, Guid authorId)

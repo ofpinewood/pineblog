@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -16,7 +17,7 @@ namespace Opw.PineBlog.Blogs
         {
             SeedDatabase();
         }
-        
+
         [Fact]
         public async Task Validator_Should_ThrowValidationErrorException()
         {
@@ -29,11 +30,10 @@ namespace Opw.PineBlog.Blogs
         [Fact]
         public async Task Handler_Should_AddSettings_WhenNotFound()
         {
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var repo = ServiceProvider.GetRequiredService<IRepository>();
 
-            var existing = await context.BlogSettings.SingleAsync();
-            context.BlogSettings.Remove(existing);
-            await context.SaveChangesAsync(true, default);
+            var existing = await repo.GetBlogSettingsAsync(CancellationToken.None);
+            await repo.DeleteBlogSettingsAsync(existing, CancellationToken.None);
 
             var result = await Mediator.Send(new UpdateBlogSettingsCommand
             {
@@ -42,9 +42,9 @@ namespace Opw.PineBlog.Blogs
 
             result.IsSuccess.Should().BeTrue();
 
-            context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            repo = ServiceProvider.GetRequiredService<IRepository>();
 
-            var settings = await context.BlogSettings.SingleAsync();
+            var settings = await repo.GetBlogSettingsAsync(CancellationToken.None);
 
             settings.Should().NotBeNull();
             settings.Title.Should().Be("blog title-NEW");
@@ -64,26 +64,26 @@ namespace Opw.PineBlog.Blogs
 
             result.IsSuccess.Should().BeTrue();
 
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var repo = ServiceProvider.GetRequiredService<IRepository>();
 
-            var settings = await context.BlogSettings.SingleAsync();
+            var settings = await repo.GetBlogSettingsAsync(CancellationToken.None);
 
             settings.Should().NotBeNull();
             settings.Title.Should().Be("blog title-UPDATED");
         }
 
-        private void SeedDatabase()
+        private async Task SeedDatabase()
         {
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var repo = ServiceProvider.GetRequiredService<IRepository>();
 
-            context.BlogSettings.Add(new BlogSettings {
+            await repo.UpdateBlogSettingsAsync(new BlogSettings
+            {
                 Title = "blog title",
                 Description = "blog description",
                 CoverCaption = "blog cover caption",
                 CoverLink = "blog cover link",
                 CoverUrl = "blog cover url"
-            });
-            context.SaveChanges();
+            }, CancellationToken.None);
         }
     }
 }

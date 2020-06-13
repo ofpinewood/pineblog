@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 using System.Linq;
+using System.Threading;
 
 namespace Opw.PineBlog.Posts
 {
@@ -16,12 +17,13 @@ namespace Opw.PineBlog.Posts
 
         public GetPostByIdQueryTests()
         {
-            SeedDatabase();
         }
 
         [Fact]
         public async Task Validator_Should_ThrowValidationErrorException()
         {
+            await SeedDatabase();
+
             Task action() => Mediator.Send(new GetPostByIdQuery());
 
             var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
@@ -31,6 +33,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnNotFoundException()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPostByIdQuery { Id = Guid.NewGuid() });
 
             result.IsSuccess.Should().BeFalse();
@@ -40,23 +44,23 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPost()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetPostByIdQuery { Id = _postId });
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Title.Should().Be("Post title 0");
         }
 
-        private void SeedDatabase()
+        private async Task SeedDatabase()
         {
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var repo = ServiceProvider.GetRequiredService<IRepository>();
 
             var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
-            context.Authors.Add(author);
-            context.SaveChanges();
+            await repo.AddAuthorAsync(author, CancellationToken.None);
 
             var post = CreatePost(0, author.Id);
-            context.Posts.Add(post);
-            context.SaveChanges();
+            await repo.AddPostAsync(post, CancellationToken.None);
 
             _postId = post.Id;
         }

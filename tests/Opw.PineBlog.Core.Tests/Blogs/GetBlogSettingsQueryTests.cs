@@ -1,10 +1,9 @@
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Opw.PineBlog.Entities;
-using Opw.HttpExceptions;
 using System.Threading.Tasks;
 using Xunit;
-using Microsoft.EntityFrameworkCore;
+using System.Threading;
 
 namespace Opw.PineBlog.Blogs
 {
@@ -12,17 +11,17 @@ namespace Opw.PineBlog.Blogs
     {
         public GetBlogSettingsQueryTests()
         {
-            SeedDatabase();
         }
 
         [Fact]
         public async Task Handler_Should_ReturnSettingsFromConfig_WhenNotFound()
         {
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            await SeedDatabase();
 
-            var existing = await context.BlogSettings.SingleAsync();
-            context.BlogSettings.Remove(existing);
-            await context.SaveChangesAsync(true, default);
+            var repo = ServiceProvider.GetRequiredService<IRepository>();
+
+            var existing = await repo.GetBlogSettingsAsync(CancellationToken.None);
+            await repo.DeleteBlogSettingsAsync(existing, CancellationToken.None);
 
             var result = await Mediator.Send(new GetBlogSettigsQuery());
 
@@ -34,6 +33,8 @@ namespace Opw.PineBlog.Blogs
         [Fact]
         public async Task Handler_Should_ReturnBlogSettings()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetBlogSettigsQuery());
 
             result.IsSuccess.Should().BeTrue();
@@ -41,19 +42,18 @@ namespace Opw.PineBlog.Blogs
             result.Value.Title.Should().Be("blog title");
         }
 
-        private void SeedDatabase()
+        private async Task SeedDatabase()
         {
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var repo = ServiceProvider.GetRequiredService<IRepository>();
 
-            context.BlogSettings.Add(new BlogSettings
+            await repo.UpdateBlogSettingsAsync(new BlogSettings
             {
                 Title = "blog title",
                 Description = "blog description",
                 CoverCaption = "blog cover caption",
                 CoverLink = "blog cover link",
                 CoverUrl = "blog cover url"
-            });
-            context.SaveChanges();
+            }, CancellationToken.None);
         }
     }
 }

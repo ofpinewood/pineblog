@@ -27,7 +27,7 @@ namespace Opw.PineBlog.EntityFrameworkCore
                 };
             }
 
-            services.AddDbContextPool<IBlogEntityDbContext, BlogEntityDbContext>((provider, options) =>
+            services.AddDbContextPool<IRepository, BlogEntityDbContext>((provider, options) =>
             {
                 var blogOptions = provider.GetRequiredService<IOptions<PineBlogOptions>>();
                 var connectionString = configuration.GetConnectionString(blogOptions.Value.ConnectionStringName);

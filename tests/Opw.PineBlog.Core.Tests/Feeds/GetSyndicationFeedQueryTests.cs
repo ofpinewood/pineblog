@@ -6,6 +6,7 @@ using Opw.PineBlog.Entities;
 using System;
 using System.Linq;
 using System.ServiceModel.Syndication;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using Xunit;
@@ -16,12 +17,13 @@ namespace Opw.PineBlog.Feeds
     {
         public GetSyndicationFeedQueryTests() : base()
         {
-            SeedDatabase();
         }
 
         [Fact]
         public async Task Validator_Should_ThrowValidationErrorException()
         {
+            await SeedDatabase();
+
             Task action() => Mediator.Send(new GetSyndicationFeedQuery());
 
             var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
@@ -33,6 +35,8 @@ namespace Opw.PineBlog.Feeds
         [Fact]
         public async Task Handler_Should_ReturnRssFeed_WhenFeedTypeRss()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetSyndicationFeedQuery
             {
                 BaseUri = new Uri("http://www.example.com"),
@@ -48,6 +52,8 @@ namespace Opw.PineBlog.Feeds
         [Fact]
         public async Task Handler_Should_ReturnAtomFeed_WhenFeedTypeAtom()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetSyndicationFeedQuery
             {
                 BaseUri = new Uri("http://www.example.com"),
@@ -63,6 +69,8 @@ namespace Opw.PineBlog.Feeds
         [Fact]
         public async Task Handler_Should_ReturnFeedModel_With5Posts()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetSyndicationFeedQuery
             {
                 BaseUri = new Uri("http://www.example.com"),
@@ -82,6 +90,8 @@ namespace Opw.PineBlog.Feeds
         [Fact]
         public async Task Handler_Should_ReturnFeedModel_WithCorrectItemTitle()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetSyndicationFeedQuery
             {
                 BaseUri = new Uri("http://www.example.com"),
@@ -102,6 +112,8 @@ namespace Opw.PineBlog.Feeds
         [Fact]
         public async Task Handler_Should_ReturnFeedModel_WithCorrectItemId()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new GetSyndicationFeedQuery
             {
                 BaseUri = new Uri("http://www.example.com"),
@@ -119,21 +131,20 @@ namespace Opw.PineBlog.Feeds
             guid.Should().Be("http://www.example.com/posts/post-title-4");
         }
 
-        private void SeedDatabase()
+        private async Task SeedDatabase()
         {
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var repo = ServiceProvider.GetRequiredService<IRepository>();
+            CancellationToken cancelToken = CancellationToken.None;
 
             var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
-            context.Authors.Add(author);
-            context.SaveChanges();
+            await repo.AddAuthorAsync(author, cancelToken);
 
-            context.Posts.Add(CreatePost(0, author.Id, true, false, "cat1"));
-            context.Posts.Add(CreatePost(1, author.Id, true, true, "cat1"));
-            context.Posts.Add(CreatePost(2, author.Id, true, true, "cat1,cat2"));
-            context.Posts.Add(CreatePost(3, author.Id, true, true, "cat2"));
-            context.Posts.Add(CreatePost(4, author.Id, true, true, "cat1,cat2,cat3"));
-            context.Posts.Add(CreatePost(5, author.Id, false, true, "cat3"));
-            context.SaveChanges();
+            await repo.AddPostAsync(CreatePost(0, author.Id, true, false, "cat1"), cancelToken);
+            await repo.AddPostAsync(CreatePost(1, author.Id, true, true, "cat1"), cancelToken);
+            await repo.AddPostAsync(CreatePost(2, author.Id, true, true, "cat1,cat2"), cancelToken);
+            await repo.AddPostAsync(CreatePost(3, author.Id, true, true, "cat2"), cancelToken);
+            await repo.AddPostAsync(CreatePost(4, author.Id, true, true, "cat1,cat2,cat3"), cancelToken);
+            await repo.AddPostAsync(CreatePost(5, author.Id, false, true, "cat3"), cancelToken);
         }
 
         private Post CreatePost(int i, Guid authorId, bool published, bool cover, string categories)

@@ -1,5 +1,4 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
 using System;
@@ -24,17 +23,17 @@ namespace Opw.PineBlog.Posts
         /// </summary>
         public class Handler : IRequestHandler<GetPostByIdQuery, Result<Post>>
         {
-            private readonly IBlogEntityDbContext _context;
+            private readonly IRepository _repo;
             private readonly PostUrlHelper _postUrlHelper;
 
             /// <summary>
             /// Implementation of GetPostByIdQuery.Handler.
             /// </summary>
-            /// <param name="context">The blog entity context.</param>
+            /// <param name="repo">The blog entity repo.</param>
             /// <param name="postUrlHelper">Post URL helper.</param>
-            public Handler(IBlogEntityDbContext context, PostUrlHelper postUrlHelper)
+            public Handler(IRepository repo, PostUrlHelper postUrlHelper)
             {
-                _context = context;
+                _repo = repo;
                 _postUrlHelper = postUrlHelper;
             }
 
@@ -45,17 +44,20 @@ namespace Opw.PineBlog.Posts
             /// <param name="cancellationToken">A cancellation token.</param>
             public async Task<Result<Post>> Handle(GetPostByIdQuery request, CancellationToken cancellationToken)
             {
-                var post = await _context.Posts
-                    .Include(p => p.Author)
-                    .Where(p => p.Id.Equals(request.Id))
-                    .SingleOrDefaultAsync(cancellationToken);
+                try
+                {
+                    var post = await _repo.GetPostByIdAsync(request.Id, cancellationToken);
+                    if (post == null)
+                        return Result<Post>.Fail(new NotFoundException<Post>($"Could not find post, id: \"{request.Id}\""));
 
-                if (post == null)
-                    return Result<Post>.Fail(new NotFoundException<Post>($"Could not find post, id: \"{request.Id}\""));
+                    post = _postUrlHelper.ReplaceUrlFormatWithBaseUrl(post);
 
-                post = _postUrlHelper.ReplaceUrlFormatWithBaseUrl(post);
-
-                return Result<Post>.Success(post);
+                    return Result<Post>.Success(post);
+                }
+                catch (Exception ex)
+                {
+                    return Result<Post>.Fail(ex);
+                }
             }
         }
     }

@@ -1,5 +1,4 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Opw.PineBlog.Models;
 using Opw.PineBlog.Posts;
@@ -40,19 +39,19 @@ namespace Opw.PineBlog.Feeds
         public class Handler : IRequestHandler<GetSyndicationFeedQuery, Result<FeedModel>>
         {
             private readonly IOptionsSnapshot<PineBlogOptions> _blogOptions;
-            private readonly IBlogEntityDbContext _context;
+            private readonly IRepository _repo;
             private readonly PostUrlHelper _postUrlHelper;
 
             /// <summary>
             /// Implementation of GetFeedQuery.Handler.
             /// </summary>
-            /// <param name="context">The blog entity context.</param>
+            /// <param name="repo">The blog entity context.</param>
             /// <param name="blogOptions">The blog options.</param>
             /// <param name="postUrlHelper">Post URL helper.</param>
-            public Handler(IBlogEntityDbContext context, IOptionsSnapshot<PineBlogOptions> blogOptions, PostUrlHelper postUrlHelper)
+            public Handler(IRepository repo, IOptionsSnapshot<PineBlogOptions> blogOptions, PostUrlHelper postUrlHelper)
             {
                 _blogOptions = blogOptions;
-                _context = context;
+                _repo = repo;
                 _postUrlHelper = postUrlHelper;
             }
 
@@ -64,12 +63,14 @@ namespace Opw.PineBlog.Feeds
             public async Task<Result<FeedModel>> Handle(GetSyndicationFeedQuery request, CancellationToken cancellationToken)
             {
                 var feed = await GetFeedAsync(request, cancellationToken);
-                var model = new FeedModel();
-
-                if (request.FeedType == FeedType.Atom)
-                    model.ContentType = "application/atom+xml";
-                else if (request.FeedType == FeedType.Rss)
-                    model.ContentType = "application/rss+xml";
+                var model = new FeedModel
+                {
+                    ContentType = request.FeedType switch
+                    {
+                        FeedType.Atom => "application/atom+xml",
+                        FeedType.Rss => "application/rss+xml"
+                    }
+                };
 
                 var feedWriter = new StringWriter();
                 using (var xmlWriter = new XmlTextWriter(feedWriter))
@@ -114,14 +115,8 @@ namespace Opw.PineBlog.Feeds
 
             private async Task<IEnumerable<SyndicationItem>> GetItemsAsync(GetSyndicationFeedQuery request, CancellationToken cancellationToken)
             {
-                var query = _context.Posts
-                    .Include(p => p.Author)
-                    .Where(p => p.Published != null)
-                    .OrderByDescending(p => p.Published)
-                    .Take(25);
-
-                var posts = await query.ToListAsync(cancellationToken);
-                var items = new List<SyndicationItem>();
+                var posts = await _repo.GetSyndicationPostsAsync(cancellationToken);
+                var items = new List<SyndicationItem>(posts.Count);
 
                 foreach (var post in posts.Select(p => _postUrlHelper.ReplaceUrlFormatWithBaseUrl(p)))
                 {

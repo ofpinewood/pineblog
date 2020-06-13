@@ -1,5 +1,4 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
 using System;
@@ -63,7 +62,7 @@ namespace Opw.PineBlog.Posts
         /// </summary>
         public class Handler : IRequestHandler<UpdatePostCommand, Result<Post>>
         {
-            private readonly IBlogEntityDbContext _context;
+            private readonly IRepository _repo;
             private readonly PostUrlHelper _postUrlHelper;
 
             /// <summary>
@@ -71,9 +70,9 @@ namespace Opw.PineBlog.Posts
             /// </summary>
             /// <param name="context">The blog entity context.</param>
             /// <param name="postUrlHelper">Post URL helper.</param>
-            public Handler(IBlogEntityDbContext context, PostUrlHelper postUrlHelper)
+            public Handler(IRepository repo, PostUrlHelper postUrlHelper)
             {
-                _context = context;
+                _repo = repo;
                 _postUrlHelper = postUrlHelper;
             }
 
@@ -84,28 +83,32 @@ namespace Opw.PineBlog.Posts
             /// <param name="cancellationToken">A cancellation token.</param>
             public async Task<Result<Post>> Handle(UpdatePostCommand request, CancellationToken cancellationToken)
             {
-                var entity = await _context.Posts.SingleOrDefaultAsync(e => e.Id.Equals(request.Id));
-                if (entity == null)
-                    return Result<Post>.Fail(new NotFoundException<Post>($"Could not find post, id: \"{request.Id}\""));
+                try
+                {
+                    var entity = await _repo.GetPostByIdAsync(request.Id, cancellationToken);
+                    if (entity == null)
+                        return Result<Post>.Fail(new NotFoundException<Post>($"Could not find post, id: \"{request.Id}\""));
 
-                entity.Title = request.Title;
-                entity.Slug = request.Title.ToPostSlug();
-                entity.Description = request.Description;
-                entity.Content = request.Content;
-                entity.Categories = request.Categories;
-                entity.Published = request.Published;
-                entity.CoverUrl = request.CoverUrl;
-                entity.CoverCaption = request.CoverCaption;
-                entity.CoverLink = request.CoverLink;
+                    entity.Title = request.Title;
+                    entity.Slug = request.Title.ToPostSlug();
+                    entity.Description = request.Description;
+                    entity.Content = request.Content;
+                    entity.Categories = request.Categories;
+                    entity.Published = request.Published;
+                    entity.CoverUrl = request.CoverUrl;
+                    entity.CoverCaption = request.CoverCaption;
+                    entity.CoverLink = request.CoverLink;
 
-                entity = _postUrlHelper.ReplaceBaseUrlWithUrlFormat(entity);
+                    entity = _postUrlHelper.ReplaceBaseUrlWithUrlFormat(entity);
 
-                _context.Posts.Update(entity);
-                var result = await _context.SaveChangesAsync(true, cancellationToken);
-                if (!result.IsSuccess)
-                    return Result<Post>.Fail(result.Exception);
-
-                return Result<Post>.Success(entity);
+                    return await _repo.UpdatePostAsync(entity, cancellationToken) is { } result
+                        ? Result<Post>.Success(entity)
+                        : Result<Post>.Fail(result.Exception);
+                }
+                catch (Exception ex)
+                {
+                    return Result<Post>.Fail(ex);
+                }
             }
         }
     }

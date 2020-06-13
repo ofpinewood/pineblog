@@ -1,5 +1,4 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Opw.PineBlog.Entities;
 using Opw.PineBlog.Files;
@@ -44,21 +43,21 @@ namespace Opw.PineBlog.Posts
         public class Handler : IRequestHandler<GetPagedPostListQuery, Result<PostListModel>>
         {
             private readonly IOptionsSnapshot<PineBlogOptions> _blogOptions;
-            private readonly IBlogEntityDbContext _context;
+            private readonly IRepository _repo;
             private readonly PostUrlHelper _postUrlHelper;
             private readonly FileUrlHelper _fileUrlHelper;
 
             /// <summary>
             /// Implementation of GetPagedPostListQuery.Handler.
             /// </summary>
-            /// <param name="context">The blog entity context.</param>
+            /// <param name="repo">The blog entity repository.</param>
             /// <param name="blogOptions">The blog options.</param>
             /// <param name="postUrlHelper">Post URL helper.</param>
             /// <param name="fileUrlHelper">File URL helper.</param>
-            public Handler(IBlogEntityDbContext context, IOptionsSnapshot<PineBlogOptions> blogOptions, PostUrlHelper postUrlHelper, FileUrlHelper fileUrlHelper)
+            public Handler(IRepository repo, IOptionsSnapshot<PineBlogOptions> blogOptions, PostUrlHelper postUrlHelper, FileUrlHelper fileUrlHelper)
             {
                 _blogOptions = blogOptions;
-                _context = context;
+                _repo = repo;
                 _postUrlHelper = postUrlHelper;
                 _fileUrlHelper = fileUrlHelper;
             }
@@ -73,18 +72,7 @@ namespace Opw.PineBlog.Posts
                 var itemsPerPage = (request.ItemsPerPage.HasValue) ? request.ItemsPerPage : _blogOptions.Value.ItemsPerPage;
                 var pager = new Pager(request.Page, itemsPerPage.Value);
 
-                var pagingUrlPartFormat = _blogOptions.Value.PagingUrlPartFormat;
-
-                var predicates = new List<Expression<Func<Post, bool>>>();
-                if (!request.IncludeUnpublished)
-                    predicates.Add(p => p.Published != null);
-                if (!string.IsNullOrWhiteSpace(request.Category))
-                {
-                    predicates.Add(p => p.Categories.Contains(request.Category));
-                    pagingUrlPartFormat += "&" + string.Format(_blogOptions.Value.CategoryUrlPartFormat, request.Category);
-                }
-
-                var posts = await GetPagedListAsync(predicates, pager, pagingUrlPartFormat, cancellationToken);
+                IEnumerable<Post> posts = await _repo.GetPostListAsync(request.IncludeUnpublished, pager, request.Category, _blogOptions.Value, cancellationToken);
 
                 posts = posts.Select(p => _postUrlHelper.ReplaceUrlFormatWithBaseUrl(p));
 
@@ -105,31 +93,6 @@ namespace Opw.PineBlog.Posts
                 }
 
                 return Result<PostListModel>.Success(model);
-            }
-
-            private async Task<IEnumerable<Post>> GetPagedListAsync(IEnumerable<Expression<Func<Post, bool>>> predicates, Pager pager, string pagingUrlPartFormat, CancellationToken cancellationToken)
-            {
-                var skip = (pager.CurrentPage - 1) * pager.ItemsPerPage;
-
-                var countQuery = _context.Posts.Where(_ => true);
-                foreach(var predicate in predicates)
-                    countQuery = countQuery.Where(predicate);
-
-                var count = await countQuery.CountAsync(cancellationToken);
-
-                pager.Configure(count, pagingUrlPartFormat);
-
-                var query = _context.Posts.Where(_ => true);
-
-                foreach (var predicate in predicates)
-                    query = query.Where(predicate);
-
-                query = query.Include(p => p.Author)
-                    .OrderByDescending(p => p.Published)
-                    .Skip(skip)
-                    .Take(pager.ItemsPerPage);
-
-                return await query.ToListAsync(cancellationToken);
             }
         }
     }

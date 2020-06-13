@@ -1,5 +1,4 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
 using System;
@@ -23,15 +22,15 @@ namespace Opw.PineBlog.Posts
         /// </summary>
         public class Handler : IRequestHandler<PublishPostCommand, Result<Post>>
         {
-            private readonly IBlogEntityDbContext _context;
+            private readonly IRepository _repo;
 
             /// <summary>
             /// Implementation of PublishPostCommand.Handler.
             /// </summary>
-            /// <param name="context">The blog entity context.</param>
-            public Handler(IBlogEntityDbContext context)
+            /// <param name="repo">The blog entity repo.</param>
+            public Handler(IRepository repo)
             {
-                _context = context;
+                _repo = repo;
             }
 
             /// <summary>
@@ -41,18 +40,14 @@ namespace Opw.PineBlog.Posts
             /// <param name="cancellationToken">A cancellation token.</param>
             public async Task<Result<Post>> Handle(PublishPostCommand request, CancellationToken cancellationToken)
             {
-                var entity = await _context.Posts.SingleOrDefaultAsync(e => e.Id.Equals(request.Id));
-                if (entity == null)
-                    return Result<Post>.Fail(new NotFoundException<Post>($"Could not find post, id: \"{request.Id}\""));
-
-                entity.Published = DateTime.UtcNow;
-                
-                _context.Posts.Update(entity);
-                var result = await _context.SaveChangesAsync(true, cancellationToken);
-                if (!result.IsSuccess)
-                    return Result<Post>.Fail(result.Exception);
-
-                return Result<Post>.Success(entity);
+                try
+                {
+                    return await _repo.PublishPostAsync(request.Id, cancellationToken);
+                }
+                catch (Exception ex)
+                {
+                    return Result<Post>.Fail(ex);
+                }
             }
         }
     }

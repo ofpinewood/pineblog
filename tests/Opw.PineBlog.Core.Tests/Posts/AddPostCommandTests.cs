@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
+using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -14,12 +16,13 @@ namespace Opw.PineBlog.Posts
     {
         public AddPostCommandTests()
         {
-            SeedDatabase();
         }
-        
+
         [Fact]
         public async Task Validator_Should_ThrowValidationErrorException()
         {
+            await SeedDatabase();
+
             Task action() => Mediator.Send(new AddPostCommand());
 
             var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
@@ -31,7 +34,10 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnNotFoundException_WhenInvalidUser()
         {
-            var result = await Mediator.Send(new AddPostCommand {
+            await SeedDatabase();
+
+            var result = await Mediator.Send(new AddPostCommand
+            {
                 UserName = "invalid@example.com",
                 Categories = "category",
                 Title = "title",
@@ -46,21 +52,24 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_AddPost()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new AddPostCommand
             {
                 UserName = "user@example.com",
                 Categories = "category",
                 Title = "title",
                 Content = "content",
-                Description = "description"
+                Description = "description",
+                Published = DateTime.UtcNow
             });
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Id.Should().NotBeEmpty();
 
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var repo = ServiceProvider.GetRequiredService<IRepository>();
 
-            var post = await context.Posts.SingleAsync(p => p.Title.Equals("title"));
+            var post = await repo.GetPostBySlugAsync("title", CancellationToken.None);
 
             post.Should().NotBeNull();
             post.Id.Should().Be(result.Value.Id);
@@ -69,6 +78,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_HaveSlug()
         {
+            await SeedDatabase();
+
             var result = await Mediator.Send(new AddPostCommand
             {
                 UserName = "user@example.com",
@@ -83,13 +94,12 @@ namespace Opw.PineBlog.Posts
             result.Value.Slug.Should().MatchRegex(result.Value.Title.ToPostSlug());
         }
 
-        private void SeedDatabase()
+        private async Task SeedDatabase()
         {
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var repo = ServiceProvider.GetRequiredService<IRepository>();
 
             var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
-            context.Authors.Add(author);
-            context.SaveChanges();
+            await repo.AddAuthorAsync(author, CancellationToken.None);
         }
     }
 }

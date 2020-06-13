@@ -1,5 +1,4 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
 using System;
@@ -23,15 +22,15 @@ namespace Opw.PineBlog.Posts
         /// </summary>
         public class Handler : IRequestHandler<DeletePostCommand, Result>
         {
-            private readonly IBlogEntityDbContext _context;
+            private readonly IRepository _repo;
 
             /// <summary>
             /// Implementation of UnpublishPostCommand.Handler.
             /// </summary>
-            /// <param name="context">The blog entity context.</param>
-            public Handler(IBlogEntityDbContext context)
+            /// <param name="repo">The blog entity context.</param>
+            public Handler(IRepository repo)
             {
-                _context = context;
+                _repo = repo;
             }
 
             /// <summary>
@@ -41,18 +40,20 @@ namespace Opw.PineBlog.Posts
             /// <param name="cancellationToken">A cancellation token.</param>
             public async Task<Result> Handle(DeletePostCommand request, CancellationToken cancellationToken)
             {
-                var entity = await _context.Posts.SingleOrDefaultAsync(e => e.Id.Equals(request.Id));
-                if (entity == null)
-                    return Result.Fail(new NotFoundException<Post>($"Could not find post, id: \"{request.Id}\""));
+                try
+                {
+                    var entity = await _repo.GetPostByIdAsync(request.Id, cancellationToken);
+                    if (entity == null)
+                        return Result.Fail(new NotFoundException<Post>($"Could not find post, id: \"{request.Id}\""));
 
-                entity.Published = null;
-                
-                _context.Posts.Remove(entity);
-                var result = await _context.SaveChangesAsync(true, cancellationToken);
-                if (!result.IsSuccess)
-                    return Result.Fail(result.Exception);
-
-                return Result.Success();
+                    return await _repo.DeletePostAsync(entity, cancellationToken) is { } result
+                        ? Result.Success()
+                        : Result.Fail(result.Exception);
+                }
+                catch (Exception ex)
+                {
+                    return Result.Fail(ex);
+                }
             }
         }
     }
