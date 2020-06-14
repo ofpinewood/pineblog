@@ -31,10 +31,10 @@ steps:
 
 # https://dotnet.microsoft.com/download/dotnet-core/3.1
 - task: UseDotNet@2
-  displayName: Install .Net Core 3.1.200 LTS
+  displayName: Install .Net Core 3.1.301 LTS
   inputs:
     packageType: 'sdk'
-    version: '3.1.200'
+    version: '3.1.301'
 
 - task: DotNetCoreCLI@2
   displayName: Build
