@@ -23,7 +23,7 @@ namespace Opw.PineBlog
                .Build();
 
             // create a new in-memory database for each test
-            configuration.GetSection("ConnectionStrings").GetSection("DefaultConnection").Value = $"Server=inMemory; Database=pineblog-tests-{DateTime.UtcNow.Ticks};";
+            configuration.GetSection("ConnectionStrings").GetSection("DefaultConnection").Value = $"Server=inMemory; Database=pineblog-tests-{Guid.NewGuid()};";
 
             Services = new ServiceCollection();
             Services.AddMediatR(typeof(AddPostCommand).Assembly);
