@@ -13,7 +13,7 @@ If you have general questions or feedback about using PineBlog, PLEASE DON'T CRE
 Please read the [GitHub flow](https://guides.github.com/introduction/flow/) documentation. **TL;DR** there's only one rule: anything in the master branch is always deployable.
 
 ### Development
-Check if you have the correct version of [.Net Core]((https://dotnet.microsoft.com/download/dotnet-core)) installed, see the `global.json` for the version used.  
+Check if you have the correct version of [.Net Core](https://dotnet.microsoft.com/download/dotnet-core) installed, see the `global.json` for the version used.  
 
 Node.js is also required to build and run the project, specifically the `Opw.PineBlog.RazorPages` project. You can install node.js from https://nodejs.org/, and then restart your command prompt or IDE. Make sure you also install the `npm package manager` while installing node.js.
 
