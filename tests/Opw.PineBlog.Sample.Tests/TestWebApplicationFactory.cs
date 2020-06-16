@@ -27,7 +27,7 @@ namespace Opw.PineBlog.Sample
             return new WebHostBuilder()
                 .UseConfiguration(Configuration)
                 .UseStartup<Startup>()
-                .ConfigureAppConfiguration((_, config) => config.AddPineBlogConfiguration(reloadOnChange: true));
+                .ConfigureAppConfiguration((_, config) => config.AddPineBlogEntityFrameworkCoreConfiguration(reloadOnChange: true));
         }
 
         protected override TestServer CreateServer(IWebHostBuilder builder)

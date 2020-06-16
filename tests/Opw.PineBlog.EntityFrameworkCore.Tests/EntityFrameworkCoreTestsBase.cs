@@ -14,7 +14,7 @@ namespace Opw.PineBlog.EntityFrameworkCore
         {
             var configuration = new ConfigurationBuilder()
                .AddJsonFile("appsettings.json")
-               .AddPineBlogConfiguration(reloadOnChange: false)
+               .AddPineBlogEntityFrameworkCoreConfiguration(reloadOnChange: false)
                .Build();
 
             // create a new in-memory database for each test

@@ -4,10 +4,11 @@ using Mongo2Go;
 using MongoDB.Driver;
 using Opw.PineBlog.Entities;
 using System;
+using System.Threading;
 
 namespace Opw.PineBlog.MongoDb
 {
-    public abstract class MongoDbTestsBase
+    public abstract class MongoDbTestsBase : IDisposable
     {
         private static MongoDbRunner _runner;
 
@@ -22,8 +23,7 @@ namespace Opw.PineBlog.MongoDb
         {
             var configuration = new ConfigurationBuilder()
                .AddJsonFile("appsettings.json")
-               // TODO: implement PineBlogConfiguration for MongoDb
-               //.AddPineBlogConfiguration(reloadOnChange: false)
+               .AddPineBlogMongoDbConfiguration(reloadOnChange: false)
                .Build();
 
             _runner = MongoDbRunner.Start();
@@ -40,6 +40,22 @@ namespace Opw.PineBlog.MongoDb
             BlogSettingsCollection = database.GetCollection<BlogSettings>(nameof(BlogSettings));
             AuthorCollection = database.GetCollection<Author>($"{nameof(Author)}s");
             PostCollection = database.GetCollection<Post>($"{nameof(Post)}s");
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // wait a little to prevent timeouts
+                Thread.Sleep(500);
+                _runner.Dispose();
+            }
         }
     }
 }
