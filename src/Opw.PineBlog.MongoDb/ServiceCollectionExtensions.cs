@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 
 namespace Opw.PineBlog.MongoDb
 {
@@ -23,7 +24,9 @@ namespace Opw.PineBlog.MongoDb
             {
                 var blogOptions = provider.GetRequiredService<IOptions<PineBlogOptions>>();
                 var connectionString = configuration.GetConnectionString(blogOptions.Value.ConnectionStringName);
-                return new BlogUnitOfWork(connectionString, blogOptions.Value.MongoDbDatabaseName);
+                var client = new MongoClient(connectionString);
+
+                return new BlogUnitOfWork(client.GetDatabase(blogOptions.Value.MongoDbDatabaseName));
             });
 
             return services;

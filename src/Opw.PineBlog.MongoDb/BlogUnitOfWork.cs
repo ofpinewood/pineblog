@@ -15,10 +15,9 @@ namespace Opw.PineBlog.MongoDb
         public IAuthorRepository Authors { get; }
         public IPostRepository Posts { get; }
 
-        public BlogUnitOfWork(string connectionString, string databaseName)
+        public BlogUnitOfWork(IMongoDatabase database)
         {
-            var client = new MongoClient(connectionString);
-            Database = client.GetDatabase(databaseName);
+            Database = database;
 
             BlogSettings = new BlogSettingsRepository(this);
             Authors = new AuthorRepository(this);
