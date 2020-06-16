@@ -70,5 +70,10 @@ namespace Opw.PineBlog
         /// Azure storage blob container name.
         /// </summary>
         public string AzureStorageBlobContainerName { get; set; }
+
+        /// <summary>
+        /// MongoDb database name.
+        /// </summary>
+        public string MongoDbDatabaseName { get; set; }
     }
 }
