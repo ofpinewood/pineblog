@@ -26,7 +26,7 @@ namespace Opw.PineBlog.MongoDb.Repositories
             _repository = uow.Authors;
         }
 
-        [Fact]
+        [Fact(Skip = Constants.SkipMongoDbTests)]
         public async Task SingleOrDefaultAsync_Should_Return1Author()
         {
             var result = await _repository.SingleOrDefaultAsync(a => a.UserName == "bob.ross@example.com", CancellationToken.None);
@@ -35,7 +35,7 @@ namespace Opw.PineBlog.MongoDb.Repositories
             result.DisplayName.Should().Be("Bob Ross");
         }
 
-        [Fact]
+        [Fact(Skip = Constants.SkipMongoDbTests)]
         public async Task SingleOrDefaultAsync_Should_Return0Authors()
         {
             var result = await _repository.SingleOrDefaultAsync(a => a.UserName == "invalid@example.com", CancellationToken.None);

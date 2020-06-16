@@ -6,7 +6,7 @@ using Opw.PineBlog.Entities;
 using System;
 using System.Threading;
 
-namespace Opw.PineBlog.MongoDb
+namespace Opw.PineBlog.MongoDb.Repositories
 {
     public abstract class MongoDbTestsBase : IDisposable
     {
@@ -26,7 +26,7 @@ namespace Opw.PineBlog.MongoDb
                .AddPineBlogMongoDbConfiguration(reloadOnChange: false)
                .Build();
 
-            _runner = MongoDbRunner.Start();
+            _runner = MongoDbRunner.Start(singleNodeReplSet: true);
 
             // create a new in-memory database for each test
             configuration.GetSection("ConnectionStrings").GetSection("MongoDbConnection").Value = _runner.ConnectionString;
@@ -53,8 +53,8 @@ namespace Opw.PineBlog.MongoDb
             if (disposing)
             {
                 // wait a little to prevent timeouts
-                //Thread.Sleep(1000);
-                //_runner.Dispose();
+                Thread.Sleep(1000);
+                _runner.Dispose();
             }
         }
     }

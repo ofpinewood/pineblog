@@ -3,17 +3,23 @@ using Opw.PineBlog.Entities;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
-using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Driver;
+using Moq;
 
 namespace Opw.PineBlog.MongoDb
 {
-    public class BlogUnitOfWorkTests : MongoDbTestsBase
+    public class BlogUnitOfWorkTests
     {
-        private readonly IBlogUnitOfWork _uow;
+        private readonly Mock<IMongoDatabase> _mongoDatabaseMock;
+        private readonly BlogUnitOfWork _uow;
 
         public BlogUnitOfWorkTests()
         {
-            _uow = ServiceProvider.GetService<IBlogUnitOfWork>();
+            _mongoDatabaseMock = new Mock<IMongoDatabase>();
+            _mongoDatabaseMock.Setup(m => m.GetCollection<Post>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>()))
+                .Returns(new Mock<IMongoCollection<Post>>().Object);
+
+            _uow = new BlogUnitOfWork(_mongoDatabaseMock.Object);
         }
 
         [Fact]
