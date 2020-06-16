@@ -1,25 +1,19 @@
 using FluentAssertions;
-using MongoDB.Driver;
-using Moq;
 using Opw.PineBlog.Entities;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Opw.PineBlog.MongoDb
 {
-    public class BlogUnitOfWorkTests
+    public class BlogUnitOfWorkTests : MongoDbTestsBase
     {
-        private readonly Mock<IMongoDatabase> _mongoDatabaseMock;
-        private readonly BlogUnitOfWork _uow;
+        private readonly IBlogUnitOfWork _uow;
 
         public BlogUnitOfWorkTests()
         {
-            _mongoDatabaseMock = new Mock<IMongoDatabase>();
-            _mongoDatabaseMock.Setup(m => m.GetCollection<Post>(It.IsAny<string>(), It.IsAny<MongoCollectionSettings>()))
-                .Returns(new Mock<IMongoCollection<Post>>().Object);
-
-            _uow = new BlogUnitOfWork(_mongoDatabaseMock.Object);
+            _uow = ServiceProvider.GetService<IBlogUnitOfWork>();
         }
 
         [Fact]
