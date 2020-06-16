@@ -53,8 +53,8 @@ namespace Opw.PineBlog.MongoDb
             if (disposing)
             {
                 // wait a little to prevent timeouts
-                Thread.Sleep(500);
-                _runner.Dispose();
+                //Thread.Sleep(1000);
+                //_runner.Dispose();
             }
         }
     }
