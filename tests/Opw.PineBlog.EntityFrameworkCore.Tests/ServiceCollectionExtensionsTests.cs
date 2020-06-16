@@ -3,7 +3,6 @@ using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
-using System.Threading.Tasks;
 
 namespace Opw.PineBlog.EntityFrameworkCore
 {
@@ -12,9 +11,17 @@ namespace Opw.PineBlog.EntityFrameworkCore
         [Fact]
         public void AddPineBlogEntityFrameworkCore_Should_RegisterBlogEntityDbContext()
         {
-            var context = ServiceProvider.GetService<IBlogEntityDbContext>();
+            var context = ServiceProvider.GetService<BlogEntityDbContext>();
 
             context.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void AddPineBlogEntityFrameworkCore_Should_RegisterBlogUnitOfWork()
+        {
+            var uow = ServiceProvider.GetService<IBlogUnitOfWork>();
+
+            uow.Should().NotBeNull();
         }
 
         [Fact]
@@ -30,7 +37,7 @@ namespace Opw.PineBlog.EntityFrameworkCore
             {
                 services.AddPineBlogEntityFrameworkCore(configuration);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ex.Should().BeOfType<ConfigurationException>();
                 ex.Message.Should().Contain("The PineBlog IConfigurationProvider(s) are not configured");

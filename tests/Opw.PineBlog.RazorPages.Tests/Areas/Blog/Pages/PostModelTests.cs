@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Moq;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
@@ -110,7 +109,7 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
         }
 
         [Fact]
-        public async Task OnGetAsync_Should_ThrowNotFoundException()
+        public void OnGetAsync_Should_ThrowNotFoundException()
         {
             var loggerMock = new Mock<ILogger<PostModel>>();
             var mediaterMock = new Mock<IMediator>();

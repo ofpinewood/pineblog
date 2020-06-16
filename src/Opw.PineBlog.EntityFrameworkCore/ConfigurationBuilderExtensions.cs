@@ -21,7 +21,8 @@ namespace Opw.PineBlog.EntityFrameworkCore
             var connectionString = configuration.GetConnectionString(connectionStringName);
 
             var optionsAction = DbContextOptionsHelper.Configure(connectionString);
-            return builder.Add(new BlogSettingsConfigurationSource {
+            return builder.Add(new BlogSettingsConfigurationSource
+            {
                 OptionsAction = optionsAction,
                 ReloadOnChange = reloadOnChange
             });

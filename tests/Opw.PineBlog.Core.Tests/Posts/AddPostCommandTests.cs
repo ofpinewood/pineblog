@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
+using Opw.PineBlog.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -16,7 +17,7 @@ namespace Opw.PineBlog.Posts
         {
             SeedDatabase();
         }
-        
+
         [Fact]
         public async Task Validator_Should_ThrowValidationErrorException()
         {
@@ -31,7 +32,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnNotFoundException_WhenInvalidUser()
         {
-            var result = await Mediator.Send(new AddPostCommand {
+            var result = await Mediator.Send(new AddPostCommand
+            {
                 UserName = "invalid@example.com",
                 Categories = "category",
                 Title = "title",
@@ -58,7 +60,7 @@ namespace Opw.PineBlog.Posts
             result.IsSuccess.Should().BeTrue();
             result.Value.Id.Should().NotBeEmpty();
 
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
 
             var post = await context.Posts.SingleAsync(p => p.Title.Equals("title"));
 
@@ -85,7 +87,7 @@ namespace Opw.PineBlog.Posts
 
         private void SeedDatabase()
         {
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
 
             var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
             context.Authors.Add(author);

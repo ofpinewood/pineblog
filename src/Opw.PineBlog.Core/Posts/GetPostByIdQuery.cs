@@ -24,17 +24,17 @@ namespace Opw.PineBlog.Posts
         /// </summary>
         public class Handler : IRequestHandler<GetPostByIdQuery, Result<Post>>
         {
-            private readonly IBlogEntityDbContext _context;
+            private readonly IBlogUnitOfWork _uow;
             private readonly PostUrlHelper _postUrlHelper;
 
             /// <summary>
             /// Implementation of GetPostByIdQuery.Handler.
             /// </summary>
-            /// <param name="context">The blog entity context.</param>
+            /// <param name="uow">The blog unit of work.</param>
             /// <param name="postUrlHelper">Post URL helper.</param>
-            public Handler(IBlogEntityDbContext context, PostUrlHelper postUrlHelper)
+            public Handler(IBlogUnitOfWork uow, PostUrlHelper postUrlHelper)
             {
-                _context = context;
+                _uow = uow;
                 _postUrlHelper = postUrlHelper;
             }
 
@@ -45,11 +45,7 @@ namespace Opw.PineBlog.Posts
             /// <param name="cancellationToken">A cancellation token.</param>
             public async Task<Result<Post>> Handle(GetPostByIdQuery request, CancellationToken cancellationToken)
             {
-                var post = await _context.Posts
-                    .Include(p => p.Author)
-                    .Where(p => p.Id.Equals(request.Id))
-                    .SingleOrDefaultAsync(cancellationToken);
-
+                var post = await _uow.Posts.SingleOrDefaultAsync(p => p.Id.Equals(request.Id), cancellationToken);
                 if (post == null)
                     return Result<Post>.Fail(new NotFoundException<Post>($"Could not find post, id: \"{request.Id}\""));
 

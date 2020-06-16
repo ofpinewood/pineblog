@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Opw.PineBlog.Entities;
+using Opw.PineBlog.EntityFrameworkCore;
 using Opw.PineBlog.Models;
 using System;
 using System.Linq;
@@ -148,7 +149,7 @@ namespace Opw.PineBlog.Posts
 
         private void SeedDatabase()
         {
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
 
             var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
             context.Authors.Add(author);

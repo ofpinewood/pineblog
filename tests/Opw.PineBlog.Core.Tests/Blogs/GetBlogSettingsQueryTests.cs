@@ -1,10 +1,10 @@
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Opw.PineBlog.Entities;
-using Opw.HttpExceptions;
 using System.Threading.Tasks;
 using Xunit;
 using Microsoft.EntityFrameworkCore;
+using Opw.PineBlog.EntityFrameworkCore;
 
 namespace Opw.PineBlog.Blogs
 {
@@ -18,7 +18,7 @@ namespace Opw.PineBlog.Blogs
         [Fact]
         public async Task Handler_Should_ReturnSettingsFromConfig_WhenNotFound()
         {
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
 
             var existing = await context.BlogSettings.SingleAsync();
             context.BlogSettings.Remove(existing);
@@ -43,7 +43,7 @@ namespace Opw.PineBlog.Blogs
 
         private void SeedDatabase()
         {
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
 
             context.BlogSettings.Add(new BlogSettings
             {
