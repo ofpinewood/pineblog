@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 using System.Linq;
+using Opw.PineBlog.EntityFrameworkCore;
 
 namespace Opw.PineBlog.Posts
 {
@@ -123,7 +124,7 @@ namespace Opw.PineBlog.Posts
 
         private void SeedDatabase()
         {
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
 
             var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
             context.Authors.Add(author);

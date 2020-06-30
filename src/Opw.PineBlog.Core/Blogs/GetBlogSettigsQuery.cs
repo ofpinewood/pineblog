@@ -19,19 +19,19 @@ namespace Opw.PineBlog.Blogs
         /// </summary>
         public class Handler : IRequestHandler<GetBlogSettigsQuery, Result<BlogSettings>>
         {
-            private readonly IBlogEntityDbContext _context;
+            private readonly IBlogUnitOfWork _uow;
             private readonly FileUrlHelper _fileUrlHelper;
             private readonly IOptionsSnapshot<PineBlogOptions> _blogOptions;
 
             /// <summary>
             /// Implementation of GetBlogSettigsQuery.Handler.
             /// </summary>
-            /// <param name="context">The blog entity context.</param>
+            /// <param name="uow">The blog unit of work.</param>
             /// <param name="fileUrlHelper">File URL helper.</param>
             /// <param name="blogOptions">Blog options.</param>
-            public Handler(IBlogEntityDbContext context, FileUrlHelper fileUrlHelper, IOptionsSnapshot<PineBlogOptions> blogOptions)
+            public Handler(IBlogUnitOfWork uow, FileUrlHelper fileUrlHelper, IOptionsSnapshot<PineBlogOptions> blogOptions)
             {
-                _context = context;
+                _uow = uow;
                 _fileUrlHelper = fileUrlHelper;
                 _blogOptions = blogOptions;
             }
@@ -43,7 +43,7 @@ namespace Opw.PineBlog.Blogs
             /// <param name="cancellationToken">A cancellation token.</param>
             public async Task<Result<BlogSettings>> Handle(GetBlogSettigsQuery request, CancellationToken cancellationToken)
             {
-                var blogSettings = await _context.BlogSettings.SingleOrDefaultAsync();
+                var blogSettings = await _uow.BlogSettings.SingleOrDefaultAsync(cancellationToken);
                 if (blogSettings == null)
                 {
                     blogSettings = new BlogSettings

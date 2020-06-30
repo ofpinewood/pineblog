@@ -44,21 +44,21 @@ namespace Opw.PineBlog.Posts
         public class Handler : IRequestHandler<GetPagedPostListQuery, Result<PostListModel>>
         {
             private readonly IOptionsSnapshot<PineBlogOptions> _blogOptions;
-            private readonly IBlogEntityDbContext _context;
+            private readonly IBlogUnitOfWork _uow;
             private readonly PostUrlHelper _postUrlHelper;
             private readonly FileUrlHelper _fileUrlHelper;
 
             /// <summary>
             /// Implementation of GetPagedPostListQuery.Handler.
             /// </summary>
-            /// <param name="context">The blog entity context.</param>
+            /// <param name="uow">The blog unit of work.</param>
             /// <param name="blogOptions">The blog options.</param>
             /// <param name="postUrlHelper">Post URL helper.</param>
             /// <param name="fileUrlHelper">File URL helper.</param>
-            public Handler(IBlogEntityDbContext context, IOptionsSnapshot<PineBlogOptions> blogOptions, PostUrlHelper postUrlHelper, FileUrlHelper fileUrlHelper)
+            public Handler(IBlogUnitOfWork uow, IOptionsSnapshot<PineBlogOptions> blogOptions, PostUrlHelper postUrlHelper, FileUrlHelper fileUrlHelper)
             {
                 _blogOptions = blogOptions;
-                _context = context;
+                _uow = uow;
                 _postUrlHelper = postUrlHelper;
                 _fileUrlHelper = fileUrlHelper;
             }
@@ -110,26 +110,11 @@ namespace Opw.PineBlog.Posts
             private async Task<IEnumerable<Post>> GetPagedListAsync(IEnumerable<Expression<Func<Post, bool>>> predicates, Pager pager, string pagingUrlPartFormat, CancellationToken cancellationToken)
             {
                 var skip = (pager.CurrentPage - 1) * pager.ItemsPerPage;
-
-                var countQuery = _context.Posts.Where(_ => true);
-                foreach(var predicate in predicates)
-                    countQuery = countQuery.Where(predicate);
-
-                var count = await countQuery.CountAsync(cancellationToken);
+                var count = await _uow.Posts.CountAsync(predicates, cancellationToken);
 
                 pager.Configure(count, pagingUrlPartFormat);
 
-                var query = _context.Posts.Where(_ => true);
-
-                foreach (var predicate in predicates)
-                    query = query.Where(predicate);
-
-                query = query.Include(p => p.Author)
-                    .OrderByDescending(p => p.Published)
-                    .Skip(skip)
-                    .Take(pager.ItemsPerPage);
-
-                return await query.ToListAsync(cancellationToken);
+                return await _uow.Posts.GetAsync(predicates, skip, pager.ItemsPerPage, cancellationToken);
             }
         }
     }

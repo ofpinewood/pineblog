@@ -27,12 +27,14 @@ namespace Opw.PineBlog.EntityFrameworkCore
                 };
             }
 
-            services.AddDbContextPool<IBlogEntityDbContext, BlogEntityDbContext>((provider, options) =>
+            services.AddDbContextPool<BlogEntityDbContext>((provider, options) =>
             {
                 var blogOptions = provider.GetRequiredService<IOptions<PineBlogOptions>>();
                 var connectionString = configuration.GetConnectionString(blogOptions.Value.ConnectionStringName);
                 DbContextOptionsHelper.ConfigureOptionsBuilder(options, connectionString);
             });
+
+            services.AddTransient<IBlogUnitOfWork, BlogUnitOfWork>();
 
             return services;
         }

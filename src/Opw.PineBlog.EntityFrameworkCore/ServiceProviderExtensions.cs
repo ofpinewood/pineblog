@@ -12,7 +12,7 @@ namespace Opw.PineBlog.EntityFrameworkCore
             var blogOptions = serviceProvider.GetService<IOptions<PineBlogOptions>>();
             if (blogOptions.Value.CreateAndSeedDatabases)
             {
-                var dbContext = (BlogEntityDbContext)serviceProvider.GetRequiredService<IBlogEntityDbContext>();
+                var dbContext = (BlogEntityDbContext)serviceProvider.GetRequiredService<BlogEntityDbContext>();
                 new DbMigrator<BlogEntityDbContext>(dbContext).CreateOrMigrate(seedAction);
             }
         }

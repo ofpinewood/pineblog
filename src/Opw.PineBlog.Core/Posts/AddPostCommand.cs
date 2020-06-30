@@ -63,17 +63,17 @@ namespace Opw.PineBlog.Posts
         /// </summary>
         public class Handler : IRequestHandler<AddPostCommand, Result<Post>>
         {
-            private readonly IBlogEntityDbContext _context;
+            private readonly IBlogUnitOfWork _uow;
             private readonly PostUrlHelper _postUrlHelper;
 
             /// <summary>
             /// Implementation of AddPostCommand.Handler.
             /// </summary>
-            /// <param name="context">The blog entity context.</param>
+            /// <param name="uow">The blog unit of work.</param>
             /// <param name="postUrlHelper">Post URL helper.</param>
-            public Handler(IBlogEntityDbContext context, PostUrlHelper postUrlHelper)
+            public Handler(IBlogUnitOfWork uow, PostUrlHelper postUrlHelper)
             {
-                _context = context;
+                _uow = uow;
                 _postUrlHelper = postUrlHelper;
             }
 
@@ -84,7 +84,7 @@ namespace Opw.PineBlog.Posts
             /// <param name="cancellationToken">A cancellation token.</param>
             public async Task<Result<Post>> Handle(AddPostCommand request, CancellationToken cancellationToken)
             {
-                var author = await _context.Authors.SingleOrDefaultAsync(a => a.UserName.Equals(request.UserName));
+                var author = await _uow.Authors.SingleOrDefaultAsync(a => a.UserName.Equals(request.UserName), cancellationToken);
                 if (author == null)
                     return Result<Post>.Fail(new NotFoundException($"Could not find author for \"{request.UserName}\"."));
 
@@ -104,8 +104,8 @@ namespace Opw.PineBlog.Posts
 
                 entity = _postUrlHelper.ReplaceBaseUrlWithUrlFormat(entity);
 
-                _context.Posts.Add(entity);
-                var result = await _context.SaveChangesAsync(cancellationToken);
+                _uow.Posts.Add(entity);
+                var result = await _uow.SaveChangesAsync(cancellationToken);
                 if (!result.IsSuccess)
                     return Result<Post>.Fail(result.Exception);
 

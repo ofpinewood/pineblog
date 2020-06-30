@@ -4,13 +4,15 @@ using Opw.EntityFrameworkCore;
 
 namespace Opw.PineBlog.EntityFrameworkCore
 {
-    public class BlogEntityDbContext : EntityDbContext, IBlogEntityDbContext
+    public class BlogEntityDbContext : EntityDbContext
     {
         public DbSet<BlogSettings> BlogSettings { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Author> Authors { get; set; }
 
-        public BlogEntityDbContext(DbContextOptions<BlogEntityDbContext> options) : base(options) { }
+        public BlogEntityDbContext(DbContextOptions<BlogEntityDbContext> options) : base(options)
+        {
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
