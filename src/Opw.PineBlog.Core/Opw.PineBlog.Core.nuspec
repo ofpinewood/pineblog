@@ -18,6 +18,7 @@
                 <dependency id="Markdig" version="0.18.3" exclude="Build,Analyzers" />
                 <dependency id="MediatR.Extensions.Microsoft.DependencyInjection" version="8.0.0" exclude="Build,Analyzers" />
                 <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="2.2.0" exclude="Build,Analyzers" />
+                <dependency id="Microsoft.Extensions.DependencyInjection" version="3.1.2" />
                 <dependency id="Microsoft.Extensions.Options" version="3.1.2" exclude="Build,Analyzers" />
                 <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="3.1.2" exclude="Build,Analyzers" />
                 <dependency id="MimeMapping" version="1.0.1.26" exclude="Build,Analyzers" />
@@ -25,7 +26,7 @@
                 <dependency id="System.ServiceModel.Syndication" version="4.7.0" exclude="Build,Analyzers" />
 
                 <!-- Opw.PineBlog.Abstractions -->
-                <dependency id="Opw.EntityFrameworkCore" version="1.2.1" exclude="Build,Analyzers" />
+                <dependency id="Opw.Core" version="1.2.2" exclude="Build,Analyzers" />
             </group>
         </dependencies>
     </metadata>

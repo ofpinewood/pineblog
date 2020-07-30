@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System;
 using Opw.PineBlog.Repositories;
-using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 
 namespace Opw.PineBlog.MongoDb.Repositories

@@ -1,5 +1,4 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Opw.PineBlog.Models;
 using Opw.PineBlog.Posts;

@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Diagnostics.CodeAnalysis;
 using Opw.PineBlog.Repositories;
-using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 
 namespace Opw.PineBlog.MongoDb.Repositories

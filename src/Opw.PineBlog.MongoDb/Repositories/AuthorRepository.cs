@@ -4,7 +4,6 @@ using System.Threading;
 using System;
 using Opw.PineBlog.Repositories;
 using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 
 namespace Opw.PineBlog.MongoDb.Repositories
