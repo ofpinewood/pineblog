@@ -1,7 +1,9 @@
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Opw.EntityFrameworkCore;
 using Opw.PineBlog.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -48,7 +50,25 @@ namespace Opw.PineBlog.EntityFrameworkCore
                 if (!context.Database.CanConnect())
                     return;
 
-                var settings = context.BlogSettings.SingleOrDefault();
+                BlogSettings settings = null;
+                try
+                {
+                    settings = context.BlogSettings.SingleOrDefault();
+                }
+                catch (SqlException ex)
+                {
+                    if (ex.Message.Contains("Invalid object name 'PineBlog_BlogSettings'", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // This can happen the first call because the database has not been initialized,
+                        // in this case we can ignore this exception.
+                    }
+                    else
+                    {
+                        // Re-throw all other SQL exceptions.
+                        throw;
+                    }
+                }
+
                 if (settings == null) return;
 
                 Data = new Dictionary<string, string>();

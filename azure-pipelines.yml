@@ -22,6 +22,9 @@ schedules:
 
 variables:
   buildConfiguration: 'Release'
+  # Define the GitVersion environment variables so they can be used in all tasks.
+  GitVersion.SemVer: '' 
+  GitVersion.NuGetVersion: ''
 
 steps:
 - task: UseGitVersion@5
@@ -31,10 +34,17 @@ steps:
 
 # https://dotnet.microsoft.com/download/dotnet-core/3.1
 - task: UseDotNet@2
-  displayName: Install .Net Core 3.1.200 LTS
+  displayName: Install .Net Core (specified in global.json)
   inputs:
     packageType: 'sdk'
-    version: '3.1.200'
+    useGlobalJson: true
+    performMultiLevelLookup: true
+
+- script: |
+    echo buildConfiguration: $(buildConfiguration)
+    echo GitVersion.SemVer: $(GitVersion.SemVer)
+    echo GitVersion.NuGetVersion: $(GitVersion.NuGetVersion)
+  displayName: 'Print Variables'
 
 - task: DotNetCoreCLI@2
   displayName: Build
@@ -50,6 +60,22 @@ steps:
       **/tests/*.Tests/*.csproj
       **/tests/*.IntegrationTests/*.csproj
     arguments: '--configuration $(buildConfiguration) --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[Opw.*]*" /p:Exclude="[*Tests]*"'
+
+- task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
+  displayName: Generate Code Coverage Report
+  inputs:
+    reports: $(Build.SourcesDirectory)/tests/**/coverage.cobertura.xml
+    targetdir: $(build.artifactstagingdirectory)/TestResults/
+    reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish Code Coverage Results'
+  inputs:
+    codeCoverageTool: cobertura
+    summaryFileLocation: $(build.artifactstagingdirectory)/TestResults/cobertura.xml
+    # To make the task not regenerate the report an environment variable was added to the pipeline in Azure DevOps; "disable.coverage.autogenerate: 'true'"
+    # see: https://github.com/danielpalme/ReportGenerator/wiki/Integration#attention
+    reportDirectory: '$(build.artifactstagingdirectory)/TestResults'
 
 # Release: triggered by a version tag
 - task: DotNetCoreCLI@2
@@ -133,22 +159,6 @@ steps:
    tag: '$(GitVersion.SemVer)'
 
 # Finalize
-- task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
-  displayName: Generate Code Coverage Report
-  inputs:
-    reports: $(Build.SourcesDirectory)/tests/**/coverage.cobertura.xml
-    targetdir: $(build.artifactstagingdirectory)/TestResults/
-    reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'
-
-- task: PublishCodeCoverageResults@1
-  displayName: 'Publish Code Coverage Results'
-  inputs:
-    codeCoverageTool: cobertura
-    summaryFileLocation: $(build.artifactstagingdirectory)/TestResults/cobertura.xml
-    # To make the task not regenerate the report an environment variable was added to the pipeline in Azure DevOps; "disable.coverage.autogenerate: 'true'"
-    # see: https://github.com/danielpalme/ReportGenerator/wiki/Integration#attention
-    reportDirectory: '$(build.artifactstagingdirectory)/TestResults'
-
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifacts'
   condition: always()
