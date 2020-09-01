@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
+using Opw.PineBlog.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -16,7 +17,7 @@ namespace Opw.PineBlog.Blogs
         {
             SeedDatabase();
         }
-        
+
         [Fact]
         public async Task Validator_Should_ThrowValidationErrorException()
         {
@@ -29,7 +30,7 @@ namespace Opw.PineBlog.Blogs
         [Fact]
         public async Task Handler_Should_AddSettings_WhenNotFound()
         {
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
 
             var existing = await context.BlogSettings.SingleAsync();
             context.BlogSettings.Remove(existing);
@@ -42,7 +43,7 @@ namespace Opw.PineBlog.Blogs
 
             result.IsSuccess.Should().BeTrue();
 
-            context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
 
             var settings = await context.BlogSettings.SingleAsync();
 
@@ -64,7 +65,7 @@ namespace Opw.PineBlog.Blogs
 
             result.IsSuccess.Should().BeTrue();
 
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
 
             var settings = await context.BlogSettings.SingleAsync();
 
@@ -74,9 +75,10 @@ namespace Opw.PineBlog.Blogs
 
         private void SeedDatabase()
         {
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
 
-            context.BlogSettings.Add(new BlogSettings {
+            context.BlogSettings.Add(new BlogSettings
+            {
                 Title = "blog title",
                 Description = "blog description",
                 CoverCaption = "blog cover caption",

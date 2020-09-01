@@ -3,6 +3,7 @@ using FluentValidation.Results;
 using Microsoft.Extensions.DependencyInjection;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
+using Opw.PineBlog.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.ServiceModel.Syndication;
@@ -121,7 +122,7 @@ namespace Opw.PineBlog.Feeds
 
         private void SeedDatabase()
         {
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
 
             var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
             context.Authors.Add(author);

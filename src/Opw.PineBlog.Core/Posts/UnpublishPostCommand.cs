@@ -23,15 +23,15 @@ namespace Opw.PineBlog.Posts
         /// </summary>
         public class Handler : IRequestHandler<UnpublishPostCommand, Result<Post>>
         {
-            private readonly IBlogEntityDbContext _context;
+            private readonly IBlogUnitOfWork _uow;
 
             /// <summary>
             /// Implementation of UnpublishPostCommand.Handler.
             /// </summary>
-            /// <param name="context">The blog entity context.</param>
-            public Handler(IBlogEntityDbContext context)
+            /// <param name="uow">The blog unit of work.</param>
+            public Handler(IBlogUnitOfWork uow)
             {
-                _context = context;
+                _uow = uow;
             }
 
             /// <summary>
@@ -41,14 +41,14 @@ namespace Opw.PineBlog.Posts
             /// <param name="cancellationToken">A cancellation token.</param>
             public async Task<Result<Post>> Handle(UnpublishPostCommand request, CancellationToken cancellationToken)
             {
-                var entity = await _context.Posts.SingleOrDefaultAsync(e => e.Id.Equals(request.Id));
+                var entity = await _uow.Posts.SingleOrDefaultAsync(e => e.Id.Equals(request.Id), cancellationToken);
                 if (entity == null)
                     return Result<Post>.Fail(new NotFoundException<Post>($"Could not find post, id: \"{request.Id}\""));
 
                 entity.Published = null;
-                
-                _context.Posts.Update(entity);
-                var result = await _context.SaveChangesAsync(true, cancellationToken);
+
+                _uow.Posts.Update(entity);
+                var result = await _uow.SaveChangesAsync(cancellationToken);
                 if (!result.IsSuccess)
                     return Result<Post>.Fail(result.Exception);
 

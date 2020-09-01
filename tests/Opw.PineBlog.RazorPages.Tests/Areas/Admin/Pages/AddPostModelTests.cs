@@ -21,7 +21,7 @@ namespace Opw.PineBlog.RazorPages.Areas.Admin.Pages
     public class AddPostModelTests : RazorPagesTestsBase
     {
         [Fact]
-        public async Task OnGet_Should_SetEmptyAddPostCommand()
+        public void OnGet_Should_SetEmptyAddPostCommand()
         {
             var loggerMock = new Mock<ILogger<AddPostModel>>();
             var mediaterMock = new Mock<IMediator>();

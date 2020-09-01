@@ -40,19 +40,19 @@ namespace Opw.PineBlog.Feeds
         public class Handler : IRequestHandler<GetSyndicationFeedQuery, Result<FeedModel>>
         {
             private readonly IOptionsSnapshot<PineBlogOptions> _blogOptions;
-            private readonly IBlogEntityDbContext _context;
+            private readonly IBlogUnitOfWork _uow;
             private readonly PostUrlHelper _postUrlHelper;
 
             /// <summary>
             /// Implementation of GetFeedQuery.Handler.
             /// </summary>
-            /// <param name="context">The blog entity context.</param>
+            /// <param name="uow">The blog unit of work.</param>
             /// <param name="blogOptions">The blog options.</param>
             /// <param name="postUrlHelper">Post URL helper.</param>
-            public Handler(IBlogEntityDbContext context, IOptionsSnapshot<PineBlogOptions> blogOptions, PostUrlHelper postUrlHelper)
+            public Handler(IBlogUnitOfWork uow, IOptionsSnapshot<PineBlogOptions> blogOptions, PostUrlHelper postUrlHelper)
             {
                 _blogOptions = blogOptions;
-                _context = context;
+                _uow = uow;
                 _postUrlHelper = postUrlHelper;
             }
 
@@ -114,16 +114,10 @@ namespace Opw.PineBlog.Feeds
 
             private async Task<IEnumerable<SyndicationItem>> GetItemsAsync(GetSyndicationFeedQuery request, CancellationToken cancellationToken)
             {
-                var query = _context.Posts
-                    .Include(p => p.Author)
-                    .Where(p => p.Published != null)
-                    .OrderByDescending(p => p.Published)
-                    .Take(25);
-
-                var posts = await query.ToListAsync(cancellationToken);
+                var posts = await _uow.Posts.GetPublishedAsync(25, cancellationToken);
                 var items = new List<SyndicationItem>();
 
-                foreach (var post in posts.Select(p => _postUrlHelper.ReplaceUrlFormatWithBaseUrl(p)))
+                foreach (var post in posts.AsQueryable().Select(p => _postUrlHelper.ReplaceUrlFormatWithBaseUrl(p)))
                 {
                     var absoluteUrl = new Uri(request.BaseUri, $"{request.PostBasePath}/{post.Slug}");
                     var content = SyndicationContent.CreateHtmlContent(Markdig.Markdown.ToHtml(post.Content));

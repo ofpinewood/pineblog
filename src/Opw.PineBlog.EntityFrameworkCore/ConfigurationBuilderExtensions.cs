@@ -14,14 +14,15 @@ namespace Opw.PineBlog.EntityFrameworkCore
         /// <param name="builder">The configuration builder.</param>
         /// <param name="reloadOnChange">Determines whether the source will be loaded if the underlying entity changes.</param>
         /// <returns>The original configuration object.</returns>
-        public static IConfigurationBuilder AddPineBlogConfiguration(this IConfigurationBuilder builder, bool reloadOnChange = false)
+        public static IConfigurationBuilder AddPineBlogEntityFrameworkCoreConfiguration(this IConfigurationBuilder builder, bool reloadOnChange = false)
         {
             var configuration = builder.Build();
             var connectionStringName = configuration.GetSection(nameof(PineBlogOptions)).GetValue<string>(nameof(PineBlogOptions.ConnectionStringName));
             var connectionString = configuration.GetConnectionString(connectionStringName);
 
             var optionsAction = DbContextOptionsHelper.Configure(connectionString);
-            return builder.Add(new BlogSettingsConfigurationSource {
+            return builder.Add(new BlogSettingsConfigurationSource
+            {
                 OptionsAction = optionsAction,
                 ReloadOnChange = reloadOnChange
             });

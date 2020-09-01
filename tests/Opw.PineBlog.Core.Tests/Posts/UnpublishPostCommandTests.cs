@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
+using Opw.PineBlog.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace Opw.PineBlog.Posts
         {
             SeedDatabase();
         }
-        
+
         [Fact]
         public async Task Validator_Should_ThrowValidationErrorException()
         {
@@ -45,7 +46,7 @@ namespace Opw.PineBlog.Posts
 
             result.IsSuccess.Should().BeTrue();
 
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
 
             var post = await context.Posts.SingleAsync(p => p.Id.Equals(_postId));
 
@@ -55,7 +56,7 @@ namespace Opw.PineBlog.Posts
 
         private void SeedDatabase()
         {
-            var context = ServiceProvider.GetRequiredService<IBlogEntityDbContext>();
+            var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
 
             var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
             context.Authors.Add(author);

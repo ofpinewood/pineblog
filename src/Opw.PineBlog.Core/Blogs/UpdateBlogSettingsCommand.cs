@@ -44,17 +44,17 @@ namespace Opw.PineBlog.Blogs
         /// </summary>
         public class Handler : IRequestHandler<UpdateBlogSettingsCommand, Result<BlogSettings>>
         {
-            private readonly IBlogEntityDbContext _context;
+            private readonly IBlogUnitOfWork _uow;
             private readonly FileUrlHelper _fileUrlHelper;
 
             /// <summary>
             /// Implementation of UpdateBlogSettingsCommand.Handler.
             /// </summary>
-            /// <param name="context">The blog entity context.</param>
+            /// <param name="uow">The blog unit of work.</param>
             /// <param name="fileUrlHelper">File URL helper.</param>
-            public Handler(IBlogEntityDbContext context, FileUrlHelper fileUrlHelper)
+            public Handler(IBlogUnitOfWork uow, FileUrlHelper fileUrlHelper)
             {
-                _context = context;
+                _uow = uow;
                 _fileUrlHelper = fileUrlHelper;
             }
 
@@ -65,7 +65,7 @@ namespace Opw.PineBlog.Blogs
             /// <param name="cancellationToken">A cancellation token.</param>
             public async Task<Result<BlogSettings>> Handle(UpdateBlogSettingsCommand request, CancellationToken cancellationToken)
             {
-                var entity = await _context.BlogSettings.SingleOrDefaultAsync();
+                var entity = await _uow.BlogSettings.SingleOrDefaultAsync(cancellationToken);
                 if (entity == null)
                     entity = new BlogSettings();
 
@@ -76,11 +76,11 @@ namespace Opw.PineBlog.Blogs
                 entity.CoverLink = request.CoverLink;
 
                 if (entity.Created == DateTime.MinValue)
-                    _context.BlogSettings.Add(entity);
+                    _uow.BlogSettings.Add(entity);
                 else
-                    _context.BlogSettings.Update(entity);
+                    _uow.BlogSettings.Update(entity);
 
-                var result = await _context.SaveChangesAsync(true, cancellationToken);
+                var result = await _uow.SaveChangesAsync(cancellationToken);
                 if (!result.IsSuccess)
                     return Result<BlogSettings>.Fail(result.Exception);
 
