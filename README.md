@@ -99,13 +99,13 @@ And a few properties need to be configured before you can run your web applicati
 
 #### Blog Settings ConfigurationProvider
 To be able to update the blog settings from the admin pages, you need to add the PineBlog `IConfigurationProvider`s to the
-`IConfigurationBuilder` in the `Program.cs`. Add `config.AddPineBlogConfiguration(reloadOnChange: true);` to `ConfigureAppConfiguration(..)` on the `IWebHostBuilder`.
+`IConfigurationBuilder` in the `Program.cs`. Add `config.AddPineBlogEntityFrameworkCoreConfiguration(reloadOnChange: true);` to `ConfigureAppConfiguration(..)` on the `IWebHostBuilder`.
 
 ``` csharp
 WebHost.CreateDefaultBuilder(args)
     .UseStartup<Startup>()
     .ConfigureAppConfiguration((hostingContext, config) => {
-        config.AddPineBlogConfiguration(reloadOnChange: true);
+        config.AddPineBlogEntityFrameworkCoreConfiguration(reloadOnChange: true);
     });
 ```
 
