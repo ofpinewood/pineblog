@@ -100,7 +100,7 @@ namespace Opw.PineBlog.Sample
                     post.Categories = "yaml,waffle,random";
                 }
 
-                _dbContext.Posts.Add(post);                
+                _dbContext.Posts.Add(post);
             }
 
             _dbContext.SaveChanges();

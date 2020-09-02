@@ -15,6 +15,9 @@ public void ConfigureServices(IServiceCollection services)
 
 public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 {
+    // Make sure you enable static file serving
+    app.UseStaticFiles();
+
     ...
     app.UseEndpoints(endpoints =>
     {
@@ -25,6 +28,10 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     ...
 }
 ```
+
+NOTE: Make sure you enable static file serving `app.UseStaticFiles();`, to enable the serving of the css and javascript from the `Opw.PineBlog.RazorPages` packages.  
+
+See [Customizing the layout](https://github.com/ofpinewood/pineblog/tree/master/docs/custom-layout.md) on how to setup the layout pages, css and javascript.  
 
 ## Configuration
 A few properties need to be configured before you can run your web application with PineBlog.
@@ -63,12 +70,12 @@ The rest of the properties are optional and will be set with default values if y
 
 ### Blog Settings ConfigurationProvider
 To be able to update the blog settings from the admin pages, you need to add the PineBlog `IConfigurationProvider`s to the
-`IConfigurationBuilder` in the `Program.cs`. Add `config.AddPineBlogConfiguration(reloadOnChange: true);` to `ConfigureAppConfiguration(..)` on the `IWebHostBuilder`.
+`IConfigurationBuilder` in the `Program.cs`. Add `config.AddPineBlogEntityFrameworkCoreConfiguration(reloadOnChange: true);` to `ConfigureAppConfiguration(..)` on the `IWebHostBuilder`.
 
 ``` csharp
 WebHost.CreateDefaultBuilder(args)
     .UseStartup<Startup>()
     .ConfigureAppConfiguration((hostingContext, config) => {
-        config.AddPineBlogConfiguration(reloadOnChange: true);
+        config.AddPineBlogEntityFrameworkCoreConfiguration(reloadOnChange: true);
     });
 ```

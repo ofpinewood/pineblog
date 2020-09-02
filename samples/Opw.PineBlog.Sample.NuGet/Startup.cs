@@ -25,7 +25,13 @@ namespace Opw.PineBlog.Sample.NuGet
 
             services.AddPineBlog(Configuration);
             services.AddRazorPages()
-                .AddPineBlogRazorPages();
+                .AddPineBlogRazorPages()
+                .AddRazorPagesOptions(o =>
+                {
+                    o.Conventions.AuthorizeFolder("/somefolder");
+                })
+                .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
+                .AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
