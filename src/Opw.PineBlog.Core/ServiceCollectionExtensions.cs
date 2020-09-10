@@ -25,6 +25,8 @@ namespace Opw.PineBlog
         /// </summary>
         /// <param name="services">The services available in the application.</param>
         /// <param name="configuration">The application configuration properties.</param>
+        /// <remarks>This only adds the PineBlog core services not that data layer.
+        /// To add the data layer use one of the specific methods for that, e.g. AddPineBlogEntityFrameworkCore.</remarks>
         /// <returns>The original services object.</returns>
         public static IServiceCollection AddPineBlogCore(this IServiceCollection services, IConfiguration configuration)
         {

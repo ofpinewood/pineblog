@@ -16,14 +16,14 @@ namespace Opw.PineBlog.Sample
 
             using (var scope = host.Services.CreateScope())
             {
-                var services = scope.ServiceProvider;
+                var serviceProvider = scope.ServiceProvider;
                 try
                 {
-                    services.InitializePineBlogDatabase((context) => new DatabaseSeed(context).Run());
+                    serviceProvider.InitializePineBlogDatabase((context) => new DatabaseSeed(context).Run());
                 }
                 catch (Exception ex)
                 {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
                     logger.LogError(ex, "An error occurred while migrating the database.");
                 }
             }
