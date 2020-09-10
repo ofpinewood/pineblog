@@ -127,9 +127,10 @@ For more information, please check the documentation.
 For technical background information, check the blog: [ofpinewood.com](https://ofpinewood.com/Blog?category=pineblog).
 
 ## Samples
-The [sample project](https://github.com/ofpinewood/pineblog/tree/master/samples/Opw.PineBlog.Sample) contains an example web application with PineBlog.
+- The [sample project](https://github.com/ofpinewood/pineblog/tree/master/samples/Opw.PineBlog.Sample) contains an example web application with PineBlog.  
+- The [NuGet sample project](https://github.com/ofpinewood/pineblog/tree/master/samples/Opw.PineBlog.Sample.NuGet) contains an example web application using just the NuGet packages.
 
-**Please see the code** :nerd_face
+**Please see the code** :nerd_face:
 
 ## Demo website
 The demo site is a playground to check out PineBlog. You can write and publish posts, upload files and test application before install.
