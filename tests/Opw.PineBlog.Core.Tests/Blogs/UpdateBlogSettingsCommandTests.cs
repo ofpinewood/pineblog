@@ -1,98 +1,134 @@
-//using FluentAssertions;
-//using FluentValidation.Results;
-//using Microsoft.Extensions.DependencyInjection;
-//using Moq;
-//using Opw.HttpExceptions;
-//using Opw.PineBlog.Entities;
-//using Opw.PineBlog.Repositories;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading;
-//using System.Threading.Tasks;
-//using Xunit;
+using FluentAssertions;
+using FluentValidation.Results;
+using Microsoft.Extensions.DependencyInjection;
+using Moq;
+using Opw.HttpExceptions;
+using Opw.PineBlog.Entities;
+using Opw.PineBlog.Repositories;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Xunit;
 
-//namespace Opw.PineBlog.Blogs
-//{
-//    public class UpdateBlogSettingsCommandTests : MediatRTestsBase
-//    {
-//        public UpdateBlogSettingsCommandTests()
-//        {
-//            Services.AddTransient((_) => CreateBlogUnitOfWorkMock().Object);
-//        }
+namespace Opw.PineBlog.Blogs
+{
+    public class UpdateBlogSettingsCommandTests : MediatRTestsBase
+    {
+        public UpdateBlogSettingsCommandTests()
+        {
+            var blogSettings = new List<BlogSettings>();
+            blogSettings.Add(new BlogSettings
+            {
+                Title = "blog title",
+                Description = "blog description",
+                CoverCaption = "blog cover caption",
+                CoverLink = "blog cover link",
+                CoverUrl = "%URL%/blog-cover-url"
+            });
 
-//        [Fact]
-//        public async Task Validator_Should_ThrowValidationErrorException()
-//        {
-//            Task action() => Mediator.Send(new UpdateBlogSettingsCommand());
+            BlogSettingsRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<CancellationToken>())).ReturnsAsync(blogSettings.SingleOrDefault());
 
-//            var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
-//            ex.Errors.Single(e => e.Key.Equals(nameof(UpdateBlogSettingsCommand.Title))).Should().NotBeNull();
-//        }
+            AddBlogUnitOfWorkMock();
+        }
 
-//        [Fact]
-//        public async Task Handler_Should_AddSettings_WhenNotFound()
-//        {
-//            Services.AddTransient((_) => CreateBlogUnitOfWorkMock(hasBlogSettings: false).Object);
-            
-//            var result = await Mediator.Send(new UpdateBlogSettingsCommand
-//            {
-//                Title = "blog title-NEW"
-//            });
+        [Fact]
+        public async Task Validator_Should_ThrowValidationErrorException()
+        {
+            Task action() => Mediator.Send(new UpdateBlogSettingsCommand());
 
-//            result.IsSuccess.Should().BeTrue();
+            var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
+            ex.Errors.Single(e => e.Key.Equals(nameof(UpdateBlogSettingsCommand.Title))).Should().NotBeNull();
+        }
 
-//            context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
+        [Fact]
+        public async Task Handler_Should_AddSettings_WhenNotFound()
+        {
+            BlogSettings resultBlogSettings = null;
 
-//            var settings = await context.BlogSettings.SingleAsync();
+            BlogSettingsRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<CancellationToken>())).ReturnsAsync(default(BlogSettings));
+            BlogSettingsRepositoryMock.Setup(m => m.Add(It.IsAny<BlogSettings>())).Callback((BlogSettings bs) => resultBlogSettings = bs);
+            AddBlogUnitOfWorkMock();
 
-//            settings.Should().NotBeNull();
-//            settings.Title.Should().Be("blog title-NEW");
-//        }
+            var result = await Mediator.Send(new UpdateBlogSettingsCommand
+            {
+                Title = "blog title-NEW"
+            });
 
-//        [Fact]
-//        public async Task Handler_Should_UpdatePost()
-//        {
-//            var result = await Mediator.Send(new UpdateBlogSettingsCommand
-//            {
-//                Title = "blog title-UPDATED",
-//                Description = "blog description",
-//                CoverCaption = "blog cover caption",
-//                CoverLink = "blog cover link",
-//                CoverUrl = "blog cover url"
-//            });
+            result.IsSuccess.Should().BeTrue();
 
-//            result.IsSuccess.Should().BeTrue();
+            BlogSettingsRepositoryMock.Verify(m => m.Add(It.IsAny<BlogSettings>()), Times.Once);
+            BlogSettingsRepositoryMock.Verify(m => m.Update(It.IsAny<BlogSettings>()), Times.Never);
 
-//            var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
+            resultBlogSettings.Should().NotBeNull();
+            resultBlogSettings.Title.Should().Be("blog title-NEW");
+        }
 
-//            var settings = await context.BlogSettings.SingleAsync();
+        [Fact]
+        public async Task Handler_Should_CoverUrl_ReplaceBaseUrlWithUrlFormat()
+        {
+            BlogSettings resultBlogSettings = null;
 
-//            settings.Should().NotBeNull();
-//            settings.Title.Should().Be("blog title-UPDATED");
-//        }
+            BlogSettingsRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<CancellationToken>())).ReturnsAsync(default(BlogSettings));
+            BlogSettingsRepositoryMock.Setup(m => m.Add(It.IsAny<BlogSettings>())).Callback((BlogSettings bs) => resultBlogSettings = bs);
+            AddBlogUnitOfWorkMock();
 
-//        private Mock<IBlogUnitOfWork> CreateBlogUnitOfWorkMock(bool hasBlogSettings = true)
-//        {
-//            var blogSettings = new List<BlogSettings>();
-//            if (hasBlogSettings)
-//            {
-//                blogSettings.Add(new BlogSettings
-//                {
-//                    Title = "blog title",
-//                    Description = "blog description",
-//                    CoverCaption = "blog cover caption",
-//                    CoverLink = "blog cover link",
-//                    CoverUrl = "blog cover url"
-//                });
-//            }
+            var result = await Mediator.Send(new UpdateBlogSettingsCommand
+            {
+                Title = "blog title-NEW",
+                CoverUrl = "http://127.0.0.1:10000/devstoreaccount1/pineblog-tests/blog-cover-url"
+            });
 
-//            var blogSettingsRepositoryMock = new Mock<IBlogSettingsRepository>();
-//            blogSettingsRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<CancellationToken>())).ReturnsAsync(blogSettings.SingleOrDefault());
+            result.IsSuccess.Should().BeTrue();
 
-//            var uowMock = new Mock<IBlogUnitOfWork>();
-//            uowMock.SetupGet(m => m.BlogSettings).Returns(blogSettingsRepositoryMock.Object);
+            resultBlogSettings.Should().NotBeNull();
+            resultBlogSettings.CoverUrl.Should().Be("%URL%/blog-cover-url");
+        }
 
-//            return uowMock;
-//        }
-//    }
-//}
+        //[Fact]
+        //public async Task Handler_Should_UpdatePost()
+        //{
+        //    var result = await Mediator.Send(new UpdateBlogSettingsCommand
+        //    {
+        //        Title = "blog title-UPDATED",
+        //        Description = "blog description",
+        //        CoverCaption = "blog cover caption",
+        //        CoverLink = "blog cover link",
+        //        CoverUrl = "blog cover url"
+        //    });
+
+        //    result.IsSuccess.Should().BeTrue();
+
+        //    var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
+
+        //    var settings = await context.BlogSettings.SingleAsync();
+
+        //    settings.Should().NotBeNull();
+        //    settings.Title.Should().Be("blog title-UPDATED");
+        //}
+
+        //private Mock<IBlogUnitOfWork> CreateBlogUnitOfWorkMock(bool hasBlogSettings = true)
+        //{
+        //    var blogSettings = new List<BlogSettings>();
+        //    if (hasBlogSettings)
+        //    {
+        //        blogSettings.Add(new BlogSettings
+        //        {
+        //            Title = "blog title",
+        //            Description = "blog description",
+        //            CoverCaption = "blog cover caption",
+        //            CoverLink = "blog cover link",
+        //            CoverUrl = "blog cover url"
+        //        });
+        //    }
+
+        //    var blogSettingsRepositoryMock = new Mock<IBlogSettingsRepository>();
+        //    blogSettingsRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<CancellationToken>())).ReturnsAsync(blogSettings.SingleOrDefault());
+
+        //    var uowMock = new Mock<IBlogUnitOfWork>();
+        //    uowMock.SetupGet(m => m.BlogSettings).Returns(blogSettingsRepositoryMock.Object);
+
+        //    return uowMock;
+        //}
+    }
+}

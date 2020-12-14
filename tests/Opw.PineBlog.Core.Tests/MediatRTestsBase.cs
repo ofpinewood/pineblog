@@ -5,6 +5,7 @@ using Moq;
 using Opw.PineBlog.Posts;
 using Opw.PineBlog.Repositories;
 using System;
+using System.Threading;
 
 namespace Opw.PineBlog
 {
@@ -34,6 +35,9 @@ namespace Opw.PineBlog
 
             BlogUnitOfWorkMock = new Mock<IBlogUnitOfWork>();
             BlogUnitOfWorkMock.SetupGet(m => m.BlogSettings).Returns(BlogSettingsRepositoryMock.Object);
+
+            BlogUnitOfWorkMock.Setup(m => m.SaveChanges()).Returns(Result<int>.Success(1));
+            BlogUnitOfWorkMock.Setup(m => m.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Result<int>.Success(1));
         }
 
         protected void AddBlogUnitOfWorkMock()
