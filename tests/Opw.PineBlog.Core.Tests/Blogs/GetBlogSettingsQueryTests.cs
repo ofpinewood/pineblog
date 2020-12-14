@@ -1,10 +1,11 @@
 using FluentAssertions;
-using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using Opw.PineBlog.Entities;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
-using Microsoft.EntityFrameworkCore;
-using Opw.PineBlog.EntityFrameworkCore;
 
 namespace Opw.PineBlog.Blogs
 {
@@ -12,19 +13,28 @@ namespace Opw.PineBlog.Blogs
     {
         public GetBlogSettingsQueryTests()
         {
-            SeedDatabase();
+            var blogSettings = new List<BlogSettings>();
+            blogSettings.Add(new BlogSettings
+            {
+                Title = "blog title",
+                Description = "blog description",
+                CoverCaption = "blog cover caption",
+                CoverLink = "blog cover link",
+                CoverUrl = "blog cover url"
+            });
+
+            BlogSettingsRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<CancellationToken>())).ReturnsAsync(blogSettings.SingleOrDefault());
+
+            AddBlogUnitOfWorkMock();
         }
 
         [Fact]
         public async Task Handler_Should_ReturnSettingsFromConfig_WhenNotFound()
         {
-            var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
+            BlogSettingsRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<CancellationToken>())).ReturnsAsync(default(BlogSettings));
+            AddBlogUnitOfWorkMock();
 
-            var existing = await context.BlogSettings.SingleAsync();
-            context.BlogSettings.Remove(existing);
-            await context.SaveChangesAsync(true, default);
-
-            var result = await Mediator.Send(new GetBlogSettigsQuery());
+            var result = await Mediator.Send(new GetBlogSettingsQuery());
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Should().NotBeNull();
@@ -34,26 +44,11 @@ namespace Opw.PineBlog.Blogs
         [Fact]
         public async Task Handler_Should_ReturnBlogSettings()
         {
-            var result = await Mediator.Send(new GetBlogSettigsQuery());
+            var result = await Mediator.Send(new GetBlogSettingsQuery());
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Should().NotBeNull();
             result.Value.Title.Should().Be("blog title");
-        }
-
-        private void SeedDatabase()
-        {
-            var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
-
-            context.BlogSettings.Add(new BlogSettings
-            {
-                Title = "blog title",
-                Description = "blog description",
-                CoverCaption = "blog cover caption",
-                CoverLink = "blog cover link",
-                CoverUrl = "blog cover url"
-            });
-            context.SaveChanges();
         }
     }
 }

@@ -10,12 +10,12 @@ namespace Opw.PineBlog.Blogs
     /// <summary>
     /// Query that gets the blog settings.
     /// </summary>
-    public class GetBlogSettigsQuery : IRequest<Result<BlogSettings>>
+    public class GetBlogSettingsQuery : IRequest<Result<BlogSettings>>
     {
         /// <summary>
         /// Handler for the GetBlogSettigsQuery.
         /// </summary>
-        public class Handler : IRequestHandler<GetBlogSettigsQuery, Result<BlogSettings>>
+        public class Handler : IRequestHandler<GetBlogSettingsQuery, Result<BlogSettings>>
         {
             private readonly IBlogUnitOfWork _uow;
             private readonly FileUrlHelper _fileUrlHelper;
@@ -39,7 +39,7 @@ namespace Opw.PineBlog.Blogs
             /// </summary>
             /// <param name="request">The GetBlogSettigsQuery request.</param>
             /// <param name="cancellationToken">A cancellation token.</param>
-            public async Task<Result<BlogSettings>> Handle(GetBlogSettigsQuery request, CancellationToken cancellationToken)
+            public async Task<Result<BlogSettings>> Handle(GetBlogSettingsQuery request, CancellationToken cancellationToken)
             {
                 var blogSettings = await _uow.BlogSettings.SingleOrDefaultAsync(cancellationToken);
                 if (blogSettings == null)

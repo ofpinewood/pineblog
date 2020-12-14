@@ -1,8 +1,9 @@
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Opw.PineBlog.EntityFrameworkCore;
+using Moq;
 using Opw.PineBlog.Posts;
+using Opw.PineBlog.Repositories;
 using System;
 
 namespace Opw.PineBlog
@@ -15,20 +16,29 @@ namespace Opw.PineBlog
 
         protected IServiceProvider ServiceProvider => Services.BuildServiceProvider();
 
+        protected Mock<IBlogSettingsRepository> BlogSettingsRepositoryMock { get; }
+
+        protected Mock<IBlogUnitOfWork> BlogUnitOfWorkMock { get; }
+
         public MediatRTestsBase()
         {
             var configuration = new ConfigurationBuilder()
                .AddJsonFile("appsettings.json")
-               .AddPineBlogEntityFrameworkCoreConfiguration(reloadOnChange: false)
                .Build();
-
-            // create a new in-memory database for each test
-            configuration.GetSection("ConnectionStrings").GetSection("DefaultConnection").Value = $"Server=inMemory; Database=pineblog-tests-{Guid.NewGuid()};";
 
             Services = new ServiceCollection();
             Services.AddMediatR(typeof(AddPostCommand).Assembly);
             Services.AddPineBlogCore(configuration);
-            Services.AddPineBlogEntityFrameworkCore(configuration);
+            
+            BlogSettingsRepositoryMock = new Mock<IBlogSettingsRepository>();
+
+            BlogUnitOfWorkMock = new Mock<IBlogUnitOfWork>();
+            BlogUnitOfWorkMock.SetupGet(m => m.BlogSettings).Returns(BlogSettingsRepositoryMock.Object);
+        }
+
+        protected void AddBlogUnitOfWorkMock()
+        {
+            Services.AddTransient((_) => BlogUnitOfWorkMock.Object);
         }
     }
 }
