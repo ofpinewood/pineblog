@@ -23,7 +23,7 @@ schedules:
 variables:
   buildConfiguration: 'Release'
   # Define the GitVersion environment variables so they can be used in all tasks.
-  GitVersion.SemVer: '' 
+  GitVersion.SemVer: ''
   GitVersion.NuGetVersion: ''
 
 steps:
@@ -34,11 +34,17 @@ steps:
 
 # https://dotnet.microsoft.com/download/dotnet-core/3.1
 - task: UseDotNet@2
-  displayName: Install .Net Core (specified in global.json)
+  displayName: Install .Net Core 3.1.200 LTS
   inputs:
     packageType: 'sdk'
-    useGlobalJson: true
-    performMultiLevelLookup: true
+    version: '3.1.200'
+
+# https://dotnet.microsoft.com/download/dotnet/5.0
+# - task: UseDotNet@2
+#   displayName: Install .Net Core 5.0.101
+#   inputs:
+#     packageType: 'sdk'
+#     version: '5.0.101'
 
 - script: |
     echo buildConfiguration: $(buildConfiguration)
