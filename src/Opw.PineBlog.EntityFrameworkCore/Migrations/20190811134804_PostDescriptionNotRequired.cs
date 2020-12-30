@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore.Migrations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Opw.PineBlog.EntityFrameworkCore.Migrations
 {
+    [ExcludeFromCodeCoverage]
     public partial class PostDescriptionNotRequired : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

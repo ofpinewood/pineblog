@@ -1,0 +1,29 @@
+@page
+@model ErrorModel
+@{
+    ViewData["Title"] = "Error";
+}
+@section head {
+    <style>
+        .blog-header {
+            background-color: #000;
+        }
+
+        .page-content {
+            padding-top: 5rem;
+        }
+    </style>
+}
+<div class="page-content">
+    <div class="container">
+        <h1 class="text-danger">Error.</h1>
+        <h2 class="text-danger">An error occurred while processing your request.</h2>
+
+        @if (Model.ShowRequestId)
+        {
+            <p>
+                <strong>Request ID:</strong> <code>@Model.RequestId</code>
+            </p>
+        }
+    </div>
+</div>

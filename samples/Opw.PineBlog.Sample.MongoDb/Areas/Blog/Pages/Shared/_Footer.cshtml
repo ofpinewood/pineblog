@@ -1,0 +1,28 @@
+<footer class="footer" style="background-color: #222; padding: 1rem">
+    <div class="container">
+        <h2 style="margin-top: 0">PineBlog</h2>
+        <p>A blogging engine based on ASP.NET Core MVC Razor Pages and Entity Framework Core.</p>
+    </div>
+</footer>
+<footer class="footer copy">
+    <div class="container d-lg-flex text-center text-lg-left">
+        <p>
+            Powered by <a href="https://github.com/ofpinewood/pineblog">PineBlog</a>
+            &copy; @DateTime.Now.Year <a href="https://github.com/ofpinewood">Of Pine Wood</a>
+            (@ViewData["PineBlogVersion"])
+        </p>
+        <p>
+            <a asp-controller="Feed" asp-action="Rss"><i class="fa fa-rss" aria-hidden="true"></i></a>
+        </p>
+        <div class="ml-auto">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a href="~/admin">admin</a>
+            }
+            else
+            {
+                <a href="~/admin">login</a>
+            }
+        </div>
+    </div>
+</footer>
