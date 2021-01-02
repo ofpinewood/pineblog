@@ -14,11 +14,11 @@ namespace Opw.PineBlog.Posts
 {
     public class AddPostCommandTests : MediatRTestsBase
     {
-        private Guid AuthorId = Guid.NewGuid();
+        private Guid _authorId = Guid.NewGuid();
 
         public AddPostCommandTests()
         {
-            var author = new Author { Id = AuthorId, UserName = "user@example.com", DisplayName = "Author 1" };
+            var author = new Author { Id = _authorId, UserName = "user@example.com", DisplayName = "Author 1" };
 
             AuthorRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<Expression<Func<Author, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(author);
 
@@ -69,7 +69,7 @@ namespace Opw.PineBlog.Posts
             });
 
             result.IsSuccess.Should().BeTrue();
-            result.Value.AuthorId.Should().Be(AuthorId);
+            result.Value.AuthorId.Should().Be(_authorId);
             result.Value.Title.Should().Be("title");
 
             PostRepositoryMock.Verify(m => m.Add(It.IsAny<Post>()), Times.Once);
@@ -102,14 +102,14 @@ namespace Opw.PineBlog.Posts
                 UserName = "user@example.com",
                 Categories = "category",
                 Title = "title",
-                Content = "content with an url: http://127.0.0.1:10000/devstoreaccount1/pineblog-tests/content-url. nice isn't it?",
+                Content = "content with an url: http://127.0.0.1:10000/devstoreaccount1/pineblog-tests/content-url-1. nice isn't it? And one more: http://127.0.0.1:10000/devstoreaccount1/pineblog-tests/content-url-2!",
                 Description = "description",
             });
 
             result.IsSuccess.Should().BeTrue();
 
             result.Value.Should().NotBeNull();
-            result.Value.Content.Should().Be("content with an url: %URL%/content-url. nice isn't it?");
+            result.Value.Content.Should().Be("content with an url: %URL%/content-url-1. nice isn't it? And one more: %URL%/content-url-2!");
         }
 
         [Fact]
@@ -127,6 +127,26 @@ namespace Opw.PineBlog.Posts
             result.IsSuccess.Should().BeTrue();
             result.Value.Title.Should().Be("title or slug");
             result.Value.Slug.Should().MatchRegex(result.Value.Title.ToPostSlug());
+        }
+
+        [Fact]
+        public async Task Handler_Should_ReturnExceptionResult_WhenSaveChangesError()
+        {
+            BlogUnitOfWorkMock.Setup(m => m.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Result<int>.Fail(new ApplicationException("Error: SaveChangesAsync")));
+
+            AddBlogUnitOfWorkMock();
+
+            var result = await Mediator.Send(new AddPostCommand
+            {
+                UserName = "user@example.com",
+                Categories = "category",
+                Title = "title",
+                Content = "content",
+                Description = "description"
+            });
+
+            result.IsSuccess.Should().BeFalse();
+            result.Exception.Should().BeOfType<ApplicationException>();
         }
     }
 }
