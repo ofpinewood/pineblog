@@ -27,8 +27,6 @@ namespace Opw.PineBlog.Blogs
             });
 
             BlogSettingsRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<CancellationToken>())).ReturnsAsync(blogSettings.SingleOrDefault());
-
-            AddBlogUnitOfWorkMock();
         }
 
         [Fact]
@@ -47,7 +45,6 @@ namespace Opw.PineBlog.Blogs
 
             BlogSettingsRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<CancellationToken>())).ReturnsAsync(default(BlogSettings));
             BlogSettingsRepositoryMock.Setup(m => m.Add(It.IsAny<BlogSettings>())).Callback((BlogSettings bs) => resultBlogSettings = bs);
-            AddBlogUnitOfWorkMock();
 
             var result = await Mediator.Send(new UpdateBlogSettingsCommand
             {
@@ -70,7 +67,6 @@ namespace Opw.PineBlog.Blogs
 
             BlogSettingsRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<CancellationToken>())).ReturnsAsync(default(BlogSettings));
             BlogSettingsRepositoryMock.Setup(m => m.Add(It.IsAny<BlogSettings>())).Callback((BlogSettings bs) => resultBlogSettings = bs);
-            AddBlogUnitOfWorkMock();
 
             var result = await Mediator.Send(new UpdateBlogSettingsCommand
             {
@@ -101,7 +97,6 @@ namespace Opw.PineBlog.Blogs
 
             BlogSettingsRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<CancellationToken>())).ReturnsAsync(existingBlogSettings);
             BlogSettingsRepositoryMock.Setup(m => m.Update(It.IsAny<BlogSettings>())).Callback((BlogSettings bs) => resultBlogSettings = bs);
-            AddBlogUnitOfWorkMock();
 
             var result = await Mediator.Send(new UpdateBlogSettingsCommand
             {
@@ -128,8 +123,6 @@ namespace Opw.PineBlog.Blogs
             BlogSettingsRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<CancellationToken>())).ReturnsAsync(default(BlogSettings));
 
             BlogUnitOfWorkMock.Setup(m => m.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Result<int>.Fail(new ApplicationException("Error: SaveChangesAsync")));
-
-            AddBlogUnitOfWorkMock();
 
             var result = await Mediator.Send(new UpdateBlogSettingsCommand
             {

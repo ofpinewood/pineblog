@@ -29,8 +29,6 @@ namespace Opw.PineBlog.Posts
 
             PostRepositoryMock.Setup(m => m.GetAsync(It.IsAny<IEnumerable<Expression<Func<Post, bool>>>>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).ReturnsAsync(posts);
             PostRepositoryMock.Setup(m => m.CountAsync(It.IsAny<IEnumerable<Expression<Func<Post, bool>>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(posts.Count);
-
-            AddBlogUnitOfWorkMock();
         }
 
         [Fact]

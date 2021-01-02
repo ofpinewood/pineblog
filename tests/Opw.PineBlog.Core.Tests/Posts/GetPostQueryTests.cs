@@ -21,8 +21,6 @@ namespace Opw.PineBlog.Posts
             _author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
 
             PostRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<Expression<Func<Post, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(CreatePost(0, _author));
-
-            AddBlogUnitOfWorkMock();
         }
 
         [Fact]

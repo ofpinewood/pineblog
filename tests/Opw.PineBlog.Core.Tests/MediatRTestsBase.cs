@@ -46,10 +46,7 @@ namespace Opw.PineBlog
 
             BlogUnitOfWorkMock.Setup(m => m.SaveChanges()).Returns(Result<int>.Success(1));
             BlogUnitOfWorkMock.Setup(m => m.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Result<int>.Success(1));
-        }
 
-        protected void AddBlogUnitOfWorkMock()
-        {
             Services.AddTransient((_) => BlogUnitOfWorkMock.Object);
         }
     }

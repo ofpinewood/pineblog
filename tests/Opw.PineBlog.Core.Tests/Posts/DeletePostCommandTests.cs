@@ -32,8 +32,6 @@ namespace Opw.PineBlog.Posts
             });
 
             PostRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<Expression<Func<Post, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(posts.SingleOrDefault());
-
-            AddBlogUnitOfWorkMock();
         }
 
         [Fact]
@@ -50,8 +48,6 @@ namespace Opw.PineBlog.Posts
         {
             PostRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<Expression<Func<Post, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(default(Post));
 
-            AddBlogUnitOfWorkMock();
-
             var result = await Mediator.Send(new DeletePostCommand { Id = Guid.NewGuid() });
 
             result.IsSuccess.Should().BeFalse();
@@ -64,8 +60,7 @@ namespace Opw.PineBlog.Posts
             Post deletedPost = null;
 
             PostRepositoryMock.Setup(m => m.Remove(It.IsAny<Post>())).Callback((Post p) => deletedPost = p);
-            AddBlogUnitOfWorkMock();
-
+            
             var result = await Mediator.Send(new DeletePostCommand { Id = _postId });
 
             result.IsSuccess.Should().BeTrue();
@@ -78,8 +73,6 @@ namespace Opw.PineBlog.Posts
         public async Task Handler_Should_ReturnExceptionResult_WhenSaveChangesError()
         {
             BlogUnitOfWorkMock.Setup(m => m.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Result<int>.Fail(new ApplicationException("Error: SaveChangesAsync")));
-
-            AddBlogUnitOfWorkMock();
 
             var result = await Mediator.Send(new DeletePostCommand { Id = _postId });
 

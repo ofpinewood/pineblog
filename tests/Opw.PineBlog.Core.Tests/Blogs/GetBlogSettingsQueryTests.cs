@@ -24,15 +24,12 @@ namespace Opw.PineBlog.Blogs
             });
 
             BlogSettingsRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<CancellationToken>())).ReturnsAsync(blogSettings.SingleOrDefault());
-
-            AddBlogUnitOfWorkMock();
         }
 
         [Fact]
         public async Task Handler_Should_ReturnSettingsFromConfig_WhenNotFound()
         {
             BlogSettingsRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<CancellationToken>())).ReturnsAsync(default(BlogSettings));
-            AddBlogUnitOfWorkMock();
 
             var result = await Mediator.Send(new GetBlogSettingsQuery());
 

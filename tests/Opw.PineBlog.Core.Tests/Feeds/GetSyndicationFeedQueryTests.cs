@@ -27,8 +27,6 @@ namespace Opw.PineBlog.Feeds
             posts.Add(CreatePost(4, author, true, "cat1,cat2,cat3"));
 
             PostRepositoryMock.Setup(m => m.GetPublishedAsync(It.IsAny<int>(), It.IsAny<CancellationToken>())).ReturnsAsync(posts);
-
-            AddBlogUnitOfWorkMock();
         }
 
         [Fact]

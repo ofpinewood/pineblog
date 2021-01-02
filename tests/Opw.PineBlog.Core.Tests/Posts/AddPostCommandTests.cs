@@ -21,8 +21,6 @@ namespace Opw.PineBlog.Posts
             var author = new Author { Id = _authorId, UserName = "user@example.com", DisplayName = "Author 1" };
 
             AuthorRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<Expression<Func<Author, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(author);
-
-            AddBlogUnitOfWorkMock();
         }
 
         [Fact]
@@ -40,8 +38,6 @@ namespace Opw.PineBlog.Posts
         public async Task Handler_Should_ReturnNotFoundException_WhenInvalidUser()
         {
             AuthorRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<Expression<Func<Author, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(default(Author));
-
-            AddBlogUnitOfWorkMock();
 
             var result = await Mediator.Send(new AddPostCommand
             {
@@ -143,8 +139,6 @@ namespace Opw.PineBlog.Posts
         public async Task Handler_Should_ReturnExceptionResult_WhenSaveChangesError()
         {
             BlogUnitOfWorkMock.Setup(m => m.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Result<int>.Fail(new ApplicationException("Error: SaveChangesAsync")));
-
-            AddBlogUnitOfWorkMock();
 
             var result = await Mediator.Send(new AddPostCommand
             {
