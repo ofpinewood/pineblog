@@ -20,11 +20,11 @@ namespace Opw.PineBlog.Feeds
             var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
 
             var posts = new List<Post>();
-            posts.Add(CreatePost(0, author, true, false, "cat1"));
-            posts.Add(CreatePost(1, author, true, true, "cat1"));
-            posts.Add(CreatePost(2, author, true, true, "cat1,cat2"));
-            posts.Add(CreatePost(3, author, true, true, "cat2"));
-            posts.Add(CreatePost(4, author, true, true, "cat1,cat2,cat3"));
+            posts.Add(CreatePost(0, author, false, "cat1"));
+            posts.Add(CreatePost(1, author, true, "cat1"));
+            posts.Add(CreatePost(2, author, true, "cat1,cat2"));
+            posts.Add(CreatePost(3, author, true, "cat2"));
+            posts.Add(CreatePost(4, author, true, "cat1,cat2,cat3"));
 
             PostRepositoryMock.Setup(m => m.GetPublishedAsync(It.IsAny<int>(), It.IsAny<CancellationToken>())).ReturnsAsync(posts);
 
@@ -131,7 +131,7 @@ namespace Opw.PineBlog.Feeds
             guid.Should().Be("http://www.example.com/posts/post-title-0");
         }
 
-        private Post CreatePost(int i, Author author, bool published, bool cover, string categories)
+        private Post CreatePost(int i, Author author, bool cover, string categories)
         {
             var post = new Post
             {
@@ -143,9 +143,9 @@ namespace Opw.PineBlog.Feeds
                 Content = "Content",
                 Created = DateTime.UtcNow,
                 Modified = DateTime.UtcNow,
+                Published = DateTime.UtcNow
             };
 
-            if (published) post.Published = DateTime.UtcNow;
             if (cover)
             {
                 post.CoverUrl = "https://ofpinewood.com/cover-url";

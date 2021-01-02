@@ -1,6 +1,5 @@
 using FluentAssertions;
 using FluentValidation.Results;
-using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
@@ -20,12 +19,17 @@ namespace Opw.PineBlog.Posts
 
         public DeletePostCommandTests()
         {
-            var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
-
-            AuthorRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<Expression<Func<Author, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(author);
-
             var posts = new List<Post>();
-            posts.Add(CreatePost(0, _postId, Guid.NewGuid(), true, false));
+            posts.Add(new Post
+            {
+                Id = _postId,
+                AuthorId = Guid.NewGuid(),
+                Title = "Post title 0",
+                Slug = "post-title-0",
+                Description = "Description",
+                Content = "Content",
+                Published = DateTime.UtcNow
+            });
 
             PostRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<Expression<Func<Post, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(posts.SingleOrDefault());
 
@@ -81,29 +85,6 @@ namespace Opw.PineBlog.Posts
 
             result.IsSuccess.Should().BeFalse();
             result.Exception.Should().BeOfType<ApplicationException>();
-        }
-
-        private Post CreatePost(int i, Guid postId, Guid authorId, bool published, bool cover)
-        {
-            var post = new Post
-            {
-                Id = postId,
-                AuthorId = authorId,
-                Title = "Post title " + i,
-                Slug = "post-title-" + i,
-                Description = "Description",
-                Content = "Content"
-            };
-
-            if (published) post.Published = DateTime.UtcNow;
-            if (cover)
-            {
-                post.CoverUrl = "https://ofpinewood.com/cover-url";
-                post.CoverCaption = "Cover caption";
-                post.CoverLink = "https://ofpinewood.com/cover-link";
-            }
-
-            return post;
         }
     }
 }

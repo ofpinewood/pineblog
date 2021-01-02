@@ -59,18 +59,28 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_AddPost()
         {
+            var published = DateTime.UtcNow;
             var result = await Mediator.Send(new AddPostCommand
             {
                 UserName = "user@example.com",
                 Categories = "category",
                 Title = "title",
                 Content = "content",
-                Description = "description"
+                Description = "description",
+                CoverCaption = "cover caption",
+                CoverLink = "cover link",
+                Published = published
             });
 
             result.IsSuccess.Should().BeTrue();
             result.Value.AuthorId.Should().Be(_authorId);
             result.Value.Title.Should().Be("title");
+            result.Value.Categories.Should().Be("category");
+            result.Value.Content.Should().Be("content");
+            result.Value.Description.Should().Be("description");
+            result.Value.CoverCaption.Should().Be("cover caption");
+            result.Value.CoverLink.Should().Be("cover link");
+            result.Value.Published.Should().Be(published);
 
             PostRepositoryMock.Verify(m => m.Add(It.IsAny<Post>()), Times.Once);
         }
