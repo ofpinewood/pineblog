@@ -1,10 +1,9 @@
 using FluentAssertions;
 using FluentValidation.Results;
-using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
-using Opw.PineBlog.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -85,50 +84,60 @@ namespace Opw.PineBlog.Blogs
             resultBlogSettings.CoverUrl.Should().Be("%URL%/blog-cover-url");
         }
 
-        //[Fact]
-        //public async Task Handler_Should_UpdatePost()
-        //{
-        //    var result = await Mediator.Send(new UpdateBlogSettingsCommand
-        //    {
-        //        Title = "blog title-UPDATED",
-        //        Description = "blog description",
-        //        CoverCaption = "blog cover caption",
-        //        CoverLink = "blog cover link",
-        //        CoverUrl = "blog cover url"
-        //    });
+        [Fact]
+        public async Task Handler_Should_UpdateBlogSettings()
+        {
+            var existingBlogSettings = new BlogSettings
+            {
+                Title = "blog title-UPDATED",
+                Description = "blog description-UPDATED",
+                CoverCaption = "blog cover caption-UPDATED",
+                CoverLink = "blog cover link-UPDATED",
+                CoverUrl = "blog cover url-UPDATED",
+                Created = DateTime.UtcNow,
+            };
 
-        //    result.IsSuccess.Should().BeTrue();
+            BlogSettings resultBlogSettings = null;
 
-        //    var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
+            BlogSettingsRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<CancellationToken>())).ReturnsAsync(existingBlogSettings);
+            BlogSettingsRepositoryMock.Setup(m => m.Update(It.IsAny<BlogSettings>())).Callback((BlogSettings bs) => resultBlogSettings = bs);
+            AddBlogUnitOfWorkMock();
 
-        //    var settings = await context.BlogSettings.SingleAsync();
+            var result = await Mediator.Send(new UpdateBlogSettingsCommand
+            {
+                Title = "blog title-UPDATED",
+                Description = "blog description-UPDATED",
+                CoverCaption = "blog cover caption-UPDATED",
+                CoverLink = "blog cover link-UPDATED",
+                CoverUrl = "blog cover url-UPDATED"
+            });
 
-        //    settings.Should().NotBeNull();
-        //    settings.Title.Should().Be("blog title-UPDATED");
-        //}
+            result.IsSuccess.Should().BeTrue();
 
-        //private Mock<IBlogUnitOfWork> CreateBlogUnitOfWorkMock(bool hasBlogSettings = true)
-        //{
-        //    var blogSettings = new List<BlogSettings>();
-        //    if (hasBlogSettings)
-        //    {
-        //        blogSettings.Add(new BlogSettings
-        //        {
-        //            Title = "blog title",
-        //            Description = "blog description",
-        //            CoverCaption = "blog cover caption",
-        //            CoverLink = "blog cover link",
-        //            CoverUrl = "blog cover url"
-        //        });
-        //    }
+            resultBlogSettings.Should().NotBeNull();
+            resultBlogSettings.Title.Should().Be("blog title-UPDATED");
+            resultBlogSettings.Description.Should().Be("blog description-UPDATED");
+            resultBlogSettings.CoverCaption.Should().Be("blog cover caption-UPDATED");
+            resultBlogSettings.CoverLink.Should().Be("blog cover link-UPDATED");
+            resultBlogSettings.CoverUrl.Should().Be("blog cover url-UPDATED");
+        }
 
-        //    var blogSettingsRepositoryMock = new Mock<IBlogSettingsRepository>();
-        //    blogSettingsRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<CancellationToken>())).ReturnsAsync(blogSettings.SingleOrDefault());
+        [Fact]
+        public async Task Handler_Should_ReturnExceptionResult_WhenSaveChangesError()
+        {
+            BlogSettingsRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<CancellationToken>())).ReturnsAsync(default(BlogSettings));
 
-        //    var uowMock = new Mock<IBlogUnitOfWork>();
-        //    uowMock.SetupGet(m => m.BlogSettings).Returns(blogSettingsRepositoryMock.Object);
+            BlogUnitOfWorkMock.Setup(m => m.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Result<int>.Fail(new ApplicationException("Error: SaveChangesAsync")));
 
-        //    return uowMock;
-        //}
+            AddBlogUnitOfWorkMock();
+
+            var result = await Mediator.Send(new UpdateBlogSettingsCommand
+            {
+                Title = "blog title-NEW",
+            });
+
+            result.IsSuccess.Should().BeFalse();
+            result.Exception.Should().BeOfType<ApplicationException>();
+        }
     }
 }

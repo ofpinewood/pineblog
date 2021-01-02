@@ -19,6 +19,10 @@ namespace Opw.PineBlog
 
         protected Mock<IBlogSettingsRepository> BlogSettingsRepositoryMock { get; }
 
+        protected Mock<IAuthorRepository> AuthorRepositoryMock { get; }
+
+        protected Mock<IPostRepository> PostRepositoryMock { get; }
+
         protected Mock<IBlogUnitOfWork> BlogUnitOfWorkMock { get; }
 
         public MediatRTestsBase()
@@ -32,9 +36,13 @@ namespace Opw.PineBlog
             Services.AddPineBlogCore(configuration);
             
             BlogSettingsRepositoryMock = new Mock<IBlogSettingsRepository>();
+            AuthorRepositoryMock = new Mock<IAuthorRepository>();
+            PostRepositoryMock = new Mock<IPostRepository>();
 
             BlogUnitOfWorkMock = new Mock<IBlogUnitOfWork>();
             BlogUnitOfWorkMock.SetupGet(m => m.BlogSettings).Returns(BlogSettingsRepositoryMock.Object);
+            BlogUnitOfWorkMock.SetupGet(m => m.Authors).Returns(AuthorRepositoryMock.Object);
+            BlogUnitOfWorkMock.SetupGet(m => m.Posts).Returns(PostRepositoryMock.Object);
 
             BlogUnitOfWorkMock.Setup(m => m.SaveChanges()).Returns(Result<int>.Success(1));
             BlogUnitOfWorkMock.Setup(m => m.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Result<int>.Success(1));

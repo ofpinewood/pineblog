@@ -1,161 +1,159 @@
-//using FluentAssertions;
-//using FluentValidation.Results;
-//using Microsoft.Extensions.DependencyInjection;
-//using Opw.HttpExceptions;
-//using Opw.PineBlog.Entities;
-//using System;
-//using System.Linq;
-//using System.Threading.Tasks;
-//using System.Xml;
-//using Xunit;
+using FluentAssertions;
+using FluentValidation.Results;
+using Moq;
+using Opw.HttpExceptions;
+using Opw.PineBlog.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Xml;
+using Xunit;
 
-//namespace Opw.PineBlog.Feeds
-//{
-//    public class GetSyndicationFeedQueryTests : MediatRTestsBase
-//    {
-//        public GetSyndicationFeedQueryTests() : base()
-//        {
-//            SeedDatabase();
-//        }
+namespace Opw.PineBlog.Feeds
+{
+    public class GetSyndicationFeedQueryTests : MediatRTestsBase
+    {
+        public GetSyndicationFeedQueryTests() : base()
+        {
+            var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
 
-//        [Fact]
-//        public async Task Validator_Should_ThrowValidationErrorException()
-//        {
-//            Task action() => Mediator.Send(new GetSyndicationFeedQuery());
+            var posts = new List<Post>();
+            posts.Add(CreatePost(0, author, true, false, "cat1"));
+            posts.Add(CreatePost(1, author, true, true, "cat1"));
+            posts.Add(CreatePost(2, author, true, true, "cat1,cat2"));
+            posts.Add(CreatePost(3, author, true, true, "cat2"));
+            posts.Add(CreatePost(4, author, true, true, "cat1,cat2,cat3"));
 
-//            var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
-//            ex.Errors.Single(e => e.Key.Equals(nameof(GetSyndicationFeedQuery.BaseUri))).Should().NotBeNull();
-//            ex.Errors.Single(e => e.Key.Equals(nameof(GetSyndicationFeedQuery.FeedType))).Should().NotBeNull();
-//            ex.Errors.Single(e => e.Key.Equals(nameof(GetSyndicationFeedQuery.PostBasePath))).Should().NotBeNull();
-//        }
+            PostRepositoryMock.Setup(m => m.GetPublishedAsync(It.IsAny<int>(), It.IsAny<CancellationToken>())).ReturnsAsync(posts);
 
-//        [Fact]
-//        public async Task Handler_Should_ReturnRssFeed_WhenFeedTypeRss()
-//        {
-//            var result = await Mediator.Send(new GetSyndicationFeedQuery
-//            {
-//                BaseUri = new Uri("http://www.example.com"),
-//                FeedType = FeedType.Rss,
-//                PostBasePath = "posts"
-//            });
+            AddBlogUnitOfWorkMock();
+        }
 
-//            result.IsSuccess.Should().BeTrue();
-//            result.Value.ContentType.Should().Be("application/rss+xml");
-//            result.Value.Feed.Should().StartWith("<rss xmlns:a10=\"http://www.w3.org/2005/Atom\" version=\"2.0\">");
-//        }
+        [Fact]
+        public async Task Validator_Should_ThrowValidationErrorException()
+        {
+            Task action() => Mediator.Send(new GetSyndicationFeedQuery());
 
-//        [Fact]
-//        public async Task Handler_Should_ReturnAtomFeed_WhenFeedTypeAtom()
-//        {
-//            var result = await Mediator.Send(new GetSyndicationFeedQuery
-//            {
-//                BaseUri = new Uri("http://www.example.com"),
-//                FeedType = FeedType.Atom,
-//                PostBasePath = "posts"
-//            });
+            var ex = await Assert.ThrowsAsync<ValidationErrorException<ValidationFailure>>(action);
+            ex.Errors.Single(e => e.Key.Equals(nameof(GetSyndicationFeedQuery.BaseUri))).Should().NotBeNull();
+            ex.Errors.Single(e => e.Key.Equals(nameof(GetSyndicationFeedQuery.FeedType))).Should().NotBeNull();
+            ex.Errors.Single(e => e.Key.Equals(nameof(GetSyndicationFeedQuery.PostBasePath))).Should().NotBeNull();
+        }
 
-//            result.IsSuccess.Should().BeTrue();
-//            result.Value.ContentType.Should().Be("application/atom+xml");
-//            result.Value.Feed.Should().StartWith("<feed xml:base=\"http://www.example.com/\" xmlns=\"http://www.w3.org/2005/Atom\">");
-//        }
+        [Fact]
+        public async Task Handler_Should_ReturnRssFeed_WhenFeedTypeRss()
+        {
+            var result = await Mediator.Send(new GetSyndicationFeedQuery
+            {
+                BaseUri = new Uri("http://www.example.com"),
+                FeedType = FeedType.Rss,
+                PostBasePath = "posts"
+            });
 
-//        [Fact]
-//        public async Task Handler_Should_ReturnFeedModel_With5Posts()
-//        {
-//            var result = await Mediator.Send(new GetSyndicationFeedQuery
-//            {
-//                BaseUri = new Uri("http://www.example.com"),
-//                FeedType = FeedType.Rss,
-//                PostBasePath = "posts"
-//            });
+            result.IsSuccess.Should().BeTrue();
+            result.Value.ContentType.Should().Be("application/rss+xml");
+            result.Value.Feed.Should().StartWith("<rss xmlns:a10=\"http://www.w3.org/2005/Atom\" version=\"2.0\">");
+        }
 
-//            result.IsSuccess.Should().BeTrue();
+        [Fact]
+        public async Task Handler_Should_ReturnAtomFeed_WhenFeedTypeAtom()
+        {
+            var result = await Mediator.Send(new GetSyndicationFeedQuery
+            {
+                BaseUri = new Uri("http://www.example.com"),
+                FeedType = FeedType.Atom,
+                PostBasePath = "posts"
+            });
 
-//            var feedXml = new XmlDocument();
-//            feedXml.LoadXml(result.Value.Feed);
+            result.IsSuccess.Should().BeTrue();
+            result.Value.ContentType.Should().Be("application/atom+xml");
+            result.Value.Feed.Should().StartWith("<feed xml:base=\"http://www.example.com/\" xmlns=\"http://www.w3.org/2005/Atom\">");
+        }
 
-//            var items = feedXml.SelectNodes("/rss/channel/item");
-//            items.Should().HaveCount(5);
-//        }
+        [Fact]
+        public async Task Handler_Should_ReturnFeedModel_With5Posts()
+        {
+            var result = await Mediator.Send(new GetSyndicationFeedQuery
+            {
+                BaseUri = new Uri("http://www.example.com"),
+                FeedType = FeedType.Rss,
+                PostBasePath = "posts"
+            });
 
-//        [Fact]
-//        public async Task Handler_Should_ReturnFeedModel_WithCorrectItemTitle()
-//        {
-//            var result = await Mediator.Send(new GetSyndicationFeedQuery
-//            {
-//                BaseUri = new Uri("http://www.example.com"),
-//                FeedType = FeedType.Rss,
-//                PostBasePath = "posts"
-//            });
+            result.IsSuccess.Should().BeTrue();
 
-//            result.IsSuccess.Should().BeTrue();
+            var feedXml = new XmlDocument();
+            feedXml.LoadXml(result.Value.Feed);
 
-//            var feedXml = new XmlDocument();
-//            feedXml.LoadXml(result.Value.Feed);
+            var items = feedXml.SelectNodes("/rss/channel/item");
+            items.Should().HaveCount(5);
+        }
 
-//            var items = feedXml.SelectNodes("/rss/channel/item");
-//            var title = items[0].SelectSingleNode("title").InnerText;
-//            title.Should().Be("Post title 4");
-//        }
+        [Fact]
+        public async Task Handler_Should_ReturnFeedModel_WithCorrectItemTitle()
+        {
+            var result = await Mediator.Send(new GetSyndicationFeedQuery
+            {
+                BaseUri = new Uri("http://www.example.com"),
+                FeedType = FeedType.Rss,
+                PostBasePath = "posts"
+            });
 
-//        [Fact]
-//        public async Task Handler_Should_ReturnFeedModel_WithCorrectItemId()
-//        {
-//            var result = await Mediator.Send(new GetSyndicationFeedQuery
-//            {
-//                BaseUri = new Uri("http://www.example.com"),
-//                FeedType = FeedType.Rss,
-//                PostBasePath = "posts"
-//            });
+            result.IsSuccess.Should().BeTrue();
 
-//            result.IsSuccess.Should().BeTrue();
+            var feedXml = new XmlDocument();
+            feedXml.LoadXml(result.Value.Feed);
 
-//            var feedXml = new XmlDocument();
-//            feedXml.LoadXml(result.Value.Feed);
+            var items = feedXml.SelectNodes("/rss/channel/item");
+            var title = items[0].SelectSingleNode("title").InnerText;
+            title.Should().Be("Post title 0");
+        }
 
-//            var items = feedXml.SelectNodes("/rss/channel/item");
-//            var guid = items[0].SelectSingleNode("guid").InnerText;
-//            guid.Should().Be("http://www.example.com/posts/post-title-4");
-//        }
+        [Fact]
+        public async Task Handler_Should_ReturnFeedModel_WithCorrectItemId()
+        {
+            var result = await Mediator.Send(new GetSyndicationFeedQuery
+            {
+                BaseUri = new Uri("http://www.example.com"),
+                FeedType = FeedType.Rss,
+                PostBasePath = "posts"
+            });
 
-//        private void SeedDatabase()
-//        {
-//            var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
+            result.IsSuccess.Should().BeTrue();
 
-//            var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
-//            context.Authors.Add(author);
-//            context.SaveChanges();
+            var feedXml = new XmlDocument();
+            feedXml.LoadXml(result.Value.Feed);
 
-//            context.Posts.Add(CreatePost(0, author.Id, true, false, "cat1"));
-//            context.Posts.Add(CreatePost(1, author.Id, true, true, "cat1"));
-//            context.Posts.Add(CreatePost(2, author.Id, true, true, "cat1,cat2"));
-//            context.Posts.Add(CreatePost(3, author.Id, true, true, "cat2"));
-//            context.Posts.Add(CreatePost(4, author.Id, true, true, "cat1,cat2,cat3"));
-//            context.Posts.Add(CreatePost(5, author.Id, false, true, "cat3"));
-//            context.SaveChanges();
-//        }
+            var items = feedXml.SelectNodes("/rss/channel/item");
+            var guid = items[0].SelectSingleNode("guid").InnerText;
+            guid.Should().Be("http://www.example.com/posts/post-title-0");
+        }
 
-//        private Post CreatePost(int i, Guid authorId, bool published, bool cover, string categories)
-//        {
-//            var post = new Post
-//            {
-//                AuthorId = authorId,
-//                Title = "Post title " + i,
-//                Slug = "post-title-" + i,
-//                Categories = categories,
-//                Description = "Description",
-//                Content = "Content"
-//            };
+        private Post CreatePost(int i, Author author, bool published, bool cover, string categories)
+        {
+            var post = new Post
+            {
+                Author = author,
+                Title = "Post title " + i,
+                Slug = "post-title-" + i,
+                Categories = categories,
+                Description = "Description",
+                Content = "Content",
+                Created = DateTime.UtcNow,
+                Modified = DateTime.UtcNow,
+            };
 
-//            if (published) post.Published = DateTime.UtcNow;
-//            if (cover)
-//            {
-//                post.CoverUrl = "https://ofpinewood.com/cover-url";
-//                post.CoverCaption = "Cover caption";
-//                post.CoverLink = "https://ofpinewood.com/cover-link";
-//            }
+            if (published) post.Published = DateTime.UtcNow;
+            if (cover)
+            {
+                post.CoverUrl = "https://ofpinewood.com/cover-url";
+                post.CoverCaption = "Cover caption";
+                post.CoverLink = "https://ofpinewood.com/cover-link";
+            }
 
-//            return post;
-//        }
-//    }
-//}
+            return post;
+        }
+    }
+}
