@@ -3,12 +3,14 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Opw.EntityFrameworkCore;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace Opw.PineBlog.EntityFrameworkCore
 {
+    [ExcludeFromCodeCoverage]
     [Obsolete("This class is needed to run \"dotnet ef...\" commands from command line on development. Do not use directly.")]
     public class BlogEntityDbContextFactory : IDesignTimeDbContextFactory<BlogEntityDbContext>
     {

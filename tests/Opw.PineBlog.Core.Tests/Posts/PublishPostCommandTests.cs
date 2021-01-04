@@ -1,6 +1,5 @@
 using FluentAssertions;
 using FluentValidation.Results;
-using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
