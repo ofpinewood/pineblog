@@ -7,36 +7,25 @@ using MongoDB.Driver;
 
 namespace Opw.PineBlog.MongoDb.Repositories
 {
-    public class BlogSettingsRepository : IBlogSettingsRepository
+    public class BlogSettingsRepository : RepositoryBase<BlogSettings>, IBlogSettingsRepository
     {
-        private readonly BlogUnitOfWork _uow;
-        private readonly IMongoCollection<BlogSettings> _collection;
-
-        public BlogSettingsRepository(BlogUnitOfWork uow)
-        {
-            _uow = uow;
-            _collection = _uow.Database.GetCollection<BlogSettings>(nameof(BlogSettings));
-        }
+        public BlogSettingsRepository(BlogUnitOfWork uow) : base(uow) { }
 
         public async Task<BlogSettings> SingleOrDefaultAsync(CancellationToken cancellationToken)
         {
-            return await _collection
-                .Find(_ => true)
+            return await Collection
+                .Find(Builders<BlogSettings>.Filter.Empty)
                 .SingleOrDefaultAsync(cancellationToken);
         }
 
-        public BlogSettings Add([NotNull] BlogSettings blogSettings)
+        public new BlogSettings Add([NotNull] BlogSettings blogSettings)
         {
-            _collection.InsertOne(blogSettings);
-            _uow.SaveChangeCount++;
-            return blogSettings;
+            return base.Add(blogSettings);
         }
 
         public BlogSettings Update([NotNull] BlogSettings blogSettings)
         {
-            _collection.ReplaceOne(_ => true, blogSettings);
-            _uow.SaveChangeCount++;
-            return blogSettings;
+            return Update(_ => true, blogSettings);
         }
     }
 }

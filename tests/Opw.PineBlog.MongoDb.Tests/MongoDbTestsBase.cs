@@ -6,10 +6,12 @@ using Opw.PineBlog.Entities;
 using System;
 using System.Threading;
 
-namespace Opw.PineBlog.MongoDb.Repositories
+namespace Opw.PineBlog.MongoDb
 {
     public abstract class MongoDbTestsBase : IDisposable
     {
+        private bool _isDisposed;
+
         private static MongoDbRunner _runner;
 
         protected readonly IServiceCollection Services;
@@ -37,9 +39,9 @@ namespace Opw.PineBlog.MongoDb.Repositories
             Services.AddPineBlogMongoDb(configuration);
 
             var database = ((BlogUnitOfWork)ServiceProvider.GetRequiredService<IBlogUnitOfWork>()).Database;
-            BlogSettingsCollection = database.GetCollection<BlogSettings>(nameof(BlogSettings));
-            AuthorCollection = database.GetCollection<Author>($"{nameof(Author)}s");
-            PostCollection = database.GetCollection<Post>($"{nameof(Post)}s");
+            BlogSettingsCollection = database.GetCollection<BlogSettings>(CollectionHelper.GetName<BlogSettings>());
+            AuthorCollection = database.GetCollection<Author>(CollectionHelper.GetName<Author>());
+            PostCollection = database.GetCollection<Post>(CollectionHelper.GetName<Post>());
         }
 
         public void Dispose()
@@ -50,12 +52,24 @@ namespace Opw.PineBlog.MongoDb.Repositories
 
         protected virtual void Dispose(bool disposing)
         {
+            if (_isDisposed)
+            {
+                return;
+            }
+
             if (disposing)
             {
-                // wait a little to prevent timeouts
-                Thread.Sleep(1000);
-                _runner.Dispose();
+                if (_runner != null)
+                {
+                    // wait a little to prevent timeouts
+                    Thread.Sleep(500);
+                    try { _runner?.Dispose(); } catch { }
+                    _runner = null;
+                    GC.Collect();
+                }
             }
+
+            _isDisposed = true;
         }
     }
 }

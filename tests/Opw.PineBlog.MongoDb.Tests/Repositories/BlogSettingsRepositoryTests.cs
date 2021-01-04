@@ -1,38 +1,38 @@
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Driver;
 using Opw.PineBlog.Entities;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Opw.PineBlog.EntityFrameworkCore.Repositories
+namespace Opw.PineBlog.MongoDb.Repositories
 {
-    public class BlogSettingsRepositoryTests : EntityFrameworkCoreTestsBase
+    public class BlogSettingsRepositoryTests : MongoDbTestsBase
     {
         private readonly BlogSettingsRepository _blogSettingsRepository;
         private readonly IBlogUnitOfWork _uow;
-        private readonly BlogEntityDbContext _dbContext;
 
         public BlogSettingsRepositoryTests()
         {
-            _dbContext = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
             _uow = ServiceProvider.GetRequiredService<IBlogUnitOfWork>();
             _blogSettingsRepository = (BlogSettingsRepository)_uow.BlogSettings;
         }
 
-        [Fact]
+        [Fact(Skip = Constants.SkipMongoDbTests)]
         public async Task SingleOrDefaultAsync_Should_ReturnBlogSettings()
         {
-            _dbContext.BlogSettings.Add(new BlogSettings
+            BlogSettingsCollection.InsertOne(new BlogSettings
             {
                 Title = "blog title",
                 Description = "blog description",
                 CoverCaption = "blog cover caption",
                 CoverLink = "blog cover link",
-                CoverUrl = "blog cover url"
+                CoverUrl = "blog cover url",
+                Created = DateTime.UtcNow,
             });
-            _dbContext.SaveChanges();
 
             var result = await _blogSettingsRepository.SingleOrDefaultAsync(CancellationToken.None);
 
@@ -41,7 +41,7 @@ namespace Opw.PineBlog.EntityFrameworkCore.Repositories
             result.Description.Should().Be("blog description");
         }
 
-        [Fact]
+        [Fact(Skip = Constants.SkipMongoDbTests)]
         public async Task SingleOrDefaultAsync_Should_ReturnNull()
         {
             var result = await _blogSettingsRepository.SingleOrDefaultAsync(CancellationToken.None);
@@ -49,7 +49,7 @@ namespace Opw.PineBlog.EntityFrameworkCore.Repositories
             result.Should().BeNull();
         }
 
-        [Fact]
+        [Fact(Skip = Constants.SkipMongoDbTests)]
         public async Task Add_Should_AddBlogSettings()
         {
             var blogSettings = new BlogSettings
@@ -64,28 +64,27 @@ namespace Opw.PineBlog.EntityFrameworkCore.Repositories
             _blogSettingsRepository.Add(blogSettings);
             await _uow.SaveChangesAsync(CancellationToken.None);
 
-            var result = _dbContext.BlogSettings.SingleOrDefault();
+            var result = BlogSettingsCollection.Find(Builders<BlogSettings>.Filter.Empty).SingleOrDefault();
 
             result.Should().NotBeNull();
             result.Title.Should().Be("blog title");
             result.Description.Should().Be("blog description");
         }
 
-        [Fact]
+        [Fact(Skip = Constants.SkipMongoDbTests)]
         public async Task Update_Should_UpdateBlogSettings()
         {
-            var blogSettings = new BlogSettings
+            BlogSettingsCollection.InsertOne(new BlogSettings
             {
                 Title = "blog title",
                 Description = "blog description",
                 CoverCaption = "blog cover caption",
                 CoverLink = "blog cover link",
-                CoverUrl = "blog cover url"
-            };
-            _dbContext.BlogSettings.Add(blogSettings);
-            _dbContext.SaveChanges();
+                CoverUrl = "blog cover url",
+                Created = DateTime.UtcNow,
+            });
 
-            var blogSettingsToUpdate = _dbContext.BlogSettings.SingleOrDefault();
+            var blogSettingsToUpdate = BlogSettingsCollection.Find(bs => true).SingleOrDefault();
             blogSettingsToUpdate.Should().NotBeNull();
             blogSettingsToUpdate.Title.Should().Be("blog title");
 
@@ -94,7 +93,7 @@ namespace Opw.PineBlog.EntityFrameworkCore.Repositories
             _blogSettingsRepository.Update(blogSettingsToUpdate);
             await _uow.SaveChangesAsync(CancellationToken.None);
 
-            var result = _dbContext.BlogSettings.SingleOrDefault();
+            var result = BlogSettingsCollection.Find(bs => true).SingleOrDefault();
 
             result.Should().NotBeNull();
             result.Title.Should().Be("UPDATED");

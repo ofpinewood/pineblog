@@ -7,31 +7,50 @@ using System.Linq.Expressions;
 using System;
 using Opw.PineBlog.Repositories;
 using MongoDB.Driver;
+using System.Linq;
 
 namespace Opw.PineBlog.MongoDb.Repositories
 {
-    // TODO: make sure the post document is complete; that it has all the required child objects, like author
-    public class PostRepository : IPostRepository
+    public class PostRepository : RepositoryBase<Post>, IPostRepository
     {
         private readonly BlogUnitOfWork _uow;
-        private readonly IMongoCollection<Post> _collection;
 
-        public PostRepository(BlogUnitOfWork uow)
+        private IMongoCollection<Author> _authorCollection;
+        protected IMongoCollection<Author> AuthorCollection
+        {
+            get
+            {
+                if (_authorCollection == null)
+                    _authorCollection = _uow.Database.GetCollection<Author>(CollectionHelper.GetName<Author>());
+                return _authorCollection;
+            }
+        }
+
+        public PostRepository(BlogUnitOfWork uow) : base(uow)
         {
             _uow = uow;
-            _collection = _uow.Database.GetCollection<Post>($"{nameof(Post)}s");
         }
 
         public async Task<Post> SingleOrDefaultAsync(Expression<Func<Post, bool>> predicate, CancellationToken cancellationToken)
         {
-            return await _collection
+            var post = await Collection
                 .Find(predicate)
                 .SingleOrDefaultAsync(cancellationToken);
+
+            if (post != null)
+            {
+                var author = await AuthorCollection
+                    .Find(a => a.Id == post.AuthorId)
+                    .SingleOrDefaultAsync(cancellationToken);
+                post.Author = author;
+            }
+
+            return post;
         }
 
         public async Task<Post> GetNextAsync(DateTime published, CancellationToken cancellationToken)
         {
-            return await _collection
+            return await Collection
                 .Find(p => p.Published > published)
                 .SortBy(p => p.Published)
                 .Limit(1)
@@ -40,7 +59,7 @@ namespace Opw.PineBlog.MongoDb.Repositories
 
         public async Task<Post> GetPreviousAsync(DateTime published, CancellationToken cancellationToken)
         {
-            return await _collection
+            return await Collection
                 .Find(p => p.Published < published)
                 .SortByDescending(p => p.Published)
                 .Limit(1)
@@ -49,61 +68,86 @@ namespace Opw.PineBlog.MongoDb.Repositories
 
         public async Task<IEnumerable<Post>> GetPublishedAsync(int take, CancellationToken cancellationToken)
         {
-            var query = _collection
+            var posts = await Collection
                 .Find(p => p.Published != null)
                 .SortByDescending(p => p.Published)
-                .Limit(take);
+                .Limit(take)
+                .ToListAsync(cancellationToken);
 
-            return await query.ToListAsync(cancellationToken);
+            if (posts.Any())
+            {
+                var authorIds = posts.Select(p => p.AuthorId).Distinct();
+                var authors = await AuthorCollection
+                    .Find(a => authorIds.Contains(a.Id))
+                    .ToListAsync(cancellationToken);
+
+                foreach (var post in posts)
+                {
+                    var author = authors.SingleOrDefault(a => a.Id == post.AuthorId);
+                    post.Author = author;
+                }
+            }
+
+            return posts;
         }
 
         public async Task<int> CountAsync(IEnumerable<Expression<Func<Post, bool>>> predicates, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
-            // TODO: implement count
-            //var query = _dbContext.Posts.Where(_ => true);
-            //foreach (var predicate in predicates)
-            //    query = query.Where(predicate);
+            var filter = BuildFilter(predicates);
 
-            //return await query.CountAsync(cancellationToken);
+            var count = await Collection
+                .Find(filter)
+                .CountDocumentsAsync(cancellationToken);
+            return (int)count;
         }
 
         public async Task<IEnumerable<Post>> GetAsync(IEnumerable<Expression<Func<Post, bool>>> predicates, int skip, int take, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
-            // TODO: implement get
-            //var query = _dbContext.Posts.Where(_ => true);
+            var filter = BuildFilter(predicates);
 
-            //foreach (var predicate in predicates)
-            //    query = query.Where(predicate);
-
-            //query = query.Include(p => p.Author)
-            //    .OrderByDescending(p => p.Published)
-            //    .Skip(skip)
-            //    .Take(take);
-
-            //return await query.ToListAsync(cancellationToken);
+            var posts = await Collection
+                .Find(filter)
+                .SortByDescending(p => p.Published)
+                .Skip(skip)
+                .Limit(take)
+                .ToListAsync(cancellationToken);
+            return posts;
         }
 
-        public Post Add([NotNull] Post post)
+        public new Post Add([NotNull] Post post)
         {
-            _collection.InsertOne(post);
-            _uow.SaveChangeCount++;
-            return post;
+            post.Author = null;
+            return base.Add(post);
         }
 
         public Post Update([NotNull] Post post)
         {
-            _collection.ReplaceOne(p => p.Id == post.Id, post);
-            _uow.SaveChangeCount++;
-            return post;
+            post.Author = null;
+            return Update(p => p.Id == post.Id, post);
         }
 
         public Post Remove([NotNull] Post post)
         {
-            _collection.DeleteOne(p => p.Id == post.Id);
-            _uow.SaveChangeCount++;
+            Remove(p => p.Id == post.Id);
             return post;
+        }
+
+        private FilterDefinition<Post> BuildFilter(IEnumerable<Expression<Func<Post, bool>>> predicates)
+        {
+            var filter = Builders<Post>.Filter.Where(_ => true);
+
+            if (predicates.Any())
+            {
+                var filterList = new List<FilterDefinition<Post>>();
+                foreach (var predicate in predicates)
+                {
+                    filterList.Add(Builders<Post>.Filter.Where(predicate));
+                }
+
+                filter = Builders<Post>.Filter.And(filterList);
+            }
+
+            return filter;
         }
     }
 }
