@@ -24,7 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "10 Samples", "10 Samples", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "60 Core", "60 Core", "{64F9A954-9830-45BA-B47F-D3589072E347}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.Sample.EntityFrameworkCore", "samples\Opw.PineBlog.Sample.EntityFrameworkCore\Opw.PineBlog.Sample.EntityFrameworkCore.csproj", "{5FF80F3A-E0D0-4E47-9407-582E8F55617D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.Sample", "samples\Opw.PineBlog.Sample\Opw.PineBlog.Sample.csproj", "{5FF80F3A-E0D0-4E47-9407-582E8F55617D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.Abstractions", "src\Opw.PineBlog.Abstractions\Opw.PineBlog.Abstractions.csproj", "{FB7F1F42-A75D-456B-A683-9FC625E95506}"
 EndProject
@@ -58,7 +58,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Docs", "01 Docs", "{5D82
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.EntityFrameworkCore.Tests", "tests\Opw.PineBlog.EntityFrameworkCore.Tests\Opw.PineBlog.EntityFrameworkCore.Tests.csproj", "{09215473-245F-4484-B61C-7FBFC70E8C18}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.Sample.EntityFrameworkCore.Tests", "tests\Opw.PineBlog.Sample.EntityFrameworkCore.Tests\Opw.PineBlog.Sample.EntityFrameworkCore.Tests.csproj", "{FD61CF8C-B52E-4692-9B93-8D48255FD3D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.Sample.Tests", "tests\Opw.PineBlog.Sample.Tests\Opw.PineBlog.Sample.Tests.csproj", "{FD61CF8C-B52E-4692-9B93-8D48255FD3D1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.AspNetCore.Testing", "src\Opw.AspNetCore.Testing\Opw.AspNetCore.Testing.csproj", "{42B13F5C-7803-41B9-94A6-296599F67360}"
 EndProject
@@ -69,10 +69,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "90 Testing", "90 Testing", "{4E318D97-982D-4AA4-877E-67F47A7719E3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.Sample.NuGet", "samples\Opw.PineBlog.Sample.NuGet\Opw.PineBlog.Sample.NuGet.csproj", "{6725D89E-3A46-4756-8F5E-2AFB7E1986FC}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.Sample.MongoDb", "samples\Opw.PineBlog.Sample.MongoDb\Opw.PineBlog.Sample.MongoDb.csproj", "{3DB8773A-B061-402C-B09B-49726EF8C882}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.Sample.MongoDb.Tests", "tests\Opw.PineBlog.Sample.MongoDb.Tests\Opw.PineBlog.Sample.MongoDb.Tests.csproj", "{F174A44C-5745-4FFE-B905-A9D731109E55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -140,14 +136,6 @@ Global
 		{6725D89E-3A46-4756-8F5E-2AFB7E1986FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6725D89E-3A46-4756-8F5E-2AFB7E1986FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6725D89E-3A46-4756-8F5E-2AFB7E1986FC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3DB8773A-B061-402C-B09B-49726EF8C882}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3DB8773A-B061-402C-B09B-49726EF8C882}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3DB8773A-B061-402C-B09B-49726EF8C882}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3DB8773A-B061-402C-B09B-49726EF8C882}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F174A44C-5745-4FFE-B905-A9D731109E55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F174A44C-5745-4FFE-B905-A9D731109E55}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F174A44C-5745-4FFE-B905-A9D731109E55}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F174A44C-5745-4FFE-B905-A9D731109E55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -168,8 +156,6 @@ Global
 		{B8AD9749-650E-406F-BADE-D40ADDA5B4E7} = {F800AFAF-471F-41F4-8F17-0C4FAEC41F6A}
 		{17B168D3-4269-440B-AAD8-69A759035B07} = {F800AFAF-471F-41F4-8F17-0C4FAEC41F6A}
 		{6725D89E-3A46-4756-8F5E-2AFB7E1986FC} = {5FEBABA0-73A1-464A-8715-19F76F742B22}
-		{3DB8773A-B061-402C-B09B-49726EF8C882} = {5FEBABA0-73A1-464A-8715-19F76F742B22}
-		{F174A44C-5745-4FFE-B905-A9D731109E55} = {5FEBABA0-73A1-464A-8715-19F76F742B22}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DF018025-4A97-49F8-888F-C70856C1862A}
