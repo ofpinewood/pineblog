@@ -4,6 +4,7 @@ using Mongo2Go;
 using MongoDB.Driver;
 using Opw.PineBlog.Entities;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace Opw.PineBlog.MongoDb
@@ -13,6 +14,7 @@ namespace Opw.PineBlog.MongoDb
         private static MongoDbRunner _runner;
 
         protected readonly IServiceCollection Services;
+        protected readonly IConfiguration Configuration;
         protected readonly IMongoCollection<BlogSettings> BlogSettingsCollection;
         protected readonly IMongoCollection<Author> AuthorCollection;
         protected readonly IMongoCollection<Post> PostCollection;
@@ -21,25 +23,32 @@ namespace Opw.PineBlog.MongoDb
 
         public MongoDbTestsBase()
         {
-            var configuration = new ConfigurationBuilder()
-               .AddJsonFile("appsettings.json")
-               .AddPineBlogMongoDbConfiguration(reloadOnChange: false)
-               .Build();
-
             _runner = MongoDbRunner.Start(singleNodeReplSet: true);
-
-            // create a new in-memory database for each test
-            configuration.GetSection("ConnectionStrings").GetSection("MongoDbConnection").Value = _runner.ConnectionString;
-            configuration.GetSection(nameof(PineBlogOptions)).GetSection(nameof(PineBlogOptions.MongoDbDatabaseName)).Value = $"pineblog-tests-{Guid.NewGuid()}";
+            Configuration = BuildConfiguration(_runner.ConnectionString);
 
             Services = new ServiceCollection();
-            Services.AddPineBlogCore(configuration);
-            Services.AddPineBlogMongoDb(configuration);
+            Services.AddPineBlogCore(Configuration);
+            Services.AddPineBlogMongoDb(Configuration);
 
             var database = ((BlogUnitOfWork)ServiceProvider.GetRequiredService<IBlogUnitOfWork>()).Database;
             BlogSettingsCollection = database.GetCollection<BlogSettings>(CollectionHelper.GetName<BlogSettings>());
             AuthorCollection = database.GetCollection<Author>(CollectionHelper.GetName<Author>());
             PostCollection = database.GetCollection<Post>(CollectionHelper.GetName<Post>());
+        }
+
+        protected virtual IConfiguration BuildConfiguration(string connectionString)
+        {
+            // create a new in-memory database for each test
+            var settings = new Dictionary<string, string> {
+                { $"ConnectionStrings:MongoDbConnection", connectionString },
+                { $"{nameof(PineBlogOptions)}:{nameof(PineBlogOptions.MongoDbDatabaseName)}", $"pineblog-tests-{Guid.NewGuid()}" }
+            };
+
+            return new ConfigurationBuilder()
+               .AddJsonFile("appsettings.json")
+               .AddInMemoryCollection(settings)
+               //.AddPineBlogMongoDbConfiguration(reloadOnChange: false)
+               .Build();
         }
 
         public void Dispose()

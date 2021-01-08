@@ -5,7 +5,6 @@ namespace Opw.PineBlog.MongoDb
     /// <summary>
     /// Provides extension methods for the application configuration builder interface.
     /// </summary>
-    // TODO: implement when BlogSettingsConfigurationProvider for MongoDb has been implemented
     public static class ConfigurationBuilderExtensions
     {
         /// <summary>
@@ -16,7 +15,17 @@ namespace Opw.PineBlog.MongoDb
         /// <returns>The original configuration object.</returns>
         public static IConfigurationBuilder AddPineBlogMongoDbConfiguration(this IConfigurationBuilder builder, bool reloadOnChange = false)
         {
-            return builder;
+            var configuration = builder.Build();
+            var connectionStringName = configuration.GetSection(nameof(PineBlogOptions)).GetValue<string>(nameof(PineBlogOptions.ConnectionStringName));
+            var databaseName = configuration.GetSection(nameof(PineBlogOptions)).GetValue<string>(nameof(PineBlogOptions.MongoDbDatabaseName));
+            var connectionString = configuration.GetConnectionString(connectionStringName);
+
+            return builder.Add(new BlogSettingsConfigurationSource
+            {
+                ConnectionString = connectionString,
+                DatabaseName = databaseName,
+                ReloadOnChange = reloadOnChange
+            });
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Opw.PineBlog.MongoDb
         {
             // TODO: add check for when someone tries to add multiple databases
 
-            RegisterClassMappings();
+            BsonClassMappings.Register();
 
             services.AddTransient<IMongoDatabase>(provider =>
             {
@@ -36,38 +36,6 @@ namespace Opw.PineBlog.MongoDb
             services.AddTransient<IBlogUnitOfWork, BlogUnitOfWork>();
 
             return services;
-        }
-
-        private static void RegisterClassMappings()
-        {
-            if (!BsonClassMap.IsClassMapRegistered(typeof(BlogSettings)))
-            {
-                BsonClassMap.RegisterClassMap<BlogSettings>(m =>
-                {
-                    m.AutoMap();
-                    m.MapIdProperty(bs => bs.Created);
-                });
-            }
-
-            if (!BsonClassMap.IsClassMapRegistered(typeof(Post)))
-            {
-                BsonClassMap.RegisterClassMap<Post>(m =>
-                {
-                    m.AutoMap();
-                    m.MapIdProperty(p => p.Id);
-                    m.UnmapProperty(p => p.Author);
-                });
-            }
-
-            if (!BsonClassMap.IsClassMapRegistered(typeof(Author)))
-            {
-                BsonClassMap.RegisterClassMap<Author>(m =>
-                {
-                    m.AutoMap();
-                    m.MapIdProperty(a => a.Id);
-                    m.UnmapProperty(a => a.Posts);
-                });
-            }
         }
     }
 }
