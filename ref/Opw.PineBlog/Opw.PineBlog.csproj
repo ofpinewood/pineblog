@@ -5,7 +5,7 @@
     <Description>PineBlog; a light-weight blogging engine written in ASP.NET Core MVC Razor Pages, using Entity Framework Core.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>Opw.PineBlog</PackageId>
-    <PackageTags>blog aspnetcore mvc razorpages entityframeworkcore</PackageTags>
+    <PackageTags>blog aspnetcore mvc razorpages efcore entityframeworkcore</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

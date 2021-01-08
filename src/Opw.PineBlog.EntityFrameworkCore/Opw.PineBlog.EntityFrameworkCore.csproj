@@ -5,7 +5,7 @@
         <Description>PineBlog data provider that uses Entity Framework Core.</Description>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageId>Opw.PineBlog.EntityFrameworkCore</PackageId>
-        <PackageTags>blog entity framework core entityframeworkcore</PackageTags>
+        <PackageTags>blog efcore entityframeworkcore</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Opw.PineBlog.MongoDb;
 using Opw.PineBlog.RazorPages;
 
 namespace Opw.PineBlog.Sample.NuGet
@@ -23,7 +24,18 @@ namespace Opw.PineBlog.Sample.NuGet
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
 
-            services.AddPineBlog(Configuration);
+            if (Configuration.GetValue<string>("PineBlogDataSource") == "MongoDb")
+            {
+                // using MongoDb as the datasource
+                services.AddPineBlogCore(Configuration);
+                services.AddPineBlogMongoDb(Configuration);
+            }
+            else
+            {
+                // using EntityFrameworkCore, the default
+                services.AddPineBlog(Configuration);
+            }
+
             services.AddRazorPages()
                 .AddPineBlogRazorPages()
                 .AddRazorPagesOptions(o =>
