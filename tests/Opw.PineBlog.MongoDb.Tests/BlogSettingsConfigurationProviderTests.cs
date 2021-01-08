@@ -24,7 +24,7 @@ namespace Opw.PineBlog.MongoDb
             });
         }
 
-        [Fact]
+        [Fact(Skip = Constants.SkipMongoDbBlogSettingsConfigurationProviderTests)]
         public void Load_Should_HaveSettings()
         {
             var uow = ServiceProvider.GetService<IBlogUnitOfWork>();
@@ -39,7 +39,7 @@ namespace Opw.PineBlog.MongoDb
             description.Should().BeNull();
         }
 
-        [Fact]
+        [Fact(Skip = Constants.SkipMongoDbBlogSettingsConfigurationProviderTests)]
         public void Load_Should_NotHaveSettings()
         {
             _provider.Load();

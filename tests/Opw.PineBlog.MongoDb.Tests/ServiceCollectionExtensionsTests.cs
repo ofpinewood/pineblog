@@ -6,7 +6,7 @@ namespace Opw.PineBlog.MongoDb
 {
     public class ServiceCollectionExtensionsTests : MongoDbTestsBase
     {
-        [Fact]
+        [Fact(Skip = Constants.SkipMongoDbTests)]
         public void AddPineBlogMongoDb_Should_RegisterBlogUnitOfWork()
         {
             var uow = ServiceProvider.GetService<IBlogUnitOfWork>();

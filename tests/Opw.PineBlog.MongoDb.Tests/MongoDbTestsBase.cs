@@ -47,7 +47,6 @@ namespace Opw.PineBlog.MongoDb
             return new ConfigurationBuilder()
                .AddJsonFile("appsettings.json")
                .AddInMemoryCollection(settings)
-               //.AddPineBlogMongoDbConfiguration(reloadOnChange: false)
                .Build();
         }
 
