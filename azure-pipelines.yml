@@ -118,6 +118,16 @@ steps:
     versionEnvVar: 'GitVersion.NuGetVersion'
 
 - task: DotNetCoreCLI@2
+  displayName: NuGet Pack Opw.PineBlog.MongoDb
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  inputs:
+    command: pack
+    packagesToPack: '**/Opw.PineBlog.MongoDb.csproj'
+    nobuild: true
+    versioningScheme: byEnvVar
+    versionEnvVar: 'GitVersion.NuGetVersion'
+
+- task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.PineBlog
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
   inputs:
