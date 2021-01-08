@@ -24,14 +24,16 @@ namespace Opw.PineBlog.MongoDb
 
             RegisterClassMappings();
 
-            services.AddTransient<IBlogUnitOfWork>(provider =>
+            services.AddTransient<IMongoDatabase>(provider =>
             {
                 var blogOptions = provider.GetRequiredService<IOptions<PineBlogOptions>>();
                 var connectionString = configuration.GetConnectionString(blogOptions.Value.ConnectionStringName);
                 var client = new MongoClient(connectionString);
 
-                return new BlogUnitOfWork(client.GetDatabase(blogOptions.Value.MongoDbDatabaseName));
+                return client.GetDatabase(blogOptions.Value.MongoDbDatabaseName);
             });
+
+            services.AddTransient<IBlogUnitOfWork, BlogUnitOfWork>();
 
             return services;
         }

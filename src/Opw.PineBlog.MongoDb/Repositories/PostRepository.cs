@@ -66,31 +66,6 @@ namespace Opw.PineBlog.MongoDb.Repositories
                 .SingleOrDefaultAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<Post>> GetPublishedAsync(int take, CancellationToken cancellationToken)
-        {
-            var posts = await Collection
-                .Find(p => p.Published != null)
-                .SortByDescending(p => p.Published)
-                .Limit(take)
-                .ToListAsync(cancellationToken);
-
-            if (posts.Any())
-            {
-                var authorIds = posts.Select(p => p.AuthorId).Distinct();
-                var authors = await AuthorCollection
-                    .Find(a => authorIds.Contains(a.Id))
-                    .ToListAsync(cancellationToken);
-
-                foreach (var post in posts)
-                {
-                    var author = authors.SingleOrDefault(a => a.Id == post.AuthorId);
-                    post.Author = author;
-                }
-            }
-
-            return posts;
-        }
-
         public async Task<int> CountAsync(IEnumerable<Expression<Func<Post, bool>>> predicates, CancellationToken cancellationToken)
         {
             var filter = BuildFilter(predicates);
@@ -111,6 +86,20 @@ namespace Opw.PineBlog.MongoDb.Repositories
                 .Skip(skip)
                 .Limit(take)
                 .ToListAsync(cancellationToken);
+
+            if (posts.Any())
+            {
+                var authorIds = posts.Select(p => p.AuthorId).Distinct();
+                var authors = await AuthorCollection
+                    .Find(a => authorIds.Contains(a.Id))
+                    .ToListAsync(cancellationToken);
+
+                foreach (var post in posts)
+                {
+                    post.Author = authors.SingleOrDefault(a => a.Id == post.AuthorId);
+                }
+            }
+
             return posts;
         }
 

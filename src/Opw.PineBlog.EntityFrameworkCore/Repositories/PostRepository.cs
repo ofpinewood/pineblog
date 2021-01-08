@@ -45,17 +45,6 @@ namespace Opw.PineBlog.EntityFrameworkCore.Repositories
                 .SingleOrDefaultAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<Post>> GetPublishedAsync(int take, CancellationToken cancellationToken)
-        {
-            var query = _dbContext.Posts
-                .Include(p => p.Author)
-                .Where(p => p.Published != null)
-                .OrderByDescending(p => p.Published)
-                .Take(take);
-
-            return await query.ToListAsync(cancellationToken);
-        }
-
         public async Task<int> CountAsync(IEnumerable<Expression<Func<Post, bool>>> predicates, CancellationToken cancellationToken)
         {
             var query = _dbContext.Posts.Where(_ => true);

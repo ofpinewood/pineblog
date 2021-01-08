@@ -6,6 +6,7 @@ using Opw.PineBlog.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
@@ -26,7 +27,7 @@ namespace Opw.PineBlog.Feeds
             posts.Add(CreatePost(3, author, true, "cat2"));
             posts.Add(CreatePost(4, author, true, "cat1,cat2,cat3"));
 
-            PostRepositoryMock.Setup(m => m.GetPublishedAsync(It.IsAny<int>(), It.IsAny<CancellationToken>())).ReturnsAsync(posts);
+            PostRepositoryMock.Setup(m => m.GetAsync(It.IsAny<IEnumerable<Expression<Func<Post, bool>>>>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).ReturnsAsync(posts);
         }
 
         [Fact]

@@ -30,7 +30,7 @@ namespace Opw.PineBlog.MongoDb
 
             // create a new in-memory database for each test
             configuration.GetSection("ConnectionStrings").GetSection("MongoDbConnection").Value = _runner.ConnectionString;
-            configuration.GetSection("PineBlogOptions").GetSection("MongoDbDatabaseName").Value = $"pineblog-tests-{Guid.NewGuid()}";
+            configuration.GetSection(nameof(PineBlogOptions)).GetSection(nameof(PineBlogOptions.MongoDbDatabaseName)).Value = $"pineblog-tests-{Guid.NewGuid()}";
 
             Services = new ServiceCollection();
             Services.AddPineBlogCore(configuration);

@@ -4,12 +4,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Opw.PineBlog.EntityFrameworkCore;
+using Opw.PineBlog.MongoDb;
 using System;
+using System.Collections.Generic;
 
 namespace Opw.PineBlog.Sample
 {
     public class Program
     {
+        private static readonly MongoDbInMemoryRunner _mongoDbRunner = new MongoDbInMemoryRunner();
+
         public static void Main(string[] args)
         {
             var host = CreateWebHostBuilder(args).Build();
@@ -17,9 +21,20 @@ namespace Opw.PineBlog.Sample
             using (var scope = host.Services.CreateScope())
             {
                 var serviceProvider = scope.ServiceProvider;
+                var config = serviceProvider.GetRequiredService<IConfiguration>();
+
                 try
                 {
-                    serviceProvider.InitializePineBlogDatabase((context) => new DatabaseSeed(context).Run());
+                    if (config.GetValue<string>("PineBlogDataSource") == "MongoDb")
+                    {
+                        // using MongoDb
+                        serviceProvider.InitializePineBlogMongoDb((database) => new MongoDbSeed(database).Run());
+                    }
+                    else
+                    {
+                        // using EntityFrameworkCore
+                        serviceProvider.InitializePineBlogDatabase((context) => new DatabaseSeed(context).Run());
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -34,7 +49,27 @@ namespace Opw.PineBlog.Sample
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .ConfigureAppConfiguration((_, config) => config.AddPineBlogEntityFrameworkCoreConfiguration(reloadOnChange: true))
+                .ConfigureAppConfiguration((_, config) =>
+                {
+                    var configuration = config.Build();
+                    if (configuration.GetValue<string>("PineBlogDataSource") == "MongoDb")
+                    {
+                        // override the ConnectionStringName appsetting to point to the MongoDbConnection
+                        var settings = new Dictionary<string, string>{ { "PineBlogOptions:ConnectionStringName", "MongoDbConnection" } };
+                        config.AddInMemoryCollection(settings);
+
+                        // initializes an in-memory MongoDbRunner when needed
+                        _mongoDbRunner.Initialize(config);
+
+                        // using MongoDb as the datasource
+                        config.AddPineBlogMongoDbConfiguration(reloadOnChange: true);
+                    }
+                    else
+                    {
+                        // using EntityFrameworkCore, the default
+                        config.AddPineBlogEntityFrameworkCoreConfiguration(reloadOnChange: true);
+                    }
+                })
                 .ConfigureLogging((hostingContext, builder) =>
                 {
                     builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));

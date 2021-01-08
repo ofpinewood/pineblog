@@ -66,16 +66,6 @@ namespace Opw.PineBlog.MongoDb.Repositories
         }
 
         [Fact(Skip = Constants.SkipMongoDbTests)]
-        public async Task GetPublishedAsync_Should_Return5PostsWithAuthors()
-        {
-            var results = await _postRepository.GetPublishedAsync(int.MaxValue, CancellationToken.None);
-
-            results.Should().HaveCount(5);
-            results.First().Author.Should().NotBeNull();
-            results.Last().Author.Should().NotBeNull();
-        }
-
-        [Fact(Skip = Constants.SkipMongoDbTests)]
         public async Task CountAsync_Should_Return5()
         {
             var predicates = new List<Expression<Func<Post, bool>>>();
