@@ -10,7 +10,7 @@ namespace Opw.PineBlog.MongoDb
     public class DocumentChangeEventArgs : EventArgs
     {
         /// <summary>
-        /// The ChangeStreamDocument<BsonDocument> for the document.
+        /// The ChangeStreamDocument for the document.
         /// </summary>
         public ChangeStreamDocument<BsonDocument> Document { get; }
 

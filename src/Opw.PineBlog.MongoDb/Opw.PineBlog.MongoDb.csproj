@@ -1,15 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Description>PineBlog data provider that uses MongoDb.</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageId>Opw.PineBlog.MongoDb</PackageId>
+    <PackageTags>blog mongodb</PackageTags>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="MongoDB.Driver" Version="2.11.5" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="2.11.5" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\Opw.PineBlog.Core\Opw.PineBlog.Core.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Opw.PineBlog.Core\Opw.PineBlog.Core.csproj" />
+  </ItemGroup>
 
 </Project>
