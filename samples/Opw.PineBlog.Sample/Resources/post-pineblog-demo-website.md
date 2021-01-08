@@ -1,4 +1,4 @@
-PineBlog a new blogging engine, light-weight, open source and written in ASP.NET Core MVC Razor Pages, using Entity Framework Core. It is highly
+PineBlog a new blogging engine, light-weight, open source and written in ASP.NET Core MVC Razor Pages, using Entity Framework Core or MongoDb. It is highly
 extendable, customizable and easy to integrate in an existing web application.
 
 [![Build Status](https://dev.azure.com/ofpinewood/Of%20Pine%20Wood/_apis/build/status/ofpinewood.pineblog?branchName=master)](https://dev.azure.com/ofpinewood/Of%20Pine%20Wood/_build/latest?definitionId=7&branchName=master)
