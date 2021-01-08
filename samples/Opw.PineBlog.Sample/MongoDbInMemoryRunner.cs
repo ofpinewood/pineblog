@@ -1,6 +1,4 @@
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Mongo2Go;
 using System;
 using System.Collections.Generic;

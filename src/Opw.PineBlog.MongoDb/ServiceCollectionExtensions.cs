@@ -55,6 +55,7 @@ namespace Opw.PineBlog.MongoDb
                 {
                     m.AutoMap();
                     m.MapIdProperty(p => p.Id);
+                    m.UnmapProperty(p => p.Author);
                 });
             }
 
@@ -64,6 +65,7 @@ namespace Opw.PineBlog.MongoDb
                 {
                     m.AutoMap();
                     m.MapIdProperty(a => a.Id);
+                    m.UnmapProperty(a => a.Posts);
                 });
             }
         }
