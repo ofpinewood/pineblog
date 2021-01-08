@@ -10,8 +10,6 @@ namespace Opw.PineBlog.MongoDb
 {
     public abstract class MongoDbTestsBase : IDisposable
     {
-        private bool _isDisposed;
-
         private static MongoDbRunner _runner;
 
         protected readonly IServiceCollection Services;
@@ -52,24 +50,19 @@ namespace Opw.PineBlog.MongoDb
 
         protected virtual void Dispose(bool disposing)
         {
-            if (_isDisposed)
-            {
-                return;
-            }
-
             if (disposing)
             {
-                if (_runner != null)
-                {
-                    // wait a little to prevent timeouts
-                    Thread.Sleep(500);
-                    try { _runner?.Dispose(); } catch { }
-                    _runner = null;
-                    GC.Collect();
-                }
             }
 
-            _isDisposed = true;
+            // always try to dispose, even if disposing=false
+            if (_runner != null)
+            {
+                // wait a little to prevent timeouts
+                Thread.Sleep(500);
+                try { _runner?.Dispose(); } catch { }
+                _runner = null;
+                GC.Collect();
+            }
         }
     }
 }
