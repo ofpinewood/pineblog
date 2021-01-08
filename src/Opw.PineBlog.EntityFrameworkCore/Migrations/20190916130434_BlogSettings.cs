@@ -1,8 +1,10 @@
-﻿using System;
+using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Opw.PineBlog.EntityFrameworkCore.Migrations
 {
+    [ExcludeFromCodeCoverage]
     public partial class BlogSettings : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

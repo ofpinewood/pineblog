@@ -1,12 +1,13 @@
 using FluentAssertions;
 using FluentValidation.Results;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
-using Opw.PineBlog.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -14,11 +15,23 @@ namespace Opw.PineBlog.Posts
 {
     public class DeletePostCommandTests : MediatRTestsBase
     {
-        private Guid _postId;
+        private Guid _postId = Guid.NewGuid();
 
         public DeletePostCommandTests()
         {
-            SeedDatabase();
+            var posts = new List<Post>();
+            posts.Add(new Post
+            {
+                Id = _postId,
+                AuthorId = Guid.NewGuid(),
+                Title = "Post title 0",
+                Slug = "post-title-0",
+                Description = "Description",
+                Content = "Content",
+                Published = DateTime.UtcNow
+            });
+
+            PostRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<Expression<Func<Post, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(posts.SingleOrDefault());
         }
 
         [Fact]
@@ -33,6 +46,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnNotFoundException()
         {
+            PostRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<Expression<Func<Post, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(default(Post));
+
             var result = await Mediator.Send(new DeletePostCommand { Id = Guid.NewGuid() });
 
             result.IsSuccess.Should().BeFalse();
@@ -42,52 +57,27 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_DeletePost()
         {
+            Post deletedPost = null;
+
+            PostRepositoryMock.Setup(m => m.Remove(It.IsAny<Post>())).Callback((Post p) => deletedPost = p);
+            
             var result = await Mediator.Send(new DeletePostCommand { Id = _postId });
 
             result.IsSuccess.Should().BeTrue();
 
-            var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
-
-            var post = await context.Posts.SingleOrDefaultAsync(p => p.Id.Equals(_postId));
-
-            post.Should().BeNull();
+            deletedPost.Should().NotBeNull();
+            deletedPost.Published.Should().BeNull();
         }
 
-        private void SeedDatabase()
+        [Fact]
+        public async Task Handler_Should_ReturnExceptionResult_WhenSaveChangesError()
         {
-            var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
+            BlogUnitOfWorkMock.Setup(m => m.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Result<int>.Fail(new ApplicationException("Error: SaveChangesAsync")));
 
-            var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
-            context.Authors.Add(author);
-            context.SaveChanges();
+            var result = await Mediator.Send(new DeletePostCommand { Id = _postId });
 
-            var post = CreatePost(0, author.Id, true, false);
-            context.Posts.Add(post);
-            context.SaveChanges();
-
-            _postId = post.Id;
-        }
-
-        private Post CreatePost(int i, Guid authorId, bool published, bool cover)
-        {
-            var post = new Post
-            {
-                AuthorId = authorId,
-                Title = "Post title " + i,
-                Slug = "post-title-" + i,
-                Description = "Description",
-                Content = "Content"
-            };
-
-            if (published) post.Published = DateTime.UtcNow;
-            if (cover)
-            {
-                post.CoverUrl = "https://ofpinewood.com/cover-url";
-                post.CoverCaption = "Cover caption";
-                post.CoverLink = "https://ofpinewood.com/cover-link";
-            }
-
-            return post;
+            result.IsSuccess.Should().BeFalse();
+            result.Exception.Should().BeOfType<ApplicationException>();
         }
     }
 }

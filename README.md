@@ -4,7 +4,7 @@
 [![NuGet Badge](https://img.shields.io/nuget/v/Opw.PineBlog.svg)](https://www.nuget.org/packages/Opw.PineBlog/)
 [![License: MIT](https://img.shields.io/github/license/ofpinewood/pineblog.svg)](https://github.com/ofpinewood/pineblog/blob/master/LICENSE)
 
-PineBlog is a light-weight blogging engine written in ASP.NET Core MVC Razor Pages, using Entity Framework Core. It is highly extendable, customizable and easy to integrate in an existing web application.
+PineBlog is a light-weight blogging engine written in ASP.NET Core MVC Razor Pages, using Entity Framework Core or MongoDb. It is highly extendable, customizable and easy to integrate in an existing web application.
 
 ![PineBlog screenshot](docs/screenshot.png)
 
@@ -17,6 +17,7 @@ PineBlog is a light-weight blogging engine written in ASP.NET Core MVC Razor Pag
 - Open Graph protocol
 - Clean Architecture (youtube: [Clean Architecture with ASP.NET Core](https://youtu.be/_lwCVE_XgqI))
 - Entity Framework Core, SQL database
+- or MongoDb ([MongoDB.Driver](https://www.nuget.org/packages/mongodb.driver))
 - Azure Blob Storage, for file storage
 - ..only a blogging engine, nothing else..
 
@@ -36,17 +37,19 @@ You can install the [Opw.PineBlog](https://www.nuget.org/packages/Opw.PineBlog/)
 
 The Opw.PineBlog metapackage includes the following packages.
 
-- **Opw.PineBlog.EntityFrameworkCore package**  
-The PineBlog data provider that uses Entity Framework Core.  
+- **Opw.PineBlog.EntityFrameworkCore package**
+The PineBlog data provider that uses Entity Framework Core.
 [![NuGet Badge](https://img.shields.io/nuget/v/Opw.PineBlog.EntityFrameworkCore.svg)](https://www.nuget.org/packages/Opw.PineBlog.EntityFrameworkCore/)
 
-- **Opw.PineBlog.RazorPages package**  
-The PineBlog UI using ASP.NET Core MVC Razor Pages.  
+- **Opw.PineBlog.RazorPages package**
+The PineBlog UI using ASP.NET Core MVC Razor Pages.
 [![NuGet Badge](https://img.shields.io/nuget/v/Opw.PineBlog.RazorPages.svg)](https://www.nuget.org/packages/Opw.PineBlog.RazorPages/)
 
-- **Opw.PineBlog.Core package**  
-The PineBlog core package. This package is a dependency for `Opw.PineBlog.RazorPages` and `Opw.PineBlog.EntityFrameworkCore`.  
+- **Opw.PineBlog.Core package**
+The PineBlog core package. This package is a dependency for `Opw.PineBlog.RazorPages` and `Opw.PineBlog.EntityFrameworkCore`.
 [![NuGet Badge](https://img.shields.io/nuget/v/Opw.PineBlog.Core.svg)](https://www.nuget.org/packages/Opw.PineBlog.Core/)
+
+> For using MongoDb, see [Using MongoDb](https://github.com/ofpinewood/pineblog/tree/master/docs/mongodb.md) on how to setup that.
 
 ## Getting started
 You add the PineBlog services and the Razor Pages UI in the Startup.cs of your application.
@@ -56,7 +59,7 @@ public void ConfigureServices(IServiceCollection services)
 {
     ...
     services.AddPineBlog(Configuration);
-    
+
     services.AddRazorPages().AddPineBlogRazorPages();
     // or services.AddMvcCore().AddPineBlogRazorPages();
     // or services.AddMvc().AddPineBlogRazorPages();
@@ -80,9 +83,9 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 }
 ```
 
-NOTE: Make sure you enable static file serving `app.UseStaticFiles();`, to enable the serving of the css and javascript from the `Opw.PineBlog.RazorPages` packages.  
+NOTE: Make sure you enable static file serving `app.UseStaticFiles();`, to enable the serving of the css and javascript from the `Opw.PineBlog.RazorPages` packages.
 
-See [Customizing the layout](https://github.com/ofpinewood/pineblog/tree/master/docs/custom-layout.md) on how to setup the layout pages, css and javascript.  
+See [Customizing the layout](https://github.com/ofpinewood/pineblog/tree/master/docs/custom-layout.md) on how to setup the layout pages, css and javascript.
 
 ### Configuration
 And a few properties need to be configured before you can run your web application with PineBlog.
@@ -127,7 +130,7 @@ For more information, please check the documentation.
 For technical background information, check the blog: [ofpinewood.com](https://ofpinewood.com/Blog?category=pineblog).
 
 ## Samples
-- The [sample project](https://github.com/ofpinewood/pineblog/tree/master/samples/Opw.PineBlog.Sample) contains an example web application with PineBlog.  
+- The [sample project](https://github.com/ofpinewood/pineblog/tree/master/samples/Opw.PineBlog.Sample) contains an example web application with PineBlog.
 - The [NuGet sample project](https://github.com/ofpinewood/pineblog/tree/master/samples/Opw.PineBlog.Sample.NuGet) contains an example web application using just the NuGet packages.
 
 **Please see the code** :nerd_face:
@@ -136,9 +139,9 @@ For technical background information, check the blog: [ofpinewood.com](https://o
 The demo site is a playground to check out PineBlog. You can write and publish posts, upload files and test application before install.
 And no worries, it is just a sandbox and will clean itself.
 
-> **Url:** [pineblog.azurewebsites.net](https://pineblog.azurewebsites.net)  
-> **Username:** pineblog@example.com  
-> **Password:** demo  
+> **Url:** [pineblog.azurewebsites.net](https://pineblog.azurewebsites.net)
+> **Username:** pineblog@example.com
+> **Password:** demo
 
 ## Usage
 PineBlog is used on the following website:

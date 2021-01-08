@@ -1,7 +1,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using Opw.PineBlog.Entities;
 
 namespace Opw.PineBlog.MongoDb
 {
@@ -20,14 +22,18 @@ namespace Opw.PineBlog.MongoDb
         {
             // TODO: add check for when someone tries to add multiple databases
 
-            services.AddTransient<IBlogUnitOfWork>(provider =>
+            BsonClassMappings.Register();
+
+            services.AddTransient<IMongoDatabase>(provider =>
             {
                 var blogOptions = provider.GetRequiredService<IOptions<PineBlogOptions>>();
                 var connectionString = configuration.GetConnectionString(blogOptions.Value.ConnectionStringName);
                 var client = new MongoClient(connectionString);
 
-                return new BlogUnitOfWork(client.GetDatabase(blogOptions.Value.MongoDbDatabaseName));
+                return client.GetDatabase(blogOptions.Value.MongoDbDatabaseName);
             });
+
+            services.AddTransient<IBlogUnitOfWork, BlogUnitOfWork>();
 
             return services;
         }

@@ -1,12 +1,13 @@
 using FluentAssertions;
 using FluentValidation.Results;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
-using Opw.PineBlog.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -14,11 +15,23 @@ namespace Opw.PineBlog.Posts
 {
     public class UpdatePostCommandTests : MediatRTestsBase
     {
-        private Guid _postId;
+        private Guid _postId = Guid.NewGuid();
 
         public UpdatePostCommandTests()
         {
-            SeedDatabase();
+            var posts = new List<Post>();
+            posts.Add(new Post
+            {
+                Id = _postId,
+                AuthorId = Guid.NewGuid(),
+                Title = "Post title 0",
+                Slug = "post-title-0",
+                Description = "Description",
+                Content = "Content",
+                Published = DateTime.UtcNow
+            });
+
+            PostRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<Expression<Func<Post, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(posts.SingleOrDefault());
         }
 
         [Fact]
@@ -35,6 +48,8 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnNotFoundException()
         {
+            PostRepositoryMock.Setup(m => m.SingleOrDefaultAsync(It.IsAny<Expression<Func<Post, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(default(Post));
+
             var result = await Mediator.Send(new UpdatePostCommand
             {
                 Id = Guid.NewGuid(),
@@ -61,50 +76,80 @@ namespace Opw.PineBlog.Posts
             });
 
             result.IsSuccess.Should().BeTrue();
-
-            var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
-
-            var post = await context.Posts.SingleAsync(p => p.Id.Equals(_postId));
-
-            post.Should().NotBeNull();
-            post.Title.Should().Be("title-UPDATED");
+            result.Should().NotBeNull();
+            result.Value.Title.Should().Be("title-UPDATED");
         }
 
-        private void SeedDatabase()
+        [Fact]
+        public async Task Handler_Should_CoverUrl_ReplaceBaseUrlWithUrlFormat()
         {
-            var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
+            var result = await Mediator.Send(new UpdatePostCommand
+            {
+                Id = _postId,
+                Categories = "category",
+                Title = "title",
+                Content = "content",
+                Description = "description",
+                CoverUrl = "http://127.0.0.1:10000/devstoreaccount1/pineblog-tests/blog-cover-url"
+            });
 
-            var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
-            context.Authors.Add(author);
-            context.SaveChanges();
+            result.IsSuccess.Should().BeTrue();
 
-            var post = CreatePost(0, author.Id, true, false);
-            context.Posts.Add(post);
-            context.SaveChanges();
-
-            _postId = post.Id;
+            result.Value.Should().NotBeNull();
+            result.Value.CoverUrl.Should().Be("%URL%/blog-cover-url");
         }
 
-        private Post CreatePost(int i, Guid authorId, bool published, bool cover)
+        [Fact]
+        public async Task Handler_Should_UrlsInContent_ReplaceBaseUrlWithUrlFormat()
         {
-            var post = new Post
+            var result = await Mediator.Send(new UpdatePostCommand
             {
-                AuthorId = authorId,
-                Title = "Post title " + i,
-                Slug = "post-title-" + i,
-                Description = "Description",
-                Content = "Content"
-            };
+                Id = _postId,
+                Categories = "category",
+                Title = "title",
+                Content = "content with an url: http://127.0.0.1:10000/devstoreaccount1/pineblog-tests/content-url-1. nice isn't it? And one more: http://127.0.0.1:10000/devstoreaccount1/pineblog-tests/content-url-2!",
+                Description = "description",
+            });
 
-            if (published) post.Published = DateTime.UtcNow;
-            if (cover)
+            result.IsSuccess.Should().BeTrue();
+
+            result.Value.Should().NotBeNull();
+            result.Value.Content.Should().Be("content with an url: %URL%/content-url-1. nice isn't it? And one more: %URL%/content-url-2!");
+        }
+
+        [Fact]
+        public async Task Handler_Should_HaveCorrextSlug()
+        {
+            var result = await Mediator.Send(new UpdatePostCommand
             {
-                post.CoverUrl = "https://ofpinewood.com/cover-url";
-                post.CoverCaption = "Cover caption";
-                post.CoverLink = "https://ofpinewood.com/cover-link";
-            }
+                Id = _postId,
+                Categories = "category",
+                Title = "title or slug",
+                Content = "content",
+                Description = "description"
+            });
 
-            return post;
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Title.Should().Be("title or slug");
+            result.Value.Slug.Should().MatchRegex(result.Value.Title.ToPostSlug());
+        }
+
+        [Fact]
+        public async Task Handler_Should_ReturnExceptionResult_WhenSaveChangesError()
+        {
+            BlogUnitOfWorkMock.Setup(m => m.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(Result<int>.Fail(new ApplicationException("Error: SaveChangesAsync")));
+
+            var result = await Mediator.Send(new UpdatePostCommand
+            {
+                Id = _postId,
+                Categories = "category",
+                Title = "title",
+                Content = "content",
+                Description = "description"
+            });
+
+            result.IsSuccess.Should().BeFalse();
+            result.Exception.Should().BeOfType<ApplicationException>();
         }
     }
 }

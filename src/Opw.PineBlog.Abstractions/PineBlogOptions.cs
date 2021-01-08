@@ -72,7 +72,7 @@ namespace Opw.PineBlog
         public string AzureStorageBlobContainerName { get; set; }
 
         /// <summary>
-        /// MongoDb database name.
+        /// The name of the database when using MongoDb, otherwise can be left blank.
         /// </summary>
         public string MongoDbDatabaseName { get; set; }
     }

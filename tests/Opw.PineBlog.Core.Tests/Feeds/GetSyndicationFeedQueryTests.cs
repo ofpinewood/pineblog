@@ -1,12 +1,13 @@
 using FluentAssertions;
 using FluentValidation.Results;
-using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using Opw.HttpExceptions;
 using Opw.PineBlog.Entities;
-using Opw.PineBlog.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.ServiceModel.Syndication;
+using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using Xunit;
@@ -17,7 +18,16 @@ namespace Opw.PineBlog.Feeds
     {
         public GetSyndicationFeedQueryTests() : base()
         {
-            SeedDatabase();
+            var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
+
+            var posts = new List<Post>();
+            posts.Add(CreatePost(0, author, false, "cat1"));
+            posts.Add(CreatePost(1, author, true, "cat1"));
+            posts.Add(CreatePost(2, author, true, "cat1,cat2"));
+            posts.Add(CreatePost(3, author, true, "cat2"));
+            posts.Add(CreatePost(4, author, true, "cat1,cat2,cat3"));
+
+            PostRepositoryMock.Setup(m => m.GetAsync(It.IsAny<IEnumerable<Expression<Func<Post, bool>>>>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).ReturnsAsync(posts);
         }
 
         [Fact]
@@ -97,7 +107,7 @@ namespace Opw.PineBlog.Feeds
 
             var items = feedXml.SelectNodes("/rss/channel/item");
             var title = items[0].SelectSingleNode("title").InnerText;
-            title.Should().Be("Post title 4");
+            title.Should().Be("Post title 0");
         }
 
         [Fact]
@@ -117,39 +127,24 @@ namespace Opw.PineBlog.Feeds
 
             var items = feedXml.SelectNodes("/rss/channel/item");
             var guid = items[0].SelectSingleNode("guid").InnerText;
-            guid.Should().Be("http://www.example.com/posts/post-title-4");
+            guid.Should().Be("http://www.example.com/posts/post-title-0");
         }
 
-        private void SeedDatabase()
-        {
-            var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
-
-            var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
-            context.Authors.Add(author);
-            context.SaveChanges();
-
-            context.Posts.Add(CreatePost(0, author.Id, true, false, "cat1"));
-            context.Posts.Add(CreatePost(1, author.Id, true, true, "cat1"));
-            context.Posts.Add(CreatePost(2, author.Id, true, true, "cat1,cat2"));
-            context.Posts.Add(CreatePost(3, author.Id, true, true, "cat2"));
-            context.Posts.Add(CreatePost(4, author.Id, true, true, "cat1,cat2,cat3"));
-            context.Posts.Add(CreatePost(5, author.Id, false, true, "cat3"));
-            context.SaveChanges();
-        }
-
-        private Post CreatePost(int i, Guid authorId, bool published, bool cover, string categories)
+        private Post CreatePost(int i, Author author, bool cover, string categories)
         {
             var post = new Post
             {
-                AuthorId = authorId,
+                Author = author,
                 Title = "Post title " + i,
                 Slug = "post-title-" + i,
                 Categories = categories,
                 Description = "Description",
-                Content = "Content"
+                Content = "Content",
+                Created = DateTime.UtcNow,
+                Modified = DateTime.UtcNow,
+                Published = DateTime.UtcNow
             };
 
-            if (published) post.Published = DateTime.UtcNow;
             if (cover)
             {
                 post.CoverUrl = "https://ofpinewood.com/cover-url";

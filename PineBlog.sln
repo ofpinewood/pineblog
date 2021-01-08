@@ -68,7 +68,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.MongoDb.Tests"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "90 Testing", "90 Testing", "{4E318D97-982D-4AA4-877E-67F47A7719E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opw.PineBlog.Sample.NuGet", "samples\Opw.PineBlog.Sample.NuGet\Opw.PineBlog.Sample.NuGet.csproj", "{6725D89E-3A46-4756-8F5E-2AFB7E1986FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opw.PineBlog.Sample.NuGet", "samples\Opw.PineBlog.Sample.NuGet\Opw.PineBlog.Sample.NuGet.csproj", "{6725D89E-3A46-4756-8F5E-2AFB7E1986FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

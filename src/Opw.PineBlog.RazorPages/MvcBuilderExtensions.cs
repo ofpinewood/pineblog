@@ -1,4 +1,5 @@
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Opw.PineBlog.RazorPages
@@ -17,11 +18,7 @@ namespace Opw.PineBlog.RazorPages
             ConfigureServices(builder.Services);
 
             builder.AddApplicationPart(typeof(Controllers.FileController).Assembly);
-            builder.AddRazorPages(option =>
-            {
-                option.Conventions.AuthorizeAreaFolder("Admin", "/");
-                option.Conventions.AddAreaPageRoute("Blog", "/Post", PineBlogConstants.BlogAreaPath + "/{*slug}");
-            });
+            builder.AddRazorPages(SetRazorPagesOptions);
             builder.AddMvcOptions(options =>
             {
                 options.Filters.Add<PineBlogViewDataAsyncPageFilter>();
@@ -40,11 +37,7 @@ namespace Opw.PineBlog.RazorPages
             ConfigureServices(builder.Services);
 
             builder.AddApplicationPart(typeof(Controllers.FileController).Assembly);
-            builder.AddRazorPagesOptions(option =>
-            {
-                option.Conventions.AuthorizeAreaFolder("Admin", "/");
-                option.Conventions.AddAreaPageRoute("Blog", "/Post", PineBlogConstants.BlogAreaPath + "/{*slug}");
-            });
+            builder.AddRazorPagesOptions(SetRazorPagesOptions);
             builder.AddMvcOptions(options =>
             {
                 options.Filters.Add<PineBlogViewDataAsyncPageFilter>();
@@ -52,6 +45,12 @@ namespace Opw.PineBlog.RazorPages
             builder.AddFluentValidation();
 
             return builder;
+        }
+
+        private static void SetRazorPagesOptions(RazorPagesOptions options)
+        {
+            options.Conventions.AuthorizeAreaFolder("Admin", "/");
+            options.Conventions.AddAreaPageRoute("Blog", "/Post", PineBlogConstants.BlogAreaPath + "/{*slug}");
         }
 
         private static void ConfigureServices(IServiceCollection services)

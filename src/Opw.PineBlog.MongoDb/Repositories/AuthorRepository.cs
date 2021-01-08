@@ -4,25 +4,17 @@ using System.Threading;
 using System;
 using Opw.PineBlog.Repositories;
 using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 
 namespace Opw.PineBlog.MongoDb.Repositories
 {
-    public class AuthorRepository : IAuthorRepository
+    public class AuthorRepository : RepositoryBase<Author>, IAuthorRepository
     {
-        private readonly BlogUnitOfWork _uow;
-        private readonly IMongoCollection<Author> _collection;
-
-        public AuthorRepository(BlogUnitOfWork uow)
-        {
-            _uow = uow;
-            _collection = _uow.Database.GetCollection<Author>($"{nameof(Author)}s");
-        }
+        public AuthorRepository(BlogUnitOfWork uow) : base(uow) { }
 
         public async Task<Author> SingleOrDefaultAsync(Expression<Func<Author, bool>> predicate, CancellationToken cancellationToken)
         {
-            return await _collection
+            return await Collection
                 .Find(predicate)
                 .SingleOrDefaultAsync(cancellationToken);
         }

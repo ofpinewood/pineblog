@@ -27,13 +27,6 @@ namespace Opw.PineBlog.Repositories
         Task<Post> GetPreviousAsync(DateTime published, CancellationToken cancellationToken);
 
         /// <summary>
-        /// Get sequence of post in descending order by published date.
-        /// </summary>
-        /// <param name="take">The number of elements to return.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        Task<IEnumerable<Post>> GetPublishedAsync(int take, CancellationToken cancellationToken);
-
-        /// <summary>
         /// Returns the number of elements in a sequence based on one or more predicates.
         /// </summary>
         /// <param name="predicates">A function to test each element for a condition.</param>

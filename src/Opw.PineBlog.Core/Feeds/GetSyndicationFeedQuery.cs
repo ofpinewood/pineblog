@@ -1,12 +1,13 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Opw.PineBlog.Entities;
 using Opw.PineBlog.Models;
 using Opw.PineBlog.Posts;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.ServiceModel.Syndication;
 using System.Threading;
 using System.Threading.Tasks;
@@ -114,7 +115,10 @@ namespace Opw.PineBlog.Feeds
 
             private async Task<IEnumerable<SyndicationItem>> GetItemsAsync(GetSyndicationFeedQuery request, CancellationToken cancellationToken)
             {
-                var posts = await _uow.Posts.GetPublishedAsync(25, cancellationToken);
+                var predicates = new List<Expression<Func<Post, bool>>>();
+                predicates.Add(p => p.Published != null);
+
+                var posts = await _uow.Posts.GetAsync(predicates, 0, 25, cancellationToken);
                 var items = new List<SyndicationItem>();
 
                 foreach (var post in posts.AsQueryable().Select(p => _postUrlHelper.ReplaceUrlFormatWithBaseUrl(p)))

@@ -1,4 +1,4 @@
-using Opw.EntityFrameworkCore;
+using Opw.Entities;
 using System;
 
 namespace Opw.PineBlog.Entities
@@ -36,7 +36,7 @@ namespace Opw.PineBlog.Entities
         /// The date the post was published or NULL for unpublished posts.
         /// </summary>
         public DateTime? Published { get; set; }
-                
+
         public string Slug { get; set; }
 
         /// <summary>

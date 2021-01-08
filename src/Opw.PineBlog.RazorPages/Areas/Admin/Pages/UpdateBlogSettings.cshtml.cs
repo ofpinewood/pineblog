@@ -22,7 +22,7 @@ namespace Opw.PineBlog.RazorPages.Areas.Admin.Pages
 
         public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(new GetBlogSettigsQuery(), cancellationToken);
+            var result = await _mediator.Send(new GetBlogSettingsQuery(), cancellationToken);
             if (!result.IsSuccess)
                 throw result.Exception;
 

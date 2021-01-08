@@ -11,7 +11,7 @@ trigger:
     include:
     - master
     - refs/tags/*
-    
+
 schedules:
 - cron: '0 0 * * *'
   displayName: Daily Build
@@ -23,7 +23,7 @@ schedules:
 variables:
   buildConfiguration: 'Release'
   # Define the GitVersion environment variables so they can be used in all tasks.
-  GitVersion.SemVer: '' 
+  GitVersion.SemVer: ''
   GitVersion.NuGetVersion: ''
 
 steps:
@@ -34,11 +34,17 @@ steps:
 
 # https://dotnet.microsoft.com/download/dotnet-core/3.1
 - task: UseDotNet@2
-  displayName: Install .Net Core (specified in global.json)
+  displayName: Install .Net Core 3.1.200 LTS
   inputs:
     packageType: 'sdk'
-    useGlobalJson: true
-    performMultiLevelLookup: true
+    version: '3.1.200'
+
+# https://dotnet.microsoft.com/download/dotnet/5.0
+# - task: UseDotNet@2
+#   displayName: Install .Net Core 5.0.101
+#   inputs:
+#     packageType: 'sdk'
+#     version: '5.0.101'
 
 - script: |
     echo buildConfiguration: $(buildConfiguration)
@@ -59,23 +65,7 @@ steps:
     projects: |
       **/tests/*.Tests/*.csproj
       **/tests/*.IntegrationTests/*.csproj
-    arguments: '--configuration $(buildConfiguration) --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[Opw.*]*" /p:Exclude="[*Tests]*"'
-
-- task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
-  displayName: Generate Code Coverage Report
-  inputs:
-    reports: $(Build.SourcesDirectory)/tests/**/coverage.cobertura.xml
-    targetdir: $(build.artifactstagingdirectory)/TestResults/
-    reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'
-
-- task: PublishCodeCoverageResults@1
-  displayName: 'Publish Code Coverage Results'
-  inputs:
-    codeCoverageTool: cobertura
-    summaryFileLocation: $(build.artifactstagingdirectory)/TestResults/cobertura.xml
-    # To make the task not regenerate the report an environment variable was added to the pipeline in Azure DevOps; "disable.coverage.autogenerate: 'true'"
-    # see: https://github.com/danielpalme/ReportGenerator/wiki/Integration#attention
-    reportDirectory: '$(build.artifactstagingdirectory)/TestResults'
+    arguments: '--configuration $(buildConfiguration) --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[Opw.*]*" /p:Exclude="[*.Tests]*%2c[*.*Tests]*%2c[*.Testing]*%2c[*.Sample.*]*"'
 
 # Release: triggered by a version tag
 - task: DotNetCoreCLI@2
@@ -128,6 +118,16 @@ steps:
     versionEnvVar: 'GitVersion.NuGetVersion'
 
 - task: DotNetCoreCLI@2
+  displayName: NuGet Pack Opw.PineBlog.MongoDb
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  inputs:
+    command: pack
+    packagesToPack: '**/Opw.PineBlog.MongoDb.csproj'
+    nobuild: true
+    versioningScheme: byEnvVar
+    versionEnvVar: 'GitVersion.NuGetVersion'
+
+- task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.PineBlog
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
   inputs:
@@ -159,6 +159,21 @@ steps:
    tag: '$(GitVersion.SemVer)'
 
 # Finalize
+- task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
+  displayName: 'Generate Code Coverage Report'
+  inputs:
+    reports: '$(Build.SourcesDirectory)/**/coverage*cobertura.xml'
+    targetdir: '$(build.artifactstagingdirectory)/coverage/'
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish Code Coverage Results'
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(build.artifactstagingdirectory)/coverage/cobertura.xml'
+    # To make the task not regenerate the report an environment variable was added to the pipeline in Azure DevOps; "disable.coverage.autogenerate: 'true'"
+    # see: https://github.com/danielpalme/ReportGenerator/wiki/Integration#attention
+    reportDirectory: '$(build.artifactstagingdirectory)/coverage'
+
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifacts'
   condition: always()
