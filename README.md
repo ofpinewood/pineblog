@@ -10,16 +10,19 @@ PineBlog is a light-weight blogging engine written in ASP.NET Core MVC Razor Pag
 
 ### Features
 
-- Markdown post editor
+- Markdown post editor ([SimpleMDE](https://simplemde.com/))
 - File management
 - Light-weight using Razor Pages
 - SEO optimized
 - Open Graph protocol
+- RSS and ATOM feeds
 - Clean Architecture (youtube: [Clean Architecture with ASP.NET Core](https://youtu.be/_lwCVE_XgqI))
 - Entity Framework Core, SQL database
 - or MongoDb ([MongoDB.Driver](https://www.nuget.org/packages/mongodb.driver))
 - Azure Blob Storage, for file storage
 - ..only a blogging engine, nothing else..
+
+> More about the features: [features](https://github.com/ofpinewood/pineblog/tree/master/docs/features.md)
 
 ### What is not included
 Because PineBlog is very light-weight it is not a complete web application, it needs to be integrated in an existing web application or you need to create a basic web application for it. There are a few things PineBlog depends on, but that it does not provide.

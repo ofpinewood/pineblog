@@ -1,4 +1,14 @@
+@using Markdig
 @model Opw.PineBlog.Entities.Post
+@{
+    // Configure the pipeline with advanced extensions activated
+    var pipeline = new MarkdownPipelineBuilder()
+        .UseEmphasisExtras()
+        .UseGenericAttributes()
+        .UseMediaLinks()
+        .UsePipeTables()
+        .Build();
+}
 <article class="post">
     <h2 class="post-title"><a asp-page="Post" asp-route-slug="@Model.Slug">@Model.Title</a></h2>
     <div class="post-meta">
@@ -21,6 +31,6 @@
         }
     </div>
     <div class="post-content">
-        @Html.Raw(Markdig.Markdown.ToHtml(Model.Content))
+        @Html.Raw(Markdig.Markdown.ToHtml(Model.Content, pipeline))
     </div>
 </article>
