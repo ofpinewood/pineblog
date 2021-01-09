@@ -7,14 +7,15 @@ extendable, customizable and easy to integrate in an existing web application.
 
 ## Features
 
-- Super easy installation, basically add the NuGet package and you're done
-- Markdown post editor
+- Super easy installation, basically add the NuGet package(s) and you're done
+- Markdown post editor ([SimpleMDE](https://simplemde.com/))
 - File management
 - Light-weight using Razor Pages
 - SEO optimized
 - Open Graph protocol
-- Clean Architecture
+- Clean Architecture (youtube: [Clean Architecture with ASP.NET Core](https://youtu.be/_lwCVE_XgqI))
 - Entity Framework Core, SQL database
+- or MongoDb ([MongoDB.Driver](https://www.nuget.org/packages/mongodb.driver))
 - Azure Blob Storage, for file storage
 - ..only a blogging engine, nothing else..
 
@@ -40,7 +41,7 @@ public void ConfigureServices(IServiceCollection services)
 {
     ...
     services.AddPineBlog(Configuration);
-    
+
     services.AddMvc().AddPineBlogRazorPages();
     // or services.AddMvcCore().AddPineBlogRazorPages();
     ...
