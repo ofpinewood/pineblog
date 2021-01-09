@@ -1,18 +1,11 @@
-<environment include="Development">
-    <script src="~/js/jquery.validate.js"></script>
-    <script src="~/js/jquery.validate.unobtrusive.js"></script>
-</environment>
-<environment exclude="Development">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"
-            asp-fallback-src="~/js/jquery.validate.min.js"
-            asp-fallback-test="window.jQuery && window.jQuery.validator"
-            crossorigin="anonymous"
-            integrity="sha256-F6h55Qw6sweK+t7SiOJX+2bpSAa3b/fnlrVCJvmEj1A=">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"
-            asp-fallback-src="~/js/jquery.validate.unobtrusive.min.js"
-            asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive"
-            crossorigin="anonymous"
-            integrity="sha256-9GycpJnliUjJDVDqP0UEu/bsm9U+3dnQUH8+3W10vkY=">
-    </script>
-</environment>
+<div class="alert alert-warning" role="alert">
+    <h4 class="alert-heading">TODO!</h4>
+    <p>To enable client-side validation you need to add <code>jquery.validate</code> or a client-side validation library of your choice.</p>
+    <p class="mb-0">
+        You need to override the `_ValidationScriptsPartial.cshtml` in the `Admin` area, to do this create a new `_ValidationScriptsPartial.cshtml` page
+        in the `~/Areas/Admin/Pages/Shared` folder.<br />
+        This will make the Admin pages use that partial instead of the one your are seeing now.
+    </p>
+    <hr />
+    See <a href="https://github.com/ofpinewood/pineblog/blob/master/docs/custom-layout.md#client-side-validation">customizing the layout</a> for more information.
+</div>

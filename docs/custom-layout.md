@@ -1,6 +1,6 @@
 # Customizing the layout
 For the **Blog** area you need to override the `_Layout.cshtml` for the pages, to do this create a new `_Layout.cshtml` page in the
-`Areas/Blog/Shared` folder. This will make the blog pages use that layout page instead of the one included in the `Opw.PineBlog.RazorPages` package. 
+`~/Areas/Blog/Pages/Shared` folder. This will make the blog pages use that layout page instead of the one included in the `Opw.PineBlog.RazorPages` package.
 In the new page you can set the layout page of your website. Make sure to add the `head` and `script` sections.
 
 ``` csharp
@@ -85,3 +85,31 @@ For an example have a look at the sample project where we override the footer
 
 # Admin layout
 For the **Admin** area layout page do the same as you did for the **Blog** area.
+
+## Client-side validation
+To enable client-side validation you need to add `jquery.validate` or a client-side validation library of your choice.
+
+You need to override the `_ValidationScriptsPartial.cshtml` in the `Admin` area, to do this create a new `_ValidationScriptsPartial.cshtml` page
+in the `~/Areas/Admin/Pages/Shared` folder. For an example have a look at the sample project.
+
+Example `_ValidationScriptsPartial.cshtml` partial code:
+``` html
+<environment include="Development">
+    <script src="~/js/jquery.validate.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.js"></script>
+</environment>
+<environment exclude="Development">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"
+            asp-fallback-src="~/js/jquery.validate.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.validator"
+            crossorigin="anonymous"
+            integrity="sha256-F6h55Qw6sweK+t7SiOJX+2bpSAa3b/fnlrVCJvmEj1A=">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"
+            asp-fallback-src="~/js/jquery.validate.unobtrusive.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive"
+            crossorigin="anonymous"
+            integrity="sha256-9GycpJnliUjJDVDqP0UEu/bsm9U+3dnQUH8+3W10vkY=">
+    </script>
+</environment>
+```

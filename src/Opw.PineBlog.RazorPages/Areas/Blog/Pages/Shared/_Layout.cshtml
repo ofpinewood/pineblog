@@ -5,9 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>@ViewData["Title"]</title>
     @RenderSection("head", required: false)
+    <style>
+        .alert.alert-warning {
+            position: relative;
+            padding: .75rem 1.25rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ffeeba;
+            border-radius: .25rem;
+            color: #856404;
+            background-color: #fff3cd;
+        }
+
+            .alert.alert-warning h4 {
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+    </style>
 </head>
 <body class="pineblog">
-    <h1>Add a custom <code>_Layout.cshtml</code> page to your web project in the folder <code>./Areas/Blog/Pages/Shared/</code></h1>
+    <div class="alert alert-warning" role="alert">
+        <h4 class="alert-heading">TODO!</h4>
+        <p>
+            Add a custom <code>_Layout.cshtml</code> page to your web project in the folder <code>~/Areas/Blog/Pages/Shared</code>.<br />
+            This will make the Blog pages use that layout page instead of the one your are seeing now.
+            <hr />
+            See <a href="https://github.com/ofpinewood/pineblog/blob/master/docs/custom-layout.md">customizing the layout</a> for more information.
+        </p>
+    </div>
     @RenderBody()
 
     @RenderSection("scripts", required: false)
