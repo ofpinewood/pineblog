@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using Opw.EntityFrameworkCore;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;

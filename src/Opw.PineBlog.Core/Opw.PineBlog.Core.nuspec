@@ -27,7 +27,10 @@
         <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="3.1.2" exclude="Build,Analyzers" />
 
         <!-- Opw.PineBlog.Abstractions -->
-        <dependency id="Opw.Core" version="1.4.1" exclude="Build,Analyzers" />
+        <dependency id="Opw.HttpExceptions" version="3.0.2" />
+        <dependency id="FluentValidation" version="8.6.2" />
+        <dependency id="System.ComponentModel.Annotations" version="4.7.0" />
+        <dependency id="MediatR" version="8.0.1" />
       </group>
     </dependencies>
   </metadata>
