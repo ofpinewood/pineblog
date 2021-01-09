@@ -37,7 +37,7 @@ How to create a table with styling, using `pipe tables` and `generic attributes`
 How to create a blockquote with an bootstrap info-alert style, using `generic attributes`.
 
 ```
-{.info}
+{.alert .alert-info}
 > Normally the dangers inherent in the diverse hardware environment enhances the efficiency of the inductive associative dichotomy on a strictly limited basis.
 ```
 
