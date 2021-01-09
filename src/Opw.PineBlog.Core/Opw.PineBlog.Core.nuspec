@@ -1,37 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
-    <metadata>
-        <id>Opw.PineBlog.Core</id>
-        <version>0.0.0</version>
-        <authors>Of Pine Wood</authors>
-        <owners>Of Pine Wood</owners>
-        <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <licenseUrl>https://github.com/ofpinewood/pineblog/blob/master/LICENSE</licenseUrl>
-        <projectUrl>https://github.com/ofpinewood/pineblog</projectUrl>
-        <iconUrl>https://github.com/ofpinewood/pineblog/blob/master/pineblog-logo-256x256.gif?raw=true</iconUrl>
-        <description>PineBlog core package.</description>
-        <tags>blog core</tags>
-        <repository type="git" url="https://github.com/ofpinewood/pineblog" />
-        <dependencies>
-            <group targetFramework=".NETStandard2.1">
-                <!-- Opw.PineBlog.Core -->
-                <dependency id="Markdig" version="0.22.1" exclude="Build,Analyzers" />
-                <dependency id="MediatR.Extensions.Microsoft.DependencyInjection" version="8.0.0" exclude="Build,Analyzers" />
-                <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="2.2.0" exclude="Build,Analyzers" />
-                <dependency id="Microsoft.Extensions.DependencyInjection" version="3.1.2" />
-                <dependency id="Microsoft.Extensions.Options" version="3.1.2" exclude="Build,Analyzers" />
-                <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="3.1.2" exclude="Build,Analyzers" />
-                <dependency id="MimeMapping" version="1.0.1.30" exclude="Build,Analyzers" />
-                <dependency id="Microsoft.Azure.Storage.Blob" version="11.1.3" exclude="Build,Analyzers" />
-                <dependency id="System.ServiceModel.Syndication" version="4.7.0" exclude="Build,Analyzers" />
+  <metadata>
+    <id>Opw.PineBlog.Core</id>
+    <version>0.0.0</version>
+    <authors>Of Pine Wood</authors>
+    <owners>Of Pine Wood</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://github.com/ofpinewood/pineblog/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/ofpinewood/pineblog</projectUrl>
+    <iconUrl>https://github.com/ofpinewood/pineblog/blob/master/pineblog-logo-256x256.gif?raw=true</iconUrl>
+    <description>PineBlog core package.</description>
+    <tags>blog core</tags>
+    <repository type="git" url="https://github.com/ofpinewood/pineblog" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.1">
+        <!-- Opw.PineBlog.Core -->
+        <dependency id="Markdig" version="0.22.1" exclude="Build,Analyzers" />
+        <dependency id="MediatR.Extensions.Microsoft.DependencyInjection" version="8.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="2.2.0" exclude="Build,Analyzers" />
+        <dependency id="MimeMapping" version="1.0.1.30" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Azure.Storage.Blob" version="11.1.3" exclude="Build,Analyzers" />
+        <dependency id="System.ServiceModel.Syndication" version="4.7.0" exclude="Build,Analyzers" />
 
-                <!-- Opw.PineBlog.Abstractions -->
-                <dependency id="Opw.Core" version="1.3.0" exclude="Build,Analyzers" />
-            </group>
-        </dependencies>
-    </metadata>
-    <files>
-        <file src="bin\Release\netstandard2.1\*.dll" target="lib\netstandard2.1\"/>
-        <file src="bin\Release\netstandard2.1\*.xml" target="lib\netstandard2.1\"/>
-    </files>
+        <dependency id="Microsoft.Extensions.DependencyInjection" version="3.1.2" />
+        <dependency id="Microsoft.Extensions.Options" version="3.1.2" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="3.1.2" exclude="Build,Analyzers" />
+
+        <!-- Opw.PineBlog.Abstractions -->
+        <dependency id="Opw.Core" version="1.4.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\netstandard2.1\*.dll" target="lib\netstandard2.1\"/>
+    <file src="bin\Release\netstandard2.1\*.xml" target="lib\netstandard2.1\"/>
+  </files>
 </package>

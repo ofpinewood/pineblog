@@ -40,11 +40,11 @@ steps:
     version: '3.1.200'
 
 # https://dotnet.microsoft.com/download/dotnet/5.0
-# - task: UseDotNet@2
-#   displayName: Install .Net Core 5.0.101
-#   inputs:
-#     packageType: 'sdk'
-#     version: '5.0.101'
+- task: UseDotNet@2
+  displayName: Install .Net Core 5.0.101
+  inputs:
+    packageType: 'sdk'
+    version: '5.0.101'
 
 - script: |
     echo buildConfiguration: $(buildConfiguration)
@@ -76,7 +76,7 @@ steps:
     publishWebProjects: false
     projects: |
       **/samples/Opw.PineBlog.Sample/*.csproj
-    arguments: '--configuration $(buildConfiguration) --framework netcoreapp3.1 --output $(build.artifactstagingdirectory) /p:Version=$(GitVersion.SemVer) --no-build'
+    arguments: '--configuration $(buildConfiguration) --framework net5.0 --output $(build.artifactstagingdirectory) /p:Version=$(GitVersion.SemVer) --no-build'
     zipAfterPublish: false
 
 # Delete the "Areas" folder, this should not be deployed

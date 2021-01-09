@@ -62,7 +62,6 @@ namespace Opw.PineBlog.Sample
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {
