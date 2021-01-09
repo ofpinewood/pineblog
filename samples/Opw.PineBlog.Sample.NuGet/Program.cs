@@ -36,9 +36,6 @@ namespace Opw.PineBlog.Sample.NuGet
                         // using EntityFrameworkCore
                         serviceProvider.InitializePineBlogDatabase((context) => new DatabaseSeed(context).Run());
                     }
-
-                    //var dbContext = serviceProvider.GetRequiredService<BlogEntityDbContext>();
-                    //new DatabaseSeed(dbContext).Run();
                 }
                 catch (Exception ex)
                 {
