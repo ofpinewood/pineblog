@@ -6,10 +6,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <None Remove="Resources\post-pineblog-demo-markdown.md" />
         <None Remove="Resources\post-pineblog-demo-website.md" />
     </ItemGroup>
 
     <ItemGroup>
+        <EmbeddedResource Include="Resources\post-pineblog-demo-markdown.md" />
         <EmbeddedResource Include="Resources\post-pineblog-demo-website.md" />
     </ItemGroup>
 

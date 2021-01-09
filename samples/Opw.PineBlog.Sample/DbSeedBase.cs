@@ -1,4 +1,4 @@
-﻿using Opw.PineBlog.Entities;
+using Opw.PineBlog.Entities;
 using Opw.PineBlog.EntityFrameworkCore;
 using System;
 using System.IO;
@@ -71,7 +71,7 @@ namespace Opw.PineBlog.Sample
             return post;
         }
 
-        protected Post GetPostFromFile(Guid authorId)
+        protected Post GetWelcomePost(Guid authorId)
         {
             var title = "PineBlog an ASP.NET Core blogging engine";
 
@@ -89,6 +89,30 @@ namespace Opw.PineBlog.Sample
                 Description = "PineBlog is a light-weight open source blogging engine written in ASP.NET Core MVC Razor Pages, using Entity Framework Core.",
                 Categories = "pineblog,aspnetcore,blog,razor pages,entity framework,github,demo",
                 Published = DateTime.UtcNow,
+                Content = content
+            };
+
+            return post;
+        }
+
+        protected Post GetMarkdownPost(Guid authorId)
+        {
+            var title = "Markdown examples";
+
+            var assembly = typeof(DatabaseSeed).Assembly;
+            var resourceStream = assembly.GetManifestResourceStream("Opw.PineBlog.Sample.Resources.post-pineblog-demo-markdown.md");
+            string content = null;
+            using (var reader = new StreamReader(resourceStream, Encoding.UTF8))
+                content = reader.ReadToEnd();
+
+            var post = new Post
+            {
+                AuthorId = authorId,
+                Title = title,
+                Slug = title.ToPostSlug(),
+                Description = "Some Markdown examples.",
+                Categories = "pineblog,markdown,blog,demo",
+                Published = DateTime.UtcNow.AddDays(-1),
                 Content = content
             };
 

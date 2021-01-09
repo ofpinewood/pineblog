@@ -139,7 +139,7 @@ For technical background information, check the blog: [ofpinewood.com](https://o
 **Please see the code** :nerd_face:
 
 ## Demo website
-The demo site is a playground to check out PineBlog. You can write and publish posts, upload files and test application before install.
+The demo website is a playground to check out PineBlog. You can write and publish posts, upload files and test application before install.
 And no worries, it is just a sandbox and will clean itself.
 
 > **Url:** [pineblog.azurewebsites.net](https://pineblog.azurewebsites.net)

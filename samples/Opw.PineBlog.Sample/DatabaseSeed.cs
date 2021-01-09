@@ -40,8 +40,8 @@ namespace Opw.PineBlog.Sample
 
             var author = _dbContext.Authors.Single();
 
-            var post = GetPostFromFile(author.Id);
-            _dbContext.Posts.Add(post);
+            _dbContext.Posts.Add(GetWelcomePost(author.Id));
+            _dbContext.Posts.Add(GetMarkdownPost(author.Id));
 
             for (int i = 1; i < 40; i++)
             {

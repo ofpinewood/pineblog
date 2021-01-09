@@ -47,8 +47,8 @@ namespace Opw.PineBlog.Sample
             var email = ApplicationConstants.UserEmail;
             var author = _authorCollection.Find(a => a.UserName.Equals(email)).Single();
 
-            var post = GetPostFromFile(author.Id);
-            _postCollection.InsertOne(post);
+            _postCollection.InsertOne(GetWelcomePost(author.Id));
+            _postCollection.InsertOne(GetMarkdownPost(author.Id));
 
             for (int i = 1; i < 40; i++)
             {

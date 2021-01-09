@@ -24,7 +24,7 @@ If you want or require more advanced Markdown features, you can enable those by 
 ### Markdown examples
 How to create a table with styling, using `pipe tables` and `generic attributes`.
 
-```
+``` markdown
 {.table .table-striped}
 |Company|Contact|Country|
 |-|-|-|
@@ -36,10 +36,12 @@ How to create a table with styling, using `pipe tables` and `generic attributes`
 
 How to create a blockquote with an bootstrap info-alert style, using `generic attributes`.
 
-```
+``` markdown
 {.alert .alert-info}
 > Normally the dangers inherent in the diverse hardware environment enhances the efficiency of the inductive associative dichotomy on a strictly limited basis.
 ```
+
+> See the demo website for more examples: [markdown examples](https://pineblog.azurewebsites.net/blog/markdown-examples).
 
 ## RSS and ATOM feeds
 The RSS and ATOM feeds are exposed through the `FeedController` (from the `Opw.PineBlog.RazorPages` package). They have the following URLs:
