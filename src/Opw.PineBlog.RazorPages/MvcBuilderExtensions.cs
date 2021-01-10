@@ -60,6 +60,7 @@ namespace Opw.PineBlog.RazorPages
             {
                 options.PagingUrlPartFormat = "page={0}";
                 options.CategoryUrlPartFormat = "category={0}";
+                options.SearchQueryUrlPartFormat = "q={0}";
 
                 var version = typeof(StaticFilePostConfigureOptions).Assembly.GetName().Version;
                 options.Version = version.ToString();

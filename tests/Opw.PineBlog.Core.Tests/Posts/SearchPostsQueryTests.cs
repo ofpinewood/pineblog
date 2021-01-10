@@ -12,20 +12,20 @@ using Xunit;
 
 namespace Opw.PineBlog.Posts
 {
-    public class GetPagedPostListQueryTests : MediatRTestsBase
+    public class SearchPostsQueryTests : MediatRTestsBase
     {
         private Guid _authorId = Guid.NewGuid();
 
-        public GetPagedPostListQueryTests() : base()
+        public SearchPostsQueryTests()
         {
             var author = new Author { Id = _authorId, UserName = "user@example.com", DisplayName = "Author 1" };
 
             var posts = new List<Post>();
-            posts.Add(CreatePost(0, author, false, "cat1"));
-            posts.Add(CreatePost(1, author, true, "cat1"));
-            posts.Add(CreatePost(2, author, true, "cat1"));
-            posts.Add(CreatePost(3, author, true, "cat1"));
-            posts.Add(CreatePost(4, author, true, "cat1"));
+            posts.Add(CreatePost(0, author, false));
+            posts.Add(CreatePost(1, author, true));
+            posts.Add(CreatePost(2, author, true));
+            posts.Add(CreatePost(3, author, true));
+            posts.Add(CreatePost(4, author, true));
 
             PostRepositoryMock.Setup(m => m.GetAsync(It.IsAny<IEnumerable<Expression<Func<Post, bool>>>>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).ReturnsAsync(posts);
             PostRepositoryMock.Setup(m => m.CountAsync(It.IsAny<IEnumerable<Expression<Func<Post, bool>>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(posts.Count);
@@ -34,7 +34,7 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_GetPosts_ForPage1()
         {
-            var result = await Mediator.Send(new GetPagedPostListQuery { Page = 1 });
+            var result = await Mediator.Send(new SearchPostsQuery { Page = 1 });
 
             result.IsSuccess.Should().BeTrue();
 
@@ -44,7 +44,7 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_GetPosts_ForPage1_WithItemsPerPage2()
         {
-            var result = await Mediator.Send(new GetPagedPostListQuery { Page = 1, ItemsPerPage = 2 });
+            var result = await Mediator.Send(new SearchPostsQuery { Page = 1, ItemsPerPage = 2 });
 
             result.IsSuccess.Should().BeTrue();
 
@@ -54,7 +54,7 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_GetPosts_ForPage2()
         {
-            var result = await Mediator.Send(new GetPagedPostListQuery { Page = 2 });
+            var result = await Mediator.Send(new SearchPostsQuery { Page = 2 });
 
             result.IsSuccess.Should().BeTrue();
 
@@ -62,43 +62,9 @@ namespace Opw.PineBlog.Posts
         }
 
         [Fact]
-        public async Task Handler_Should_Predicates_PublishedExpression_WhenNotIncludingUnpublishedPosts()
-        {
-            IEnumerable<Expression<Func<Post, bool>>> createdPredicates = new List<Expression<Func<Post, bool>>>();
-
-            PostRepositoryMock
-                .Setup(m => m.GetAsync(It.IsAny<IEnumerable<Expression<Func<Post, bool>>>>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
-                .Callback((IEnumerable<Expression<Func<Post, bool>>> predicates, int _, int __, CancellationToken ___) => createdPredicates = predicates);
-
-            var result = await Mediator.Send(new GetPagedPostListQuery { Page = 1, IncludeUnpublished = false, ItemsPerPage = 100 });
-
-            result.IsSuccess.Should().BeTrue();
-
-            Expression<Func<Post, bool>> publishedExpression = p => p.Published != null;
-            createdPredicates.Should().ContainEquivalentOf(publishedExpression);
-        }
-
-        [Fact]
-        public async Task Handler_Should_Predicates_Empty_WhenIncludingUnpublishedPosts()
-        {
-            IEnumerable<Expression<Func<Post, bool>>> createdPredicates = new List<Expression<Func<Post, bool>>>();
-
-            PostRepositoryMock
-                .Setup(m => m.GetAsync(It.IsAny<IEnumerable<Expression<Func<Post, bool>>>>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
-                .Callback((IEnumerable<Expression<Func<Post, bool>>> predicates, int _, int __, CancellationToken ___) => createdPredicates = predicates);
-
-            var result = await Mediator.Send(new GetPagedPostListQuery { Page = 1, IncludeUnpublished = true, ItemsPerPage = 100 });
-
-            result.IsSuccess.Should().BeTrue();
-
-            Expression<Func<Post, bool>> publishedExpression = p => p.Published != null;
-            createdPredicates.Should().BeEmpty();
-        }
-
-        [Fact]
         public async Task Handler_Should_ReturnPostListModel_WithBlogCoverUrlFormatReplaced()
         {
-            var result = await Mediator.Send(new GetPagedPostListQuery());
+            var result = await Mediator.Send(new SearchPostsQuery());
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Blog.CoverUrl.Should().Be("http://127.0.0.1:10000/devstoreaccount1/pineblog-tests/blog/cover-image.png");
@@ -107,34 +73,34 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostListModel_WithPostListTypeBlog()
         {
-            var result = await Mediator.Send(new GetPagedPostListQuery());
+            var result = await Mediator.Send(new SearchPostsQuery());
 
             result.IsSuccess.Should().BeTrue();
             result.Value.PostListType.Should().Be(PostListType.Blog);
         }
 
         [Fact]
-        public async Task Handler_Should_ReturnPostListModel_WithPostListCategory()
+        public async Task Handler_Should_ReturnPostListModel_WithPostListTypeSearch()
         {
-            var result = await Mediator.Send(new GetPagedPostListQuery { Category = "text" });
+            var result = await Mediator.Send(new SearchPostsQuery { SearchQuery = "text" });
 
             result.IsSuccess.Should().BeTrue();
-            result.Value.Category.Should().Be("text");
+            result.Value.PostListType.Should().Be(PostListType.Search);
         }
 
         [Fact]
-        public async Task Handler_Should_ReturnPostListModel_WhenFilterOnCategory_WithPostListTypeCategory()
+        public async Task Handler_Should_ReturnPostListModel_WithPostListSearchQuery()
         {
-            var result = await Mediator.Send(new GetPagedPostListQuery { Category = "category" });
+            var result = await Mediator.Send(new SearchPostsQuery { SearchQuery = "text" });
 
             result.IsSuccess.Should().BeTrue();
-            result.Value.PostListType.Should().Be(PostListType.Category);
+            result.Value.SearchQuery.Should().Be("text");
         }
 
         [Fact]
         public async Task Handler_Should_ReturnPostListModel_WithBlogInfo()
         {
-            var result = await Mediator.Send(new GetPagedPostListQuery());
+            var result = await Mediator.Send(new SearchPostsQuery());
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Blog.Title.Should().Be("Title from configuration");
@@ -143,7 +109,7 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostListModel_WithPostCovers()
         {
-            var result = await Mediator.Send(new GetPagedPostListQuery());
+            var result = await Mediator.Send(new SearchPostsQuery());
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Posts.First().CoverUrl.Should().BeNull();
@@ -153,7 +119,7 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_CoverUrl_ReplaceBaseUrlWithUrlFormat()
         {
-            var result = await Mediator.Send(new GetPagedPostListQuery());
+            var result = await Mediator.Send(new SearchPostsQuery());
 
             result.IsSuccess.Should().BeTrue();
 
@@ -164,18 +130,18 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_UrlsInContent_ReplaceBaseUrlWithUrlFormat()
         {
-            var result = await Mediator.Send(new GetPagedPostListQuery());
+            var result = await Mediator.Send(new SearchPostsQuery());
 
             result.IsSuccess.Should().BeTrue();
 
             result.Value.Should().NotBeNull();
-            result.Value.Posts.Last().Content.Should().Be("Content with a url: http://127.0.0.1:10000/devstoreaccount1/pineblog-tests/content-url");
+            result.Value.Posts.Last().Content.Should().Be("content with a url: http://127.0.0.1:10000/devstoreaccount1/pineblog-tests/content-url");
         }
 
         [Fact]
         public async Task Handler_Should_ReturnPostListModel_WithPostAuthors()
         {
-            var result = await Mediator.Send(new GetPagedPostListQuery());
+            var result = await Mediator.Send(new SearchPostsQuery());
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Posts.First().Author.DisplayName.Should().Be("Author 1");
@@ -184,7 +150,7 @@ namespace Opw.PineBlog.Posts
         [Fact]
         public async Task Handler_Should_ReturnPostListModel_WithPager()
         {
-            var result = await Mediator.Send(new GetPagedPostListQuery());
+            var result = await Mediator.Send(new SearchPostsQuery());
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Pager.CurrentPage.Should().Be(1);
@@ -192,7 +158,7 @@ namespace Opw.PineBlog.Posts
         }
 
         [Fact]
-        public async Task Handler_Should_Predicates_CategoryExpression_ForCategoryCat2()
+        public async Task Handler_Should_Predicates_CategoriesExpression_ForSearchQuery()
         {
             IEnumerable<Expression<Func<Post, bool>>> createdPredicates = new List<Expression<Func<Post, bool>>>();
 
@@ -200,16 +166,16 @@ namespace Opw.PineBlog.Posts
                 .Setup(m => m.GetAsync(It.IsAny<IEnumerable<Expression<Func<Post, bool>>>>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
                 .Callback((IEnumerable<Expression<Func<Post, bool>>> predicates, int _, int __, CancellationToken ___) => createdPredicates = predicates);
 
-            var result = await Mediator.Send(new GetPagedPostListQuery { Page = 1, Category = "cat2", ItemsPerPage = 100 });
+            var result = await Mediator.Send(new SearchPostsQuery { Page = 1, SearchQuery = "text", ItemsPerPage = 100 });
 
             result.IsSuccess.Should().BeTrue();
 
-            Expression<Func<Post, bool>> categoryExpression = p => p.Categories.Contains("cat2");
-            createdPredicates.Should().ContainEquivalentOf(categoryExpression);
+            Expression<Func<Post, bool>> categoriesExpression = p => p.Categories.Contains("text");
+            createdPredicates.Should().ContainEquivalentOf(categoriesExpression);
         }
 
         [Fact]
-        public async Task Handler_Should_Predicates_CategoryExpressionAndPublishedExpression_ForCategoryCat2AndIncludeUnpublishedFalse()
+        public async Task Handler_Should_Predicates_DescriptionExpression_ForSearchQuery()
         {
             IEnumerable<Expression<Func<Post, bool>>> createdPredicates = new List<Expression<Func<Post, bool>>>();
 
@@ -217,26 +183,58 @@ namespace Opw.PineBlog.Posts
                 .Setup(m => m.GetAsync(It.IsAny<IEnumerable<Expression<Func<Post, bool>>>>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
                 .Callback((IEnumerable<Expression<Func<Post, bool>>> predicates, int _, int __, CancellationToken ___) => createdPredicates = predicates);
 
-            var result = await Mediator.Send(new GetPagedPostListQuery { Page = 1, IncludeUnpublished = false, Category = "cat3", ItemsPerPage = 100 });
+            var result = await Mediator.Send(new SearchPostsQuery { Page = 1, SearchQuery = "text", ItemsPerPage = 100 });
 
             result.IsSuccess.Should().BeTrue();
 
-            Expression<Func<Post, bool>> categoryExpression = p => p.Categories.Contains("cat2");
-            createdPredicates.Should().ContainEquivalentOf(categoryExpression);
-            Expression<Func<Post, bool>> publishedExpression = p => p.Published != null;
-            createdPredicates.Should().ContainEquivalentOf(publishedExpression);
+            Expression<Func<Post, bool>> descriptionExpression = p => p.Description.Contains("text");
+            createdPredicates.Should().ContainEquivalentOf(descriptionExpression);
         }
 
-        private Post CreatePost(int i, Author author, bool cover, string categories)
+        [Fact]
+        public async Task Handler_Should_Predicates_ContentExpression_ForSearchQuery()
+        {
+            IEnumerable<Expression<Func<Post, bool>>> createdPredicates = new List<Expression<Func<Post, bool>>>();
+
+            PostRepositoryMock
+                .Setup(m => m.GetAsync(It.IsAny<IEnumerable<Expression<Func<Post, bool>>>>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
+                .Callback((IEnumerable<Expression<Func<Post, bool>>> predicates, int _, int __, CancellationToken ___) => createdPredicates = predicates);
+
+            var result = await Mediator.Send(new SearchPostsQuery { Page = 1, SearchQuery = "text", ItemsPerPage = 100 });
+
+            result.IsSuccess.Should().BeTrue();
+
+            Expression<Func<Post, bool>> contentExpression = p => p.Content.Contains("text");
+            createdPredicates.Should().ContainEquivalentOf(contentExpression);
+        }
+
+        [Fact]
+        public async Task Handler_Should_Predicates_TitleExpression_ForSearchQuery()
+        {
+            IEnumerable<Expression<Func<Post, bool>>> createdPredicates = new List<Expression<Func<Post, bool>>>();
+
+            PostRepositoryMock
+                .Setup(m => m.GetAsync(It.IsAny<IEnumerable<Expression<Func<Post, bool>>>>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
+                .Callback((IEnumerable<Expression<Func<Post, bool>>> predicates, int _, int __, CancellationToken ___) => createdPredicates = predicates);
+
+            var result = await Mediator.Send(new SearchPostsQuery { Page = 1, SearchQuery = "text", ItemsPerPage = 100 });
+
+            result.IsSuccess.Should().BeTrue();
+
+            Expression<Func<Post, bool>> titleExpression = p => p.Title.Contains("text");
+            createdPredicates.Should().ContainEquivalentOf(titleExpression);
+        }
+
+        private Post CreatePost(int i, Author author, bool cover)
         {
             var post = new Post
             {
                 Author = author,
-                Title = "Post title " + i,
-                Slug = "post-title-" + i,
-                Categories = categories,
-                Description = "Description",
-                Content = "Content with a url: %URL%/content-url",
+                Title = "title" + i,
+                Slug = "slug" + i,
+                Categories = "categories",
+                Description = "description",
+                Content = "content with a url: %URL%/content-url",
                 Created = DateTime.UtcNow,
                 Modified = DateTime.UtcNow,
                 Published = DateTime.UtcNow

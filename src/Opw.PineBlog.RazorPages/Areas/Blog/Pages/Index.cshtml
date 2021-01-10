@@ -1,5 +1,8 @@
 @page
 @model IndexModel
+@{
+    ViewData["ShowSearch"] = true;
+}
 @section head {
     <partial name="_Metadata" model="@Model.Metadata" />
 }

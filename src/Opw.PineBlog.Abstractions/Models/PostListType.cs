@@ -21,9 +21,9 @@ namespace Opw.PineBlog.Models
         /// </summary>
         Category = 2,
 
-        ///// <summary>
-        ///// Search results
-        ///// </summary>
-        //Search
+        /// <summary>
+        /// Search results
+        /// </summary>
+        Search
     }
 }

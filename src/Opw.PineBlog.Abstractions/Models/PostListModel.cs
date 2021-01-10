@@ -19,6 +19,11 @@ namespace Opw.PineBlog.Models
         public string Category { get; set; }
 
         /// <summary>
+        /// The search query that was used to filtered on, or NULL.
+        /// </summary>
+        public string SearchQuery { get; set; }
+
+        /// <summary>
         /// The list of posts for the current page.
         /// </summary>
         public IEnumerable<Post> Posts { get; set; }

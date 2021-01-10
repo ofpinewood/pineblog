@@ -29,10 +29,25 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
             _mediator = mediator;
         }
 
-        public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken, [FromQuery]int page = 1, [FromQuery]string category = null)
+        public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken, [FromQuery] int page = 1, [FromQuery] string category = null, [FromQuery] string q = null)
         {
-            var result = await _mediator.Send(new GetPagedPostListQuery { Page = page, Category = category }, cancellationToken);
+            Result<PostListModel> result;
+            if (!string.IsNullOrWhiteSpace(q))
+                result = await _mediator.Send(new SearchPostsQuery { Page = page, SearchQuery = q }, cancellationToken);
+            else
+                result = await _mediator.Send(new GetPagedPostListQuery { Page = page, Category = category }, cancellationToken);
 
+            return GetPage(result);
+        }
+
+        public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken, [FromForm] string query = null)
+        {
+            var result = await _mediator.Send(new SearchPostsQuery { SearchQuery = query }, cancellationToken);
+            return GetPage(result);
+        }
+
+        private IActionResult GetPage(Result<PostListModel> result)
+        {
             PostList = result.Value;
             Title = result.Value.Blog.Title;
 

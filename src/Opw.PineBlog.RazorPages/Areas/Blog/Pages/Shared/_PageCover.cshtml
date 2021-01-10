@@ -8,6 +8,13 @@
                 @Model.Category
             </a>
         }
+        @*@if (Model.PostListType == Opw.PineBlog.Models.PostListType.Search)
+        {
+            <a href="#">
+                <i class="fa fa-tag" aria-hidden="true"></i>
+                @Model.SearchQuery
+            </a>
+        }*@
         else if (Model.PostListType == Opw.PineBlog.Models.PostListType.Blog)
         {
             <a href="~/">@Model.Title</a>
