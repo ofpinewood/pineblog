@@ -48,7 +48,7 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 
 NOTE: Make sure you enable static file serving `app.UseStaticFiles();`, to enable the serving of the css and javascript from the `Opw.PineBlog.RazorPages` packages.
 
-### Configuration
+## Configuration
 And a few properties need to be configured before you can run your web application with PineBlog.
 
 ``` json
@@ -70,7 +70,7 @@ And a few properties need to be configured before you can run your web applicati
 }
 ```
 
-#### Blog Settings ConfigurationProvider
+## Blog Settings ConfigurationProvider
 To be able to update the blog settings from the admin pages, you need to add the PineBlog `IConfigurationProvider`s to the
 `IConfigurationBuilder` in the `Program.cs`. Add `config.AddPineBlogMongoDbConfiguration(reloadOnChange: true);` to `ConfigureAppConfiguration(..)` on the `IWebHostBuilder`.
 
