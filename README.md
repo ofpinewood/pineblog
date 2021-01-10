@@ -136,7 +136,7 @@ For technical background information, check the blog: [ofpinewood.com](https://o
 - The [sample project](https://github.com/ofpinewood/pineblog/tree/master/samples/Opw.PineBlog.Sample) contains an example web application with PineBlog.
 - The [NuGet sample project](https://github.com/ofpinewood/pineblog/tree/master/samples/Opw.PineBlog.Sample.NuGet) contains an example web application using just the NuGet packages.
 
-**Please see the code** :nerd_face:
+**Check the code** :nerd_face:
 
 ## Demo website
 The demo website is a playground to check out PineBlog. You can write and publish posts, upload files and test application before install.
@@ -157,6 +157,6 @@ We accept fixes and features! Here are some resources to help you get started on
 * [Code of conduct](https://github.com/ofpinewood/pineblog/blob/master/CODE_OF_CONDUCT.md)
 
 ---
-Copyright &copy; 2019, [Of Pine Wood](http://ofpinewood.com).
+Copyright &copy; 2021, [Of Pine Wood](http://ofpinewood.com).
 Created by [Peter van den Hout](http://ofpinewood.com).
 Released under the terms of the [MIT license](https://github.com/ofpinewood/pineblog/blob/master/LICENSE).
