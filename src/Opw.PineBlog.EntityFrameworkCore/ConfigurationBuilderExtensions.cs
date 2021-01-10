@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Configuration;
-using Opw.EntityFrameworkCore;
 
 namespace Opw.PineBlog.EntityFrameworkCore
 {

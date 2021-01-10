@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Opw.EntityFrameworkCore;
 using System.Linq;
 
 namespace Opw.PineBlog.EntityFrameworkCore

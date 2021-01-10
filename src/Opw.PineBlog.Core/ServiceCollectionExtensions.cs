@@ -4,7 +4,7 @@ using MediatR.Registration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Opw.PineBlog.Posts;
-using Opw.MediatR;
+using Opw.PineBlog.MediatR;
 using Opw.PineBlog.Files;
 using Microsoft.Azure.Storage.Blob;
 using Microsoft.Azure.Storage;

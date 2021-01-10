@@ -1,5 +1,5 @@
 using FluentValidation;
-using Opw.FluentValidation;
+using Opw.PineBlog.FluentValidation;
 
 namespace Opw.PineBlog.Feeds
 {

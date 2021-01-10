@@ -2,7 +2,6 @@ using Xunit;
 using Microsoft.Extensions.DependencyInjection;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
-using Opw.EntityFrameworkCore;
 using Opw.PineBlog.Entities;
 
 namespace Opw.PineBlog.EntityFrameworkCore

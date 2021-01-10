@@ -1,7 +1,6 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Opw.EntityFrameworkCore;
 using Opw.PineBlog.Entities;
 using System;
 using System.Collections.Generic;

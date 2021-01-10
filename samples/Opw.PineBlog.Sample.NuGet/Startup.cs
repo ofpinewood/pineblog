@@ -38,10 +38,8 @@ namespace Opw.PineBlog.Sample.NuGet
 
             services.AddRazorPages()
                 .AddPineBlogRazorPages()
-                .AddRazorPagesOptions(o =>
-                {
-                    o.Conventions.AuthorizeFolder("/somefolder");
-                })
+                // the following extensions where added to validate/fix issue: https://github.com/ofpinewood/pineblog/issues/100 
+                .AddRazorPagesOptions(o => o.Conventions.AuthorizeFolder("/somefolder"))
                 .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
                 .AddRazorRuntimeCompilation();
         }
