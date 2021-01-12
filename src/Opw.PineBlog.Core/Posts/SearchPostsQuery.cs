@@ -7,10 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
+// TODO: improve test coverage
 namespace Opw.PineBlog.Posts
 {
     /// <summary>
@@ -73,15 +75,20 @@ namespace Opw.PineBlog.Posts
                 var predicates = new List<Expression<Func<Post, bool>>>();
                 predicates.Add(p => p.Published != null);
 
+                IEnumerable<Post> posts;
                 if (!string.IsNullOrWhiteSpace(request.SearchQuery))
                 {
                     predicates.Add(BuildSearchExpression(request.SearchQuery));
                     pagingUrlPartFormat += "&" + string.Format(_blogOptions.Value.SearchQueryUrlPartFormat, HttpUtility.UrlEncode(request.SearchQuery));
+
+                    posts = await _uow.Posts.GetAsync(predicates, 0, int.MaxValue, cancellationToken);
+                    posts = RankPosts(posts, request.SearchQuery);
+                    posts = await GetPagedListAsync(posts, predicates, pager, pagingUrlPartFormat, cancellationToken);
                 }
-
-                var posts = await GetPagedListAsync(predicates, pager, pagingUrlPartFormat, cancellationToken);
-
-                // TODO: add more weight to the title and categories
+                else
+                {
+                    posts = await GetPagedListAsync(predicates, pager, pagingUrlPartFormat, cancellationToken);
+                }
 
                 posts = posts.Select(p => _postUrlHelper.ReplaceUrlFormatWithBaseUrl(p));
 
@@ -104,18 +111,24 @@ namespace Opw.PineBlog.Posts
                 return Result<PostListModel>.Success(model);
             }
 
+            private IEnumerable<string> ParseTerms(string query)
+            {
+                // convert multiple spaces into one space   
+                query = Regex.Replace(query, @"\s+", " ").Trim();
+                return query.ToLower().Split(' ').ToList();
+            }
+
             private Expression<Func<Post, bool>> BuildSearchExpression(string query)
             {
                 var parameterExp = Expression.Parameter(typeof(Post), "p");
                 Expression exp = null;
 
-                var termList = query.ToLower().Split(' ').ToList();
-                foreach (var term in termList)
+                foreach (var term in ParseTerms(query))
                 {
-                    exp = ConcatOr(exp, GetContainsExpression(nameof(Post.Title), term, parameterExp));
-                    exp = ConcatOr(exp, GetContainsExpression(nameof(Post.Description), term, parameterExp));
-                    exp = ConcatOr(exp, GetContainsExpression(nameof(Post.Categories), term, parameterExp));
-                    exp = ConcatOr(exp, GetContainsExpression(nameof(Post.Content), term, parameterExp));
+                    exp = ConcatOr(exp, GetContainsExpression(nameof(Post.Title), term.Trim(), parameterExp));
+                    exp = ConcatOr(exp, GetContainsExpression(nameof(Post.Description), term.Trim(), parameterExp));
+                    exp = ConcatOr(exp, GetContainsExpression(nameof(Post.Categories), term.Trim(), parameterExp));
+                    exp = ConcatOr(exp, GetContainsExpression(nameof(Post.Content), term.Trim(), parameterExp));
                 }
 
                 return Expression.Lambda<Func<Post, bool>>(exp, parameterExp);
@@ -139,6 +152,46 @@ namespace Opw.PineBlog.Posts
                 return Expression.Call(propertyExp, method, someValue);
             }
 
+            // TODO: test ranking
+            private IEnumerable<Post> RankPosts(IEnumerable<Post> posts, string query)
+            {
+                var terms = ParseTerms(query);
+                var rankedPosts = new List<Tuple<Post, int>>();
+
+                foreach (var post in posts)
+                {
+                    var rank = 0;
+                    foreach (var term in terms)
+                    {
+                        int hits;
+                        if (post.Title.ToLower().Contains(term))
+                        {
+                            hits = Regex.Matches(post.Title.ToLower(), term).Count;
+                            rank += hits * 10;
+                        }
+                        if (post.Categories.ToLower().Contains(term))
+                        {
+                            hits = Regex.Matches(post.Categories.ToLower(), term).Count;
+                            rank += hits * 10;
+                        }
+                        if (post.Description.ToLower().Contains(term))
+                        {
+                            hits = Regex.Matches(post.Description.ToLower(), term).Count;
+                            rank += hits * 3;
+                        }
+                        if (post.Content.ToLower().Contains(term))
+                        {
+                            hits = Regex.Matches(post.Content.ToLower(), term).Count;
+                            rank += hits * 1;
+                        }
+                    }
+
+                    rankedPosts.Add(new Tuple<Post, int>(post, rank));
+                }
+
+                return rankedPosts.OrderByDescending(t => t.Item2).Select(t => t.Item1).ToList();
+            }
+
             private async Task<IEnumerable<Post>> GetPagedListAsync(IEnumerable<Expression<Func<Post, bool>>> predicates, Pager pager, string pagingUrlPartFormat, CancellationToken cancellationToken)
             {
                 var skip = (pager.CurrentPage - 1) * pager.ItemsPerPage;
@@ -147,6 +200,16 @@ namespace Opw.PineBlog.Posts
                 pager.Configure(count, pagingUrlPartFormat);
 
                 return await _uow.Posts.GetAsync(predicates, skip, pager.ItemsPerPage, cancellationToken);
+            }
+
+            private async Task<IEnumerable<Post>> GetPagedListAsync(IEnumerable<Post> posts, IEnumerable<Expression<Func<Post, bool>>> predicates, Pager pager, string pagingUrlPartFormat, CancellationToken cancellationToken)
+            {
+                var skip = (pager.CurrentPage - 1) * pager.ItemsPerPage;
+                var count = await _uow.Posts.CountAsync(predicates, cancellationToken);
+
+                pager.Configure(count, pagingUrlPartFormat);
+
+                return posts.Skip(skip).Take(pager.ItemsPerPage);
             }
         }
     }

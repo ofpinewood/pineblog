@@ -39,6 +39,12 @@ namespace Opw.PineBlog
         public string PagingUrlPartFormat { get; set; }
         public string CategoryUrlPartFormat { get; set; }
         public string SearchQueryUrlPartFormat { get; set; }
+
+        /// <summary>
+        /// Enable search, or not.
+        /// </summary>
+        public bool EnableSearch { get; set; }
+
         public bool CreateAndSeedDatabases { get; set; }
 
         /// <summary>
