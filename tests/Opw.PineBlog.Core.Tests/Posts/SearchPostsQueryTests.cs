@@ -158,7 +158,7 @@ namespace Opw.PineBlog.Posts
         }
 
         [Fact]
-        public async Task Handler_Should_Predicates_CategoriesExpression_ForSearchQuery()
+        public async Task Handler_Should_Predicates_SearchExpression()
         {
             IEnumerable<Expression<Func<Post, bool>>> createdPredicates = new List<Expression<Func<Post, bool>>>();
 
@@ -166,63 +166,21 @@ namespace Opw.PineBlog.Posts
                 .Setup(m => m.GetAsync(It.IsAny<IEnumerable<Expression<Func<Post, bool>>>>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
                 .Callback((IEnumerable<Expression<Func<Post, bool>>> predicates, int _, int __, CancellationToken ___) => createdPredicates = predicates);
 
-            var result = await Mediator.Send(new SearchPostsQuery { Page = 1, SearchQuery = "text", ItemsPerPage = 100 });
+            var result = await Mediator.Send(new SearchPostsQuery { Page = 1, SearchQuery = "text text2", ItemsPerPage = 100 });
 
             result.IsSuccess.Should().BeTrue();
 
-            Expression<Func<Post, bool>> categoriesExpression = p => p.Categories.Contains("text");
-            createdPredicates.Should().ContainEquivalentOf(categoriesExpression);
-        }
+            var predicate = createdPredicates.Where(p =>
+                p.Body.ToString().Contains("p.Title.Contains(\"text\")")
+                && p.Body.ToString().Contains("p.Title.Contains(\"text2\")")
+                && p.Body.ToString().Contains("OrElse p.Description.Contains(\"text\")")
+                && p.Body.ToString().Contains("OrElse p.Description.Contains(\"text2\")")
+                && p.Body.ToString().Contains("OrElse p.Categories.Contains(\"text\")")
+                && p.Body.ToString().Contains("OrElse p.Categories.Contains(\"text2\")")
+                && p.Body.ToString().Contains("OrElse p.Content.Contains(\"text\")")
+                && p.Body.ToString().Contains("OrElse p.Content.Contains(\"text2\")"));
 
-        [Fact]
-        public async Task Handler_Should_Predicates_DescriptionExpression_ForSearchQuery()
-        {
-            IEnumerable<Expression<Func<Post, bool>>> createdPredicates = new List<Expression<Func<Post, bool>>>();
-
-            PostRepositoryMock
-                .Setup(m => m.GetAsync(It.IsAny<IEnumerable<Expression<Func<Post, bool>>>>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
-                .Callback((IEnumerable<Expression<Func<Post, bool>>> predicates, int _, int __, CancellationToken ___) => createdPredicates = predicates);
-
-            var result = await Mediator.Send(new SearchPostsQuery { Page = 1, SearchQuery = "text", ItemsPerPage = 100 });
-
-            result.IsSuccess.Should().BeTrue();
-
-            Expression<Func<Post, bool>> descriptionExpression = p => p.Description.Contains("text");
-            createdPredicates.Should().ContainEquivalentOf(descriptionExpression);
-        }
-
-        [Fact]
-        public async Task Handler_Should_Predicates_ContentExpression_ForSearchQuery()
-        {
-            IEnumerable<Expression<Func<Post, bool>>> createdPredicates = new List<Expression<Func<Post, bool>>>();
-
-            PostRepositoryMock
-                .Setup(m => m.GetAsync(It.IsAny<IEnumerable<Expression<Func<Post, bool>>>>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
-                .Callback((IEnumerable<Expression<Func<Post, bool>>> predicates, int _, int __, CancellationToken ___) => createdPredicates = predicates);
-
-            var result = await Mediator.Send(new SearchPostsQuery { Page = 1, SearchQuery = "text", ItemsPerPage = 100 });
-
-            result.IsSuccess.Should().BeTrue();
-
-            Expression<Func<Post, bool>> contentExpression = p => p.Content.Contains("text");
-            createdPredicates.Should().ContainEquivalentOf(contentExpression);
-        }
-
-        [Fact]
-        public async Task Handler_Should_Predicates_TitleExpression_ForSearchQuery()
-        {
-            IEnumerable<Expression<Func<Post, bool>>> createdPredicates = new List<Expression<Func<Post, bool>>>();
-
-            PostRepositoryMock
-                .Setup(m => m.GetAsync(It.IsAny<IEnumerable<Expression<Func<Post, bool>>>>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
-                .Callback((IEnumerable<Expression<Func<Post, bool>>> predicates, int _, int __, CancellationToken ___) => createdPredicates = predicates);
-
-            var result = await Mediator.Send(new SearchPostsQuery { Page = 1, SearchQuery = "text", ItemsPerPage = 100 });
-
-            result.IsSuccess.Should().BeTrue();
-
-            Expression<Func<Post, bool>> titleExpression = p => p.Title.Contains("text");
-            createdPredicates.Should().ContainEquivalentOf(titleExpression);
+            predicate.Should().NotBeNull();
         }
 
         private Post CreatePost(int i, Author author, bool cover)

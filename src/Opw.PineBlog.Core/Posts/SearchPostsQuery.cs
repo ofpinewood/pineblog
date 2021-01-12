@@ -29,7 +29,7 @@ namespace Opw.PineBlog.Posts
         public int? ItemsPerPage { get; set; }
 
         /// <summary>
-        /// Text to search for.
+        /// Search query.
         /// </summary>
         public string SearchQuery { get; set; }
 
@@ -75,17 +75,13 @@ namespace Opw.PineBlog.Posts
 
                 if (!string.IsNullOrWhiteSpace(request.SearchQuery))
                 {
-                    // TODO: add more weight to the title and categories
-                    predicates.Add(p =>
-                        p.Title.Contains(request.SearchQuery) ||
-                        p.Categories.Contains(request.SearchQuery) ||
-                        p.Description.Contains(request.SearchQuery) ||
-                        p.Content.Contains(request.SearchQuery));
-
+                    predicates.Add(BuildSearchExpression(request.SearchQuery));
                     pagingUrlPartFormat += "&" + string.Format(_blogOptions.Value.SearchQueryUrlPartFormat, HttpUtility.UrlEncode(request.SearchQuery));
                 }
 
                 var posts = await GetPagedListAsync(predicates, pager, pagingUrlPartFormat, cancellationToken);
+
+                // TODO: add more weight to the title and categories
 
                 posts = posts.Select(p => _postUrlHelper.ReplaceUrlFormatWithBaseUrl(p));
 
@@ -106,6 +102,41 @@ namespace Opw.PineBlog.Posts
                 }
 
                 return Result<PostListModel>.Success(model);
+            }
+
+            private Expression<Func<Post, bool>> BuildSearchExpression(string query)
+            {
+                var parameterExp = Expression.Parameter(typeof(Post), "p");
+                Expression exp = null;
+
+                var termList = query.ToLower().Split(' ').ToList();
+                foreach (var term in termList)
+                {
+                    exp = ConcatOr(exp, GetContainsExpression(nameof(Post.Title), term, parameterExp));
+                    exp = ConcatOr(exp, GetContainsExpression(nameof(Post.Description), term, parameterExp));
+                    exp = ConcatOr(exp, GetContainsExpression(nameof(Post.Categories), term, parameterExp));
+                    exp = ConcatOr(exp, GetContainsExpression(nameof(Post.Content), term, parameterExp));
+                }
+
+                return Expression.Lambda<Func<Post, bool>>(exp, parameterExp);
+            }
+
+            private Expression ConcatOr(Expression exp1, Expression exp2)
+            {
+                if (exp1 == null)
+                    exp1 = exp2;
+                else
+                    exp1 = Expression.OrElse(exp1, exp2);
+
+                return exp1;
+            }
+
+            private Expression GetContainsExpression(string propertyName, string term, ParameterExpression parameterExp)
+            {
+                var propertyExp = Expression.Property(parameterExp, propertyName);
+                var method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+                var someValue = Expression.Constant(term, typeof(string));
+                return Expression.Call(propertyExp, method, someValue);
             }
 
             private async Task<IEnumerable<Post>> GetPagedListAsync(IEnumerable<Expression<Func<Post, bool>>> predicates, Pager pager, string pagingUrlPartFormat, CancellationToken cancellationToken)
