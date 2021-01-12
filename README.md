@@ -142,9 +142,9 @@ For technical background information, check the blog: [ofpinewood.com](https://o
 The demo website is a playground to check out PineBlog. You can write and publish posts, upload files and test application before install.
 And no worries, it is just a sandbox and will clean itself.
 
-> **Url:** [pineblog.azurewebsites.net](https://pineblog.azurewebsites.net)
-> **Username:** pineblog@example.com
-> **Password:** demo
+> **Url:** [pineblog.azurewebsites.net](https://pineblog.azurewebsites.net)  
+> **Username:** pineblog@example.com  
+> **Password:** demo  
 
 ## Usage
 PineBlog is used on the following website:
