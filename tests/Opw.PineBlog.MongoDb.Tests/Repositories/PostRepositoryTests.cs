@@ -18,7 +18,7 @@ namespace Opw.PineBlog.MongoDb.Repositories
         private readonly PostRepository _postRepository;
         private readonly IBlogUnitOfWork _uow;
 
-        public PostRepositoryTests()
+        public PostRepositoryTests(MongoDbDatabaseFixture fixture) : base(fixture)
         {
             SeedDatabase();
 

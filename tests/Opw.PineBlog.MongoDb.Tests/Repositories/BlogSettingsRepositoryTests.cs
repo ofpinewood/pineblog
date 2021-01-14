@@ -15,7 +15,7 @@ namespace Opw.PineBlog.MongoDb.Repositories
         private readonly BlogSettingsRepository _blogSettingsRepository;
         private readonly IBlogUnitOfWork _uow;
 
-        public BlogSettingsRepositoryTests()
+        public BlogSettingsRepositoryTests(MongoDbDatabaseFixture fixture) : base(fixture)
         {
             _uow = ServiceProvider.GetRequiredService<IBlogUnitOfWork>();
             _blogSettingsRepository = (BlogSettingsRepository)_uow.BlogSettings;

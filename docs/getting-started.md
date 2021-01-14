@@ -59,7 +59,7 @@ The rest of the properties are optional and will be set with default values if y
         "CoverCaption": "Battle background for the Misty Woods in the game Shadows of Adam by Tim Wendorf",
         "CoverLink": "http://pixeljoint.com/pixelart/94359.htm",
         "ItemsPerPage": 5,
-        "EnableSearch": true, // default: false
+        "EnableSearch": true, // default is true
         "CreateAndSeedDatabases": true,
         "ConnectionStringName": "DefaultConnection",
         "AzureStorageConnectionString": "UseDevelopmentStorage=true",

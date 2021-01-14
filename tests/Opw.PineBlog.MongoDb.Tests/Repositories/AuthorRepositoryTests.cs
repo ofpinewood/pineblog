@@ -12,7 +12,7 @@ namespace Opw.PineBlog.MongoDb.Repositories
     {
         private readonly AuthorRepository _repository;
 
-        public AuthorRepositoryTests()
+        public AuthorRepositoryTests(MongoDbDatabaseFixture fixture) : base(fixture)
         {
             SeedDatabase();
 

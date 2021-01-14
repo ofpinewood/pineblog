@@ -41,9 +41,9 @@ namespace Opw.PineBlog
         public string SearchQueryUrlPartFormat { get; set; }
 
         /// <summary>
-        /// Enable search, or not.
+        /// Enable search, default is true.
         /// </summary>
-        public bool EnableSearch { get; set; }
+        public bool EnableSearch { get; set; } = true;
 
         public bool CreateAndSeedDatabases { get; set; }
 

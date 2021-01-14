@@ -15,7 +15,7 @@ namespace Opw.PineBlog.Posts
     {
         private readonly SearchPostsQuery.Handler searchPostsQueryHandler;
 
-        public SearchPostsQueryTests()
+        public SearchPostsQueryTests(MongoDbDatabaseFixture fixture) : base(fixture)
         {
             SeedDatabase();
 
