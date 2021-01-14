@@ -10,7 +10,7 @@ namespace Opw.PineBlog.MongoDb
     {
         private readonly BlogSettingsConfigurationProvider _provider;
 
-        public BlogSettingsConfigurationProviderTests()
+        public BlogSettingsConfigurationProviderTests(MongoDbDatabaseFixture fixture) : base(fixture)
         {
             var connectionStringName = Configuration.GetSection(nameof(PineBlogOptions)).GetValue<string>(nameof(PineBlogOptions.ConnectionStringName));
             var databaseName = Configuration.GetSection(nameof(PineBlogOptions)).GetValue<string>(nameof(PineBlogOptions.MongoDbDatabaseName));

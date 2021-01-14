@@ -4,7 +4,7 @@
 [![NuGet Badge](https://img.shields.io/nuget/v/Opw.PineBlog.svg)](https://www.nuget.org/packages/Opw.PineBlog/)
 [![License: MIT](https://img.shields.io/github/license/ofpinewood/pineblog.svg)](https://github.com/ofpinewood/pineblog/blob/master/LICENSE)
 
-PineBlog is a light-weight blogging engine written in ASP.NET Core MVC Razor Pages, using Entity Framework Core or MongoDb. It is highly extendable, customizable and easy to integrate in an existing web application.
+PineBlog is a light-weight blogging engine written in ASP.NET Core MVC Razor Pages, using Entity Framework Core or MongoDb. It is highly extendable, customizable and easy to integrate in an existing web application. 
 
 ![PineBlog screenshot](docs/screenshot.png)
 
@@ -16,6 +16,7 @@ PineBlog is a light-weight blogging engine written in ASP.NET Core MVC Razor Pag
 - SEO optimized
 - Open Graph protocol
 - RSS and ATOM feeds
+- Basic search
 - Clean Architecture (youtube: [Clean Architecture with ASP.NET Core](https://youtu.be/_lwCVE_XgqI))
 - Entity Framework Core, SQL database
 - or MongoDb ([MongoDB.Driver](https://www.nuget.org/packages/mongodb.driver))
@@ -142,9 +143,9 @@ For technical background information, check the blog: [ofpinewood.com](https://o
 The demo website is a playground to check out PineBlog. You can write and publish posts, upload files and test application before install.
 And no worries, it is just a sandbox and will clean itself.
 
-> **Url:** [pineblog.azurewebsites.net](https://pineblog.azurewebsites.net)
-> **Username:** pineblog@example.com
-> **Password:** demo
+> **Url:** [pineblog.azurewebsites.net](https://pineblog.azurewebsites.net)  
+> **Username:** pineblog@example.com  
+> **Password:** demo  
 
 ## Usage
 PineBlog is used on the following website:

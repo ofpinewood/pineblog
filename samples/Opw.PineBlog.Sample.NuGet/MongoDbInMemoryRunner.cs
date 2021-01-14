@@ -37,9 +37,7 @@ namespace Opw.PineBlog.Sample.NuGet
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-            }
+            if (disposing) { }
 
             // always try to dispose, even if disposing=false
             if (_runner != null)

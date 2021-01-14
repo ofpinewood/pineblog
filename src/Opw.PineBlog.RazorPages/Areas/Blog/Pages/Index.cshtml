@@ -1,5 +1,16 @@
 @page
 @model IndexModel
+@{
+    var isSearch = Model.PostList.PostListType == PineBlog.Models.PostListType.Search;
+
+    var linkToNewerText = "Newer";
+    var linkToOlderText = "Older";
+    if (isSearch)
+    {
+        linkToNewerText = "Previous";
+        linkToOlderText = "Next";
+    }
+}
 @section head {
     <partial name="_Metadata" model="@Model.Metadata" />
 }
@@ -8,6 +19,14 @@
 
 <div class="page-content">
     <div class="container">
+        @if (isSearch && !Model.PostList.Posts.Any())
+        {
+            <article class="post">
+                <div class="post-content">
+                    No results for "@ViewData["SearchQuery"]"
+                </div>
+            </article>
+        }
         @foreach (var post in Model.PostList.Posts)
         {
             <partial name="_Post" model="post" />
@@ -18,16 +37,16 @@
                 <div class="item-next col-md-6">
                     @if (Model.PostList.Pager.ShowNewer)
                     {
-                        <a href="?@Model.PostList.Pager.LinkToNewer" title="Newer">
-                            Newer
+                        <a href="?@Model.PostList.Pager.LinkToNewer" title="@linkToNewerText">
+                            @linkToNewerText
                         </a>
                     }
                 </div>
                 <div class="item-prev col-md-6">
                     @if (Model.PostList.Pager.ShowOlder)
                     {
-                        <a href="?@Model.PostList.Pager.LinkToOlder" title="Older">
-                            Older
+                        <a href="?@Model.PostList.Pager.LinkToOlder" title="@linkToOlderText">
+                            @linkToOlderText
                         </a>
                     }
                 </div>

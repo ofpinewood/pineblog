@@ -5,6 +5,8 @@
 - Light-weight using Razor Pages
 - SEO optimized
 - Open Graph protocol
+- RSS and ATOM feeds
+- Basic search
 - Clean Architecture (youtube: [Clean Architecture with ASP.NET Core](https://youtu.be/_lwCVE_XgqI))
 - Entity Framework Core, SQL database
 - or MongoDb ([MongoDB.Driver](https://www.nuget.org/packages/mongodb.driver))

@@ -1,0 +1,17 @@
+@{
+    var showSearch = ViewData["ShowSearch"] != null && true;
+}
+@if (showSearch)
+{
+    <div class="modal fade blog-search" id="blog-search" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <form role="search" asp-page="Index" asp- method="GET">
+                        <input type="search" id="q" name="q" class="form-control form-control-lg" placeholder="Search .." value="@ViewData["SearchQuery"]" autocomplete="off">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}

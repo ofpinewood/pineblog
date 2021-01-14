@@ -6,7 +6,7 @@ public void ConfigureServices(IServiceCollection services)
 {
     ...
     services.AddPineBlog(Configuration);
-    
+
     services.AddRazorPages().AddPineBlogRazorPages();
     // or services.AddMvcCore().AddPineBlogRazorPages();
     // or services.AddMvc().AddPineBlogRazorPages();
@@ -29,21 +29,21 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 }
 ```
 
-NOTE: Make sure you enable static file serving `app.UseStaticFiles();`, to enable the serving of the css and javascript from the `Opw.PineBlog.RazorPages` packages.  
+NOTE: Make sure you enable static file serving `app.UseStaticFiles();`, to enable the serving of the css and javascript from the `Opw.PineBlog.RazorPages` packages.
 
-See [Customizing the layout](https://github.com/ofpinewood/pineblog/tree/master/docs/custom-layout.md) on how to setup the layout pages, css and javascript.  
+See [Customizing the layout](https://github.com/ofpinewood/pineblog/tree/master/docs/custom-layout.md) on how to setup the layout pages, css and javascript.
 
 ## Configuration
 A few properties need to be configured before you can run your web application with PineBlog.
 
-**Title:** the title of your blog/website.  
-**CoverUrl:** the URL for the cover image of your blog, this can be a relative or absolute URL.  
-**ConnectionStringName:** this is the name to the connection string used in your application.  
+**Title:** the title of your blog/website.
+**CoverUrl:** the URL for the cover image of your blog, this can be a relative or absolute URL.
+**ConnectionStringName:** this is the name to the connection string used in your application.
 **CreateAndSeedDatabases:** to automatically create and seed the tables for the blog set this property to `true`, if you want to create and seed your
-database in any other way set this property to `false`.  
-**AzureStorageConnectionString:** your Azure Blog Storage connection string.  
-**AzureStorageBlobContainerName:** the name of the blob container to use for file storage.  
-**FileBaseUrl:** the base URL for the files, this should be the URL for your Azure Blob Storage, e.g. `https://<storage-account>.blob.core.windows.net`.  
+database in any other way set this property to `false`.
+**AzureStorageConnectionString:** your Azure Blog Storage connection string.
+**AzureStorageBlobContainerName:** the name of the blob container to use for file storage.
+**FileBaseUrl:** the base URL for the files, this should be the URL for your Azure Blob Storage, e.g. `https://<storage-account>.blob.core.windows.net`.
 
 The rest of the properties are optional and will be set with default values if you don't specify them.
 
@@ -59,6 +59,7 @@ The rest of the properties are optional and will be set with default values if y
         "CoverCaption": "Battle background for the Misty Woods in the game Shadows of Adam by Tim Wendorf",
         "CoverLink": "http://pixeljoint.com/pixelart/94359.htm",
         "ItemsPerPage": 5,
+        "EnableSearch": true, // default is true
         "CreateAndSeedDatabases": true,
         "ConnectionStringName": "DefaultConnection",
         "AzureStorageConnectionString": "UseDevelopmentStorage=true",

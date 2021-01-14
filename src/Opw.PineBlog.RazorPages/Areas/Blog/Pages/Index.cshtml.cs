@@ -13,6 +13,7 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
     public class IndexModel : PageModelBase<IndexModel>
     {
         private readonly IMediator _mediator;
+        private readonly IOptionsSnapshot<PineBlogOptions> _options;
 
         public PostListModel PostList { get; set; }
 
@@ -21,20 +22,46 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
         public Models.PageCoverModel PageCover { get; set; }
 
         [ViewData]
+        public bool ShowSearch { get; set; }
+
+        [ViewData]
+        public string SearchQuery { get; set; }
+
+        [ViewData]
         public string Title { get; private set; }
 
-        public IndexModel(IMediator mediator, ILogger<IndexModel> logger)
+        [ViewData]
+        public string BlogTitle { get; private set; }
+
+        public IndexModel(IMediator mediator, IOptionsSnapshot<PineBlogOptions> options, ILogger<IndexModel> logger)
             : base(logger)
         {
             _mediator = mediator;
+            _options = options;
         }
 
-        public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken, [FromQuery]int page = 1, [FromQuery]string category = null)
+        public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken, [FromQuery] int page = 1, [FromQuery] string category = null, [FromQuery] string q = null)
         {
-            var result = await _mediator.Send(new GetPagedPostListQuery { Page = page, Category = category }, cancellationToken);
+            Result<PostListModel> result;
+            if (!string.IsNullOrWhiteSpace(q))
+                result = await _mediator.Send(new SearchPostsQuery { Page = page, SearchQuery = q }, cancellationToken);
+            else
+                result = await _mediator.Send(new GetPagedPostListQuery { Page = page, Category = category }, cancellationToken);
 
+            return GetPage(result);
+        }
+
+        private IActionResult GetPage(Result<PostListModel> result)
+        {
             PostList = result.Value;
             Title = result.Value.Blog.Title;
+            ShowSearch = _options.Value.EnableSearch;
+
+            if (PostList.PostListType == PostListType.Search)
+            {
+                BlogTitle = result.Value.Blog.Title;
+                SearchQuery = PostList.SearchQuery;
+            }
 
             Metadata = new Models.MetadataModel
             {

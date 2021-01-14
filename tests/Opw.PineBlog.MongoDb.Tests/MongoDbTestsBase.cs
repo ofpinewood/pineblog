@@ -1,18 +1,16 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Mongo2Go;
 using MongoDB.Driver;
 using Opw.PineBlog.Entities;
 using System;
 using System.Collections.Generic;
-using System.Threading;
+using Xunit;
 
 namespace Opw.PineBlog.MongoDb
 {
-    public abstract class MongoDbTestsBase : IDisposable
+    [Collection(nameof(MongoDbDatabaseCollection))]
+    public abstract class MongoDbTestsBase
     {
-        private static MongoDbRunner _runner;
-
         protected readonly IServiceCollection Services;
         protected readonly IConfiguration Configuration;
         protected readonly IMongoCollection<BlogSettings> BlogSettingsCollection;
@@ -21,10 +19,9 @@ namespace Opw.PineBlog.MongoDb
 
         protected IServiceProvider ServiceProvider => Services.BuildServiceProvider();
 
-        public MongoDbTestsBase()
+        public MongoDbTestsBase(MongoDbDatabaseFixture fixture)
         {
-            _runner = MongoDbRunner.Start(singleNodeReplSet: true);
-            Configuration = BuildConfiguration(_runner.ConnectionString);
+            Configuration = BuildConfiguration(fixture.Runner.ConnectionString);
 
             Services = new ServiceCollection();
             Services.AddPineBlogCore(Configuration);
@@ -48,29 +45,6 @@ namespace Opw.PineBlog.MongoDb
                .AddJsonFile("appsettings.json")
                .AddInMemoryCollection(settings)
                .Build();
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-            }
-
-            // always try to dispose, even if disposing=false
-            if (_runner != null)
-            {
-                // wait a little to prevent timeouts
-                Thread.Sleep(500);
-                try { _runner?.Dispose(); } catch { }
-                _runner = null;
-                GC.Collect();
-            }
         }
     }
 }

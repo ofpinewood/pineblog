@@ -36,5 +36,10 @@ namespace Opw.PineBlog.RazorPages.Models
         /// Category filter.
         /// </summary>
         public string Category { get; set; }
+
+        /// <summary>
+        /// Search query.
+        /// </summary>
+        public string SearchQuery { get; set; }
     }
 }

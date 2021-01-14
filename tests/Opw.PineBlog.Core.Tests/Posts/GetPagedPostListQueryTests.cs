@@ -114,6 +114,15 @@ namespace Opw.PineBlog.Posts
         }
 
         [Fact]
+        public async Task Handler_Should_ReturnPostListModel_WithPostListCategory()
+        {
+            var result = await Mediator.Send(new GetPagedPostListQuery { Category = "text" });
+
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Category.Should().Be("text");
+        }
+
+        [Fact]
         public async Task Handler_Should_ReturnPostListModel_WhenFilterOnCategory_WithPostListTypeCategory()
         {
             var result = await Mediator.Send(new GetPagedPostListQuery { Category = "category" });
