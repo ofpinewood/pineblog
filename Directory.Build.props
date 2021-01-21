@@ -4,9 +4,9 @@
 
         <Authors>Of Pine Wood</Authors>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-        <PackageLicenseUrl>https://github.com/ofpinewood/pineblog/blob/master/LICENSE</PackageLicenseUrl>
+        <PackageLicenseUrl>https://github.com/ofpinewood/pineblog/blob/main/LICENSE</PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/ofpinewood/pineblog</PackageProjectUrl>
-        <PackageIconUrl>https://github.com/ofpinewood/pineblog/blob/master/pineblog-logo-256x256.gif?raw=true</PackageIconUrl>
+        <PackageIconUrl>https://github.com/ofpinewood/pineblog/blob/main/pineblog-logo-256x256.gif?raw=true</PackageIconUrl>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/ofpinewood/pineblog</RepositoryUrl>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>

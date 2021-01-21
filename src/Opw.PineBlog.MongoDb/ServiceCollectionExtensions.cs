@@ -1,9 +1,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
-using Opw.PineBlog.Entities;
+using System.Linq;
 
 namespace Opw.PineBlog.MongoDb
 {
@@ -20,10 +19,17 @@ namespace Opw.PineBlog.MongoDb
         /// <returns>The original services object.</returns>
         public static IServiceCollection AddPineBlogMongoDb(this IServiceCollection services, IConfiguration configuration)
         {
-            // TODO: add check for when someone tries to add multiple databases
+            if (((IConfigurationRoot)configuration).Providers.SingleOrDefault(p => p.GetType() == typeof(BlogSettingsConfigurationProvider)) == null)
+            {
+                throw new ConfigurationException("The PineBlog IConfigurationProvider(s) are not configured, please add \"AddPineBlogMongoDbConfiguration\" to the \"ConfigureAppConfiguration\" on the \"IWebHostBuilder\".")
+                {
+                    HelpLink = "https://github.com/ofpinewood/pineblog/blob/main/docs/mongodb.md#blog-settings-configurationprovider"
+                };
+            }
 
             BsonClassMappings.Register();
 
+            // TODO: add check for when someone tries to add multiple databases
             services.AddTransient<IMongoDatabase>(provider =>
             {
                 var blogOptions = provider.GetRequiredService<IOptions<PineBlogOptions>>();

@@ -1,8 +1,8 @@
 # PineBlog <img src="pineblog-logo-256x256.gif" alt="PineBlog" height="44" align="left" />
 
-[![Build Status](https://dev.azure.com/ofpinewood/Of%20Pine%20Wood/_apis/build/status/ofpinewood.pineblog?branchName=master)](https://dev.azure.com/ofpinewood/Of%20Pine%20Wood/_build/latest?definitionId=7&branchName=master)
+[![Build Status](https://dev.azure.com/ofpinewood/Of%20Pine%20Wood/_apis/build/status/ofpinewood.pineblog?branchName=main)](https://dev.azure.com/ofpinewood/Of%20Pine%20Wood/_build/latest?definitionId=7&branchName=main)
 [![NuGet Badge](https://img.shields.io/nuget/v/Opw.PineBlog.svg)](https://www.nuget.org/packages/Opw.PineBlog/)
-[![License: MIT](https://img.shields.io/github/license/ofpinewood/pineblog.svg)](https://github.com/ofpinewood/pineblog/blob/master/LICENSE)
+[![License: MIT](https://img.shields.io/github/license/ofpinewood/pineblog.svg)](https://github.com/ofpinewood/pineblog/blob/main/LICENSE)
 
 PineBlog is a light-weight blogging engine written in ASP.NET Core MVC Razor Pages, using Entity Framework Core or MongoDb. It is highly extendable, customizable and easy to integrate in an existing web application. 
 
@@ -23,7 +23,7 @@ PineBlog is a light-weight blogging engine written in ASP.NET Core MVC Razor Pag
 - Azure Blob Storage, for file storage
 - ..only a blogging engine, nothing else..
 
-> More about the features: [features](https://github.com/ofpinewood/pineblog/tree/master/docs/features.md)
+> More about the features: [features](https://github.com/ofpinewood/pineblog/tree/main/docs/features.md)
 
 ### What is not included
 Because PineBlog is very light-weight it is not a complete web application, it needs to be integrated in an existing web application or you need to create a basic web application for it. There are a few things PineBlog depends on, but that it does not provide.
@@ -53,7 +53,7 @@ The PineBlog UI using ASP.NET Core MVC Razor Pages.
 The PineBlog core package. This package is a dependency for `Opw.PineBlog.RazorPages` and `Opw.PineBlog.EntityFrameworkCore`.
 [![NuGet Badge](https://img.shields.io/nuget/v/Opw.PineBlog.Core.svg)](https://www.nuget.org/packages/Opw.PineBlog.Core/)
 
-> For using MongoDb, see [Using MongoDb](https://github.com/ofpinewood/pineblog/tree/master/docs/mongodb.md) on how to setup that.
+> For using MongoDb, see [Using MongoDb](https://github.com/ofpinewood/pineblog/tree/main/docs/mongodb.md) on how to setup that.
 
 ## Getting started
 You add the PineBlog services and the Razor Pages UI in the Startup.cs of your application.
@@ -89,7 +89,7 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 
 NOTE: Make sure you enable static file serving `app.UseStaticFiles();`, to enable the serving of the css and javascript from the `Opw.PineBlog.RazorPages` packages.
 
-See [Customizing the layout](https://github.com/ofpinewood/pineblog/tree/master/docs/custom-layout.md) on how to setup the layout pages, css and javascript.
+See [Customizing the layout](https://github.com/ofpinewood/pineblog/tree/main/docs/custom-layout.md) on how to setup the layout pages, css and javascript.
 
 ### Configuration
 And a few properties need to be configured before you can run your web application with PineBlog.
@@ -127,15 +127,15 @@ WebHost.CreateDefaultBuilder(args)
 ## Documentation
 For more information, please check the documentation.
 
-- [Getting started](https://github.com/ofpinewood/pineblog/tree/master/docs/getting-started.md)
-- [Customizing the layout](https://github.com/ofpinewood/pineblog/tree/master/docs/custom-layout.md)
-- [Features](https://github.com/ofpinewood/pineblog/tree/master/docs/features.md)
+- [Getting started](https://github.com/ofpinewood/pineblog/tree/main/docs/getting-started.md)
+- [Customizing the layout](https://github.com/ofpinewood/pineblog/tree/main/docs/custom-layout.md)
+- [Features](https://github.com/ofpinewood/pineblog/tree/main/docs/features.md)
 
 For technical background information, check the blog: [ofpinewood.com](https://ofpinewood.com/Blog?category=pineblog).
 
 ## Samples
-- The [sample project](https://github.com/ofpinewood/pineblog/tree/master/samples/Opw.PineBlog.Sample) contains an example web application with PineBlog.
-- The [NuGet sample project](https://github.com/ofpinewood/pineblog/tree/master/samples/Opw.PineBlog.Sample.NuGet) contains an example web application using just the NuGet packages.
+- The [sample project](https://github.com/ofpinewood/pineblog/tree/main/samples/Opw.PineBlog.Sample) contains an example web application with PineBlog.
+- The [NuGet sample project](https://github.com/ofpinewood/pineblog/tree/main/samples/Opw.PineBlog.Sample.NuGet) contains an example web application using just the NuGet packages.
 
 **Check the code** :nerd_face:
 
@@ -154,10 +154,10 @@ PineBlog is used on the following website:
 ## Contributing
 We accept fixes and features! Here are some resources to help you get started on how to contribute code or new content.
 
-* [Contributing](https://github.com/ofpinewood/pineblog/blob/master/CONTRIBUTING.md)
-* [Code of conduct](https://github.com/ofpinewood/pineblog/blob/master/CODE_OF_CONDUCT.md)
+* [Contributing](https://github.com/ofpinewood/pineblog/blob/main/CONTRIBUTING.md)
+* [Code of conduct](https://github.com/ofpinewood/pineblog/blob/main/CODE_OF_CONDUCT.md)
 
 ---
 Copyright &copy; 2021, [Of Pine Wood](http://ofpinewood.com).
 Created by [Peter van den Hout](http://ofpinewood.com).
-Released under the terms of the [MIT license](https://github.com/ofpinewood/pineblog/blob/master/LICENSE).
+Released under the terms of the [MIT license](https://github.com/ofpinewood/pineblog/blob/main/LICENSE).

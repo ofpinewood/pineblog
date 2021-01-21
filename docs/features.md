@@ -21,7 +21,7 @@
 - [Media links](https://github.com/xoofx/markdig/blob/master/src/Markdig.Tests/Specs/MediaSpecs.md)
 - [Generic attributes](https://github.com/xoofx/markdig/blob/master/src/Markdig.Tests/Specs/GenericAttributesSpecs.md)
 
-If you want or require more advanced Markdown features, you can enable those by overriding the `~/Areas/Blog/Pages/Shared/_Post.cshtml` partial (see [source](https://github.com/ofpinewood/pineblog/blob/master/src/Opw.PineBlog.RazorPages/Areas/Blog/Pages/Shared/_Post.cshtml)).
+If you want or require more advanced Markdown features, you can enable those by overriding the `~/Areas/Blog/Pages/Shared/_Post.cshtml` partial (see [source](https://github.com/ofpinewood/pineblog/blob/main/src/Opw.PineBlog.RazorPages/Areas/Blog/Pages/Shared/_Post.cshtml)).
 
 ### Markdown examples
 How to create a table with styling, using `pipe tables` and `generic attributes`.

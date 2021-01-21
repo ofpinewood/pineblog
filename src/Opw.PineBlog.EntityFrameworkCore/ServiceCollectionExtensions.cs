@@ -22,7 +22,7 @@ namespace Opw.PineBlog.EntityFrameworkCore
             {
                 throw new ConfigurationException("The PineBlog IConfigurationProvider(s) are not configured, please add \"AddPineBlogEntityFrameworkCoreConfiguration\" to the \"ConfigureAppConfiguration\" on the \"IWebHostBuilder\".")
                 {
-                    HelpLink = "https://github.com/ofpinewood/pineblog/blob/master/docs/getting-started.md#blog-settings-configurationprovider"
+                    HelpLink = "https://github.com/ofpinewood/pineblog/blob/main/docs/getting-started.md#blog-settings-configurationprovider"
                 };
             }
 

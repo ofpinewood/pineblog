@@ -81,7 +81,7 @@ The blog pages include Open Graph `<meta>` tags in the `<head>` of the page. The
 ## Overriding the UI
 You can override any other Razor view you like by following the same steps as described above for the layout page.
 For an example have a look at the sample project where we override the footer
-([_Footer.cshtml](https://github.com/ofpinewood/pineblog/blob/master/samples/Opw.PineBlog.Sample/Areas/Blog/Pages/Shared/_Footer_.cshtml)).
+([_Footer.cshtml](https://github.com/ofpinewood/pineblog/blob/main/samples/Opw.PineBlog.Sample/Areas/Blog/Pages/Shared/_Footer_.cshtml)).
 
 # Admin layout
 For the **Admin** area layout page do the same as you did for the **Blog** area.

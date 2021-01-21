@@ -31,7 +31,7 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 
 NOTE: Make sure you enable static file serving `app.UseStaticFiles();`, to enable the serving of the css and javascript from the `Opw.PineBlog.RazorPages` packages.
 
-See [Customizing the layout](https://github.com/ofpinewood/pineblog/tree/master/docs/custom-layout.md) on how to setup the layout pages, css and javascript.
+See [Customizing the layout](https://github.com/ofpinewood/pineblog/tree/main/docs/custom-layout.md) on how to setup the layout pages, css and javascript.
 
 ## Configuration
 A few properties need to be configured before you can run your web application with PineBlog.
