@@ -151,7 +151,7 @@ steps:
   displayName: Create GitHub Release
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
   inputs:
-   gitHubConnection: GitHub
+   gitHubConnection: 'github.com'
    repositoryName: $(Build.Repository.Name)
    action: create
    target: $(Build.SourceVersion)
