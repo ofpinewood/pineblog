@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Opw.PineBlog.Posts
+namespace Opw.PineBlog.Posts.Search
 {
     public class SearchPostsQueryTests : MediatRTestsBase
     {

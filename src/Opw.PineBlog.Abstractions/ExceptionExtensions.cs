@@ -4,7 +4,6 @@ using System.Linq;
 
 namespace Opw.PineBlog
 {
-    //TODO: move to Opw.Common
     public static class ExceptionExtensions
     {
         public static string GetAggregatedExceptionMessage(this ValidationErrorException<ValidationFailure> ex)
