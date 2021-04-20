@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Opw.PineBlog.Models;
 using Opw.PineBlog.Posts;
+using Opw.PineBlog.Posts.Search;
 using System.Threading;
 using System.Threading.Tasks;
 

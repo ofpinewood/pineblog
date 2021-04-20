@@ -1,15 +1,17 @@
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Moq;
 using Opw.PineBlog.Entities;
 using Opw.PineBlog.EntityFrameworkCore;
 using Opw.PineBlog.Files;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Opw.PineBlog.Posts
+namespace Opw.PineBlog.Posts.Search
 {
     public class SearchPostsQueryTests : EntityFrameworkCoreTestsBase
     {
@@ -24,7 +26,12 @@ namespace Opw.PineBlog.Posts
             var postUrlHelper = ServiceProvider.GetRequiredService<PostUrlHelper>();
             var fileUrlHelper = ServiceProvider.GetRequiredService<FileUrlHelper>();
 
-            searchPostsQueryHandler = new SearchPostsQuery.Handler(uow, options, postUrlHelper, fileUrlHelper);
+            var postRankerMock = new Mock<IPostRanker>();
+            postRankerMock
+                .Setup(m => m.Rank(It.IsAny<IEnumerable<Post>>(), It.IsAny<string>()))
+                .Returns((IEnumerable<Post> posts, string _) => posts);
+
+            searchPostsQueryHandler = new SearchPostsQuery.Handler(uow, postRankerMock.Object, options, postUrlHelper, fileUrlHelper);
         }
 
         [Fact]

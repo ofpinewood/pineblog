@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using Opw.PineBlog.Files.Azure;
 using Opw.PineBlog.Feeds;
 using Opw.PineBlog.Blogs;
+using Opw.PineBlog.Posts.Search;
 
 namespace Opw.PineBlog
 {
@@ -51,6 +52,8 @@ namespace Opw.PineBlog
             services.AddTransient<IValidator<GetSyndicationFeedQuery>, GetSyndicationFeedQueryValidator>();
 
             services.AddTransient<IValidator<UpdateBlogSettingsCommand>, UpdateBlogSettingsCommandValidator>();
+
+            services.AddTransient<IPostRanker, PostRanker>();
 
             services.AddTransient<IUploadFileCommandFactory, UploadFileCommandFactory>();
             services.AddTransient<IDeleteFileCommandFactory, DeleteFileCommandFactory>();

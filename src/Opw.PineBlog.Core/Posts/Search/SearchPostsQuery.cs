@@ -7,13 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
 // TODO: improve test coverage
-namespace Opw.PineBlog.Posts
+namespace Opw.PineBlog.Posts.Search
 {
     /// <summary>
     /// Query that searches posts.
@@ -42,6 +41,7 @@ namespace Opw.PineBlog.Posts
         {
             private readonly IOptionsSnapshot<PineBlogOptions> _blogOptions;
             private readonly IBlogUnitOfWork _uow;
+            private readonly IPostRanker _postRanker;
             private readonly PostUrlHelper _postUrlHelper;
             private readonly FileUrlHelper _fileUrlHelper;
 
@@ -49,13 +49,20 @@ namespace Opw.PineBlog.Posts
             /// Implementation of SearchPostsQuery.Handler.
             /// </summary>
             /// <param name="uow">The blog unit of work.</param>
+            /// <param name="postRanker">Post ranker.</param>
             /// <param name="blogOptions">The blog options.</param>
             /// <param name="postUrlHelper">Post URL helper.</param>
             /// <param name="fileUrlHelper">File URL helper.</param>
-            public Handler(IBlogUnitOfWork uow, IOptionsSnapshot<PineBlogOptions> blogOptions, PostUrlHelper postUrlHelper, FileUrlHelper fileUrlHelper)
+            public Handler(
+                IBlogUnitOfWork uow,
+                IPostRanker postRanker,
+                IOptionsSnapshot<PineBlogOptions> blogOptions,
+                PostUrlHelper postUrlHelper,
+                FileUrlHelper fileUrlHelper)
             {
                 _blogOptions = blogOptions;
                 _uow = uow;
+                _postRanker = postRanker;
                 _postUrlHelper = postUrlHelper;
                 _fileUrlHelper = fileUrlHelper;
             }
@@ -82,7 +89,7 @@ namespace Opw.PineBlog.Posts
                     pagingUrlPartFormat += "&" + string.Format(_blogOptions.Value.SearchQueryUrlPartFormat, HttpUtility.UrlEncode(request.SearchQuery));
 
                     posts = await _uow.Posts.GetAsync(predicates, 0, int.MaxValue, cancellationToken);
-                    posts = RankPosts(posts, request.SearchQuery);
+                    posts = _postRanker.Rank(posts, request.SearchQuery);
                     posts = await GetPagedListAsync(posts, predicates, pager, pagingUrlPartFormat, cancellationToken);
                 }
                 else
@@ -111,19 +118,12 @@ namespace Opw.PineBlog.Posts
                 return Result<PostListModel>.Success(model);
             }
 
-            private IEnumerable<string> ParseTerms(string query)
-            {
-                // convert multiple spaces into one space   
-                query = Regex.Replace(query, @"\s+", " ").Trim();
-                return query.ToLower().Split(' ').ToList();
-            }
-
             private Expression<Func<Post, bool>> BuildSearchExpression(string query)
             {
                 var parameterExp = Expression.Parameter(typeof(Post), "p");
                 Expression exp = null;
 
-                foreach (var term in ParseTerms(query))
+                foreach (var term in query.ParseTerms())
                 {
                     exp = ConcatOr(exp, GetContainsExpression(nameof(Post.Title), term.Trim(), parameterExp));
                     exp = ConcatOr(exp, GetContainsExpression(nameof(Post.Description), term.Trim(), parameterExp));
@@ -150,46 +150,6 @@ namespace Opw.PineBlog.Posts
                 var method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
                 var someValue = Expression.Constant(term, typeof(string));
                 return Expression.Call(propertyExp, method, someValue);
-            }
-
-            // TODO: test ranking
-            private IEnumerable<Post> RankPosts(IEnumerable<Post> posts, string query)
-            {
-                var terms = ParseTerms(query);
-                var rankedPosts = new List<Tuple<Post, int>>();
-
-                foreach (var post in posts)
-                {
-                    var rank = 0;
-                    foreach (var term in terms)
-                    {
-                        int hits;
-                        if (post.Title.ToLower().Contains(term))
-                        {
-                            hits = Regex.Matches(post.Title.ToLower(), term).Count;
-                            rank += hits * 10;
-                        }
-                        if (post.Categories.ToLower().Contains(term))
-                        {
-                            hits = Regex.Matches(post.Categories.ToLower(), term).Count;
-                            rank += hits * 10;
-                        }
-                        if (post.Description.ToLower().Contains(term))
-                        {
-                            hits = Regex.Matches(post.Description.ToLower(), term).Count;
-                            rank += hits * 3;
-                        }
-                        if (post.Content.ToLower().Contains(term))
-                        {
-                            hits = Regex.Matches(post.Content.ToLower(), term).Count;
-                            rank += hits * 1;
-                        }
-                    }
-
-                    rankedPosts.Add(new Tuple<Post, int>(post, rank));
-                }
-
-                return rankedPosts.OrderByDescending(t => t.Item2).Select(t => t.Item1).ToList();
             }
 
             private async Task<IEnumerable<Post>> GetPagedListAsync(IEnumerable<Expression<Func<Post, bool>>> predicates, Pager pager, string pagingUrlPartFormat, CancellationToken cancellationToken)
