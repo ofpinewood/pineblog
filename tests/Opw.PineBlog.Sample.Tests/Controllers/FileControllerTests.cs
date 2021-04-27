@@ -11,13 +11,13 @@ using System.Net;
 
 namespace Opw.PineBlog.Sample.Controllers
 {
-    public class FileControllerTests : IClassFixture<TestWebApplicationFactory>
+    public class FileControllerTests : IClassFixture<TestWebApplicationFactory<Startup>>
     {
-        private readonly TestWebApplicationFactory _factory;
+        private readonly TestWebApplicationFactory<Startup> _factory;
         private readonly HttpClient _client;
         private readonly AuthenticationContext _authenticationContext;
 
-        public FileControllerTests(TestWebApplicationFactory factory)
+        public FileControllerTests(TestWebApplicationFactory<Startup> factory)
         {
             _authenticationContext = new AuthenticationContext
             {

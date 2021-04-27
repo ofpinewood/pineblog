@@ -52,6 +52,12 @@ namespace Opw.PineBlog.Sample
             services.AddRazorPages()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddPineBlogRazorPages();
+
+            services.AddRouting(options => {
+                options.LowercaseUrls = true;
+                options.LowercaseQueryStrings = true;
+                options.AppendTrailingSlash = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

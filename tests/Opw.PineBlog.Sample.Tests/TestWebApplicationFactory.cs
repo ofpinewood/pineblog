@@ -11,7 +11,8 @@ using System.Linq;
 
 namespace Opw.PineBlog.Sample
 {
-    public class TestWebApplicationFactory : WebApplicationFactory<Startup>
+    public class TestWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup>
+        where TStartup : class
     {
         public IConfigurationRoot Configuration { get; }
 
@@ -26,7 +27,7 @@ namespace Opw.PineBlog.Sample
         {
             return new WebHostBuilder()
                 .UseConfiguration(Configuration)
-                .UseStartup<Startup>()
+                .UseStartup<TStartup>()
                 .ConfigureAppConfiguration((_, config) => config.AddPineBlogEntityFrameworkCoreConfiguration(reloadOnChange: true));
         }
 
@@ -34,7 +35,7 @@ namespace Opw.PineBlog.Sample
         {
             builder.ConfigureTestServices(services =>
             {
-                ServiceRegistrar.AddMediatRClasses(services, new[] { typeof(TestWebApplicationFactory).Assembly });
+                ServiceRegistrar.AddMediatRClasses(services, new[] { typeof(TestWebApplicationFactory<>).Assembly });
 
                 var serviceDescriptor = services.FirstOrDefault(descriptor => descriptor.ServiceType == typeof(IGetPagedFileListQueryFactory));
                 services.Remove(serviceDescriptor);
