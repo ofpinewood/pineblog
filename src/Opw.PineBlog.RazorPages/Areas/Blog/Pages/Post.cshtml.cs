@@ -33,6 +33,12 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
 
         public async Task<IActionResult> OnGetAsync(string slug, CancellationToken cancellationToken)
         {
+            if (slug.EndsWith('/'))
+            {
+                // remove the '/' at the end of the slug to make it valid
+                slug = slug.TrimEnd('/');
+            }
+
             var result = await _mediator.Send(new GetPostQuery { Slug = slug }, cancellationToken);
 
             if (!result.IsSuccess) return Error(result);

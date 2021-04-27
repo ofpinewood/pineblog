@@ -3,7 +3,7 @@
 <div class="container">
     <h1>
         Posts
-        <a href="addpost" class="btn btn-primary float-right">New</a>
+        <a href="@Url.Page("AddPost")" class="btn btn-primary float-right">New</a>
     </h1>
 
     <table class="table table-hover">
@@ -19,7 +19,7 @@
         <tbody>
             @foreach (var post in Model.Posts)
             {
-                <tr onclick="location.href = 'updatepost?id=@post.Id'" class="clickable">
+                <tr onclick="location.href = '@Url.Page("UpdatePost", new { id = post.Id })'" class="clickable">
                     <td>@post.Title</td>
                     <td>@post.Author.DisplayName</td>
                     <td>@post.Published</td>
