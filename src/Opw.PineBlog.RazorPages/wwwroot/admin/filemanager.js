@@ -10,6 +10,7 @@ var fileManager = function (dataService) {
         _fileType = fileType;
 
         $('#fileManagerModal').modal();
+        loading();
         load(1);
     }
 
@@ -67,6 +68,7 @@ var fileManager = function (dataService) {
     }
 
     function uploadSubmit() {
+        loading();
         var data = new FormData($('#frmUpload')[0]);
         dataService.upload('admin/file/upload?targetPath=' + _directoryPath, data, submitCallback, fail);
     }
@@ -76,7 +78,7 @@ var fileManager = function (dataService) {
     }
 
     function remove() {
-        //loading();
+        loading();
         var items = $('#fileManagerList input:checked');
         for (i = 0; i < items.length; i++) {
             var index = items[i].id.substring(4);
@@ -94,7 +96,6 @@ var fileManager = function (dataService) {
     }
 
     function removeCallback(data) {
-        //loaded();
         //toastr.success('Deleted');
         load(1);
     }
@@ -128,7 +129,7 @@ var fileManager = function (dataService) {
                 '	<div class="file" title="' + file.fileName + '">' +
                 '		<div class="file-image" onclick="fileManager.pick(' + index + '); return false"><img src="' + file.url + '" /></div>' +
                 '		<label class="custom-control custom-checkbox file-name" title="' + file.fileName + '">' +
-                '			<input type="checkbox" id="file' + index + '" class="custom-control-input file-check">' + // onchange="fileManager.check(this)">' +
+                '			<input type="checkbox" id="file' + index + '" class="custom-control-input file-check" onchange="fileManager.check(this)">' +
                 '			<span class="custom-control-label">' + file.fileName + '</span>' +
                 '		</label>' +
                 '	</div>' +
@@ -157,38 +158,39 @@ var fileManager = function (dataService) {
         }
 
         $('#filePagination').html(pager);
-        //showBtns();
+        showBtns();
+        loaded();
     }
 
-    //function loading() {
-    //    $('#btnDelete').hide();
-    //    $('.loading').fadeIn();
-    //}
-    //function loaded() {
-    //    $('.loading').hide();
-    //}
+    function loading() {
+        $('#btnDelete').hide();
+        $('.loading').fadeIn();
+    }
+    function loaded() {
+        $('.loading').hide();
+    }
 
     function emptyCallback(data) { }
 
-    //function check(cbx) {
-    //    if (!cbx.checked) {
-    //        $('#checkAll').prop('checked', false);
-    //    }
-    //    showBtns();
-    //}
+    function check(cbx) {
+        if (!cbx.checked) {
+            $('#checkAll').prop('checked', false);
+        }
+        showBtns();
+    }
 
-    //function showBtns() {
-    //    var items = $('#fileManagerList .file-check:checked');
-    //    console.log('showBtns', items.length);
-    //    if (items.length > 0) {
-    //        $('#btnDelete').show();
-    //        $('#btnSelect').show();
-    //    }
-    //    else {
-    //        $('#btnDelete').hide();
-    //        $('#btnSelect').hide();
-    //    }
-    //}
+    function showBtns() {
+        var items = $('#fileManagerList .file-check:checked');
+        //console.log('showBtns', items.length);
+        if (items.length > 0) {
+            $('#btnDelete').show();
+            //$('#btnSelect').show();
+        }
+        else {
+            $('#btnDelete').hide();
+            //$('#btnSelect').hide();
+        }
+    }
 
     return {
         open: open,
@@ -198,8 +200,8 @@ var fileManager = function (dataService) {
         uploadClick: uploadClick,
         uploadSubmit: uploadSubmit,
         remove: remove,
-        //check: check,
-        //showBtns: showBtns
+        check: check,
+        showBtns: showBtns
     };
 }(DataService);
 
