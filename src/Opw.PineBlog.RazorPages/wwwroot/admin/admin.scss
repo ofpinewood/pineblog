@@ -228,6 +228,50 @@
         .file-pagination {
             width: 100%;
         }
+
+        .loading {
+            text-align: center;
+            padding: 1.25rem 0;
+            display: none;
+        }
+
+        .loading:after, .loading:before {
+            content: "";
+            display: table
+        }
+
+        .loading:after {
+            clear: both
+        }
+
+        .loading-sm {
+            padding: .875rem 0
+        }
+
+        .loading > div {
+            float: left;
+            width: .5rem;
+            height: .5rem;
+            margin: 0 .125rem;
+            border-radius: 100%;
+            background-color: #007bff;
+            -webkit-animation: loading 1s infinite ease-in-out both;
+            animation: loading 1s infinite ease-in-out both
+        }
+
+        .loading-white > div {
+            background: #fff
+        }
+
+        .loading .loading-dot-1 {
+            -webkit-animation-delay: -0.32s;
+            animation-delay: -0.32s
+        }
+
+        .loading .loading-dot-2 {
+            -webkit-animation-delay: -0.16s;
+            animation-delay: -0.16s
+        }
     }
 
     .footer {
@@ -241,5 +285,27 @@
                 text-decoration: none;
             }
         }
+    }
+}
+
+@-webkit-keyframes loading {
+    0%, 100%, 80% {
+        -webkit-transform: scale(0)
+    }
+
+    40% {
+        -webkit-transform: scale(1)
+    }
+}
+
+@keyframes loading {
+    0%, 100%, 80% {
+        -webkit-transform: scale(0);
+        transform: scale(0)
+    }
+
+    40% {
+        -webkit-transform: scale(1);
+        transform: scale(1)
     }
 }
