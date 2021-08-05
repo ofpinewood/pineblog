@@ -8,6 +8,10 @@
     <PackageTags>blog git</PackageTags>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
+  </ItemGroup>
+
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.2" />
   </ItemGroup>
