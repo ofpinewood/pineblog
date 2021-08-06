@@ -2,7 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Opw.PineBlog.Git
+namespace Opw.PineBlog.GitDb
 {
     public abstract class GitTestsBase
     {

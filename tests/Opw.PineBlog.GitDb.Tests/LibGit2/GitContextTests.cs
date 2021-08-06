@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace Opw.PineBlog.Git.LibGit2
+namespace Opw.PineBlog.GitDb.LibGit2
 {
     public class GitContextTests : GitTestsBase
     {

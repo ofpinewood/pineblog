@@ -1,4 +1,4 @@
-namespace Opw.PineBlog.Git
+namespace Opw.PineBlog.GitDb
 {
     public class GitSettings
     {

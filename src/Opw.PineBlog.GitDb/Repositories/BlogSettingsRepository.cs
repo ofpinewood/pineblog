@@ -4,17 +4,17 @@ using System.Threading;
 using System.Diagnostics.CodeAnalysis;
 using Opw.PineBlog.Repositories;
 using System;
-using Opw.PineBlog.Git.LibGit2;
+using Opw.PineBlog.GitDb.LibGit2;
 
-namespace Opw.PineBlog.Git.Repositories
+namespace Opw.PineBlog.GitDb.Repositories
 {
     public class BlogSettingsRepository : IBlogSettingsRepository
     {
-        private readonly GitContext _gitContext;
+        private readonly GitDbContext _gitDbContext;
 
-        public BlogSettingsRepository(GitContext gitContext)
+        public BlogSettingsRepository(GitDbContext gitDbContext)
         {
-            _gitContext = gitContext;
+            _gitDbContext = gitDbContext;
         }
 
         public async Task<BlogSettings> SingleOrDefaultAsync(CancellationToken cancellationToken)

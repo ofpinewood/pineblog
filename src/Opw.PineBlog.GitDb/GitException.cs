@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Opw.PineBlog.Git
+namespace Opw.PineBlog.GitDb
 {
     public class GitException : HttpException
     {

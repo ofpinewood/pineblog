@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Opw.PineBlog.Git.LibGit2
+namespace Opw.PineBlog.GitDb.LibGit2
 {
-    public class GitContext : IDisposable
+    public class GitDbContext : IDisposable
     {
         private readonly Repository _repository;
         private readonly UsernamePasswordCredentials _credentials;
@@ -14,7 +14,7 @@ namespace Opw.PineBlog.Git.LibGit2
         private readonly string _signatureEmail;
         private readonly string _repositoryPath;
 
-        private GitContext(Repository repository, UsernamePasswordCredentials credentials, string signatureName, string signatureEmail, string repositoryPath)
+        private GitDbContext(Repository repository, UsernamePasswordCredentials credentials, string signatureName, string signatureEmail, string repositoryPath)
         {
             _repository = repository;
             _credentials = credentials;
@@ -23,7 +23,7 @@ namespace Opw.PineBlog.Git.LibGit2
             _repositoryPath = repositoryPath;
         }
 
-        public static GitContext Create(GitSettings settings)
+        public static GitDbContext Create(GitSettings settings)
         {
             var credentials = new UsernamePasswordCredentials { Username = settings.UserName, Password = settings.Password };
             var path = Path.Combine(settings.LocalRepositoryBasePath, settings.Workdirpath);
@@ -38,15 +38,15 @@ namespace Opw.PineBlog.Git.LibGit2
                 repositoryPath = Repository.Clone(sourceUrl, path, cloneOptions);
                 if (repositoryPath == null)
                 {
-                    throw new NotFoundException<GitContext>($"Could not clone repository \"{sourceUrl}\".");
+                    throw new NotFoundException<GitDbContext>($"Could not clone repository \"{sourceUrl}\".");
                 }
             }
 
             var repository = new Repository(path);
-            return new GitContext(repository, credentials, settings.UserName, settings.UserEmail, repositoryPath);
+            return new GitDbContext(repository, credentials, settings.UserName, settings.UserEmail, repositoryPath);
         }
 
-        public static GitContext CreateFromLocal(GitSettings settings)
+        public static GitDbContext CreateFromLocal(GitSettings settings)
         {
             var credentials = new UsernamePasswordCredentials { Username = settings.UserName, Password = settings.Password };
             var path = Path.Combine(settings.LocalRepositoryBasePath, settings.Workdirpath);
@@ -56,7 +56,7 @@ namespace Opw.PineBlog.Git.LibGit2
                 return null;
 
             var repository = new Repository(path);
-            return new GitContext(repository, credentials, settings.UserName, settings.UserEmail, repositoryPath);
+            return new GitDbContext(repository, credentials, settings.UserName, settings.UserEmail, repositoryPath);
         }
 
         public Result<IDictionary<string, byte[]>> GetFiles(string path)

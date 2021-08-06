@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 
-namespace Opw.PineBlog.Git
+namespace Opw.PineBlog.GitDb
 {
     /// <summary>
     /// Provides extension methods for the application configuration builder interface.

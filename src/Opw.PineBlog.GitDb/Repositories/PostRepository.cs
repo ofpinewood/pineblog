@@ -7,17 +7,17 @@ using System.Linq.Expressions;
 using System;
 using Opw.PineBlog.Repositories;
 using System.Linq;
-using Opw.PineBlog.Git.LibGit2;
+using Opw.PineBlog.GitDb.LibGit2;
 
-namespace Opw.PineBlog.Git.Repositories
+namespace Opw.PineBlog.GitDb.Repositories
 {
     public class PostRepository : IPostRepository
     {
-        private readonly GitContext _gitContext;
+        private readonly GitDbContext _gitDbContext;
 
-        public PostRepository(GitContext gitContext)
+        public PostRepository(GitDbContext gitDbContext)
         {
-            _gitContext = gitContext;
+            _gitDbContext = gitDbContext;
         }
 
         public async Task<Post> SingleOrDefaultAsync(Expression<Func<Post, bool>> predicate, CancellationToken cancellationToken)

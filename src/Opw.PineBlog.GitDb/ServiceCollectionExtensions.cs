@@ -2,7 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 
-namespace Opw.PineBlog.Git
+namespace Opw.PineBlog.GitDb
 {
     /// <summary>
     /// Provides extension methods for the Microsoft.Extensions.DependencyInjection.IServiceCollection interface.
