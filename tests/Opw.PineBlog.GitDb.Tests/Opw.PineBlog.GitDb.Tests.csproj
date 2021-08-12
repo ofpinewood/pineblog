@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Opw.PineBlog.Git\Opw.PineBlog.Git.csproj" />
+    <ProjectReference Include="..\..\src\Opw.PineBlog.GitDb\Opw.PineBlog.GitDb.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -15,12 +15,12 @@ namespace Opw.PineBlog.GitDb
         {
             Configuration = new ConfigurationBuilder()
                .AddJsonFile("appsettings.json")
-               .AddPineBlogGitConfiguration(reloadOnChange: false)
+               .AddPineBlogGitDbConfiguration(reloadOnChange: false)
                .Build();
 
             Services = new ServiceCollection();
             Services.AddPineBlogCore(Configuration);
-            Services.AddPineBlogGit(Configuration);
+            Services.AddPineBlogGitDb(Configuration);
         }
     }
 }

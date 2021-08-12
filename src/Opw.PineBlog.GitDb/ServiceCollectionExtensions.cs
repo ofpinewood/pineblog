@@ -10,20 +10,22 @@ namespace Opw.PineBlog.GitDb
     public static class ServiceCollectionExtensions
     {
         /// <summary>
-        /// Adds PineBlog Git services to the specified services collection.
+        /// Adds PineBlog GitDb services to the specified services collection.
         /// </summary>
         /// <param name="services">The services available in the application.</param>
         /// <param name="configuration">The application configuration properties.</param>
         /// <returns>The original services object.</returns>
-        public static IServiceCollection AddPineBlogGit(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddPineBlogGitDb(this IServiceCollection services, IConfiguration configuration)
         {
             if (((IConfigurationRoot)configuration).Providers.SingleOrDefault(p => p.GetType() == typeof(BlogSettingsConfigurationProvider)) == null)
             {
-                throw new ConfigurationException("The PineBlog IConfigurationProvider(s) are not configured, please add \"AddPineBlogEntityFrameworkCoreConfiguration\" to the \"ConfigureAppConfiguration\" on the \"IWebHostBuilder\".")
+                throw new ConfigurationException("The PineBlog IConfigurationProvider(s) are not configured, please add \"AddPineBlogGitDbConfiguration\" to the \"ConfigureAppConfiguration\" on the \"IWebHostBuilder\".")
                 {
                     HelpLink = "https://github.com/ofpinewood/pineblog/blob/main/docs/getting-started.md#blog-settings-configurationprovider"
                 };
             }
+
+            services.Configure<PineBlogGitDbOptions>(configuration.GetSection(nameof(PineBlogGitDbOptions)));
 
             services.AddTransient<IBlogUnitOfWork, BlogUnitOfWork>();
 

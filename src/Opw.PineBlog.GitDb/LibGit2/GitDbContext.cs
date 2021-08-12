@@ -1,73 +1,112 @@
 using LibGit2Sharp;
+using LibGit2Sharp.Handlers;
 using Opw.HttpExceptions;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Opw.PineBlog.GitDb.LibGit2
 {
     public class GitDbContext : IDisposable
     {
         private readonly Repository _repository;
-        private readonly UsernamePasswordCredentials _credentials;
-        private readonly string _signatureName;
-        private readonly string _signatureEmail;
+        private readonly Credentials _credentials;
         private readonly string _repositoryPath;
 
-        private GitDbContext(Repository repository, UsernamePasswordCredentials credentials, string signatureName, string signatureEmail, string repositoryPath)
+        // if there are merge conflicts we always take the remote version
+        private readonly MergeOptions _mergeOptionsTheirs = new MergeOptions()
+        {
+            FileConflictStrategy = CheckoutFileConflictStrategy.Theirs,
+            MergeFileFavor = MergeFileFavor.Theirs,
+            IgnoreWhitespaceChange = true,
+            //CommitOnSuccess = true,
+            //FailOnConflict = true
+        };
+
+        private GitDbContext(Repository repository, Credentials credentials, string repositoryPath)
         {
             _repository = repository;
             _credentials = credentials;
-            _signatureName = signatureName;
-            _signatureEmail = signatureEmail;
             _repositoryPath = repositoryPath;
         }
 
-        public static GitDbContext Create(GitSettings settings)
+        public static GitDbContext Create(PineBlogGitDbOptions options)
         {
-            var credentials = new UsernamePasswordCredentials { Username = settings.UserName, Password = settings.Password };
-            var path = Path.Combine(settings.LocalRepositoryBasePath, settings.Workdirpath);
+            var credentials = GetCredentials(options);
 
-            string repositoryPath = Repository.Discover(path);
+            string repositoryPath = Repository.Discover(options.LocalRepositoryBasePath);
             if (repositoryPath == null)
             {
                 var cloneOptions = new CloneOptions();
                 cloneOptions.CredentialsProvider = (_url, _user, _cred) => credentials;
 
-                var sourceUrl = new Uri(settings.SourceUrl).AbsoluteUri;
-                repositoryPath = Repository.Clone(sourceUrl, path, cloneOptions);
+                var sourceUrl = new Uri(options.RepositoryUrl).AbsoluteUri;
+                repositoryPath = Repository.Clone(sourceUrl, options.LocalRepositoryBasePath, cloneOptions);
                 if (repositoryPath == null)
                 {
                     throw new NotFoundException<GitDbContext>($"Could not clone repository \"{sourceUrl}\".");
                 }
             }
 
-            var repository = new Repository(path);
-            return new GitDbContext(repository, credentials, settings.UserName, settings.UserEmail, repositoryPath);
+            var repository = new Repository(options.LocalRepositoryBasePath);
+            return new GitDbContext(repository, credentials, repositoryPath);
         }
 
-        public static GitDbContext CreateFromLocal(GitSettings settings)
+        public static GitDbContext CreateFromLocal(PineBlogGitDbOptions options)
         {
-            var credentials = new UsernamePasswordCredentials { Username = settings.UserName, Password = settings.Password };
-            var path = Path.Combine(settings.LocalRepositoryBasePath, settings.Workdirpath);
+            var credentials = GetCredentials(options);
 
-            string repositoryPath = Repository.Discover(path);
+            string repositoryPath = Repository.Discover(options.LocalRepositoryBasePath);
             if (repositoryPath == null)
                 return null;
 
-            var repository = new Repository(path);
-            return new GitDbContext(repository, credentials, settings.UserName, settings.UserEmail, repositoryPath);
+            var repository = new Repository(options.LocalRepositoryBasePath);
+            return new GitDbContext(repository, credentials, repositoryPath);
+        }
+
+        public Result<Branch> CheckoutBranch(string branchName)
+        {
+            Branch branch = null;
+            // if the branch is already checked out return it
+            if (_repository.Head.FriendlyName == branchName)
+            {
+                branch = _repository.Head;
+            }
+            if (branch != null)
+                return Result<Branch>.Success(branch);
+
+            // check if we have a local version to checkout
+            branch = _repository.Branches.FirstOrDefault(b => b.FriendlyName == branchName);
+            if (branch != null)
+            {
+                Commands.Checkout(_repository, branch);
+                return Result<Branch>.Success(branch);
+            }
+
+            // get the branch from the remote            
+            // fetch the latest info from the remotes
+            Fetch();
+
+            // retry to get the remote branch
+            branchName = $"origin/{branchName}";
+            branch = _repository.Branches.FirstOrDefault(b => b.FriendlyName == branchName);
+            if (branch == null)
+                return Result<Branch>.Fail(new NotFoundException<Branch>(branchName));
+
+            // pull the remote branch
+            branch = Pull(branch, _mergeOptionsTheirs);
+            return Result<Branch>.Success(branch);
         }
 
         public Result<IDictionary<string, byte[]>> GetFiles(string path)
         {
-            var fileBytes = new Dictionary<string, byte[]>();
-
             path += "";
             var fullPath = Path.Combine(_repository.Info.WorkingDirectory, path);
             if (!Directory.Exists(fullPath))
                 return Result<IDictionary<string, byte[]>>.Fail(new GitException($"Path not found \"{path}\"."));
 
+            var fileBytes = new Dictionary<string, byte[]>();
             var files = SearchDirectory(fullPath);
             foreach (var file in files)
             {
@@ -104,6 +143,12 @@ namespace Opw.PineBlog.GitDb.LibGit2
             return Result<IDictionary<string, byte[]>>.Success(fileBytes);
         }
 
+        static Credentials GetCredentials(PineBlogGitDbOptions options)
+        {
+            //return new UsernamePasswordCredentials { Username = settings.UserName, Password = settings.Password };
+            return new DefaultCredentials();
+        }
+
         IEnumerable<string> SearchDirectory(string path)
         {
             var files = new List<string>();
@@ -116,6 +161,47 @@ namespace Opw.PineBlog.GitDb.LibGit2
 
             files.AddRange(Directory.GetFiles(path));
             return files;
+        }
+
+        void Fetch()
+        {
+            string logMessage = null;
+            var fetchOptions = new FetchOptions { CredentialsProvider = new CredentialsHandler((url, usernameFromUrl, types) => _credentials) };
+
+            var remotes = _repository.Network.Remotes;
+            foreach (var remote in remotes)
+            {
+                var refSpecs = remote.FetchRefSpecs.Select(x => x.Specification);
+                Commands.Fetch(_repository, remote.Name, refSpecs, fetchOptions, logMessage);
+            }
+        }
+
+        Branch Pull(Branch branch, MergeOptions mergeOptions)
+        {
+            var signature = new Signature(name: "PineBlog GitDb", email: "pineblog-gitdb@ofpinewood.com", new DateTimeOffset(DateTime.UtcNow));
+            var fetchOptions = new FetchOptions { CredentialsProvider = new CredentialsHandler((url, usernameFromUrl, types) => _credentials) };
+            var pullOptions = new PullOptions();
+            pullOptions.FetchOptions = fetchOptions;
+            pullOptions.MergeOptions = mergeOptions;
+
+            if (branch.IsRemote)
+            {
+                var localBranch = _repository.Branches.SingleOrDefault(b => !b.IsRemote && b.CanonicalName == branch.CanonicalName);
+                if (localBranch == null)
+                {
+                    var branchName = branch.CanonicalName.Substring(branch.CanonicalName.IndexOf("origin/") + "origin/".Length);
+                    localBranch = _repository.CreateBranch(branchName, branch.Tip);
+                    _repository.Branches.Update(localBranch, b => b.TrackedBranch = branch.CanonicalName);
+                    localBranch = _repository.Branches[branchName];
+                }
+                branch = localBranch;
+            }
+
+            // set active branch
+            Commands.Checkout(_repository, branch);
+            Commands.Pull(_repository, signature, pullOptions);
+
+            return branch;
         }
 
         public void Dispose()
