@@ -1,29 +1,21 @@
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace Opw.PineBlog.GitDb.LibGit2
 {
-    public class GitDbContextTests : GitTestsBase
+    public class GitDbContextTests : GitDbTestsBase
     {
-        private readonly GitDbContext _gitDbContext;
-
-        public GitDbContextTests()
-        {
-            var options = ServiceProvider.GetService<IOptions<PineBlogGitDbOptions>>();
-            _gitDbContext = GitDbContext.Create(options.Value);
-        }
-
         [Fact]
-        public void GetFiles_PathRoot_3Files()
+        public async Task GetFilesAsync_PathRoot_3Files()
         {
-            var result = _gitDbContext.GetFiles(string.Empty);
+            var gitDbContext = await GetGitDbContextAsync();
 
-            result.IsSuccess.Should().BeTrue();
+            var files = await gitDbContext.GetFilesAsync(string.Empty, CancellationToken.None);
 
-            var files = result.Value;
             files.Should().HaveCount(3);
 
             files.Should().ContainKey(".gitignore");
@@ -34,16 +26,13 @@ namespace Opw.PineBlog.GitDb.LibGit2
         }
 
         [Fact]
-        public void GetFiles_PathRootBranchTest_4Files()
+        public async Task GetFilesAsync_PathRootBranchTest_4Files()
         {
-            var checkoutBranchResult = _gitDbContext.CheckoutBranch("test");
-            checkoutBranchResult.IsSuccess.Should().BeTrue();
+            var gitDbContext = await GetGitDbContextAsync();
+            await gitDbContext.CheckoutBranchAsync("test", CancellationToken.None);
 
-            var result = _gitDbContext.GetFiles(string.Empty);
+            var files = await gitDbContext.GetFilesAsync(string.Empty, CancellationToken.None);
 
-            result.IsSuccess.Should().BeTrue();
-
-            var files = result.Value;
             files.Should().HaveCount(4);
 
             files.Should().ContainKey(".gitignore");
@@ -55,19 +44,28 @@ namespace Opw.PineBlog.GitDb.LibGit2
         }
 
         [Fact]
-        public void GetFiles_2SpecificFiles_2Files()
+        public async Task GetFilesAsync_2SpecificFiles_2Files()
         {
-            var result = _gitDbContext.GetFiles(new string[] { "LICENSE", "README.md" });
+            var gitDbContext = await GetGitDbContextAsync();
 
-            result.IsSuccess.Should().BeTrue();
+            var files = await gitDbContext.GetFilesAsync(new string[] { "LICENSE", "README.md" }, CancellationToken.None);
 
-            var files = result.Value;
             files.Should().HaveCount(2);
 
             files.Should().ContainKey("LICENSE");
             files.Should().ContainKey("README.md");
 
             files["LICENSE"].Should().HaveCount(1090);
+        }
+
+        private async Task<GitDbContext> GetGitDbContextAsync()
+        {
+            var options = ServiceProvider.GetService<IOptions<PineBlogGitDbOptions>>();
+            var gitDbContext = await GitDbContext.CreateAsync(options.Value, CancellationToken.None);
+
+            await gitDbContext.CheckoutBranchAsync("main", CancellationToken.None);
+
+            return gitDbContext;
         }
     }
 }

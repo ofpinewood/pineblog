@@ -4,17 +4,17 @@ using System.Threading;
 using System;
 using Opw.PineBlog.Repositories;
 using System.Linq.Expressions;
-using Opw.PineBlog.GitDb.LibGit2;
+using Microsoft.Extensions.Options;
 
 namespace Opw.PineBlog.GitDb.Repositories
 {
     public class AuthorRepository : IAuthorRepository
     {
-        private readonly GitDbContext _gitDbContext;
+        private readonly IOptionsSnapshot<PineBlogGitDbOptions> _options;
 
-        public AuthorRepository(GitDbContext gitDbContext)
+        public AuthorRepository(IOptionsSnapshot<PineBlogGitDbOptions> options)
         {
-            _gitDbContext = gitDbContext;
+            _options = options;
         }
 
         public async Task<Author> SingleOrDefaultAsync(Expression<Func<Author, bool>> predicate, CancellationToken cancellationToken)

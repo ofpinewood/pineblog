@@ -6,18 +6,17 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System;
 using Opw.PineBlog.Repositories;
-using System.Linq;
-using Opw.PineBlog.GitDb.LibGit2;
+using Microsoft.Extensions.Options;
 
 namespace Opw.PineBlog.GitDb.Repositories
 {
     public class PostRepository : IPostRepository
     {
-        private readonly GitDbContext _gitDbContext;
+        private readonly IOptionsSnapshot<PineBlogGitDbOptions> _options;
 
-        public PostRepository(GitDbContext gitDbContext)
+        public PostRepository(IOptionsSnapshot<PineBlogGitDbOptions> options)
         {
-            _gitDbContext = gitDbContext;
+            _options = options;
         }
 
         public async Task<Post> SingleOrDefaultAsync(Expression<Func<Post, bool>> predicate, CancellationToken cancellationToken)

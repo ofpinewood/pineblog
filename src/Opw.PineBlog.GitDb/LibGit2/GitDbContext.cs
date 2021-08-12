@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Opw.PineBlog.GitDb.LibGit2
 {
@@ -31,7 +33,14 @@ namespace Opw.PineBlog.GitDb.LibGit2
             _repositoryPath = repositoryPath;
         }
 
-        public static GitDbContext Create(PineBlogGitDbOptions options)
+        public static async Task<GitDbContext> CreateAsync(PineBlogGitDbOptions options, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            return await Task.Run(() => Create(options));
+        }
+
+        protected static GitDbContext Create(PineBlogGitDbOptions options)
         {
             var credentials = GetCredentials(options);
 
@@ -53,19 +62,14 @@ namespace Opw.PineBlog.GitDb.LibGit2
             return new GitDbContext(repository, credentials, repositoryPath);
         }
 
-        public static GitDbContext CreateFromLocal(PineBlogGitDbOptions options)
+        public async Task<Branch> CheckoutBranchAsync(string branchName, CancellationToken cancellationToken)
         {
-            var credentials = GetCredentials(options);
+            cancellationToken.ThrowIfCancellationRequested();
 
-            string repositoryPath = Repository.Discover(options.LocalRepositoryBasePath);
-            if (repositoryPath == null)
-                return null;
-
-            var repository = new Repository(options.LocalRepositoryBasePath);
-            return new GitDbContext(repository, credentials, repositoryPath);
+            return await Task.Run(() => CheckoutBranch(branchName));
         }
 
-        public Result<Branch> CheckoutBranch(string branchName)
+        protected Branch CheckoutBranch(string branchName)
         {
             Branch branch = null;
             // if the branch is already checked out return it
@@ -74,14 +78,14 @@ namespace Opw.PineBlog.GitDb.LibGit2
                 branch = _repository.Head;
             }
             if (branch != null)
-                return Result<Branch>.Success(branch);
+                return branch;
 
             // check if we have a local version to checkout
             branch = _repository.Branches.FirstOrDefault(b => b.FriendlyName == branchName);
             if (branch != null)
             {
                 Commands.Checkout(_repository, branch);
-                return Result<Branch>.Success(branch);
+                return branch;
             }
 
             // get the branch from the remote            
@@ -92,19 +96,26 @@ namespace Opw.PineBlog.GitDb.LibGit2
             branchName = $"origin/{branchName}";
             branch = _repository.Branches.FirstOrDefault(b => b.FriendlyName == branchName);
             if (branch == null)
-                return Result<Branch>.Fail(new NotFoundException<Branch>(branchName));
+                throw new NotFoundException<Branch>(branchName);
 
             // pull the remote branch
             branch = Pull(branch, _mergeOptionsTheirs);
-            return Result<Branch>.Success(branch);
+            return branch;
         }
 
-        public Result<IDictionary<string, byte[]>> GetFiles(string path)
+        public async Task<IDictionary<string, byte[]>> GetFilesAsync(string path, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            return await Task.Run(() => GetFiles(path));
+        }
+
+        protected IDictionary<string, byte[]> GetFiles(string path)
         {
             path += "";
             var fullPath = Path.Combine(_repository.Info.WorkingDirectory, path);
             if (!Directory.Exists(fullPath))
-                return Result<IDictionary<string, byte[]>>.Fail(new GitException($"Path not found \"{path}\"."));
+                throw new GitDbException($"Path not found \"{path}\".");
 
             var fileBytes = new Dictionary<string, byte[]>();
             var files = SearchDirectory(fullPath);
@@ -117,14 +128,21 @@ namespace Opw.PineBlog.GitDb.LibGit2
                 }
                 catch (Exception ex)
                 {
-                    return Result<IDictionary<string, byte[]>>.Fail(new GitException($"Could not read file \"{file}\".", ex));
+                    throw new GitDbException($"Could not read file \"{file}\".", ex);
                 }
             }
 
-            return Result<IDictionary<string, byte[]>>.Success(fileBytes);
+            return fileBytes;
         }
 
-        public Result<IDictionary<string, byte[]>> GetFiles(IEnumerable<string> files)
+        public async Task<IDictionary<string, byte[]>> GetFilesAsync(IEnumerable<string> files, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            return await Task.Run(() => GetFiles(files));
+        }
+
+        protected IDictionary<string, byte[]> GetFiles(IEnumerable<string> files)
         {
             var fileBytes = new Dictionary<string, byte[]>();
             foreach (var file in files)
@@ -136,20 +154,20 @@ namespace Opw.PineBlog.GitDb.LibGit2
                 }
                 catch (Exception ex)
                 {
-                    return Result<IDictionary<string, byte[]>>.Fail(new GitException($"Could not read file \"{file}\".", ex));
+                    throw new GitDbException($"Could not read file \"{file}\".", ex);
                 }
             }
 
-            return Result<IDictionary<string, byte[]>>.Success(fileBytes);
+            return fileBytes;
         }
 
-        static Credentials GetCredentials(PineBlogGitDbOptions options)
+        protected static Credentials GetCredentials(PineBlogGitDbOptions options)
         {
             //return new UsernamePasswordCredentials { Username = settings.UserName, Password = settings.Password };
             return new DefaultCredentials();
         }
 
-        IEnumerable<string> SearchDirectory(string path)
+        protected IEnumerable<string> SearchDirectory(string path)
         {
             var files = new List<string>();
             foreach (string directory in Directory.GetDirectories(path))
@@ -163,7 +181,7 @@ namespace Opw.PineBlog.GitDb.LibGit2
             return files;
         }
 
-        void Fetch()
+        protected void Fetch()
         {
             string logMessage = null;
             var fetchOptions = new FetchOptions { CredentialsProvider = new CredentialsHandler((url, usernameFromUrl, types) => _credentials) };
@@ -176,7 +194,7 @@ namespace Opw.PineBlog.GitDb.LibGit2
             }
         }
 
-        Branch Pull(Branch branch, MergeOptions mergeOptions)
+        protected Branch Pull(Branch branch, MergeOptions mergeOptions)
         {
             var signature = new Signature(name: "PineBlog GitDb", email: "pineblog-gitdb@ofpinewood.com", new DateTimeOffset(DateTime.UtcNow));
             var fetchOptions = new FetchOptions { CredentialsProvider = new CredentialsHandler((url, usernameFromUrl, types) => _credentials) };
