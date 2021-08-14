@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Opw.PineBlog.GitDb.LibGit2
 {
+    // TODO: make better async
     public class GitDbContext : IDisposable
     {
         private readonly Repository _repository;

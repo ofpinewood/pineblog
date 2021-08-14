@@ -1,5 +1,7 @@
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Moq;
 using Opw.PineBlog.Entities;
 using System;
 using System.Threading;
@@ -10,44 +12,48 @@ namespace Opw.PineBlog.GitDb.Repositories
 {
     public class AuthorRepositoryTests : GitDbTestsBase
     {
-        //private Guid _authorId;
-        //private readonly AuthorRepository _authorRepository;
+        private readonly AuthorRepository _authorRepository;
+        private readonly IBlogUnitOfWork _uow;
 
-        //public AuthorRepositoryTests()
-        //{
-        //    SeedDatabase();
+        public AuthorRepositoryTests()
+        {
+            _uow = ServiceProvider.GetRequiredService<IBlogUnitOfWork>();
+            _authorRepository = (AuthorRepository)_uow.Authors;
+        }
 
-        //    var uow = ServiceProvider.GetRequiredService<IBlogUnitOfWork>();
-        //    _authorRepository = (AuthorRepository)uow.Authors;
-        //}
+        [Fact]
+        public async Task SingleOrDefaultAsync_Should_ReturnAuthor_ForExistingUserName()
+        {
+            var result = await _authorRepository.SingleOrDefaultAsync(a => a.UserName == "john.smith@example.com", CancellationToken.None);
 
-        //[Fact]
-        //public async Task SingleOrDefaultAsync_Should_ReturnAuthor()
-        //{
-        //    var result = await _authorRepository.SingleOrDefaultAsync(a => a.Id == _authorId, CancellationToken.None);
+            result.Should().NotBeNull();
+            result.UserName.Should().Be("john.smith@example.com");
+            result.Email.Should().Be("john.smith@example.com");
+            result.DisplayName.Should().Be("John Smith");
+            result.Bio.Should().Be("The bio of John Smith");
+            result.Avatar.Should().Be("images/avatar-male.png");
+        }
 
-        //    result.Should().NotBeNull();
-        //    result.UserName.Should().Be("user@example.com");
-        //    result.DisplayName.Should().Be("Author 1");
-        //}
+        [Fact]
+        public async Task SingleOrDefaultAsync_Should_ReturnNull_ForNonExistingUserName()
+        {
+            var result = await _authorRepository.SingleOrDefaultAsync(a => a.UserName == "invalid@example.com", CancellationToken.None);
 
-        //[Fact]
-        //public async Task SingleOrDefaultAsync_Should_ReturnNull()
-        //{
-        //    var result = await _authorRepository.SingleOrDefaultAsync(a => a.Id == Guid.NewGuid(), CancellationToken.None);
+            result.Should().BeNull();
+        }
 
-        //    result.Should().BeNull();
-        //}
+        [Fact]
+        public async Task SingleOrDefaultAsync_Should_ReturnNull_WhenNoAuthorssFile()
+        {
+            var options = new PineBlogGitDbOptions() { Branch = "test" };
+            var optionsMock = new Mock<IOptionsSnapshot<PineBlogGitDbOptions>>();
+            optionsMock.Setup(m => m.Value).Returns(options);
 
-        //private void SeedDatabase()
-        //{
-        //    var context = ServiceProvider.GetRequiredService<BlogEntityDbContext>();
+            var authorRepository = new AuthorRepository(optionsMock.Object);
 
-        //    var author = new Author { UserName = "user@example.com", DisplayName = "Author 1" };
-        //    context.Authors.Add(author);
-        //    context.SaveChanges();
+            var result = await authorRepository.SingleOrDefaultAsync(a => a.UserName == "john.smith@example.com", CancellationToken.None);
 
-        //    _authorId = author.Id;
-        //}
+            result.Should().BeNull();
+        }
     }
 }
