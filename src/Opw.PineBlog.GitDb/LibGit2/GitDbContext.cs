@@ -27,6 +27,12 @@ namespace Opw.PineBlog.GitDb.LibGit2
             //FailOnConflict = true
         };
 
+        private readonly CheckoutOptions _checkoutOptionsForce = new CheckoutOptions()
+        {
+            CheckoutModifiers = CheckoutModifiers.Force,
+            CheckoutNotifyFlags = CheckoutNotifyFlags.None,
+        };
+
         private GitDbContext(Repository repository, Credentials credentials, string repositoryPath)
         {
             _repository = repository;
@@ -85,7 +91,7 @@ namespace Opw.PineBlog.GitDb.LibGit2
             branch = _repository.Branches.FirstOrDefault(b => b.FriendlyName == branchName);
             if (branch != null)
             {
-                Commands.Checkout(_repository, branch);
+                Commands.Checkout(_repository, branch, _checkoutOptionsForce);
                 return branch;
             }
 

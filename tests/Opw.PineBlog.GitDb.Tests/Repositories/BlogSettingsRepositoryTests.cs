@@ -34,7 +34,7 @@ namespace Opw.PineBlog.GitDb.Repositories
             result.CoverLink.Should().Be("http://pixeljoint.com/pixelart/94359.htm");
         }
 
-        [Fact]
+        [Fact(Skip = "Checking out another branch while running the unit test will randomly fail other tests.")]
         public async Task SingleOrDefaultAsync_Should_ReturnNull_WhenNoBlogSettingsFile()
         {
             var options = new PineBlogGitDbOptions() { Branch = "test" };

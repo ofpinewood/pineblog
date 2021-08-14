@@ -7,70 +7,78 @@ using System.Linq.Expressions;
 using System;
 using Opw.PineBlog.Repositories;
 using Microsoft.Extensions.Options;
+using System.Text;
+using System.Linq;
+using System.Text.Json;
+using Opw.PineBlog.GitDb.Entities;
 
 namespace Opw.PineBlog.GitDb.Repositories
 {
-    public class PostRepository : IPostRepository
+    public class PostRepository : RepositoryBase, IPostRepository
     {
-        private readonly IOptionsSnapshot<PineBlogGitDbOptions> _options;
+        private readonly AuthorRepository _authorRepository;
 
         public PostRepository(IOptionsSnapshot<PineBlogGitDbOptions> options)
+            : base(options)
         {
-            _options = options;
+            _authorRepository = new AuthorRepository(options);
         }
 
         public async Task<Post> SingleOrDefaultAsync(Expression<Func<Post, bool>> predicate, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
-            //return await _dbContext.Posts
-                //.Include(p => p.Author)
-                //.SingleOrDefaultAsync(predicate, cancellationToken);
+            var posts = await GetAllAsync(cancellationToken);
+
+            return posts.SingleOrDefault(predicate.Compile());
         }
 
         public async Task<Post> GetNextAsync(DateTime published, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
-            //return await _dbContext.Posts
-                //.Where(p => p.Published > published)
-                //.OrderBy(p => p.Published)
-                //.Take(1)
-                //.SingleOrDefaultAsync(cancellationToken);
+            var posts = await GetAllAsync(cancellationToken);
+
+            return posts
+              .Where(p => p.Published > published)
+              .OrderBy(p => p.Published)
+              .Take(1)
+              .SingleOrDefault();
         }
 
         public async Task<Post> GetPreviousAsync(DateTime published, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
-            //return await _dbContext.Posts
-                //.Where(p => p.Published < published)
-                //.OrderByDescending(p => p.Published)
-                //.Take(1)
-                //.SingleOrDefaultAsync(cancellationToken);
+            var posts = await GetAllAsync(cancellationToken);
+
+            return posts
+              .Where(p => p.Published < published)
+              .OrderByDescending(p => p.Published)
+              .Take(1)
+              .SingleOrDefault();
         }
 
         public async Task<int> CountAsync(IEnumerable<Expression<Func<Post, bool>>> predicates, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
-            //var query = _dbContext.Posts.Where(_ => true);
-            //foreach (var predicate in predicates)
-            //    query = query.Where(predicate);
+            var posts = await GetAllAsync(cancellationToken);
 
-            //return await query.CountAsync(cancellationToken);
+            var query = posts.Where(_ => true);
+            foreach (var predicate in predicates)
+                query = query.Where(predicate.Compile());
+
+            return query.Count();
         }
 
         public async Task<IEnumerable<Post>> GetAsync(IEnumerable<Expression<Func<Post, bool>>> predicates, int skip, int take, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
-            //var query = _dbContext.Posts.Where(_ => true);
+            var posts = await GetAllAsync(cancellationToken);
 
-            //foreach (var predicate in predicates)
-            //    query = query.Where(predicate);
+            var query = posts.Where(_ => true);
 
-            //query = query.Include(p => p.Author)
-            //    .OrderByDescending(p => p.Published)
-            //    .Skip(skip)
-            //    .Take(take);
+            foreach (var predicate in predicates)
+                query = query.Where(predicate.Compile());
 
-            //return await query.ToListAsync(cancellationToken);
+            query = query
+                .OrderByDescending(p => p.Published)
+                .Skip(skip)
+                .Take(take);
+
+            return query.ToList();
         }
 
         public Post Add([NotNull] Post post)
@@ -86,6 +94,42 @@ namespace Opw.PineBlog.GitDb.Repositories
         public Post Remove([NotNull] Post post)
         {
             throw new NotImplementedException();
+        }
+
+        // TODO: add caching for get all posts
+        protected async Task<IEnumerable<Post>> GetAllAsync(CancellationToken cancellationToken)
+        {
+            var gitDbContext = await GetGitDbContextAsync(cancellationToken);
+
+            IDictionary<string, byte[]> files;
+            var posts = new List<Post>();
+
+            try
+            {
+                files = await gitDbContext.GetFilesAsync(BuildPath(Options.Value.RootPath, "posts"), cancellationToken);
+            }
+            catch
+            {
+                return posts;
+            }
+
+            var postFiles = files.Values.Select(b => Encoding.UTF8.GetString(b));
+            foreach (var postFile in postFiles)
+            {
+                var json = postFile.Substring(0, postFile.IndexOf("<<< END METADATA"));
+                var post = JsonSerializer.Deserialize<GitDbPost>(json, new JsonSerializerOptions { AllowTrailingCommas = true });
+
+                var content = postFile.Substring(postFile.IndexOf("<<< END METADATA") + "<<< END METADATA".Length);
+                post.Content = content.Trim();
+
+                // TODO: add caching for authors
+                var author = await _authorRepository.SingleOrDefaultAsync(a => a.UserName == post.AuthorId, cancellationToken);
+                post.Author = author;
+
+                posts.Add(post);
+            }
+
+            return posts;
         }
     }
 }

@@ -43,7 +43,7 @@ namespace Opw.PineBlog.GitDb.Repositories
         }
 
         [Fact]
-        public async Task SingleOrDefaultAsync_Should_ReturnNull_WhenNoAuthorssFile()
+        public async Task SingleOrDefaultAsync_Should_ReturnNull_WhenNoAuthorsFile()
         {
             var options = new PineBlogGitDbOptions() { Branch = "test" };
             var optionsMock = new Mock<IOptionsSnapshot<PineBlogGitDbOptions>>();
