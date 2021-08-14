@@ -167,14 +167,18 @@ namespace Opw.PineBlog.GitDb.LibGit2
             return new DefaultCredentials();
         }
 
-        protected IEnumerable<string> SearchDirectory(string path)
+        protected IEnumerable<string> SearchDirectory(string path, bool recursive = false)
         {
             var files = new List<string>();
-            foreach (string directory in Directory.GetDirectories(path))
+
+            if (recursive)
             {
-                if (directory.EndsWith(".git"))
-                    continue;
-                files.AddRange(SearchDirectory(directory));
+                foreach (string directory in Directory.GetDirectories(path))
+                {
+                    if (directory.EndsWith(".git"))
+                        continue;
+                    files.AddRange(SearchDirectory(directory));
+                }
             }
 
             files.AddRange(Directory.GetFiles(path));

@@ -1,5 +1,7 @@
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Moq;
 using Opw.PineBlog.Entities;
 using System;
 using System.Threading;
@@ -32,13 +34,19 @@ namespace Opw.PineBlog.GitDb.Repositories
             result.CoverLink.Should().Be("http://pixeljoint.com/pixelart/94359.htm");
         }
 
-        //[Fact]
-        //public async Task SingleOrDefaultAsync_Should_ReturnNull()
-        //{
-        //    var result = await _blogSettingsRepository.SingleOrDefaultAsync(CancellationToken.None);
+        [Fact]
+        public async Task SingleOrDefaultAsync_Should_ReturnNull_WhenNoBlogSettingsFile()
+        {
+            var options = new PineBlogGitDbOptions() { Branch = "test" };
+            var optionsMock = new Mock<IOptionsSnapshot<PineBlogGitDbOptions>>();
+            optionsMock.Setup(m => m.Value).Returns(options);
 
-        //    result.Should().BeNull();
-        //}
+            var blogSettingsRepository = new BlogSettingsRepository(optionsMock.Object);
+
+            var result = await blogSettingsRepository.SingleOrDefaultAsync(CancellationToken.None);
+
+            result.Should().BeNull();
+        }
 
         [Fact]
         public void Add_Should_ThrowNotImplementedException()
