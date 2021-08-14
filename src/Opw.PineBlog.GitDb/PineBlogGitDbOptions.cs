@@ -30,6 +30,10 @@ namespace Opw.PineBlog.GitDb
         //public string Password { get; set; }
 
         public string LocalRepositoryBasePath { get; set; } = "pineblog-gitdb";
-        
+
+        /// <summary>
+        /// The root path for the PineBlog data in the repository.
+        /// </summary>
+        public string RootPath { get; set; } = "pineblog";
     }
 }

@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Options;
 using Opw.PineBlog.GitDb.LibGit2;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,6 +23,14 @@ namespace Opw.PineBlog.GitDb.Repositories
             var gitDbContext = await GitDbContext.CreateAsync(Options.Value, cancellationToken);
             await gitDbContext.CheckoutBranchAsync(Options.Value.Branch, cancellationToken);
             return gitDbContext;
+        }
+
+        protected string BuildPath(params string[] parts)
+        {
+            var pathParts = parts
+                .Where(p => !string.IsNullOrWhiteSpace(p))
+                .Select(p => p.Trim('/').Trim('\\'));
+            return string.Join('/', pathParts);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Opw.PineBlog.GitDb.Repositories
 
             try
             {
-                files = await gitDbContext.GetFilesAsync(new string[] { "pineblog/BlogSettings.json" }, cancellationToken);
+                files = await gitDbContext.GetFilesAsync(new string[] { BuildPath(Options.Value.RootPath, "BlogSettings.json") }, cancellationToken);
             }
             catch
             {
@@ -32,8 +32,7 @@ namespace Opw.PineBlog.GitDb.Repositories
             }
 
             var json = Encoding.UTF8.GetString(files.Values.Single());
-            var blogSettings = JsonSerializer.Deserialize<BlogSettings>(json, new JsonSerializerOptions { AllowTrailingCommas = true });
-            
+            var blogSettings = JsonSerializer.Deserialize<BlogSettings>(json, new JsonSerializerOptions { AllowTrailingCommas = true });            
             return blogSettings;
         }
 
