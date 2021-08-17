@@ -17,8 +17,6 @@ namespace Opw.PineBlog.GitDb.Repositories
         private readonly IBlogUnitOfWork _uow;
 
         private readonly DateTime _firstPostPublishedDate = DateTime.Parse("2021-08-12T01:00:14+00:00");
-        private readonly string _firstPostTitle = "PineBlog an ASP.NET Core blogging engine";
-        private readonly string _secondPostTitle = "Markdown examples";
 
         public PostRepositoryTests()
         {
@@ -29,13 +27,13 @@ namespace Opw.PineBlog.GitDb.Repositories
         [Fact]
         public async Task SingleOrDefaultAsync_Should_ReturnPost()
         {
-            var result = await _postRepository.SingleOrDefaultAsync(p => p.Title.Equals(_firstPostTitle), CancellationToken.None);
+            var result = await _postRepository.SingleOrDefaultAsync(p => p.Title.Equals("title aaa title0"), CancellationToken.None);
 
             result.Should().NotBeNull();
-            result.Title.Should().Be(_firstPostTitle);
-            result.Slug.Should().Be("pineblog-an-aspnet-core-blogging-engine");
-            result.Description.Should().Be("PineBlog is a light-weight open source blogging engine written in ASP.NET Core MVC Razor Pages, using Entity Framework Core.");
-            result.Categories.Should().Be("pineblog,aspnetcore,blog,razor pages,entity framework,github,demo");
+            result.Title.Should().Be("title aaa title0");
+            result.Slug.Should().Be("title-aaa-0");
+            result.Description.Should().Be("description aaa description0");
+            result.Categories.Should().Be("categories,cata");
             result.Published.Should().Be(_firstPostPublishedDate);
 
             result.Author.Should().NotBeNull();
@@ -53,43 +51,43 @@ namespace Opw.PineBlog.GitDb.Repositories
         [Fact]
         public async Task GetNextAsync_Should_ReturnNextPost()
         {
-            var result = await _postRepository.GetNextAsync(_firstPostPublishedDate, CancellationToken.None);
+            var result = await _postRepository.GetNextAsync(_firstPostPublishedDate.AddDays(-1), CancellationToken.None);
 
             result.Should().NotBeNull();
-            result.Title.Should().Be(_secondPostTitle);
+            result.Title.Should().Be("title aaa title0");
             result.Author.Should().BeNull();
         }
 
         [Fact]
         public async Task GetPreviousAsync_Should_ReturnPreviousPost()
         {
-            var result = await _postRepository.GetPreviousAsync(_firstPostPublishedDate.AddDays(1), CancellationToken.None);
+            var result = await _postRepository.GetPreviousAsync(_firstPostPublishedDate, CancellationToken.None);
 
             result.Should().NotBeNull();
-            result.Title.Should().Be(_firstPostTitle);
+            result.Title.Should().Be("title aaa title1");
             result.Author.Should().BeNull();
         }
 
         [Fact]
-        public async Task CountAsync_Should_Return2()
+        public async Task CountAsync_Should_Return6()
         {
             var predicates = new List<Expression<Func<Post, bool>>>();
             predicates.Add(p => p.Published != null);
 
             var result = await _postRepository.CountAsync(predicates, CancellationToken.None);
 
-            result.Should().Be(2);
+            result.Should().Be(6);
         }
 
         [Fact]
-        public async Task GetAsync_Should_Return2PostsInDescendingOrderOfPublished()
+        public async Task GetAsync_Should_Return6PostsInDescendingOrderOfPublished()
         {
             var predicates = new List<Expression<Func<Post, bool>>>();
             predicates.Add(p => p.Published != null);
 
             var results = await _postRepository.GetAsync(predicates, 0, int.MaxValue, CancellationToken.None);
 
-            results.Should().HaveCount(2);
+            results.Should().HaveCount(6);
             results.Select(p => p.Published).Should().BeInDescendingOrder();
         }
 
@@ -102,7 +100,7 @@ namespace Opw.PineBlog.GitDb.Repositories
             var results = await _postRepository.GetAsync(predicates, 1, 1, CancellationToken.None);
 
             results.Should().HaveCount(1);
-            results.First().Title.Should().Be(_firstPostTitle);
+            results.First().Title.Should().Be("title aaa title1");
         }
 
         [Fact]

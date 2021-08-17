@@ -41,19 +41,5 @@ namespace Opw.PineBlog.GitDb.Repositories
 
             result.Should().BeNull();
         }
-
-        [Fact]
-        public async Task SingleOrDefaultAsync_Should_ReturnNull_WhenNoAuthorsFile()
-        {
-            var options = new PineBlogGitDbOptions() { Branch = "test" };
-            var optionsMock = new Mock<IOptionsSnapshot<PineBlogGitDbOptions>>();
-            optionsMock.Setup(m => m.Value).Returns(options);
-
-            var authorRepository = new AuthorRepository(optionsMock.Object);
-
-            var result = await authorRepository.SingleOrDefaultAsync(a => a.UserName == "john.smith@example.com", CancellationToken.None);
-
-            result.Should().BeNull();
-        }
     }
 }
