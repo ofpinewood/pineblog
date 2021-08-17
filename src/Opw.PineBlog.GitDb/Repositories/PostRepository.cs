@@ -35,22 +35,32 @@ namespace Opw.PineBlog.GitDb.Repositories
         {
             var posts = await GetAllAsync(cancellationToken);
 
-            return posts
+            var post = posts
               .Where(p => p.Published > published)
               .OrderBy(p => p.Published)
               .Take(1)
               .SingleOrDefault();
+
+            if (post != null)
+                post.Author = null;
+
+            return post;
         }
 
         public async Task<Post> GetPreviousAsync(DateTime published, CancellationToken cancellationToken)
         {
             var posts = await GetAllAsync(cancellationToken);
 
-            return posts
+            var post = posts
               .Where(p => p.Published < published)
               .OrderByDescending(p => p.Published)
               .Take(1)
               .SingleOrDefault();
+
+            if (post != null)
+                post.Author = null;
+
+            return post;
         }
 
         public async Task<int> CountAsync(IEnumerable<Expression<Func<Post, bool>>> predicates, CancellationToken cancellationToken)
@@ -117,13 +127,25 @@ namespace Opw.PineBlog.GitDb.Repositories
             foreach (var postFile in postFiles)
             {
                 var json = postFile.Substring(0, postFile.IndexOf("<<< END METADATA"));
-                var post = JsonSerializer.Deserialize<GitDbPost>(json, new JsonSerializerOptions { AllowTrailingCommas = true });
+                var gitDbPost = JsonSerializer.Deserialize<GitDbPost>(json, new JsonSerializerOptions { AllowTrailingCommas = true });
+
+                var post = new Post
+                {
+                    Title = gitDbPost.Title,
+                    Description = gitDbPost.Description,
+                    Categories = gitDbPost.Categories,
+                    Published = gitDbPost.Published,
+                    Slug = gitDbPost.Slug,
+                    CoverUrl = gitDbPost.CoverUrl,
+                    CoverCaption = gitDbPost.CoverCaption,
+                    CoverLink = gitDbPost.CoverLink,
+                };
 
                 var content = postFile.Substring(postFile.IndexOf("<<< END METADATA") + "<<< END METADATA".Length);
                 post.Content = content.Trim();
 
                 // TODO: add caching for authors
-                var author = await _authorRepository.SingleOrDefaultAsync(a => a.UserName == post.AuthorId, cancellationToken);
+                var author = await _authorRepository.SingleOrDefaultAsync(a => a.UserName == gitDbPost.AuthorId, cancellationToken);
                 post.Author = author;
 
                 posts.Add(post);
