@@ -9,22 +9,21 @@ using System.Text.Json;
 using System.Text;
 using System.Linq;
 using System.Collections.Generic;
+using Opw.PineBlog.GitDb.LibGit2;
 
 namespace Opw.PineBlog.GitDb.Repositories
 {
     public class BlogSettingsRepository : RepositoryBase, IBlogSettingsRepository
     {
-        public BlogSettingsRepository(IOptionsSnapshot<PineBlogGitDbOptions> options) : base(options) { }
+        public BlogSettingsRepository(GitDbContext gitDbContext, IOptions<PineBlogGitDbOptions> options) : base(gitDbContext, options) { }
 
         public async Task<BlogSettings> SingleOrDefaultAsync(CancellationToken cancellationToken)
         {
-            var gitDbContext = await GetGitDbContextAsync(cancellationToken);
-
             IDictionary<string, byte[]> files;
 
             try
             {
-                files = await gitDbContext.GetFilesAsync(new string[] { BuildPath(Options.Value.RootPath, "BlogSettings.json") }, cancellationToken);
+                files = await GitDbContext.GetFilesAsync(new string[] { BuildPath(Options.Value.RootPath, "BlogSettings.json") }, cancellationToken);
             }
             catch
             {

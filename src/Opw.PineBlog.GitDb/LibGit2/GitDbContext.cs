@@ -40,14 +40,7 @@ namespace Opw.PineBlog.GitDb.LibGit2
             _repositoryPath = repositoryPath;
         }
 
-        public static async Task<GitDbContext> CreateAsync(PineBlogGitDbOptions options, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            return await Task.Run(() => Create(options));
-        }
-
-        protected static GitDbContext Create(PineBlogGitDbOptions options)
+        public static GitDbContext Create(PineBlogGitDbOptions options)
         {
             var credentials = GetCredentials(options);
 

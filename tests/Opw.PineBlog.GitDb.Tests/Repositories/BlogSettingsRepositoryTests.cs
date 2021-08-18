@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Moq;
 using Opw.PineBlog.Entities;
+using Opw.PineBlog.GitDb.LibGit2;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -40,8 +41,9 @@ namespace Opw.PineBlog.GitDb.Repositories
             var options = new PineBlogGitDbOptions() { Branch = "test" };
             var optionsMock = new Mock<IOptionsSnapshot<PineBlogGitDbOptions>>();
             optionsMock.Setup(m => m.Value).Returns(options);
+            var gitDbContext = ServiceProvider.GetRequiredService<GitDbContext>();
 
-            var blogSettingsRepository = new BlogSettingsRepository(optionsMock.Object);
+            var blogSettingsRepository = new BlogSettingsRepository(gitDbContext, optionsMock.Object);
 
             var result = await blogSettingsRepository.SingleOrDefaultAsync(CancellationToken.None);
 

@@ -4,20 +4,25 @@ using Opw.PineBlog.Repositories;
 using Opw.PineBlog.GitDb.Repositories;
 using System;
 using Microsoft.Extensions.Options;
+using Opw.PineBlog.GitDb.LibGit2;
 
 namespace Opw.PineBlog.GitDb
 {
     public class BlogUnitOfWork : IBlogUnitOfWork
     {
+        private readonly GitDbContext _gitDbContext;
+
         public IBlogSettingsRepository BlogSettings { get; }
         public IAuthorRepository Authors { get; }
         public IPostRepository Posts { get; }
 
-        public BlogUnitOfWork(IOptionsSnapshot<PineBlogGitDbOptions> options)
+        public BlogUnitOfWork(GitDbContext gitDbContext, IOptions<PineBlogGitDbOptions> options)
         {
-            BlogSettings = new BlogSettingsRepository(options);
-            Authors = new AuthorRepository(options);
-            Posts = new PostRepository(options);
+            _gitDbContext = gitDbContext;
+
+            BlogSettings = new BlogSettingsRepository(_gitDbContext, options);
+            Authors = new AuthorRepository(_gitDbContext, options);
+            Posts = new PostRepository(_gitDbContext, options);
         }
 
         public Result<int> SaveChanges()

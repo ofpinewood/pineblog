@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Opw.PineBlog.GitDb.LibGit2;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,8 +15,9 @@ namespace Opw.PineBlog.GitDb
 
         public BlogUnitOfWorkTests()
         {
-            var options = ServiceProvider.GetRequiredService<IOptionsSnapshot<PineBlogGitDbOptions>>();
-            _uow = new BlogUnitOfWork(options);
+            var options = ServiceProvider.GetRequiredService<IOptions<PineBlogGitDbOptions>>();
+            var gitDbContext = ServiceProvider.GetRequiredService<GitDbContext>();
+            _uow = new BlogUnitOfWork(gitDbContext, options);
         }
 
         [Fact]

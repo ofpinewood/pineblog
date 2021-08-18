@@ -11,6 +11,7 @@ using System.Text;
 using System.Linq;
 using System.Text.Json;
 using Opw.PineBlog.GitDb.Entities;
+using Opw.PineBlog.GitDb.LibGit2;
 
 namespace Opw.PineBlog.GitDb.Repositories
 {
@@ -18,10 +19,10 @@ namespace Opw.PineBlog.GitDb.Repositories
     {
         private readonly AuthorRepository _authorRepository;
 
-        public PostRepository(IOptionsSnapshot<PineBlogGitDbOptions> options)
-            : base(options)
+        public PostRepository(GitDbContext gitDbContext, IOptions<PineBlogGitDbOptions> options)
+            : base(gitDbContext, options)
         {
-            _authorRepository = new AuthorRepository(options);
+            _authorRepository = new AuthorRepository(gitDbContext, options);
         }
 
         public async Task<Post> SingleOrDefaultAsync(Expression<Func<Post, bool>> predicate, CancellationToken cancellationToken)
@@ -109,14 +110,12 @@ namespace Opw.PineBlog.GitDb.Repositories
         // TODO: add caching for get all posts
         protected async Task<IEnumerable<Post>> GetAllAsync(CancellationToken cancellationToken)
         {
-            var gitDbContext = await GetGitDbContextAsync(cancellationToken);
-
             IDictionary<string, byte[]> files;
             var posts = new List<Post>();
 
             try
             {
-                files = await gitDbContext.GetFilesAsync(BuildPath(Options.Value.RootPath, "posts"), cancellationToken);
+                files = await GitDbContext.GetFilesAsync(BuildPath(Options.Value.RootPath, "posts"), cancellationToken);
             }
             catch
             {

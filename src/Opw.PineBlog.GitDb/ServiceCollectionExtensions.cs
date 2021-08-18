@@ -1,5 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Opw.PineBlog.GitDb.LibGit2;
 using System.Linq;
 
 namespace Opw.PineBlog.GitDb
@@ -27,6 +29,11 @@ namespace Opw.PineBlog.GitDb
 
             services.Configure<PineBlogGitDbOptions>(configuration.GetSection(nameof(PineBlogGitDbOptions)));
 
+            services.AddTransient<GitDbContext>(provider =>
+            {
+                var options = provider.GetRequiredService<IOptions<PineBlogGitDbOptions>>();
+                return GitDbContext.Create(options.Value);
+            });
             services.AddTransient<IBlogUnitOfWork, BlogUnitOfWork>();
 
             return services;

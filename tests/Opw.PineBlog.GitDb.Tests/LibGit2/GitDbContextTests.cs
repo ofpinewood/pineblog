@@ -9,12 +9,20 @@ namespace Opw.PineBlog.GitDb.LibGit2
 {
     public class GitDbContextTests : GitDbTestsBase
     {
+        private readonly GitDbContext _gitDbContext;
+
+        public GitDbContextTests()
+        {
+            var options = ServiceProvider.GetService<IOptions<PineBlogGitDbOptions>>();
+            _gitDbContext = GitDbContext.Create(options.Value);
+        }
+
         [Fact]
         public async Task GetFilesAsync_PathRoot_4Files()
         {
-            var gitDbContext = await GetGitDbContextAsync();
+            await _gitDbContext.CheckoutBranchAsync("test", CancellationToken.None);
 
-            var files = await gitDbContext.GetFilesAsync(string.Empty, CancellationToken.None);
+            var files = await _gitDbContext.GetFilesAsync(string.Empty, CancellationToken.None);
 
             files.Should().HaveCount(4);
 
@@ -29,10 +37,9 @@ namespace Opw.PineBlog.GitDb.LibGit2
         [Fact(Skip = "Checking out another branch while running the unit test will randomly fail other tests.")]
         public async Task GetFilesAsync_PathRootBranchTest_3Files()
         {
-            var gitDbContext = await GetGitDbContextAsync();
-            await gitDbContext.CheckoutBranchAsync("main", CancellationToken.None);
+            await _gitDbContext.CheckoutBranchAsync("main", CancellationToken.None);
 
-            var files = await gitDbContext.GetFilesAsync(string.Empty, CancellationToken.None);
+            var files = await _gitDbContext.GetFilesAsync(string.Empty, CancellationToken.None);
 
             files.Should().HaveCount(3);
 
@@ -46,9 +53,9 @@ namespace Opw.PineBlog.GitDb.LibGit2
         [Fact]
         public async Task GetFilesAsync_2SpecificFiles_2Files()
         {
-            var gitDbContext = await GetGitDbContextAsync();
+            await _gitDbContext.CheckoutBranchAsync("test", CancellationToken.None);
 
-            var files = await gitDbContext.GetFilesAsync(new string[] { "LICENSE", "README.md" }, CancellationToken.None);
+            var files = await _gitDbContext.GetFilesAsync(new string[] { "LICENSE", "README.md" }, CancellationToken.None);
 
             files.Should().HaveCount(2);
 
@@ -56,16 +63,6 @@ namespace Opw.PineBlog.GitDb.LibGit2
             files.Should().ContainKey("README.md");
 
             files["LICENSE"].Should().HaveCount(1090);
-        }
-
-        private async Task<GitDbContext> GetGitDbContextAsync()
-        {
-            var options = ServiceProvider.GetService<IOptions<PineBlogGitDbOptions>>();
-            var gitDbContext = await GitDbContext.CreateAsync(options.Value, CancellationToken.None);
-
-            await gitDbContext.CheckoutBranchAsync("test", CancellationToken.None);
-
-            return gitDbContext;
         }
     }
 }
