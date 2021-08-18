@@ -46,11 +46,11 @@ namespace Opw.PineBlog.GitDb
 
         private static IServiceCollection AddFeatureManagement(this IServiceCollection services)
         {
+            var message = "Disabled when using GitDb as a data provider.";
+
             var features = new Dictionary<FeatureFlag, FeatureState>();
             foreach (FeatureFlag featureFlag in Enum.GetValues(typeof(FeatureFlag)))
             {
-                var message = $"{featureFlag} is disabled when using GitDb as a data provider.";
-
                 features.Add(featureFlag, FeatureState.Disabled(message));
             }
 
