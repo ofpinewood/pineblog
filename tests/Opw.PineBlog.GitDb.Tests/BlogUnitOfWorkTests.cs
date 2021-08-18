@@ -13,7 +13,7 @@ namespace Opw.PineBlog.GitDb
     {
         private readonly BlogUnitOfWork _uow;
 
-        public BlogUnitOfWorkTests()
+        public BlogUnitOfWorkTests(GitDbFixture fixture) : base(fixture)
         {
             var options = ServiceProvider.GetRequiredService<IOptions<PineBlogGitDbOptions>>();
             var gitDbContext = ServiceProvider.GetRequiredService<GitDbContext>();

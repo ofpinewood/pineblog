@@ -15,7 +15,7 @@ namespace Opw.PineBlog.GitDb.Repositories
         private readonly AuthorRepository _authorRepository;
         private readonly IBlogUnitOfWork _uow;
 
-        public AuthorRepositoryTests()
+        public AuthorRepositoryTests(GitDbFixture fixture) : base(fixture)
         {
             _uow = ServiceProvider.GetRequiredService<IBlogUnitOfWork>();
             _authorRepository = (AuthorRepository)_uow.Authors;

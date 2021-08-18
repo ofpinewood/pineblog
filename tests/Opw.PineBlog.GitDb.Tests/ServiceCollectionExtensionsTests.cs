@@ -9,6 +9,9 @@ namespace Opw.PineBlog.GitDb
 {
     public class ServiceCollectionExtensionsTests : GitDbTestsBase
     {
+        public ServiceCollectionExtensionsTests(GitDbFixture fixture) : base(fixture)
+        { }
+
         [Fact]
         public void AddPineBlogGitDb_Should_RegisterPineBlogGitDbOptions()
         {

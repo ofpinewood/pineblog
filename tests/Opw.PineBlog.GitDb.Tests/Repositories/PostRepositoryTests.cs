@@ -18,7 +18,7 @@ namespace Opw.PineBlog.GitDb.Repositories
 
         private readonly DateTime _firstPostPublishedDate = DateTime.Parse("2021-08-12T01:00:14+00:00");
 
-        public PostRepositoryTests()
+        public PostRepositoryTests(GitDbFixture fixture) : base(fixture)
         {
             _uow = ServiceProvider.GetRequiredService<IBlogUnitOfWork>();
             _postRepository = (PostRepository)_uow.Posts;

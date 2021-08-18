@@ -11,7 +11,7 @@ namespace Opw.PineBlog.GitDb.LibGit2
     {
         private readonly GitDbContext _gitDbContext;
 
-        public GitDbContextTests()
+        public GitDbContextTests(GitDbFixture fixture) : base(fixture)
         {
             var options = ServiceProvider.GetService<IOptions<PineBlogGitDbOptions>>();
             _gitDbContext = GitDbContext.Create(options.Value);
@@ -20,7 +20,7 @@ namespace Opw.PineBlog.GitDb.LibGit2
         [Fact]
         public async Task GetFilesAsync_PathRoot_4Files()
         {
-            await _gitDbContext.CheckoutBranchAsync("test", CancellationToken.None);
+            _gitDbContext.CheckoutBranch("test");
 
             var files = await _gitDbContext.GetFilesAsync(string.Empty, CancellationToken.None);
 
@@ -37,7 +37,7 @@ namespace Opw.PineBlog.GitDb.LibGit2
         [Fact(Skip = "Checking out another branch while running the unit test will randomly fail other tests.")]
         public async Task GetFilesAsync_PathRootBranchTest_3Files()
         {
-            await _gitDbContext.CheckoutBranchAsync("main", CancellationToken.None);
+            _gitDbContext.CheckoutBranch("main");
 
             var files = await _gitDbContext.GetFilesAsync(string.Empty, CancellationToken.None);
 
@@ -53,7 +53,7 @@ namespace Opw.PineBlog.GitDb.LibGit2
         [Fact]
         public async Task GetFilesAsync_2SpecificFiles_2Files()
         {
-            await _gitDbContext.CheckoutBranchAsync("test", CancellationToken.None);
+            _gitDbContext.CheckoutBranch("test");
 
             var files = await _gitDbContext.GetFilesAsync(new string[] { "LICENSE", "README.md" }, CancellationToken.None);
 

@@ -62,14 +62,7 @@ namespace Opw.PineBlog.GitDb.LibGit2
             return new GitDbContext(repository, credentials, repositoryPath);
         }
 
-        public async Task<Branch> CheckoutBranchAsync(string branchName, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            return await Task.Run(() => CheckoutBranch(branchName));
-        }
-
-        protected Branch CheckoutBranch(string branchName)
+        public Branch CheckoutBranch(string branchName)
         {
             Branch branch = null;
             // if the branch is already checked out return it

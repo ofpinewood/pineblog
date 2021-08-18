@@ -17,7 +17,7 @@ namespace Opw.PineBlog.Posts.Search
     {
         private readonly SearchPostsQuery.Handler searchPostsQueryHandler;
 
-        public SearchPostsQueryTests()
+        public SearchPostsQueryTests(GitDbFixture fixture) : base(fixture)
         {
             var uow = ServiceProvider.GetRequiredService<IBlogUnitOfWork>();
             var options = ServiceProvider.GetRequiredService<IOptionsSnapshot<PineBlogOptions>>();
