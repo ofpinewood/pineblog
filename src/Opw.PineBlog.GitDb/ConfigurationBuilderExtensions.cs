@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Opw.PineBlog.GitDb
 {
@@ -15,12 +16,12 @@ namespace Opw.PineBlog.GitDb
         /// <returns>The original configuration object.</returns>
         public static IConfigurationBuilder AddPineBlogGitDbConfiguration(this IConfigurationBuilder builder, bool reloadOnChange = false)
         {
-            //var configuration = builder.Build();
-            //var connectionStringName = configuration.GetSection(nameof(PineBlogOptions)).GetValue<string>(nameof(PineBlogOptions.ConnectionStringName));
-            //var connectionString = configuration.GetConnectionString(connectionStringName);
+            var configuration = builder.Build();
+            var options = configuration.Get<PineBlogGitDbOptions>();
 
             return builder.Add(new BlogSettingsConfigurationSource
             {
+                Options = options,
                 ReloadOnChange = reloadOnChange
             });
         }

@@ -8,13 +8,20 @@ namespace Opw.PineBlog.GitDb
     public class FileChangeEventArgs : EventArgs
     {
         /// <summary>
+        /// The name for the file.
+        /// </summary>
+        public string File { get; }
+
+        /// <summary>
         /// The bytes for the file.
         /// </summary>
-        public byte[] File { get; }
+        public byte[] bytes { get; }
+        public byte[] Bytes { get; }
 
-        public FileChangeEventArgs(byte[] file)
+        public FileChangeEventArgs(string file, byte[] bytes)
         {
             File = file;
+            Bytes = bytes;
         }
     }
 }

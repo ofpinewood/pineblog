@@ -115,7 +115,7 @@ namespace Opw.PineBlog.GitDb.Repositories
 
             try
             {
-                files = await GitDbContext.GetFilesAsync(BuildPath(Options.Value.RootPath, "posts"), cancellationToken);
+                files = await GitDbContext.GetFilesAsync(PathHelper.Build(Options.Value.RootPath, GitDbConstants.PostsFolder), cancellationToken);
             }
             catch
             {
@@ -125,7 +125,7 @@ namespace Opw.PineBlog.GitDb.Repositories
             var postFiles = files.Values.Select(b => Encoding.UTF8.GetString(b));
             foreach (var postFile in postFiles)
             {
-                var json = postFile.Substring(0, postFile.IndexOf("<<< END METADATA"));
+                var json = postFile.Substring(0, postFile.IndexOf(GitDbConstants.MetaDataSeparator));
                 var gitDbPost = JsonSerializer.Deserialize<GitDbPost>(json, new JsonSerializerOptions { AllowTrailingCommas = true });
 
                 var post = new Post
@@ -140,7 +140,7 @@ namespace Opw.PineBlog.GitDb.Repositories
                     CoverLink = gitDbPost.CoverLink,
                 };
 
-                var content = postFile.Substring(postFile.IndexOf("<<< END METADATA") + "<<< END METADATA".Length);
+                var content = postFile.Substring(postFile.IndexOf(GitDbConstants.MetaDataSeparator) + GitDbConstants.MetaDataSeparator.Length);
                 post.Content = content.Trim();
 
                 // TODO: add caching for authors

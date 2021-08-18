@@ -110,7 +110,7 @@ namespace Opw.PineBlog.GitDb.LibGit2
             return await Task.Run(() => GetFiles(path));
         }
 
-        protected IDictionary<string, byte[]> GetFiles(string path)
+        private IDictionary<string, byte[]> GetFiles(string path)
         {
             path += "";
             var fullPath = Path.Combine(_repository.Info.WorkingDirectory, path);
@@ -142,7 +142,7 @@ namespace Opw.PineBlog.GitDb.LibGit2
             return await Task.Run(() => GetFiles(files));
         }
 
-        protected IDictionary<string, byte[]> GetFiles(IEnumerable<string> files)
+        public IDictionary<string, byte[]> GetFiles(IEnumerable<string> files)
         {
             var fileBytes = new Dictionary<string, byte[]>();
             foreach (var file in files)

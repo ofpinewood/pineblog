@@ -1,6 +1,11 @@
 using Microsoft.Extensions.Configuration;
 using Opw.PineBlog.Entities;
+using Opw.PineBlog.GitDb.LibGit2;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.Json;
 using System.Threading;
 
 // TODO: implement for GitDb
@@ -26,31 +31,41 @@ namespace Opw.PineBlog.GitDb
 
         private void FileChangeObserver_Changed(object sender, FileChangeEventArgs e)
         {
-            //if (e.Document.CollectionNamespace.CollectionName != CollectionHelper.GetName<BlogSettings>())
-            //    return;
+            if (!e.File.Equals("BlogSettings.json", StringComparison.OrdinalIgnoreCase))
+                return;
 
             Thread.Sleep(_source.ReloadDelay);
             Load();
         }
 
         /// <summary>
-        /// Load the blog settings configuration from the database.
+        /// Load the blog settings configuration from the repository.
         /// </summary>
         public override void Load()
         {
-            //var client = new MongoClient(_source.ConnectionString);
-            //var database = client.GetDatabase(_source.DatabaseName);
-            //var collection = database.GetCollection<BlogSettings>(CollectionHelper.GetName<BlogSettings>());
+            var gitDbContext = GitDbContext.Create(_source.Options);
 
-            //var settings = collection.Find(Builders<BlogSettings>.Filter.Empty).SingleOrDefault();
-            //if (settings == null) return;
+            IDictionary<string, byte[]> files;
 
-            //Data = new Dictionary<string, string>();
-            //Data.Add($"{nameof(PineBlogOptions)}:{nameof(PineBlogOptions.Title)}", settings.Title);
-            //Data.Add($"{nameof(PineBlogOptions)}:{nameof(PineBlogOptions.Description)}", settings.Description);
-            //Data.Add($"{nameof(PineBlogOptions)}:{nameof(PineBlogOptions.CoverCaption)}", settings.CoverCaption);
-            //Data.Add($"{nameof(PineBlogOptions)}:{nameof(PineBlogOptions.CoverLink)}", settings.CoverLink);
-            //Data.Add($"{nameof(PineBlogOptions)}:{nameof(PineBlogOptions.CoverUrl)}", settings.CoverUrl);
+            try
+            {
+                files = gitDbContext.GetFiles(new string[] { PathHelper.Build(_source.Options.RootPath, "BlogSettings.json") });
+            }
+            catch
+            {
+                return;
+            }
+
+            var json = Encoding.UTF8.GetString(files.Values.Single());
+            var settings = JsonSerializer.Deserialize<BlogSettings>(json, new JsonSerializerOptions { AllowTrailingCommas = true });
+            if (settings == null) return;
+
+            Data = new Dictionary<string, string>();
+            Data.Add($"{nameof(PineBlogOptions)}:{nameof(PineBlogOptions.Title)}", settings.Title);
+            Data.Add($"{nameof(PineBlogOptions)}:{nameof(PineBlogOptions.Description)}", settings.Description);
+            Data.Add($"{nameof(PineBlogOptions)}:{nameof(PineBlogOptions.CoverCaption)}", settings.CoverCaption);
+            Data.Add($"{nameof(PineBlogOptions)}:{nameof(PineBlogOptions.CoverLink)}", settings.CoverLink);
+            Data.Add($"{nameof(PineBlogOptions)}:{nameof(PineBlogOptions.CoverUrl)}", settings.CoverUrl);
         }
     }
 }

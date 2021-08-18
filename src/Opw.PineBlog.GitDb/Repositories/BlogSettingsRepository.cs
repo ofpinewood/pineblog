@@ -23,7 +23,7 @@ namespace Opw.PineBlog.GitDb.Repositories
 
             try
             {
-                files = await GitDbContext.GetFilesAsync(new string[] { BuildPath(Options.Value.RootPath, "BlogSettings.json") }, cancellationToken);
+                files = await GitDbContext.GetFilesAsync(new string[] { PathHelper.Build(Options.Value.RootPath, GitDbConstants.BlogSettingsFile) }, cancellationToken);
             }
             catch
             {

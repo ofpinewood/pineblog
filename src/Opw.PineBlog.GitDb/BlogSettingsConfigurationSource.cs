@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Opw.PineBlog.GitDb
 {
@@ -7,6 +8,11 @@ namespace Opw.PineBlog.GitDb
     /// </summary>
     public class BlogSettingsConfigurationSource : IConfigurationSource
     {
+        /// <summary>
+        /// PineBlog GitDb options.
+        /// </summary>
+        public PineBlogGitDbOptions Options { get; set; }
+
         /// <summary>
         /// Determines whether the source will be loaded if the underlying entity changes.
         /// </summary>
