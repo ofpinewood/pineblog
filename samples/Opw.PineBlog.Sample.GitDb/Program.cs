@@ -20,7 +20,6 @@ namespace Opw.PineBlog.Sample.GitDb
                 .ConfigureAppConfiguration((_, config) =>
                 {
                     var configuration = config.Build();
-                    // using EntityFrameworkCore, the default
                     config.AddPineBlogGitDbConfiguration(reloadOnChange: true);
                 })
                 .ConfigureLogging((hostingContext, builder) =>

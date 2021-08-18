@@ -8,6 +8,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\ref\Opw.PineBlog\Opw.PineBlog.csproj" />
     <ProjectReference Include="..\..\src\Opw.PineBlog.GitDb\Opw.PineBlog.GitDb.csproj" />
+  </ItemGroup>    
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

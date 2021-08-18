@@ -37,12 +37,13 @@ namespace Opw.PineBlog.Sample.GitDb
             // using GitDb as the datasource
             services.AddPineBlogCore(Configuration);
             services.AddPineBlogGitDb(Configuration);
-            
+
             services.AddRazorPages()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddPineBlogRazorPages();
 
-            services.AddRouting(options => {
+            services.AddRouting(options =>
+            {
                 options.LowercaseUrls = true;
                 options.LowercaseQueryStrings = true;
                 options.AppendTrailingSlash = true;

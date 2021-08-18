@@ -17,7 +17,7 @@ namespace Opw.PineBlog.GitDb
         public static IConfigurationBuilder AddPineBlogGitDbConfiguration(this IConfigurationBuilder builder, bool reloadOnChange = false)
         {
             var configuration = builder.Build();
-            var options = configuration.Get<PineBlogGitDbOptions>();
+            var options = configuration.GetSection(nameof(PineBlogGitDbOptions)).Get<PineBlogGitDbOptions>();
 
             return builder.Add(new BlogSettingsConfigurationSource
             {
