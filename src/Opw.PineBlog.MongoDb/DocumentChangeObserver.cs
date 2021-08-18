@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 
 namespace Opw.PineBlog.MongoDb
@@ -11,7 +9,7 @@ namespace Opw.PineBlog.MongoDb
     public class DocumentChangeObserver
     {
         /// <summary>
-        /// An event fired when an entity that is tracked by the associated MongoDatabase has moved changed.
+        /// An event fired when an entity that is tracked by the associated MongoDatabase has changed.
         /// </summary>
         public event EventHandler<DocumentChangeEventArgs> Changed;
 

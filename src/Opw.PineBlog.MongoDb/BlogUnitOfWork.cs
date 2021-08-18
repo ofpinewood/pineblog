@@ -14,7 +14,7 @@ namespace Opw.PineBlog.MongoDb
 
         internal readonly IMongoDatabase Database;
         internal int SaveChangeCount;
-        
+
         public IBlogSettingsRepository BlogSettings { get; }
         public IAuthorRepository Authors { get; }
         public IPostRepository Posts { get; }

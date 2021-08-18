@@ -14,10 +14,6 @@ namespace Opw.PineBlog.MongoDb
         /// </summary>
         public ChangeStreamDocument<BsonDocument> Document { get; }
 
-        /// <summary>
-        /// This API supports the MongoDb infrastructure and is not intended
-        /// to be used directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public DocumentChangeEventArgs(ChangeStreamDocument<BsonDocument> document)
         {
             Document = document;
