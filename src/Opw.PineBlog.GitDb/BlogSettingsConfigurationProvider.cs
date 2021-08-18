@@ -8,9 +8,9 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 
-// TODO: implement for GitDb
 namespace Opw.PineBlog.GitDb
 {
+    // TODO: add tests
     /// <summary>
     /// Provides blog settings configuration key/values for the application.
     /// </summary>
@@ -31,7 +31,7 @@ namespace Opw.PineBlog.GitDb
 
         private void FileChangeObserver_Changed(object sender, FileChangeEventArgs e)
         {
-            if (!e.File.Equals("BlogSettings.json", StringComparison.OrdinalIgnoreCase))
+            if (!e.File.Equals(GitDbConstants.BlogSettingsFile, StringComparison.OrdinalIgnoreCase))
                 return;
 
             Thread.Sleep(_source.ReloadDelay);
@@ -49,7 +49,7 @@ namespace Opw.PineBlog.GitDb
 
             try
             {
-                files = gitDbContext.GetFiles(new string[] { PathHelper.Build(_source.Options.RootPath, "BlogSettings.json") });
+                files = gitDbContext.GetFiles(new string[] { PathHelper.Build(_source.Options.RootPath, GitDbConstants.BlogSettingsFile) });
             }
             catch
             {
