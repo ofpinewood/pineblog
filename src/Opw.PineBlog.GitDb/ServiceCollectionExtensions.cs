@@ -1,7 +1,10 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Opw.PineBlog.FeatureManagement;
 using Opw.PineBlog.GitDb.LibGit2;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Opw.PineBlog.GitDb
@@ -35,6 +38,23 @@ namespace Opw.PineBlog.GitDb
                 return GitDbContext.Create(options.Value);
             });
             services.AddTransient<IBlogUnitOfWork, BlogUnitOfWork>();
+
+            services.AddFeatureManagement();
+
+            return services;
+        }
+
+        private static IServiceCollection AddFeatureManagement(this IServiceCollection services)
+        {
+            var features = new Dictionary<FeatureFlag, FeatureState>();
+            foreach (FeatureFlag featureFlag in Enum.GetValues(typeof(FeatureFlag)))
+            {
+                var message = $"{featureFlag} is disabled when using GitDb as a data provider.";
+
+                features.Add(featureFlag, FeatureState.Disabled(message));
+            }
+
+            services.AddScoped<IFeatureManager>((_) => new FeatureManager(features));
 
             return services;
         }
