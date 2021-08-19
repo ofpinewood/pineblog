@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Opw.HttpExceptions;
+using Opw.PineBlog.FeatureManagement;
 using System;
 
 namespace Opw.PineBlog.RazorPages
@@ -13,9 +14,14 @@ namespace Opw.PineBlog.RazorPages
     public abstract class PageModelBase<TPageModel> : PageModel
     {
         /// <summary>
-        /// Blog options.
+        /// The feature state, enabled or disabled.
         /// </summary>
-        protected IOptionsSnapshot<PineBlogOptions> Options { get; }
+        public FeatureState FeatureState { get; protected set; } = FeatureState.Enabled();
+
+        /// <summary>
+        /// Feature manager.
+        /// </summary>
+        protected readonly IFeatureManager FeatureManager;
 
         /// <summary>
         /// Logger.
@@ -25,9 +31,11 @@ namespace Opw.PineBlog.RazorPages
         /// <summary>
         /// Implementation of PageModelBase.
         /// </summary>
+        /// <param name="featureManager">FeatureManager.</param>
         /// <param name="logger">Logger.</param>
-        public PageModelBase(ILogger<TPageModel> logger)
+        public PageModelBase(IFeatureManager featureManager, ILogger<TPageModel> logger)
         {
+            FeatureManager = featureManager;
             Logger = logger;
         }
 

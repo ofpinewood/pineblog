@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Moq;
 using Opw.PineBlog.Entities;
 using Opw.PineBlog.Posts;
@@ -31,7 +30,7 @@ namespace Opw.PineBlog.RazorPages.Areas.Admin.Pages
             var httpContext = new DefaultHttpContext();
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new UpdatePostModel(mediaterMock.Object, loggerMock.Object)
+            var pageModel = new UpdatePostModel(mediaterMock.Object, FeatureManagerMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),
@@ -55,7 +54,7 @@ namespace Opw.PineBlog.RazorPages.Areas.Admin.Pages
             var httpContext = new DefaultHttpContext();
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new UpdatePostModel(mediaterMock.Object, loggerMock.Object)
+            var pageModel = new UpdatePostModel(mediaterMock.Object, FeatureManagerMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),
@@ -87,7 +86,7 @@ namespace Opw.PineBlog.RazorPages.Areas.Admin.Pages
             var httpContext = new DefaultHttpContext();
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new UpdatePostModel(mediaterMock.Object, loggerMock.Object)
+            var pageModel = new UpdatePostModel(mediaterMock.Object, FeatureManagerMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),
@@ -111,7 +110,7 @@ namespace Opw.PineBlog.RazorPages.Areas.Admin.Pages
             var httpContext = new DefaultHttpContext();
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new UpdatePostModel(mediaterMock.Object, loggerMock.Object)
+            var pageModel = new UpdatePostModel(mediaterMock.Object, FeatureManagerMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),
@@ -135,7 +134,7 @@ namespace Opw.PineBlog.RazorPages.Areas.Admin.Pages
             var httpContext = new DefaultHttpContext();
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new UpdatePostModel(mediaterMock.Object, loggerMock.Object)
+            var pageModel = new UpdatePostModel(mediaterMock.Object, FeatureManagerMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),

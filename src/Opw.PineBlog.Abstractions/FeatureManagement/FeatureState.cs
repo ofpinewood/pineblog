@@ -4,6 +4,9 @@ namespace Opw.PineBlog.FeatureManagement
     {
         public bool IsEnabled { get; }
 
+        /// <summary>
+        /// A help message for the users, markdown is allowed.
+        /// </summary>
         public string Message { get; }
 
         private FeatureState(bool isEnabled, string message)
@@ -15,7 +18,7 @@ namespace Opw.PineBlog.FeatureManagement
         /// <summary>
         /// Creates an disabled feature state.
         /// </summary>
-        /// <param name="message">A help message for the users.</param>
+        /// <param name="message">A help message for the users, markdown is allowed.</param>
         public static FeatureState Disabled(string message)
         {
             return new FeatureState(false, message);

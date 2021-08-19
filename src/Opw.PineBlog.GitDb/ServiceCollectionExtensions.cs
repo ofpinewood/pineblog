@@ -39,14 +39,15 @@ namespace Opw.PineBlog.GitDb
             });
             services.AddTransient<IBlogUnitOfWork, BlogUnitOfWork>();
 
-            services.AddFeatureManagement();
+            services.AddFeatureManagement(configuration);
 
             return services;
         }
 
-        private static IServiceCollection AddFeatureManagement(this IServiceCollection services)
+        private static IServiceCollection AddFeatureManagement(this IServiceCollection services, IConfiguration configuration)
         {
-            var message = "Disabled when using GitDb as a data provider.";
+            var options = configuration.GetSection(nameof(PineBlogGitDbOptions)).Get<PineBlogGitDbOptions>();
+            var message = $"Disabled when using the GitDb data provider.  Please use the [repository]({options.RepositoryUrl}) to edit.";
 
             var features = new Dictionary<FeatureFlag, FeatureState>();
             foreach (FeatureFlag featureFlag in Enum.GetValues(typeof(FeatureFlag)))

@@ -1,56 +1,65 @@
 @page
 @model Opw.PineBlog.RazorPages.Areas.Admin.Pages.UpdateBlogSettingsModel
-@section scripts {
-    <script type="text/javascript">
-        var webRoot = '@Url.Content("~/")';
-        function getUrl(str) {
-            return webRoot + str;
-        }
-    </script>
+@if (!Model.FeatureState.IsEnabled)
+{
+    <div class="container">
+        @Html.Raw(Markdig.Markdown.ToHtml(Model.FeatureState.Message))
+    </div>
 }
-<form method="post" class="post-editor d-flex flex-column">
-    <input asp-for="BlogSettings.CoverUrl" type="hidden">
-    <div class="post-cover" style="background-image: url('@Model.BlogSettings.CoverUrl')">
-        <div class="container">
-            <div>
-                <div class="btn-group" role="group">
-                    <input type="submit" id="" class="btn btn-primary" value="Save" />
+else
+{
+    @section scripts {
+        <script type="text/javascript">
+            var webRoot = '@Url.Content("~/")';
+            function getUrl(str) {
+                return webRoot + str;
+            }
+        </script>
+    }
+    <form method="post" class="post-editor d-flex flex-column">
+        <input asp-for="BlogSettings.CoverUrl" type="hidden">
+        <div class="post-cover" style="background-image: url('@Model.BlogSettings.CoverUrl')">
+            <div class="container">
+                <div>
+                    <div class="btn-group" role="group">
+                        <input type="submit" id="" class="btn btn-primary" value="Save" />
+                    </div>
+                    <div class="btn-group float-right" role="group">
+                        <button type="button" class="btn btn-outline-light" title="Cover" onclick="fileManager.open(updateBlogCoverCallback, 'blog', 'image'); return false;">
+                            <i class="fa fa-picture-o" aria-hidden="true"></i>
+                        </button>
+                    </div>
                 </div>
-                <div class="btn-group float-right" role="group">
-                    <button type="button" class="btn btn-outline-light" title="Cover" onclick="fileManager.open(updateBlogCoverCallback, 'blog', 'image'); return false;">
-                        <i class="fa fa-picture-o" aria-hidden="true"></i>
-                    </button>
-                </div>
-            </div>
 
-            <div class="form-group">
-                <textarea asp-for="BlogSettings.Title" placeholder="Blog title.."></textarea>
-            </div>
-        </div>
-    </div>
-    <div asp-validation-summary="All" class="invalid-tooltip"></div>
-
-    <div class="container form">
-        <div class="row">
-            <div class="col-sm">
                 <div class="form-group">
-                    <label asp-for="BlogSettings.CoverCaption"></label>
-                    <input asp-for="BlogSettings.CoverCaption" class="form-control">
-                    <span asp-validation-for="BlogSettings.CoverCaption" class="invalid-feedback"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="BlogSettings.CoverLink"></label>
-                    <input asp-for="BlogSettings.CoverLink" class="form-control">
-                    <span asp-validation-for="BlogSettings.CoverLink" class="invalid-feedback"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="BlogSettings.Description"></label>
-                    <textarea asp-for="BlogSettings.Description" class="form-control"></textarea>
-                    <span asp-validation-for="BlogSettings.Description" class="invalid-feedback"></span>
+                    <textarea asp-for="BlogSettings.Title" placeholder="Blog title.."></textarea>
                 </div>
             </div>
         </div>
-    </div>
-</form>
+        <div asp-validation-summary="All" class="invalid-tooltip"></div>
 
-<partial name="_FileManager" />
+        <div class="container form">
+            <div class="row">
+                <div class="col-sm">
+                    <div class="form-group">
+                        <label asp-for="BlogSettings.CoverCaption"></label>
+                        <input asp-for="BlogSettings.CoverCaption" class="form-control">
+                        <span asp-validation-for="BlogSettings.CoverCaption" class="invalid-feedback"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="BlogSettings.CoverLink"></label>
+                        <input asp-for="BlogSettings.CoverLink" class="form-control">
+                        <span asp-validation-for="BlogSettings.CoverLink" class="invalid-feedback"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="BlogSettings.Description"></label>
+                        <textarea asp-for="BlogSettings.Description" class="form-control"></textarea>
+                        <span asp-validation-for="BlogSettings.Description" class="invalid-feedback"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <partial name="_FileManager" />
+}

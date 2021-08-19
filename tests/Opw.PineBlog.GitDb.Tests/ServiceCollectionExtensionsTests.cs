@@ -52,12 +52,14 @@ namespace Opw.PineBlog.GitDb
         [Fact]
         public void AddPineBlogGitDb_Should_AddFeatureManagement()
         {
+            var expectedMessage = "Disabled when using the GitDb data provider.  Please use the [repository](https://github.com/ofpinewood/pineblog-gitdb.git) to edit.";
+
             var featureManager = ServiceProvider.GetService<IFeatureManager>();
 
             featureManager.IsEnabled(FeatureFlag.AdminBlogSettings).IsEnabled.Should().BeFalse();
-            featureManager.IsEnabled(FeatureFlag.AdminBlogSettings).Message.Should().Be("Disabled when using GitDb as a data provider.");
+            featureManager.IsEnabled(FeatureFlag.AdminBlogSettings).Message.Should().Be(expectedMessage);
             featureManager.IsEnabled(FeatureFlag.AdminPosts).IsEnabled.Should().BeFalse();
-            featureManager.IsEnabled(FeatureFlag.AdminPosts).Message.Should().Be("Disabled when using GitDb as a data provider.");
+            featureManager.IsEnabled(FeatureFlag.AdminPosts).Message.Should().Be(expectedMessage);
         }
     }
 }

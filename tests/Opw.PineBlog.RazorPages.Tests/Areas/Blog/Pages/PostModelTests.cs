@@ -28,7 +28,7 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
             var httpContext = new DefaultHttpContext();
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new PostModel(mediaterMock.Object, loggerMock.Object)
+            var pageModel = new PostModel(mediaterMock.Object, FeatureManagerMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),
@@ -63,7 +63,7 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
             var httpContext = new DefaultHttpContext();
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new PostModel(mediaterMock.Object, loggerMock.Object)
+            var pageModel = new PostModel(mediaterMock.Object, FeatureManagerMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),
@@ -94,7 +94,7 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
             httpContext.Request.Host = new HostString("localhost:5001");
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new PostModel(mediaterMock.Object, loggerMock.Object)
+            var pageModel = new PostModel(mediaterMock.Object, FeatureManagerMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),
@@ -118,7 +118,7 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
             var httpContext = new DefaultHttpContext();
             var pageContext = GetPageContext(httpContext);
 
-            var pageModel = new PostModel(mediaterMock.Object, loggerMock.Object)
+            var pageModel = new PostModel(mediaterMock.Object, FeatureManagerMock.Object, loggerMock.Object)
             {
                 PageContext = pageContext.Item1,
                 TempData = GetTempDataDictionary(httpContext),

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Options;
 using Moq;
+using Opw.PineBlog.FeatureManagement;
 using System;
 
 namespace Opw.PineBlog
@@ -13,11 +14,14 @@ namespace Opw.PineBlog
     public abstract class RazorPagesTestsBase
     {
         protected Mock<IOptions<PineBlogOptions>> OptionsMock { get; set; }
+        protected Mock<IFeatureManager> FeatureManagerMock { get; set; }
 
         public RazorPagesTestsBase()
         {
             OptionsMock = new Mock<IOptions<PineBlogOptions>>();
             OptionsMock.Setup(o => o.Value).Returns(new PineBlogOptions());
+
+            FeatureManagerMock = new Mock<IFeatureManager>();
         }
 
         protected Tuple<PageContext, ActionContext> GetPageContext(HttpContext httpContext)

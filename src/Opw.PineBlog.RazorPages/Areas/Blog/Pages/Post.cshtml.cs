@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Opw.PineBlog.FeatureManagement;
 using Opw.PineBlog.Models;
 using Opw.PineBlog.Posts;
 
@@ -25,8 +26,8 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
         [ViewData]
         public string Title { get; private set; }
 
-        public PostModel(IMediator mediator, ILogger<PostModel> logger)
-            : base(logger)
+        public PostModel(IMediator mediator, IFeatureManager featureManager, ILogger<PostModel> logger)
+            : base(featureManager, logger)
         {
             _mediator = mediator;
         }

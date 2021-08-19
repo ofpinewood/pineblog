@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Opw.PineBlog.FeatureManagement;
 using Opw.PineBlog.Models;
 using Opw.PineBlog.Posts;
 using Opw.PineBlog.Posts.Search;
@@ -34,8 +35,8 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
         [ViewData]
         public string BlogTitle { get; private set; }
 
-        public IndexModel(IMediator mediator, IOptionsSnapshot<PineBlogOptions> options, ILogger<IndexModel> logger)
-            : base(logger)
+        public IndexModel(IMediator mediator, IOptionsSnapshot<PineBlogOptions> options, IFeatureManager featureManager, ILogger<IndexModel> logger)
+            : base(featureManager, logger)
         {
             _mediator = mediator;
             _options = options;
