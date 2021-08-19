@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Opw.PineBlog.Blogs;
+using Opw.PineBlog.FeatureManagement;
 
 namespace Opw.PineBlog.RazorPages.Areas.Admin.Pages
 {
@@ -14,10 +15,12 @@ namespace Opw.PineBlog.RazorPages.Areas.Admin.Pages
         [BindProperty]
         public UpdateBlogSettingsCommand BlogSettings { get; set; }
 
-        public UpdateBlogSettingsModel(IMediator mediator, ILogger<UpdateBlogSettingsModel> logger)
-            : base(logger)
+        public UpdateBlogSettingsModel(IMediator mediator, IFeatureManager featureManager, ILogger<UpdateBlogSettingsModel> logger)
+            : base(featureManager, logger)
         {
             _mediator = mediator;
+
+            FeatureState = FeatureManager.IsEnabled(FeatureFlag.AdminPosts);
         }
 
         public async Task<IActionResult> OnGetAsync(CancellationToken cancellationToken)

@@ -13,6 +13,9 @@ using Opw.PineBlog.Files.Azure;
 using Opw.PineBlog.Feeds;
 using Opw.PineBlog.Blogs;
 using Opw.PineBlog.Posts.Search;
+using System.Collections.Generic;
+using Opw.PineBlog.FeatureManagement;
+using System;
 
 namespace Opw.PineBlog
 {
@@ -64,6 +67,7 @@ namespace Opw.PineBlog
             services.AddTransient<AzureBlobHelper>();
 
             services.AddPineBlogCoreAzureServices();
+            services.AddFeatureManagement();
 
             return services;
         }
@@ -83,6 +87,19 @@ namespace Opw.PineBlog
 
             services.AddTransient<IValidator<UploadAzureBlobCommand>, UploadAzureBlobCommandValidator>();
             services.AddTransient<IValidator<DeleteAzureBlobCommand>, DeleteAzureBlobCommandValidator>();
+
+            return services;
+        }
+
+        private static IServiceCollection AddFeatureManagement(this IServiceCollection services)
+        {
+            var features = new Dictionary<FeatureFlag, FeatureState>();
+            foreach (FeatureFlag featureFlag in Enum.GetValues(typeof(FeatureFlag)))
+            {
+                features.Add(featureFlag, FeatureState.Enabled());
+            }
+
+            services.AddScoped<IFeatureManager>((_) => new FeatureManager(features));
 
             return services;
         }

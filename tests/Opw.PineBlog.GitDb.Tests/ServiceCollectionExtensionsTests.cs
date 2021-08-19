@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using Opw.PineBlog.FeatureManagement;
 
 namespace Opw.PineBlog.GitDb
 {
@@ -46,6 +47,19 @@ namespace Opw.PineBlog.GitDb
                 ex.Should().BeOfType<ConfigurationException>();
                 ex.Message.Should().Contain("The PineBlog IConfigurationProvider(s) are not configured");
             }
+        }
+
+        [Fact]
+        public void AddPineBlogGitDb_Should_AddFeatureManagement()
+        {
+            var expectedMessage = "Disabled when using the GitDb data provider.  Please use the [repository](https://github.com/ofpinewood/pineblog-gitdb.git) to edit.";
+
+            var featureManager = ServiceProvider.GetService<IFeatureManager>();
+
+            featureManager.IsEnabled(FeatureFlag.AdminBlogSettings).IsEnabled.Should().BeFalse();
+            featureManager.IsEnabled(FeatureFlag.AdminBlogSettings).Message.Should().Be(expectedMessage);
+            featureManager.IsEnabled(FeatureFlag.AdminPosts).IsEnabled.Should().BeFalse();
+            featureManager.IsEnabled(FeatureFlag.AdminPosts).Message.Should().Be(expectedMessage);
         }
     }
 }
