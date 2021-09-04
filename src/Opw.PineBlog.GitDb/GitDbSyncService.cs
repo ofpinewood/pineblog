@@ -12,7 +12,7 @@ namespace Opw.PineBlog.GitDb
     // TODO: add tests
     public class GitDbSyncService : IHostedService, IDisposable
     {
-        private Timer _timer;
+        protected Timer Timer;
         private readonly IOptions<PineBlogGitDbOptions> _options;
         private readonly ILogger<GitDbSyncService> _logger;
 
@@ -28,7 +28,7 @@ namespace Opw.PineBlog.GitDb
         {
             _logger.LogInformation("GitDbSyncService: Hosted Service is starting.");
 
-            _timer = new Timer(Sync, null, TimeSpan.Zero, TimeSpan.FromSeconds(_options.Value.SyncFrequency));
+            Timer = new Timer(Sync, null, TimeSpan.Zero, TimeSpan.FromSeconds(_options.Value.SyncFrequency));
 
             return Task.CompletedTask;
         }
@@ -40,7 +40,7 @@ namespace Opw.PineBlog.GitDb
                 return;
 
             // Stop timer until sync finished;
-            _timer?.Change(Timeout.Infinite, 0);
+            Timer?.Change(Timeout.Infinite, 0);
 
             try
             {
@@ -56,7 +56,7 @@ namespace Opw.PineBlog.GitDb
                 _logger.LogError(ex, $"Could not sync repository \"{_options.Value.RepositoryUrl}\".");
             }
 
-            _timer?.Change(TimeSpan.FromSeconds(_options.Value.SyncFrequency), TimeSpan.FromSeconds(_options.Value.SyncFrequency));
+            Timer?.Change(TimeSpan.FromSeconds(_options.Value.SyncFrequency), TimeSpan.FromSeconds(_options.Value.SyncFrequency));
 
             _logger.LogInformation($"GitDbSyncService: \"{_options.Value.RepositoryUrl}\" synced.");
         }
@@ -65,14 +65,14 @@ namespace Opw.PineBlog.GitDb
         {
             _logger.LogInformation("GitDbSyncService: Hosted Service is stopping.");
 
-            _timer?.Change(Timeout.Infinite, 0);
+            Timer?.Change(Timeout.Infinite, 0);
 
             return Task.CompletedTask;
         }
 
         public void Dispose()
         {
-            _timer?.Dispose();
+            Timer?.Dispose();
         }
     }
 }

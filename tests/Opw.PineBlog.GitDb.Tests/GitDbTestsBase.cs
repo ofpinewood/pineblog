@@ -1,5 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Moq;
 using System;
 using Xunit;
 
@@ -27,6 +29,9 @@ namespace Opw.PineBlog.GitDb
             Services = new ServiceCollection();
             Services.AddPineBlogCore(Configuration);
             Services.AddPineBlogGitDb(Configuration);
+
+            // add a mock logger for the GitDbSyncService
+            Services.AddScoped((_) => new Mock<ILogger<GitDbSyncService>>().Object);
         }
     }
 }
