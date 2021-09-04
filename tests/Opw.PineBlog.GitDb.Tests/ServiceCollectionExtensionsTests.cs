@@ -5,6 +5,7 @@ using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Opw.PineBlog.FeatureManagement;
+using Microsoft.Extensions.Hosting;
 
 namespace Opw.PineBlog.GitDb
 {
@@ -60,6 +61,15 @@ namespace Opw.PineBlog.GitDb
             featureManager.IsEnabled(FeatureFlag.AdminBlogSettings).Message.Should().Be(expectedMessage);
             featureManager.IsEnabled(FeatureFlag.AdminPosts).IsEnabled.Should().BeFalse();
             featureManager.IsEnabled(FeatureFlag.AdminPosts).Message.Should().Be(expectedMessage);
+        }
+
+        [Fact]
+        public void AddPineBlogGitDb_Should_RegisterGitDbSyncService()
+        {
+            var hostedService = ServiceProvider.GetService<IHostedService>();
+
+            hostedService.Should().NotBeNull();
+            hostedService.Should().BeOfType<GitDbSyncService>();
         }
     }
 }

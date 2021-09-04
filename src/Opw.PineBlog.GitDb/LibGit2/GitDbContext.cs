@@ -62,6 +62,18 @@ namespace Opw.PineBlog.GitDb.LibGit2
             return new GitDbContext(repository, credentials, repositoryPath);
         }
 
+        public static GitDbContext CreateFromLocal(PineBlogGitDbOptions options)
+        {
+            var credentials = GetCredentials(options);
+
+            string repositoryPath = Repository.Discover(options.LocalRepositoryBasePath);
+            if (repositoryPath == null)
+                return null;
+
+            var repository = new Repository(options.LocalRepositoryBasePath);
+            return new GitDbContext(repository, credentials, repositoryPath);
+        }
+
         public Branch CheckoutBranch(string branchName)
         {
             Branch branch = null;
@@ -94,6 +106,28 @@ namespace Opw.PineBlog.GitDb.LibGit2
             // pull the remote branch
             branch = Pull(branch, _mergeOptionsTheirs);
             return branch;
+        }
+
+        public int Sync()
+        {
+            var branchesSynced = 0;
+            foreach (var branch in _repository.Branches.Where(b => !b.IsRemote))
+            {
+                var branchToSync = _repository.Branches.SingleOrDefault(b => b.FriendlyName == branch.FriendlyName && !b.IsRemote);
+                if (branchToSync == null)
+                    throw new NotFoundException<Branch>(branch.FriendlyName);
+
+                var checkoutBranch = CheckoutBranch(branchToSync.FriendlyName);
+                var pulledBranch = Pull(checkoutBranch, _mergeOptionsTheirs);
+                branchesSynced++;
+            }
+
+            return branchesSynced;
+        }
+
+        public void SyncBranch(string branchName)
+        {
+            
         }
 
         public async Task<IDictionary<string, byte[]>> GetFilesAsync(string path, CancellationToken cancellationToken)

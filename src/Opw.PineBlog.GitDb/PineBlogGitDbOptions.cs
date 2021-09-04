@@ -41,5 +41,11 @@ namespace Opw.PineBlog.GitDb
         /// </summary>
         /// <remarks>Default: "pineblog".</remarks>
         public string RootPath { get; set; } = "pineblog";
+
+        /// <summary>
+        /// The frequency the remote is synced, in seconds.
+        /// </summary>
+        /// <remarks>Default: 1200 seconds (20 minutes).</remarks>
+        public int SyncFrequency { get; set; } = 1200;
     }
 }

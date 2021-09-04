@@ -41,6 +41,8 @@ namespace Opw.PineBlog.GitDb
 
             services.AddFeatureManagement(configuration);
 
+            services.AddHostedService<GitDbSyncService>();
+
             return services;
         }
 
