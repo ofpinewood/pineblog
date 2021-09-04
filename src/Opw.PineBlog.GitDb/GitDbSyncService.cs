@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace Opw.PineBlog.GitDb
 {
-    // TODO: add tests
     public class GitDbSyncService : IHostedService, IDisposable
     {
         protected Timer Timer;
