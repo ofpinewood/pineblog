@@ -9,12 +9,29 @@ namespace Opw.PineBlog.GitDb.LibGit2
 {
     public class GitDbContextTests : GitDbTestsBase
     {
+        private readonly IOptions<PineBlogGitDbOptions> _options;
         private readonly GitDbContext _gitDbContext;
 
         public GitDbContextTests(GitDbFixture fixture) : base(fixture)
         {
-            var options = ServiceProvider.GetService<IOptions<PineBlogGitDbOptions>>();
-            _gitDbContext = GitDbContext.Create(options.Value);
+            _options = ServiceProvider.GetService<IOptions<PineBlogGitDbOptions>>();
+            _gitDbContext = GitDbContext.Create(_options.Value);
+        }
+
+        [Fact]
+        public void Create_Default_GitDbContext()
+        {
+            var gitDbContext = GitDbContext.Create(_options.Value);
+
+            gitDbContext.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CreateFromLocal_Default_GitDbContext()
+        {
+            var gitDbContext = GitDbContext.CreateFromLocal(_options.Value);
+
+            gitDbContext.Should().NotBeNull();
         }
 
         [Fact]

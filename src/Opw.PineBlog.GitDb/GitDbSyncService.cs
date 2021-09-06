@@ -48,6 +48,8 @@ namespace Opw.PineBlog.GitDb
                     var branchesSynced = context.Sync();
                     if (branchesSynced < 1)
                         _logger.LogError($"Could not sync repository \"{_options.Value.RepositoryUrl}\".");
+
+                    CheckBlogSettingsFileChanges(context);
                 }
             }
             catch (Exception ex)
@@ -58,6 +60,21 @@ namespace Opw.PineBlog.GitDb
             Timer?.Change(TimeSpan.FromSeconds(_options.Value.SyncFrequency), TimeSpan.FromSeconds(_options.Value.SyncFrequency));
 
             _logger.LogInformation($"GitDbSyncService: \"{_options.Value.RepositoryUrl}\" synced.");
+        }
+
+        private void CheckBlogSettingsFileChanges(GitDbContext context)
+        {
+            var path = PathHelper.Build(_options.Value.LocalRepositoryBasePath, _options.Value.RootPath, GitDbConstants.BlogSettingsFile);
+            if (!File.Exists(path))
+                return;
+
+            var lastModifiedDate = File.GetLastWriteTimeUtc(path);
+            if (lastModifiedDate != null && lastModifiedDate > DateTime.UtcNow.AddSeconds(-10))
+            {
+                path = PathHelper.Build(_options.Value.RootPath, GitDbConstants.BlogSettingsFile);
+                var files = context.GetFiles(new string[] { path });
+                FileChangeObserver.Instance.OnChanged(new FileChangeEventArgs(GitDbConstants.BlogSettingsFile, files[path]));
+            }
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
