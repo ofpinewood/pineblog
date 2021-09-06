@@ -2,7 +2,6 @@ using System.Linq;
 
 namespace Opw.PineBlog.GitDb
 {
-    // TODO: add tests
     internal static class PathHelper
     {
         internal static string Build(params string[] parts)

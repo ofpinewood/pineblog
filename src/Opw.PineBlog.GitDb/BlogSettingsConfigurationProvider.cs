@@ -10,7 +10,6 @@ using System.Threading;
 
 namespace Opw.PineBlog.GitDb
 {
-    // TODO: add tests
     /// <summary>
     /// Provides blog settings configuration key/values for the application.
     /// </summary>

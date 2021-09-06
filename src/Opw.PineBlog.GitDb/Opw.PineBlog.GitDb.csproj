@@ -5,7 +5,7 @@
         <Description>PineBlog data provider that uses a Git repository.</Description>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PackageId>Opw.PineBlog.Git</PackageId>
-        <PackageTags>blog git</PackageTags>
+        <PackageTags>blog gitdb git</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>

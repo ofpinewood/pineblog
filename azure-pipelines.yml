@@ -128,6 +128,16 @@ steps:
     versionEnvVar: 'GitVersion.NuGetVersion'
 
 - task: DotNetCoreCLI@2
+  displayName: NuGet Pack Opw.PineBlog.GitDb
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+  inputs:
+    command: pack
+    packagesToPack: '**/Opw.PineBlog.GitDb.csproj'
+    nobuild: true
+    versioningScheme: byEnvVar
+    versionEnvVar: 'GitVersion.NuGetVersion'
+
+- task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.PineBlog
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
   inputs:
