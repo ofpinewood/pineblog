@@ -171,7 +171,6 @@ steps:
    tagSource: auto
    tag: '$(GitVersion.SemVer)'
 
-# Finalize
 - task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
   displayName: 'Generate Code Coverage Report'
   inputs:
@@ -183,9 +182,6 @@ steps:
   inputs:
     codeCoverageTool: Cobertura
     summaryFileLocation: '$(build.artifactstagingdirectory)/coverage/cobertura.xml'
-    # To make the task not regenerate the report an environment variable was added to the pipeline in Azure DevOps; "disable.coverage.autogenerate: 'true'"
-    # see: https://github.com/danielpalme/ReportGenerator/wiki/Integration#attention
-    reportDirectory: '$(build.artifactstagingdirectory)/coverage'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifacts'
