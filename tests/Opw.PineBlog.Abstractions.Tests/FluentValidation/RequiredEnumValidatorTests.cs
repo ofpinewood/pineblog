@@ -32,7 +32,7 @@ namespace Opw.PineBlog.FluentValidation
         [Fact]
         public void Validate_Should_ReturnNoErrors()
         {
-            var validator = new RequiredGuidValidator();
+            var validator = new RequiredEnumValidator();
             var product = new Product { ProductType = ProductType.Hardware };
 
             var selector = ValidatorOptions.ValidatorSelectors.DefaultValidatorSelectorFactory();
