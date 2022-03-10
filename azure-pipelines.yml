@@ -137,15 +137,16 @@ steps:
     versioningScheme: byEnvVar
     versionEnvVar: 'GitVersion.NuGetVersion'
 
-- task: DotNetCoreCLI@2
-  displayName: NuGet Pack Opw.PineBlog.GitDb
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
-  inputs:
-    command: pack
-    packagesToPack: '**/Opw.PineBlog.GitDb.csproj'
-    nobuild: true
-    versioningScheme: byEnvVar
-    versionEnvVar: 'GitVersion.NuGetVersion'
+# TODO: when Opw.PineBlog.GitDb is ready start publishing this nuget package
+#- task: DotNetCoreCLI@2
+#  displayName: NuGet Pack Opw.PineBlog.GitDb
+#  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+#  inputs:
+#    command: pack
+#    packagesToPack: '**/Opw.PineBlog.GitDb.csproj'
+#    nobuild: true
+#    versioningScheme: byEnvVar
+#    versionEnvVar: 'GitVersion.NuGetVersion'
 
 - task: DotNetCoreCLI@2
   displayName: NuGet Pack Opw.PineBlog
