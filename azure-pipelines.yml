@@ -49,6 +49,13 @@ steps:
     packageType: 'sdk'
     version: '5.0.101'
 
+# https://dotnet.microsoft.com/download/dotnet/6.0
+- task: UseDotNet@2
+  displayName: Install .Net 6.0.101
+  inputs:
+    packageType: 'sdk'
+    version: '6.0.101'
+
 - script: |
     echo buildConfiguration: $(buildConfiguration)
     echo GitVersion.SemVer: $(GitVersion.SemVer)
