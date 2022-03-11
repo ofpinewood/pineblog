@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <RootNamespace>Opw.PineBlog.RazorPages</RootNamespace>
     <Description>PineBlog UI using ASP.NET Core MVC Razor Pages.</Description>
@@ -17,8 +17,7 @@
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
     </Exec>
     <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
-    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
-    <Exec WorkingDirectory="$(ProjectDir)" Command="npm install" />
+    <Message Importance="high" Text="WARN Make sure you have restored all dependencies using 'npm' before you build this project." />
     <Exec WorkingDirectory="$(ProjectDir)" Command="node_modules\.bin\gulp default" />
   </Target>
 
@@ -36,6 +35,10 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>
