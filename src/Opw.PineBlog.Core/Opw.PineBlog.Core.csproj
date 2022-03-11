@@ -9,6 +9,8 @@
     <PackageTags>blog core</PackageTags>
     <NuspecFile>Opw.PineBlog.Core.nuspec</NuspecFile>
     <NuspecProperties>version=$(PackageVersion)</NuspecProperties>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
