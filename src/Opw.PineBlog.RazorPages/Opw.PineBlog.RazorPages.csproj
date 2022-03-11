@@ -17,8 +17,7 @@
       <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
     </Exec>
     <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
-    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
-    <Exec WorkingDirectory="$(ProjectDir)" Command="npm install" />
+    <Message Importance="high" Text="WARN Make sure you have restored all dependencies using 'npm' before you build this project." />
     <Exec WorkingDirectory="$(ProjectDir)" Command="node_modules\.bin\gulp default" />
   </Target>
 

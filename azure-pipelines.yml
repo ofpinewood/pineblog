@@ -62,6 +62,11 @@ steps:
     echo GitVersion.NuGetVersion: $(GitVersion.NuGetVersion)
   displayName: 'Print Variables'
 
+- script: |
+    npm install
+  workingDirectory: $(Build.SourcesDirectory)/src/Opw.PineBlog.RazorPages
+  displayName: 'Install packages (npm)'
+
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
