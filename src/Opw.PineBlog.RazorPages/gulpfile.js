@@ -3,9 +3,9 @@
 var gulp = require('gulp'),
     rimraf = require('rimraf'),
     concat = require('gulp-concat'),
-    cssmin = require('gulp-cssmin'),
+    cleancss = require('gulp-clean-css'),
     uglify = require('gulp-uglify'),
-    sass = require('gulp-sass');
+    sass = require('gulp-sass')(require('sass'));
     //runSequence = require('run-sequence');
 
 var paths = {
@@ -50,13 +50,13 @@ gulp.task('min:js-admin', function () {
 gulp.task('min:css', function () {
     return gulp.src([paths.themeroot + 'css/theme.css'])
         .pipe(concat(paths.themeroot + 'css/theme.min.css'))
-        .pipe(cssmin())
+        .pipe(cleancss())
         .pipe(gulp.dest('.'));
 });
 gulp.task('min:css-admin', function () {
     return gulp.src([paths.adminroot + 'css/admin.css'])
         .pipe(concat(paths.adminroot + 'css/admin.min.css'))
-        .pipe(cssmin())
+        .pipe(cleancss())
         .pipe(gulp.dest('.'));
 });
 
