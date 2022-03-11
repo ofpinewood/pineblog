@@ -3,9 +3,16 @@
   "devDependencies": {
     "gulp": "4.0.2",
     "gulp-concat": "2.6.1",
-    "gulp-cssmin": "0.2.0",
+    "gulp-clean-css": "4.3.0",
+    "sass": "1.49.9",
+    "gulp-sass": "5.1.0",
     "gulp-uglify": "3.0.2",
-    "rimraf": "2.7.1",
-    "gulp-sass": "4.0.2"
+    "rimraf": "3.0.2"
+  },
+  "scripts": {
+    "preinstall": "npx npm-force-resolutions"
+  },
+  "resolutions": {
+    "glob-parent": "^6.0.1"
   }
 }
