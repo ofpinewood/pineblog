@@ -1,5 +1,8 @@
-# PineBlog <img src="pineblog-logo-256x256.gif" alt="PineBlog" height="44" align="left" />
+# PineBlog [DEPRECATED] <img src="pineblog-logo-256x256.gif" alt="PineBlog" height="44" align="left" />
 
+> Due to other priorities this project is currently not being supported. There are no planned releases at this time. No new features are planned and no new issues are being picked up.
+
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 [![Build Status](https://dev.azure.com/ofpinewood/GitHub/_apis/build/status/ofpinewood.pineblog?branchName=main)](https://dev.azure.com/ofpinewood/GitHub/_build/latest?definitionId=14&branchName=main)
 [![NuGet Badge](https://img.shields.io/nuget/v/Opw.PineBlog.svg)](https://www.nuget.org/packages/Opw.PineBlog/)
 [![License: MIT](https://img.shields.io/github/license/ofpinewood/pineblog.svg)](https://github.com/ofpinewood/pineblog/blob/main/LICENSE)
