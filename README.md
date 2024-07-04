@@ -1,8 +1,5 @@
-# PineBlog [DEPRECATED] <img src="pineblog-logo-256x256.gif" alt="PineBlog" height="44" align="left" />
+# PineBlog <img src="pineblog-logo-256x256.gif" alt="PineBlog" height="44" align="left" />
 
-> Due to other priorities this project is currently not being supported. There are no planned releases at this time. No new features are planned and no new issues are being picked up.
-
-[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 [![Build Status](https://dev.azure.com/ofpinewood/GitHub/_apis/build/status/ofpinewood.pineblog?branchName=main)](https://dev.azure.com/ofpinewood/GitHub/_build/latest?definitionId=14&branchName=main)
 [![NuGet Badge](https://img.shields.io/nuget/v/Opw.PineBlog.svg)](https://www.nuget.org/packages/Opw.PineBlog/)
 [![License: MIT](https://img.shields.io/github/license/ofpinewood/pineblog.svg)](https://github.com/ofpinewood/pineblog/blob/main/LICENSE)
@@ -142,14 +139,6 @@ For technical background information, check the blog: [ofpinewood.com](https://o
 
 **Check the code** :nerd_face:
 
-## Demo website
-The demo website is a playground to check out PineBlog. You can write and publish posts, upload files and test application before install.
-And no worries, it is just a sandbox and will clean itself.
-
-> **Url:** [pineblog.azurewebsites.net](https://pineblog.azurewebsites.net)  
-> **Username:** pineblog@example.com  
-> **Password:** demo  
-
 ## Usage
 PineBlog is used on the following website:
 - [ofpinewood.com](https://ofpinewood.com)
@@ -161,6 +150,6 @@ We accept fixes and features! Here are some resources to help you get started on
 * [Code of conduct](https://github.com/ofpinewood/pineblog/blob/main/CODE_OF_CONDUCT.md)
 
 ---
-Copyright &copy; 2021, [Of Pine Wood](http://ofpinewood.com).
+Copyright &copy; 2024, [Of Pine Wood](http://ofpinewood.com).
 Created by [Peter van den Hout](http://ofpinewood.com).
 Released under the terms of the [MIT license](https://github.com/ofpinewood/pineblog/blob/main/LICENSE).
