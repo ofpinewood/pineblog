@@ -48,7 +48,7 @@ namespace Opw.PineBlog.GitDb.LibGit2
             files.Should().ContainKey("README.md");
             files.Should().ContainKey("Test.md");
 
-            files["LICENSE"].Should().HaveCount(1090);
+            files["LICENSE"].Should().HaveCount(1069);
         }
 
         [Fact(Skip = "Checking out another branch while running the unit test will randomly fail other tests.")]
@@ -64,7 +64,7 @@ namespace Opw.PineBlog.GitDb.LibGit2
             files.Should().ContainKey("LICENSE");
             files.Should().ContainKey("README.md");
             
-            files["LICENSE"].Should().HaveCount(1090);
+            files["LICENSE"].Should().HaveCount(1069);
         }
 
         [Fact]
@@ -79,7 +79,7 @@ namespace Opw.PineBlog.GitDb.LibGit2
             files.Should().ContainKey("LICENSE");
             files.Should().ContainKey("README.md");
 
-            files["LICENSE"].Should().HaveCount(1090);
+            files["LICENSE"].Should().HaveCount(1069);
         }
     }
 }
