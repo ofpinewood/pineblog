@@ -8,11 +8,5 @@
     "gulp-sass": "5.1.0",
     "gulp-uglify": "3.0.2",
     "rimraf": "3.0.2"
-  },
-  "scripts": {
-    "preinstall": "npx npm-force-resolutions"
-  },
-  "resolutions": {
-    "glob-parent": "^6.0.1"
   }
 }
