@@ -48,7 +48,7 @@ namespace Opw.PineBlog.GitDb.LibGit2
             if (repositoryPath == null)
             {
                 var cloneOptions = new CloneOptions();
-                cloneOptions.CredentialsProvider = (_url, _user, _cred) => credentials;
+                cloneOptions.FetchOptions.CredentialsProvider = (_url, _user, _cred) => credentials;
 
                 var sourceUrl = new Uri(options.RepositoryUrl).AbsoluteUri;
                 repositoryPath = Repository.Clone(sourceUrl, options.LocalRepositoryBasePath, cloneOptions);
