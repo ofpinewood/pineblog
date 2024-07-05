@@ -91,7 +91,7 @@ steps:
     publishWebProjects: false
     projects: |
       **/samples/Opw.PineBlog.Sample/*.csproj
-    arguments: '--configuration $(buildConfiguration) --framework net5.0 --output $(build.artifactstagingdirectory) /p:Version=$(GitVersion.SemVer) --no-build'
+    arguments: '--configuration $(buildConfiguration) --framework net6.0 --output $(build.artifactstagingdirectory) /p:Version=$(GitVersion.SemVer) --no-build'
     zipAfterPublish: false
 
 # Delete the "Areas" folder, this should not be deployed
