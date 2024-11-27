@@ -1,4 +1,6 @@
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using Opw.PineBlog.Entities;
 
 namespace Opw.PineBlog.MongoDb
@@ -22,7 +24,8 @@ namespace Opw.PineBlog.MongoDb
                 BsonClassMap.RegisterClassMap<Post>(m =>
                 {
                     m.AutoMap();
-                    m.MapIdProperty(p => p.Id);
+                    m.MapIdProperty(p => p.Id).SetSerializer(new GuidSerializer(GuidRepresentation.Standard));
+                    m.MapProperty(p => p.AuthorId).SetSerializer(new GuidSerializer(GuidRepresentation.Standard));
                     m.UnmapProperty(p => p.Author);
                 });
             }
@@ -32,7 +35,7 @@ namespace Opw.PineBlog.MongoDb
                 BsonClassMap.RegisterClassMap<Author>(m =>
                 {
                     m.AutoMap();
-                    m.MapIdProperty(a => a.Id);
+                    m.MapIdProperty(a => a.Id).SetSerializer(new GuidSerializer(GuidRepresentation.Standard));
                     m.UnmapProperty(a => a.Posts);
                 });
             }

@@ -16,6 +16,7 @@ using Opw.PineBlog.Posts.Search;
 using System.Collections.Generic;
 using Opw.PineBlog.FeatureManagement;
 using System;
+using System.Reflection;
 
 namespace Opw.PineBlog
 {
@@ -38,8 +39,13 @@ namespace Opw.PineBlog
             services.Configure<PineBlogOptions>(configuration.GetSection(nameof(PineBlogOptions)));
 
             if (services.BuildServiceProvider().GetService<IMediator>() == null)
-                services.AddMediatR(typeof(AddPostCommand).Assembly);
-            ServiceRegistrar.AddMediatRClasses(services, new[] { typeof(AddPostCommand).Assembly });
+            {
+                var mediatRServiceConfiguration = new MediatRServiceConfiguration();
+                mediatRServiceConfiguration.RegisterServicesFromAssembly(typeof(AddPostCommand).Assembly);
+
+                services.AddMediatR(mediatRServiceConfiguration);
+                ServiceRegistrar.AddMediatRClasses(services, mediatRServiceConfiguration);
+            }
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 

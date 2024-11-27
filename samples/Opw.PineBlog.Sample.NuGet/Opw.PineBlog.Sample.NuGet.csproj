@@ -14,15 +14,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Opw.PineBlog" Version="2.0.0-beta0001" />
-    <PackageReference Include="Opw.PineBlog.MongoDb" Version="2.0.0-beta0001" />
-    <PackageReference Include="Mongo2Go" Version="2.2.16" />
-    <PackageReference Include="WaffleGenerator" Version="4.2.0" />
+    <!-- TODO: Fix after Opw.PineBlog.* packages have been updated to version 4.* -->
+    <!--<PackageReference Include="Opw.PineBlog" Version="3.0.1" />
+    <PackageReference Include="Opw.PineBlog.MongoDb" Version="3.0.1" />-->
+    <PackageReference Include="Mongo2Go" Version="4.0.0" />
+    <PackageReference Include="WaffleGenerator" Version="4.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- TODO: Fix after Opw.PineBlog.* packages have been updated to version 4.* -->
+    <ProjectReference Include="..\..\ref\Opw.PineBlog\Opw.PineBlog.csproj" />
+    <ProjectReference Include="..\..\src\Opw.PineBlog.MongoDb\Opw.PineBlog.MongoDb.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>

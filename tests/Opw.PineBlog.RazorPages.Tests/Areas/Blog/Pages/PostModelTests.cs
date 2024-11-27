@@ -127,7 +127,7 @@ namespace Opw.PineBlog.RazorPages.Areas.Blog.Pages
 
             Func<Task> action = async () => await pageModel.OnGetAsync("slug", default);
 
-            action.Should().Throw<NotFoundException>();
+            action.Should().ThrowAsync<NotFoundException>();
         }
 
         private PineBlog.Models.PostModel GetPostModel()

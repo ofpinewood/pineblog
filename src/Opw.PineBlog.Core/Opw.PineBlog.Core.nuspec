@@ -16,21 +16,21 @@
       <group targetFramework="net9.0">
         <!-- Opw.PineBlog.Core -->
         <dependency id="Markdig" version="0.22.1" exclude="Build,Analyzers" />
-        <dependency id="MediatR.Extensions.Microsoft.DependencyInjection" version="8.0.0" exclude="Build,Analyzers" />
+        <dependency id="MediatR.Extensions.Microsoft.DependencyInjection" version="11.1.0" exclude="Build,Analyzers" />
         <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="2.2.0" exclude="Build,Analyzers" />
         <dependency id="Microsoft.Azure.Storage.Blob" version="11.2.3" exclude="Build,Analyzers" />
-        <dependency id="MimeMapping" version="1.0.1.30" exclude="Build,Analyzers" />
-        <dependency id="System.ServiceModel.Syndication" version="4.7.0" exclude="Build,Analyzers" />
-
+        <dependency id="MimeMapping" version="3.0.1" exclude="Build,Analyzers" />
+        
         <!-- '$(TargetFramework)' == 'net9.0' --> 
-        <dependency id="Microsoft.Extensions.DependencyInjection" version="6.0.0" exclude="Build,Analyzers" />
-        <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="6.0.0" exclude="Build,Analyzers" />
+        <dependency id="System.ServiceModel.Syndication" version="9.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.DependencyInjection" version="9.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="9.0.0" exclude="Build,Analyzers" />
 
         <!-- Opw.PineBlog.Abstractions -->
-        <dependency id="Opw.HttpExceptions" version="3.0.2" exclude="Build,Analyzers" />
+        <dependency id="Opw.HttpExceptions" version="4.0.3" exclude="Build,Analyzers" />
         <dependency id="FluentValidation" version="8.6.2" exclude="Build,Analyzers" />
-        <dependency id="System.ComponentModel.Annotations" version="4.7.0" exclude="Build,Analyzers" />
-        <dependency id="MediatR" version="8.0.1" exclude="Build,Analyzers" />
+        <dependency id="System.ComponentModel.Annotations" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="MediatR" version="12.4.1" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Opw.PineBlog.EntityFrameworkCore;
 using Opw.PineBlog.Files;
+using Opw.PineBlog.Posts;
 using Opw.PineBlog.Sample.Mocks;
 using System.Linq;
 
@@ -35,7 +36,9 @@ namespace Opw.PineBlog.Sample
         {
             builder.ConfigureTestServices(services =>
             {
-                ServiceRegistrar.AddMediatRClasses(services, new[] { typeof(TestWebApplicationFactory<>).Assembly });
+                var mediatRServiceConfiguration = new MediatRServiceConfiguration();
+                mediatRServiceConfiguration.RegisterServicesFromAssembly(typeof(TestWebApplicationFactory<>).Assembly);
+                ServiceRegistrar.AddMediatRClasses(services, mediatRServiceConfiguration);
 
                 var serviceDescriptor = services.FirstOrDefault(descriptor => descriptor.ServiceType == typeof(IGetPagedFileListQueryFactory));
                 services.Remove(serviceDescriptor);

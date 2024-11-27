@@ -7,10 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Opw.HttpExceptions" Version="3.0.2" />
+    <PackageReference Include="Opw.HttpExceptions" Version="4.0.3" />
     <PackageReference Include="FluentValidation" Version="8.6.2" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
-    <PackageReference Include="MediatR" Version="8.0.1" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
   </ItemGroup>
 
 </Project>

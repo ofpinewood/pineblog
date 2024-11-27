@@ -87,7 +87,7 @@ namespace Opw.PineBlog.Feeds
             feedXml.LoadXml(result.Value.Feed);
 
             var items = feedXml.SelectNodes("/rss/channel/item");
-            items.Should().HaveCount(5);
+            items.Count.Should().Be(5);
         }
 
         [Fact]

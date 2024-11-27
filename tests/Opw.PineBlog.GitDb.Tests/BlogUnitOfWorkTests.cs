@@ -42,7 +42,7 @@ namespace Opw.PineBlog.GitDb
         {
             Func<Task> act = async () => await _uow.SaveChangesAsync(CancellationToken.None);
 
-            act.Should().Throw<NotImplementedException>();
+            act.Should().ThrowAsync<NotImplementedException>();
         }
     }
 }

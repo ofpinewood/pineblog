@@ -1,4 +1,6 @@
+using FluentAssertions.Common;
 using MediatR;
+using MediatR.Registration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
@@ -29,10 +31,15 @@ namespace Opw.PineBlog
         {
             var configuration = new ConfigurationBuilder()
                .AddJsonFile("appsettings.json")
-               .Build();
+            .Build();
 
             Services = new ServiceCollection();
-            Services.AddMediatR(typeof(AddPostCommand).Assembly);
+
+            var mediatRServiceConfiguration = new MediatRServiceConfiguration();
+            mediatRServiceConfiguration.RegisterServicesFromAssembly(typeof(AddPostCommand).Assembly);
+            Services.AddMediatR(mediatRServiceConfiguration);
+            ServiceRegistrar.AddMediatRClasses(Services, mediatRServiceConfiguration);
+
             Services.AddPineBlogCore(configuration);
             
             BlogSettingsRepositoryMock = new Mock<IBlogSettingsRepository>();
