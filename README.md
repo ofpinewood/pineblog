@@ -56,73 +56,7 @@ The PineBlog core package. This package is a dependency for `Opw.PineBlog.RazorP
 > For using MongoDb, see [Using MongoDb](https://github.com/ofpinewood/pineblog/tree/main/docs/mongodb.md) on how to setup that.
 
 ## Getting started
-You add the PineBlog services and the Razor Pages UI in the Startup.cs of your application.
-
-``` csharp
-public void ConfigureServices(IServiceCollection services)
-{
-    ...
-    services.AddPineBlog(Configuration);
-
-    services.AddRazorPages().AddPineBlogRazorPages();
-    // or services.AddMvcCore().AddPineBlogRazorPages();
-    // or services.AddMvc().AddPineBlogRazorPages();
-    ...
-}
-
-public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-{
-
-    // Make sure you enable static file serving
-    app.UseStaticFiles();
-
-    ...
-    app.UseEndpoints(endpoints =>
-    {
-        // make sure to add the endpoint mapping for both RazorPages and Controllers
-        endpoints.MapRazorPages();
-        endpoints.MapControllers();
-    });
-    ...
-}
-```
-
-NOTE: Make sure you enable static file serving `app.UseStaticFiles();`, to enable the serving of the css and javascript from the `Opw.PineBlog.RazorPages` packages.
-
-See [Customizing the layout](https://github.com/ofpinewood/pineblog/tree/main/docs/custom-layout.md) on how to setup the layout pages, css and javascript.
-
-### Configuration
-And a few properties need to be configured before you can run your web application with PineBlog.
-
-``` json
-{
-    "ConnectionStrings": {
-        "DefaultConnection": "Server=inMemory; Database=pineblog-db;"
-    },
-    "PineBlogOptions": {
-        "Title": "PineBlog",
-        "Description": "A blogging engine based on ASP.NET Core MVC Razor Pages and Entity Framework Core",
-        "ItemsPerPage": 5,
-        "CreateAndSeedDatabases": true,
-        "ConnectionStringName": "DefaultConnection",
-        "AzureStorageConnectionString": "UseDevelopmentStorage=true",
-        "AzureStorageBlobContainerName": "pineblog",
-        "FileBaseUrl": "http://127.0.0.1:10000/devstoreaccount1"
-    }
-}
-```
-
-#### Blog Settings ConfigurationProvider
-To be able to update the blog settings from the admin pages, you need to add the PineBlog `IConfigurationProvider`s to the
-`IConfigurationBuilder` in the `Program.cs`. Add `config.AddPineBlogEntityFrameworkCoreConfiguration(reloadOnChange: true);` to `ConfigureAppConfiguration(..)` on the `IWebHostBuilder`.
-
-``` csharp
-WebHost.CreateDefaultBuilder(args)
-    .UseStartup<Startup>()
-    .ConfigureAppConfiguration((hostingContext, config) => {
-        config.AddPineBlogEntityFrameworkCoreConfiguration(reloadOnChange: true);
-    });
-```
+See: [Getting started](https://github.com/ofpinewood/pineblog/tree/main/docs/getting-started.md)
 
 ## Documentation
 For more information, please check the documentation.

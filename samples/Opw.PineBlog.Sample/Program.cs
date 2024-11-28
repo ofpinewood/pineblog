@@ -1,19 +1,19 @@
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
-using Opw.PineBlog.Sample;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Opw.PineBlog.EntityFrameworkCore;
-using Opw.PineBlog.MongoDb;
 using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Opw.PineBlog.RazorPages;
-using Opw.PineBlog.Sample.Middleware;
-using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Opw.PineBlog;
+using Opw.PineBlog.EntityFrameworkCore;
+using Opw.PineBlog.MongoDb;
+using Opw.PineBlog.RazorPages;
+using Opw.PineBlog.Sample;
+using Opw.PineBlog.Sample.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,8 +58,7 @@ else
     builder.Services.AddPineBlog(builder.Configuration);
 }
 
-builder.Services.AddRazorPages()
-    .AddPineBlogRazorPages();
+builder.Services.AddRazorPages().AddPineBlogRazorPages();
 
 builder.Services.AddRouting(options => {
     options.LowercaseUrls = true;

@@ -1,5 +1,29 @@
 # Getting started
-Add the PineBlog services and the Razor Pages UI in the Startup.cs of your application.
+## Using top-level statements
+``` csharp
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddPineBlog(builder.Configuration);
+
+builder.Services.AddRazorPages().AddPineBlogRazorPages();
+// or builder.Services.AddMvcCore().AddPineBlogRazorPages();
+// or builder.Services.AddMvc().AddPineBlogRazorPages();
+
+...
+
+var app = builder.Build();
+
+// Make sure you enable static file serving
+app.UseStaticFiles();
+
+// make sure to add the mapping for both RazorPages and Controllers
+app.MapRazorPages();
+app.MapControllers();
+
+```
+
+## Using a Program.cs and a Main method
+You add the PineBlog services and the Razor Pages UI in the Startup.cs of your application.
 
 ``` csharp
 public void ConfigureServices(IServiceCollection services)
@@ -15,6 +39,7 @@ public void ConfigureServices(IServiceCollection services)
 
 public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 {
+
     // Make sure you enable static file serving
     app.UseStaticFiles();
 
@@ -29,6 +54,7 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 }
 ```
 
+## Layout pages, css and javascript
 NOTE: Make sure you enable static file serving `app.UseStaticFiles();`, to enable the serving of the css and javascript from the `Opw.PineBlog.RazorPages` packages.
 
 See [Customizing the layout](https://github.com/ofpinewood/pineblog/tree/main/docs/custom-layout.md) on how to setup the layout pages, css and javascript.
@@ -69,9 +95,17 @@ The rest of the properties are optional and will be set with default values if y
 }
 ```
 
-### Blog Settings ConfigurationProvider
-To be able to update the blog settings from the admin pages, you need to add the PineBlog `IConfigurationProvider`s to the
-`IConfigurationBuilder` in the `Program.cs`. Add `config.AddPineBlogEntityFrameworkCoreConfiguration(reloadOnChange: true);` to `ConfigureAppConfiguration(..)` on the `IWebHostBuilder`.
+## Blog Settings ConfigurationProvider
+To be able to update the blog settings from the admin pages, you need to add the PineBlog `IConfigurationProvider`s to the `IConfigurationBuilder`.
+
+### Using top-level statements
+``` csharp
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddPineBlogEntityFrameworkCoreConfiguration(reloadOnChange: true);
+```
+
+### Using a Program.cs and a Main method
 
 ``` csharp
 WebHost.CreateDefaultBuilder(args)
