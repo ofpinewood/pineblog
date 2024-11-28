@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Opw.PineBlog.Files.Azure
+namespace Opw.PineBlog.Files.AzureBlobs
 {
     public class DeleteAzureBlobCommandTests : MediatRTestsBase
     {

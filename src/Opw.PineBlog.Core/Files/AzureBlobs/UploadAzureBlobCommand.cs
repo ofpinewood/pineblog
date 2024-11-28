@@ -1,10 +1,11 @@
-using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs.Models;
+using Microsoft.AspNetCore.Http;
 
-namespace Opw.PineBlog.Files.Azure
+namespace Opw.PineBlog.Files.AzureBlobs
 {
     /// <summary>
     /// Command that uploads a blob to Azure blob storage.
@@ -58,19 +59,19 @@ namespace Opw.PineBlog.Files.Azure
                 var result = await ProcessFormFileAsync(request.File, fileName, stream);
                 if (!result.IsSuccess) return result;
 
-                var cloudBlobContainer = await _azureBlobHelper.GetCloudBlobContainerAsync(cancellationToken);
-                if (!cloudBlobContainer.IsSuccess)
-                    return Result<string>.Fail(cloudBlobContainer.Exception);
+                var blobContainerClient = await _azureBlobHelper.GetBlobContainerClientAsync(cancellationToken);
+                if (!blobContainerClient.IsSuccess)
+                    return Result<string>.Fail(blobContainerClient.Exception);
 
                 try
                 {
                     var blobName = $"{request.TargetPath.Trim('/')}/{fileName.Trim('/')}";
-                    var cloudBlockBlob = cloudBlobContainer.Value.GetBlockBlobReference(blobName);
-                    cloudBlockBlob.Properties.ContentType = fileName.GetMimeType();
+                    var blobClient = blobContainerClient.Value.GetBlobClient(blobName);
 
                     stream.Position = 0;
-                    await cloudBlockBlob.UploadFromStreamAsync(stream);
-                    return Result<string>.Success(cloudBlockBlob.Uri.AbsoluteUri);
+                    var response = await blobClient.UploadAsync(stream, new BlobUploadOptions { HttpHeaders = new BlobHttpHeaders { ContentType = fileName.GetMimeType() } }, cancellationToken);
+                    
+                    return Result<string>.Success(blobClient.Uri.AbsoluteUri);
                 }
                 catch (Exception ex)
                 {

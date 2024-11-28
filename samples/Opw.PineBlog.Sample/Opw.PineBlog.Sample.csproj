@@ -26,4 +26,8 @@
     <ProjectReference Include="..\..\src\Opw.PineBlog.MongoDb\Opw.PineBlog.MongoDb.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Opw.PineBlog.Sample.Tests" />
+  </ItemGroup>
+  
 </Project>

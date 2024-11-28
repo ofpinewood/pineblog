@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Opw.PineBlog.Files.Azure
+namespace Opw.PineBlog.Files.AzureBlobs
 {
     /// <summary>
     /// Command that deletes a blob to Azure blob storage.
@@ -42,16 +42,14 @@ namespace Opw.PineBlog.Files.Azure
             /// <param name="cancellationToken">A cancellation token.</param>
             public async Task<Result> Handle(DeleteAzureBlobCommand request, CancellationToken cancellationToken)
             {
-                var cloudBlobContainer = await _azureBlobHelper.GetCloudBlobContainerAsync(cancellationToken);
-                if (!cloudBlobContainer.IsSuccess)
-                    return Result.Fail(cloudBlobContainer.Exception);
+                var blobContainerClient = await _azureBlobHelper.GetBlobContainerClientAsync(cancellationToken);
+                if (!blobContainerClient.IsSuccess)
+                    return Result.Fail(blobContainerClient.Exception);
 
                 try
                 {
                     var blobName = $"{request.TargetPath.Trim('/')}/{request.FileName.Trim('/')}";
-                    var cloudBlockBlob = cloudBlobContainer.Value.GetBlockBlobReference(blobName);
-
-                     var result = await cloudBlockBlob.DeleteIfExistsAsync();
+                    var result = await blobContainerClient.Value.DeleteBlobIfExistsAsync(blobName);
                     if (!result)
                         return Result.Fail(new FileDeleteException($"The blob ({request.FileName}) does not exist."));
 

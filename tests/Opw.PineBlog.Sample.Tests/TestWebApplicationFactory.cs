@@ -4,16 +4,16 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Opw.PineBlog.EntityFrameworkCore;
 using Opw.PineBlog.Files;
-using Opw.PineBlog.Posts;
 using Opw.PineBlog.Sample.Mocks;
 using System.Linq;
 
 namespace Opw.PineBlog.Sample
 {
-    public class TestWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup>
-        where TStartup : class
+    public class TestWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram>
+        where TProgram : class
     {
         public IConfigurationRoot Configuration { get; }
 
@@ -24,12 +24,15 @@ namespace Opw.PineBlog.Sample
                 .Build();
         }
 
-        protected override IWebHostBuilder CreateWebHostBuilder()
+        protected override IHost CreateHost(IHostBuilder builder)
         {
-            return new WebHostBuilder()
-                .UseConfiguration(Configuration)
-                .UseStartup<TStartup>()
-                .ConfigureAppConfiguration((_, config) => config.AddPineBlogEntityFrameworkCoreConfiguration(reloadOnChange: true));
+            builder.ConfigureHostConfiguration(config =>
+            {
+                config.AddConfiguration(Configuration);
+                config.AddPineBlogEntityFrameworkCoreConfiguration(reloadOnChange: true);
+            });
+
+            return base.CreateHost(builder);
         }
 
         protected override TestServer CreateServer(IWebHostBuilder builder)

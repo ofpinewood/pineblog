@@ -14,21 +14,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Files\Azure\_namespace.cs" />
+    <Compile Remove="Files\AzureBlobs\_namespace.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Files\Azure\_namespace.cs" />
+    <None Include="Files\AzureBlobs\_namespace.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Markdig" Version="0.38.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Azure.Storage.Blob" Version="11.2.3" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.23.0" />
     <PackageReference Include="MimeMapping" Version="3.0.1" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="9.0.0" />
     <PackageReference Include="System.ServiceModel.Syndication" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.0" />
