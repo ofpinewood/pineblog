@@ -24,19 +24,14 @@ namespace Opw.PineBlog.Sample
                 .Build();
         }
 
-        protected override IHost CreateHost(IHostBuilder builder)
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.ConfigureHostConfiguration(config =>
+            builder.ConfigureAppConfiguration(config =>
             {
                 config.AddConfiguration(Configuration);
                 config.AddPineBlogEntityFrameworkCoreConfiguration(reloadOnChange: true);
             });
 
-            return base.CreateHost(builder);
-        }
-
-        protected override TestServer CreateServer(IWebHostBuilder builder)
-        {
             builder.ConfigureTestServices(services =>
             {
                 var mediatRServiceConfiguration = new MediatRServiceConfiguration();
@@ -48,7 +43,6 @@ namespace Opw.PineBlog.Sample
 
                 services.AddTransient<IGetPagedFileListQueryFactory, GetPagedFileListQueryFactoryMock>();
             });
-            return base.CreateServer(builder);
         }
     }
 }
