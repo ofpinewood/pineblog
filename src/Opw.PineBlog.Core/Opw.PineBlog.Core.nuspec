@@ -16,7 +16,6 @@
       <group targetFramework="net9.0">
         <!-- Opw.PineBlog.Core -->
         <dependency id="Markdig" version="0.22.1" exclude="Build,Analyzers" />
-        <dependency id="MediatR.Extensions.Microsoft.DependencyInjection" version="11.1.0" exclude="Build,Analyzers" />
         <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="2.2.0" exclude="Build,Analyzers" />
         <dependency id="Microsoft.Azure.Storage.Blob" version="11.2.3" exclude="Build,Analyzers" />
         <dependency id="MimeMapping" version="3.0.1" exclude="Build,Analyzers" />
