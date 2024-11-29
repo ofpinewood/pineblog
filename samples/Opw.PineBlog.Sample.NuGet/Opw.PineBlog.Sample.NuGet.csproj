@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Opw.PineBlog" Version="4.0.0-tags-4-0-0-preview9.1" />
-    <PackageReference Include="Opw.PineBlog.MongoDb" Version="4.0.0-tags-4-0-0-preview9.1" />
+    <PackageReference Include="Opw.PineBlog" Version="4.0.0-tags-4-0-0-preview10.1" />
+    <PackageReference Include="Opw.PineBlog.MongoDb" Version="4.0.0-tags-4-0-0-preview10.1" />
     <PackageReference Include="Mongo2Go" Version="4.0.0" />
     <PackageReference Include="WaffleGenerator" Version="4.2.2" />
   </ItemGroup>
