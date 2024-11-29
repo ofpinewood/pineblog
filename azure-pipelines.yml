@@ -98,7 +98,6 @@ steps:
       command: pack
       packagesToPack: '**/Opw.PineBlog.Core.csproj'
       nobuild: true
-      arguments: '--include-symbols'
       versioningScheme: byEnvVar
       versionEnvVar: 'GitVersion.SemVer'
 

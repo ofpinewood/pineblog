@@ -6,9 +6,9 @@
     <authors>Of Pine Wood</authors>
     <owners>Of Pine Wood</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <licenseUrl>https://github.com/ofpinewood/pineblog/blob/main/LICENSE</licenseUrl>
+    <license>https://github.com/ofpinewood/pineblog/blob/main/LICENSE</license>
     <projectUrl>https://github.com/ofpinewood/pineblog</projectUrl>
-    <iconUrl>https://github.com/ofpinewood/pineblog/blob/main/pineblog-logo-256x256.gif?raw=true</iconUrl>
+    <icon>https://github.com/ofpinewood/pineblog/blob/main/pineblog-logo-256x256.gif?raw=true</icon>
     <description>PineBlog core package.</description>
     <tags>blog core</tags>
     <repository type="git" url="https://github.com/ofpinewood/pineblog" />
@@ -37,5 +37,6 @@
   <files>
     <file src="bin\Release\net9.0\*.dll" target="lib\net9.0\"/>
     <file src="bin\Release\net9.0\*.xml" target="lib\net9.0\"/>
+    <file src="bin\Release\net9.0\*.pdb" target="lib\net9.0\"/>
   </files>
 </package>
