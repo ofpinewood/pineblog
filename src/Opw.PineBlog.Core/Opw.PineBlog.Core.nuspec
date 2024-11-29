@@ -6,9 +6,9 @@
     <authors>Of Pine Wood</authors>
     <owners>Of Pine Wood</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <license>https://github.com/ofpinewood/pineblog/blob/main/LICENSE</license>
+    <licenseUrl>https://github.com/ofpinewood/pineblog/blob/main/LICENSE</license>
     <projectUrl>https://github.com/ofpinewood/pineblog</projectUrl>
-    <icon>https://github.com/ofpinewood/pineblog/blob/main/pineblog-logo-256x256.gif?raw=true</icon>
+    <iconUrl>https://github.com/ofpinewood/pineblog/blob/main/pineblog-logo-256x256.gif?raw=true</icon>
     <description>PineBlog core package.</description>
     <tags>blog core</tags>
     <repository type="git" url="https://github.com/ofpinewood/pineblog" />
