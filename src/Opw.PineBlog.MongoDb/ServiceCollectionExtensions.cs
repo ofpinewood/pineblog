@@ -1,6 +1,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Linq;
 
@@ -28,7 +31,7 @@ namespace Opw.PineBlog.MongoDb
             }
 
             BsonClassMappings.Register();
-
+            
             // TODO: add check for when someone tries to add multiple databases
             services.AddTransient<IMongoDatabase>(provider =>
             {

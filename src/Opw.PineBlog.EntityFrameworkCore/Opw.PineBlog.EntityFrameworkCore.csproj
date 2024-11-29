@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0</TargetFrameworks>
+    <TargetFrameworks>net9.0</TargetFrameworks>
     <Description>PineBlog data provider that uses Entity Framework Core.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>Opw.PineBlog.EntityFrameworkCore</PackageId>
@@ -10,14 +10,14 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.1">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>

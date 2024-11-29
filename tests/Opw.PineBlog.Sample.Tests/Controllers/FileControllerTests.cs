@@ -6,18 +6,17 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Opw.PineBlog.Models;
 using FluentAssertions;
 using Opw.AspNetCore.Testing.Net.Http;
-using System.Reflection;
 using System.Net;
 
 namespace Opw.PineBlog.Sample.Controllers
 {
-    public class FileControllerTests : IClassFixture<TestWebApplicationFactory<Startup>>
+    public class FileControllerTests : IClassFixture<TestWebApplicationFactory<Program>>
     {
-        private readonly TestWebApplicationFactory<Startup> _factory;
+        private readonly TestWebApplicationFactory<Program> _factory;
         private readonly HttpClient _client;
         private readonly AuthenticationContext _authenticationContext;
 
-        public FileControllerTests(TestWebApplicationFactory<Startup> factory)
+        public FileControllerTests(TestWebApplicationFactory<Program> factory)
         {
             _authenticationContext = new AuthenticationContext
             {

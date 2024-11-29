@@ -46,7 +46,7 @@ namespace Opw.PineBlog.RazorPages.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("RSS feed error.", ex);
+                _logger.LogError(ex, "RSS feed error.");
                 return StatusCode(StatusCodes.Status500InternalServerError, "RSS feed error.");
             }
         }
@@ -65,7 +65,7 @@ namespace Opw.PineBlog.RazorPages.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("Atom feed error.", ex);
+                _logger.LogError(ex, "Atom feed error.");
                 return StatusCode(StatusCodes.Status500InternalServerError, "Atom feed error.");
             }
         }

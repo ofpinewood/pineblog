@@ -6,16 +6,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Opw.PineBlog.Posts;
 using Opw.PineBlog.MediatR;
 using Opw.PineBlog.Files;
-using Microsoft.Azure.Storage.Blob;
-using Microsoft.Azure.Storage;
 using Microsoft.Extensions.Options;
-using Opw.PineBlog.Files.Azure;
+using Opw.PineBlog.Files.AzureBlobs;
 using Opw.PineBlog.Feeds;
 using Opw.PineBlog.Blogs;
 using Opw.PineBlog.Posts.Search;
 using System.Collections.Generic;
 using Opw.PineBlog.FeatureManagement;
 using System;
+using Azure.Storage.Blobs;
 
 namespace Opw.PineBlog
 {
@@ -38,8 +37,13 @@ namespace Opw.PineBlog
             services.Configure<PineBlogOptions>(configuration.GetSection(nameof(PineBlogOptions)));
 
             if (services.BuildServiceProvider().GetService<IMediator>() == null)
-                services.AddMediatR(typeof(AddPostCommand).Assembly);
-            ServiceRegistrar.AddMediatRClasses(services, new[] { typeof(AddPostCommand).Assembly });
+            {
+                var mediatRServiceConfiguration = new MediatRServiceConfiguration();
+                mediatRServiceConfiguration.RegisterServicesFromAssembly(typeof(AddPostCommand).Assembly);
+
+                services.AddMediatR(mediatRServiceConfiguration);
+                ServiceRegistrar.AddMediatRClasses(services, mediatRServiceConfiguration);
+            }
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
@@ -74,15 +78,18 @@ namespace Opw.PineBlog
 
         private static IServiceCollection AddPineBlogCoreAzureServices(this IServiceCollection services)
         {
-            services.AddSingleton<CloudBlobClient>((provider) =>
+            services.AddSingleton<BlobServiceClient>((provider) =>
             {
                 var options = provider.GetRequiredService<IOptions<PineBlogOptions>>();
 
-                CloudStorageAccount storageAccount;
-                if (!CloudStorageAccount.TryParse(options.Value.AzureStorageConnectionString, out storageAccount))
+                try
+                {
+                    return new BlobServiceClient(options.Value.AzureStorageConnectionString);
+                }
+                catch
+                {
                     throw new ConfigurationException("The PineBlogOptions.AzureStorageConnectionString is invalid.");
-
-                return storageAccount.CreateCloudBlobClient();
+                }
             });
 
             services.AddTransient<IValidator<UploadAzureBlobCommand>, UploadAzureBlobCommandValidator>();

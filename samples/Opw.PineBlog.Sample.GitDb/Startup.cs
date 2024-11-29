@@ -38,9 +38,7 @@ namespace Opw.PineBlog.Sample.GitDb
             services.AddPineBlogCore(Configuration);
             services.AddPineBlogGitDb(Configuration);
 
-            services.AddRazorPages()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                .AddPineBlogRazorPages();
+            services.AddRazorPages().AddPineBlogRazorPages();
 
             services.AddRouting(options =>
             {

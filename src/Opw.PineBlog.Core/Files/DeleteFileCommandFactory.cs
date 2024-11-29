@@ -1,4 +1,4 @@
-using Opw.PineBlog.Files.Azure;
+using Opw.PineBlog.Files.AzureBlobs;
 
 namespace Opw.PineBlog.Files
 {

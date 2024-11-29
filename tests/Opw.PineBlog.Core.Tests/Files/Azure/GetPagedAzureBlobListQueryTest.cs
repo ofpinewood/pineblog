@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Http;
 using Moq;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Opw.PineBlog.Files.Azure
+namespace Opw.PineBlog.Files.AzureBlobs
 {
     public class GetPagedAzureBlobListQueryTest : MediatRTestsBase
     {
@@ -26,6 +27,9 @@ namespace Opw.PineBlog.Files.Azure
             result.Value.Should().NotBeNull();
             result.Value.Files.Should().HaveCount(5);
             result.Value.Pager.Total.Should().Be(9);
+
+            result.Value.Files.First().Url.Should().Contain("pineblog-tests");
+            result.Value.Files.First().Url.Should().StartWith("http://127.0.0.1:10000/devstoreaccount1");
         }
 
         [Fact(Skip = Constants.SkipAzureStorageEmulatorTests)]
@@ -44,6 +48,9 @@ namespace Opw.PineBlog.Files.Azure
             result.Value.Should().NotBeNull();
             result.Value.Files.Should().HaveCount(4);
             result.Value.Pager.Total.Should().Be(9);
+
+            result.Value.Files.First().Url.Should().Contain("pineblog-tests");
+            result.Value.Files.First().Url.Should().StartWith("http://127.0.0.1:10000/devstoreaccount1");
         }
 
         [Fact(Skip = Constants.SkipAzureStorageEmulatorTests)]
@@ -62,6 +69,10 @@ namespace Opw.PineBlog.Files.Azure
             result.Value.Should().NotBeNull();
             result.Value.Files.Should().HaveCount(3);
             result.Value.Pager.Total.Should().Be(3);
+
+            result.Value.Files.First().Url.Should().EndWith("file-2.gif");
+            result.Value.Files.First().Url.Should().Contain("pineblog-tests");
+            result.Value.Files.First().Url.Should().StartWith("http://127.0.0.1:10000/devstoreaccount1");
         }
 
         private IFormFile GetFormFile(string fileName)

@@ -6,9 +6,14 @@ using System.Threading;
 
 namespace Opw.PineBlog.Sample
 {
-    internal class MongoDbInMemoryRunner : IDisposable
+    internal sealed class MongoDbInMemoryRunner : IDisposable
     {
+        private static readonly Lazy<MongoDbInMemoryRunner> lazy = new Lazy<MongoDbInMemoryRunner>(() => new MongoDbInMemoryRunner());
         private MongoDbRunner _runner;
+
+        public static MongoDbInMemoryRunner Instance { get { return lazy.Value; } }
+
+        private MongoDbInMemoryRunner() { }
 
         /// <summary>
         /// Initializes an in-memory MongoDbRunner when needed.
@@ -35,7 +40,7 @@ namespace Opw.PineBlog.Sample
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing)
+        public void Dispose(bool disposing)
         {
             if (disposing)
             {

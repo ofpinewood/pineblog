@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0</TargetFrameworks>
+    <TargetFrameworks>net9.0</TargetFrameworks>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <RootNamespace>Opw.PineBlog.RazorPages</RootNamespace>
     <Description>PineBlog UI using ASP.NET Core MVC Razor Pages.</Description>
@@ -31,8 +31,8 @@
     <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.2" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.1" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>

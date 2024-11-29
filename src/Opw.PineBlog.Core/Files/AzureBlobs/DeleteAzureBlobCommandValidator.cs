@@ -1,5 +1,5 @@
 
-namespace Opw.PineBlog.Files.Azure
+namespace Opw.PineBlog.Files.AzureBlobs
 {
     /// <summary>
     /// Validator for the DeleteAzureBlobCommand request.

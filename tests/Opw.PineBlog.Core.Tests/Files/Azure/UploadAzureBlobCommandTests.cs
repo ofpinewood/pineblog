@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Opw.PineBlog.Files.Azure
+namespace Opw.PineBlog.Files.AzureBlobs
 {
     public class UploadAzureBlobCommandTests : MediatRTestsBase
     {
@@ -46,6 +46,8 @@ namespace Opw.PineBlog.Files.Azure
 
             result.IsSuccess.Should().BeTrue();
             result.Value.Should().EndWith("files/file-name.txt");
+            result.Value.Should().Contain("pineblog-tests");
+            result.Value.Should().StartWith("http://127.0.0.1:10000/devstoreaccount1");
         }
 
         [Fact]

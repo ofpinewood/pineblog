@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Opw.PineBlog.EntityFrameworkCore;
 using Opw.PineBlog.Files;
 using Opw.PineBlog.Sample.Mocks;
@@ -11,8 +12,8 @@ using System.Linq;
 
 namespace Opw.PineBlog.Sample
 {
-    public class TestWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup>
-        where TStartup : class
+    public class TestWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram>
+        where TProgram : class
     {
         public IConfigurationRoot Configuration { get; }
 
@@ -23,26 +24,25 @@ namespace Opw.PineBlog.Sample
                 .Build();
         }
 
-        protected override IWebHostBuilder CreateWebHostBuilder()
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            return new WebHostBuilder()
-                .UseConfiguration(Configuration)
-                .UseStartup<TStartup>()
-                .ConfigureAppConfiguration((_, config) => config.AddPineBlogEntityFrameworkCoreConfiguration(reloadOnChange: true));
-        }
+            builder.ConfigureAppConfiguration(config =>
+            {
+                config.AddConfiguration(Configuration);
+                config.AddPineBlogEntityFrameworkCoreConfiguration(reloadOnChange: true);
+            });
 
-        protected override TestServer CreateServer(IWebHostBuilder builder)
-        {
             builder.ConfigureTestServices(services =>
             {
-                ServiceRegistrar.AddMediatRClasses(services, new[] { typeof(TestWebApplicationFactory<>).Assembly });
+                var mediatRServiceConfiguration = new MediatRServiceConfiguration();
+                mediatRServiceConfiguration.RegisterServicesFromAssembly(typeof(TestWebApplicationFactory<>).Assembly);
+                ServiceRegistrar.AddMediatRClasses(services, mediatRServiceConfiguration);
 
                 var serviceDescriptor = services.FirstOrDefault(descriptor => descriptor.ServiceType == typeof(IGetPagedFileListQueryFactory));
                 services.Remove(serviceDescriptor);
 
                 services.AddTransient<IGetPagedFileListQueryFactory, GetPagedFileListQueryFactoryMock>();
             });
-            return base.CreateServer(builder);
         }
     }
 }

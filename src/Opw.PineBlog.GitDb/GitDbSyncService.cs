@@ -69,7 +69,7 @@ namespace Opw.PineBlog.GitDb
                 return;
 
             var lastModifiedDate = File.GetLastWriteTimeUtc(path);
-            if (lastModifiedDate != null && lastModifiedDate > DateTime.UtcNow.AddSeconds(-10))
+            if (lastModifiedDate > DateTime.UtcNow.AddSeconds(-10))
             {
                 path = PathHelper.Build(_options.Value.RootPath, GitDbConstants.BlogSettingsFile);
                 var files = context.GetFiles(new string[] { path });
