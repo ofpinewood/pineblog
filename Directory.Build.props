@@ -10,6 +10,5 @@
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/ofpinewood/pineblog</RepositoryUrl>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
-        <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     </PropertyGroup>
 </Project>
