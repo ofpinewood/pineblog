@@ -24,7 +24,6 @@ variables:
   buildConfiguration: 'Release'
   # Define the GitVersion environment variables so they can be used in all tasks.
   GitVersion.SemVer: ''
-  GitVersion.NuGetVersion: ''
 
 steps:
   # if the pipeline is set up to use a shallow git fetch mode the GitVersion Execute task will fail. 
@@ -32,12 +31,12 @@ steps:
   - checkout: self
     fetchDepth: 0
 
-  - task: gitversion/setup@2.0.1
+  - task: gitversion/setup@3.0.3
     displayName: Install GitVersion
     inputs:
-      versionSpec: '5.x'
+      versionSpec: '6.x'
 
-  - task: gitversion/execute@2.0.1
+  - task: gitversion/execute@3.0.3
     displayName: Determine Version
 
   # https://dotnet.microsoft.com/download/dotnet/9.0
@@ -50,7 +49,6 @@ steps:
   - script: |
       echo buildConfiguration: $(buildConfiguration)
       echo GitVersion.SemVer: $(GitVersion.SemVer)
-      echo GitVersion.NuGetVersion: $(GitVersion.NuGetVersion)
     displayName: 'Print Variables'
 
   - script: |
@@ -101,7 +99,7 @@ steps:
       packagesToPack: '**/Opw.PineBlog.Core.csproj'
       nobuild: true
       versioningScheme: byEnvVar
-      versionEnvVar: 'GitVersion.NuGetVersion'
+      versionEnvVar: 'GitVersion.SemVer'
 
   - task: DotNetCoreCLI@2
     displayName: NuGet Pack Opw.PineBlog.RazorPages
@@ -111,7 +109,7 @@ steps:
       packagesToPack: '**/Opw.PineBlog.RazorPages.csproj'
       nobuild: true
       versioningScheme: byEnvVar
-      versionEnvVar: 'GitVersion.NuGetVersion'
+      versionEnvVar: 'GitVersion.SemVer'
 
   - task: DotNetCoreCLI@2
     displayName: NuGet Pack Opw.PineBlog.EntityFrameworkCore
@@ -121,7 +119,7 @@ steps:
       packagesToPack: '**/Opw.PineBlog.EntityFrameworkCore.csproj'
       nobuild: true
       versioningScheme: byEnvVar
-      versionEnvVar: 'GitVersion.NuGetVersion'
+      versionEnvVar: 'GitVersion.SemVer'
 
   - task: DotNetCoreCLI@2
     displayName: NuGet Pack Opw.PineBlog.MongoDb
@@ -131,7 +129,7 @@ steps:
       packagesToPack: '**/Opw.PineBlog.MongoDb.csproj'
       nobuild: true
       versioningScheme: byEnvVar
-      versionEnvVar: 'GitVersion.NuGetVersion'
+      versionEnvVar: 'GitVersion.SemVer'
 
 # TODO: when Opw.PineBlog.GitDb is ready start publishing this nuget package
 #- task: DotNetCoreCLI@2
@@ -142,7 +140,7 @@ steps:
 #    packagesToPack: '**/Opw.PineBlog.GitDb.csproj'
 #    nobuild: true
 #    versioningScheme: byEnvVar
-#    versionEnvVar: 'GitVersion.NuGetVersion'
+#    versionEnvVar: 'GitVersion.SemVer'
 
   - task: DotNetCoreCLI@2
     displayName: NuGet Pack Opw.PineBlog
@@ -152,7 +150,7 @@ steps:
       packagesToPack: '**/Opw.PineBlog.csproj'
       nobuild: true
       versioningScheme: byEnvVar
-      versionEnvVar: 'GitVersion.NuGetVersion'
+      versionEnvVar: 'GitVersion.SemVer'
 
   - task: NuGetCommand@2
     displayName: NuGet Push
@@ -162,7 +160,7 @@ steps:
       nuGetFeedType: external
       publishFeedCredentials: NuGet
       versioningScheme: byEnvVar
-      versionEnvVar: 'GitVersion.NuGetVersion'
+      versionEnvVar: 'GitVersion.SemVer'
 
   - task: GithubRelease@1
     displayName: Create GitHub Release
