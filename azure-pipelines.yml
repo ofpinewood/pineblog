@@ -13,12 +13,12 @@ trigger:
     - refs/tags/*
 
 schedules:
-- cron: '0 0 * * *'
-  displayName: Daily Build
-  always: true
-  branches:
-    include:
-    - main
+  - cron: '0 0 * * *'
+    displayName: Daily Build
+    always: true
+    branches:
+      include:
+      - main
 
 variables:
   buildConfiguration: 'Release'
@@ -27,106 +27,111 @@ variables:
   GitVersion.NuGetVersion: ''
 
 steps:
-- task: gitversion/setup@0
-  displayName: Install GitVersion
-  inputs:
-    versionSpec: '5.x'
+  # if the pipeline is set up to use a shallow git fetch mode the GitVersion Execute task will fail. 
+  # It is required to use fetchDepth: 0
+  - checkout: self
+    fetchDepth: 0
 
-- task: gitversion/execute@0
-  displayName: Determine Version
+  - task: gitversion/setup@3.0.3
+    displayName: Install GitVersion
+    inputs:
+      versionSpec: '6.x'
 
-# https://dotnet.microsoft.com/download/dotnet/9.0
-- task: UseDotNet@2
-  displayName: Install .Net 9.0.100
-  inputs:
-    packageType: 'sdk'
-    version: '9.0.100'
+  - task: gitversion/execute@3.0.3
+    displayName: Determine Version
 
-- script: |
-    echo buildConfiguration: $(buildConfiguration)
-    echo GitVersion.SemVer: $(GitVersion.SemVer)
-    echo GitVersion.NuGetVersion: $(GitVersion.NuGetVersion)
-  displayName: 'Print Variables'
+  # https://dotnet.microsoft.com/download/dotnet/9.0
+  - task: UseDotNet@2
+    displayName: Install .Net 9.0.100
+    inputs:
+      packageType: 'sdk'
+      version: '9.0.100'
 
-- script: |
-    npm install
-  workingDirectory: $(Build.SourcesDirectory)/src/Opw.PineBlog.RazorPages
-  displayName: 'Install packages (npm)'
+  - script: |
+      echo buildConfiguration: $(buildConfiguration)
+      echo GitVersion.SemVer: $(GitVersion.SemVer)
+      echo GitVersion.NuGetVersion: $(GitVersion.NuGetVersion)
+    displayName: 'Print Variables'
 
-- task: DotNetCoreCLI@2
-  displayName: Build
-  inputs:
-    projects: '**/*.csproj'
-    arguments: '--configuration $(buildConfiguration) /p:Version=$(GitVersion.SemVer)'
+  - script: |
+      npm install
+    workingDirectory: $(Build.SourcesDirectory)/src/Opw.PineBlog.RazorPages
+    displayName: 'Install packages (npm)'
 
-- task: DotNetCoreCLI@2
-  displayName: Test
-  inputs:
-    command: test
-    projects: |
-      **/tests/*.Tests/*.csproj
-      **/tests/*.IntegrationTests/*.csproj
-    arguments: '--configuration $(buildConfiguration) --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[Opw.*]*" /p:Exclude="[*.Tests]*%2c[*.*Tests]*%2c[*.Testing]*%2c[*.Sample.*]*"'
+  - task: DotNetCoreCLI@2
+    displayName: Build
+    inputs:
+      projects: '**/*.csproj'
+      arguments: '--configuration $(buildConfiguration) /p:Version=$(GitVersion.SemVer)'
 
-# Release: triggered by a version tag
-- task: DotNetCoreCLI@2
-  displayName: Publish
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
-  inputs:
-    command: publish
-    publishWebProjects: false
-    projects: |
-      **/samples/Opw.PineBlog.Sample/*.csproj
-    arguments: '--configuration $(buildConfiguration) --framework net9.0 --output $(build.artifactstagingdirectory) /p:Version=$(GitVersion.SemVer) --no-build'
-    zipAfterPublish: false
+  - task: DotNetCoreCLI@2
+    displayName: Test
+    inputs:
+      command: test
+      projects: |
+        **/tests/*.Tests/*.csproj
+        **/tests/*.IntegrationTests/*.csproj
+      arguments: '--configuration $(buildConfiguration) --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:Include="[Opw.*]*" /p:Exclude="[*.Tests]*%2c[*.*Tests]*%2c[*.Testing]*%2c[*.Sample.*]*"'
 
-# Delete the "Areas" folder, this should not be deployed
-- task: DeleteFiles@1
-  displayName: Publish Cleanup
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
-  inputs:
-    sourceFolder: $(build.artifactstagingdirectory)\Opw.PineBlog.Sample
-    contents: 'Areas'
+  # Release: triggered by a version tag
+  - task: DotNetCoreCLI@2
+    displayName: Publish
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: |
+        **/samples/Opw.PineBlog.Sample/*.csproj
+      arguments: '--configuration $(buildConfiguration) --framework net9.0 --output $(build.artifactstagingdirectory) /p:Version=$(GitVersion.SemVer) --no-build'
+      zipAfterPublish: false
 
-- task: DotNetCoreCLI@2
-  displayName: NuGet Pack Opw.PineBlog.Core
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
-  inputs:
-    command: pack
-    packagesToPack: '**/Opw.PineBlog.Core.csproj'
-    nobuild: true
-    versioningScheme: byEnvVar
-    versionEnvVar: 'GitVersion.NuGetVersion'
+  # Delete the "Areas" folder, this should not be deployed
+  - task: DeleteFiles@1
+    displayName: Publish Cleanup
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+    inputs:
+      SourceFolder: $(build.artifactstagingdirectory)\Opw.PineBlog.Sample
+      Contents: 'Areas'
 
-- task: DotNetCoreCLI@2
-  displayName: NuGet Pack Opw.PineBlog.RazorPages
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
-  inputs:
-    command: pack
-    packagesToPack: '**/Opw.PineBlog.RazorPages.csproj'
-    nobuild: true
-    versioningScheme: byEnvVar
-    versionEnvVar: 'GitVersion.NuGetVersion'
+  - task: DotNetCoreCLI@2
+    displayName: NuGet Pack Opw.PineBlog.Core
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+    inputs:
+      command: pack
+      packagesToPack: '**/Opw.PineBlog.Core.csproj'
+      nobuild: true
+      versioningScheme: byEnvVar
+      versionEnvVar: 'GitVersion.NuGetVersion'
 
-- task: DotNetCoreCLI@2
-  displayName: NuGet Pack Opw.PineBlog.EntityFrameworkCore
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
-  inputs:
-    command: pack
-    packagesToPack: '**/Opw.PineBlog.EntityFrameworkCore.csproj'
-    nobuild: true
-    versioningScheme: byEnvVar
-    versionEnvVar: 'GitVersion.NuGetVersion'
+  - task: DotNetCoreCLI@2
+    displayName: NuGet Pack Opw.PineBlog.RazorPages
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+    inputs:
+      command: pack
+      packagesToPack: '**/Opw.PineBlog.RazorPages.csproj'
+      nobuild: true
+      versioningScheme: byEnvVar
+      versionEnvVar: 'GitVersion.NuGetVersion'
 
-- task: DotNetCoreCLI@2
-  displayName: NuGet Pack Opw.PineBlog.MongoDb
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
-  inputs:
-    command: pack
-    packagesToPack: '**/Opw.PineBlog.MongoDb.csproj'
-    nobuild: true
-    versioningScheme: byEnvVar
-    versionEnvVar: 'GitVersion.NuGetVersion'
+  - task: DotNetCoreCLI@2
+    displayName: NuGet Pack Opw.PineBlog.EntityFrameworkCore
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+    inputs:
+      command: pack
+      packagesToPack: '**/Opw.PineBlog.EntityFrameworkCore.csproj'
+      nobuild: true
+      versioningScheme: byEnvVar
+      versionEnvVar: 'GitVersion.NuGetVersion'
+
+  - task: DotNetCoreCLI@2
+    displayName: NuGet Pack Opw.PineBlog.MongoDb
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+    inputs:
+      command: pack
+      packagesToPack: '**/Opw.PineBlog.MongoDb.csproj'
+      nobuild: true
+      versioningScheme: byEnvVar
+      versionEnvVar: 'GitVersion.NuGetVersion'
 
 # TODO: when Opw.PineBlog.GitDb is ready start publishing this nuget package
 #- task: DotNetCoreCLI@2
@@ -139,51 +144,52 @@ steps:
 #    versioningScheme: byEnvVar
 #    versionEnvVar: 'GitVersion.NuGetVersion'
 
-- task: DotNetCoreCLI@2
-  displayName: NuGet Pack Opw.PineBlog
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
-  inputs:
-    command: pack
-    packagesToPack: '**/Opw.PineBlog.csproj'
-    nobuild: true
-    versioningScheme: byEnvVar
-    versionEnvVar: 'GitVersion.NuGetVersion'
+  - task: DotNetCoreCLI@2
+    displayName: NuGet Pack Opw.PineBlog
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+    inputs:
+      command: pack
+      packagesToPack: '**/Opw.PineBlog.csproj'
+      nobuild: true
+      versioningScheme: byEnvVar
+      versionEnvVar: 'GitVersion.NuGetVersion'
 
-- task: NuGetCommand@2
-  displayName: NuGet Push
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
-  inputs:
-    command: push
-    nuGetFeedType: external
-    publishFeedCredentials: NuGet
-    versioningScheme: byEnvVar
-    versionEnvVar: 'GitVersion.NuGetVersion'
+  - task: NuGetCommand@2
+    displayName: NuGet Push
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+    inputs:
+      command: push
+      nuGetFeedType: external
+      publishFeedCredentials: NuGet
+      versioningScheme: byEnvVar
+      versionEnvVar: 'GitVersion.NuGetVersion'
 
-- task: GithubRelease@0
-  displayName: Create GitHub Release
-  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
-  inputs:
-   gitHubConnection: 'github.com'
-   repositoryName: $(Build.Repository.Name)
-   action: create
-   target: $(Build.SourceVersion)
-   tagSource: auto
-   tag: '$(GitVersion.SemVer)'
+  - task: GithubRelease@1
+    displayName: Create GitHub Release
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+    inputs:
+      gitHubConnection: 'github.com'
+      repositoryName: '$(Build.Repository.Name)'
+      action: 'create'
+      target: '$(Build.SourceVersion)'
+      tagSource: 'gitTag'
+      tag: '$(GitVersion.SemVer)'
 
-- task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
-  displayName: 'Generate Code Coverage Report'
-  inputs:
-    reports: '$(Build.SourcesDirectory)/**/coverage*cobertura.xml'
-    targetdir: '$(build.artifactstagingdirectory)/coverage/'
+  - task: reportgenerator@5
+    displayName: 'Generate Code Coverage Report'
+    inputs:
+      reports: '$(Build.SourcesDirectory)/**/coverage*cobertura.xml'
+      targetdir: '$(build.artifactstagingdirectory)/coverage/'
 
-- task: PublishCodeCoverageResults@1
-  displayName: 'Publish Code Coverage Results'
-  inputs:
-    codeCoverageTool: Cobertura
-    summaryFileLocation: '$(build.artifactstagingdirectory)/coverage/cobertura.xml'
+  # PublishCodeCoverageResults v2 does not support publishing of the code coverage reports created by Report generator task.
+  - task: PublishCodeCoverageResults@1
+    displayName: 'Publish Code Coverage Results'
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: '$(build.artifactstagingdirectory)/coverage/cobertura.xml'
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifacts'
-  condition: always()
-  inputs:
-    PathtoPublish: $(build.artifactstagingdirectory)
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifacts'
+    condition: always()
+    inputs:
+      PathtoPublish: $(build.artifactstagingdirectory)
